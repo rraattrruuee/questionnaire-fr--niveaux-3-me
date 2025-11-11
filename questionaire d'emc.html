@@ -1,0 +1,1301 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="/quiz_icon.svg" type="image/x-icon" />
+        <title>Quiz EMC - 50 Questions</title>
+        <style>
+            /* ----------------------------------------------------
+           ANIMATIONS (KEYFRAMES)
+           ---------------------------------------------------- */
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes slideOut {
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+
+            /* NOUVEAU: Animation pour l'entrée du titre */
+            @keyframes headerDrop {
+                from {
+                    opacity: 0;
+                    transform: translateY(-50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                    box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+                }
+                50% {
+                    transform: scale(1.02);
+                    box-shadow: 0 8px 20px rgba(76, 81, 191, 0.5);
+                }
+                100% {
+                    transform: scale(1);
+                    box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes resultsEntry {
+                from {
+                    opacity: 0;
+                    transform: translateY(50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* NOUVEAU: Animation pour une bonne réponse */
+            @keyframes bounce {
+                0%,
+                20%,
+                50%,
+                80%,
+                100% {
+                    transform: translateY(0);
+                }
+                40% {
+                    transform: translateY(-5px);
+                }
+                60% {
+                    transform: translateY(-3px);
+                }
+            }
+
+            /* NOUVEAU: Animation pour une mauvaise réponse */
+            @keyframes shake {
+                0%,
+                100% {
+                    transform: translateX(0);
+                }
+                20%,
+                60% {
+                    transform: translateX(-5px);
+                }
+                40%,
+                80% {
+                    transform: translateX(5px);
+                }
+            }
+
+            /* NOUVEAU: Animation de lueur pour les résultats */
+            @keyframes glowCorrect {
+                0% {
+                    box-shadow: 0 0 5px #68d391;
+                }
+                50% {
+                    box-shadow: 0 0 20px #48bb78;
+                }
+                100% {
+                    box-shadow: 0 0 5px #68d391;
+                }
+            }
+
+            /* NOUVEAU: Animation pour faire "pop" le feedback textuel */
+            @keyframes zoomFeedback {
+                0% {
+                    transform: scale(0.9);
+                    opacity: 0;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            /* .couleur-qui-change */
+            @keyframes couleur-qui-change {
+                0%,
+                10% {
+                    color: white;
+                }
+                30% {
+                    color: #00ff00;
+                }
+                38% {
+                    color: #ffff00;
+                }
+                46% {
+                    color: #ff00ff;
+                }
+                54% {
+                    color: #00ffff;
+                }
+                60% {
+                    color: #ffa500;
+                }
+                68% {
+                    color: #7cfc00;
+                }
+                76% {
+                    color: #ff69b4;
+                }
+                84% {
+                    color: #8a2be2;
+                }
+                92% {
+                    color: #ff4500;
+                }
+                100% {
+                    color: deeppink;
+                }
+            }
+
+            /* Rotation continue (pour logos ou éléments décoratifs) */
+            @keyframes rotate {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            /* Scintillement (subtil, pour un effet de texte ou d'objet "électrique") */
+            @keyframes flicker {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                5%,
+                25%,
+                45%,
+                65%,
+                85% {
+                    opacity: 0.85;
+                }
+                10%,
+                30%,
+                50%,
+                70%,
+                90% {
+                    opacity: 1;
+                }
+            }
+
+            /* Effet d'apparition par balayage (comme une zone se révélant) */
+            @keyframes wipe-in {
+                from {
+                    clip-path: inset(
+                        0 100% 0 0
+                    ); /* Cache l'élément de la droite */
+                }
+                to {
+                    clip-path: inset(0 0 0 0); /* Révèle tout l'élément */
+                }
+            }
+
+            /* Changement de couleur de bordure en boucle (pour les boutons ou les conteneurs) */
+            @keyframes border-fade {
+                0% {
+                    border-color: #3182ce;
+                }
+                33% {
+                    border-color: #48bb78;
+                }
+                66% {
+                    border-color: #f6ad55;
+                }
+                100% {
+                    border-color: #3182ce;
+                }
+            }
+
+            @keyframes clignotement-leger {
+                0%,
+                100% {
+                    color: red;
+                    opacity: 1;
+                }
+                50% {
+                    color: orange;
+                    opacity: 0.7;
+                }
+            }
+
+            /* ----------------------------------------------------
+           STYLE GÉNÉRAL (100% LOCAL - PAS DE POLICE EXTERNE)
+           ---------------------------------------------------- */
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                background-color: #f0f4f8;
+                padding: 1rem;
+                line-height: 1.6;
+                min-height: 100vh;
+            }
+
+            @media (min-width: 768px) {
+                body {
+                    padding: 2rem;
+                }
+            }
+
+            /* ----------------------------------------------------
+           CONTENEUR PRINCIPAL
+           ---------------------------------------------------- */
+            .quiz-container {
+                max-width: 800px;
+                margin: 2rem auto;
+                padding: 2rem;
+                background: #ffffff;
+                border-radius: 20px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            }
+
+            /* ----------------------------------------------------
+           HEADER
+           ---------------------------------------------------- */
+            .header {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #1a202c;
+                margin-bottom: 0.5rem;
+                animation: headerDrop 0.8s ease-out; /* NOUVEAU: Animation au chargement */
+            }
+
+            .header p {
+                color: #4a5568;
+                font-size: 1.125rem;
+                font-weight: 500;
+            }
+
+            /* ----------------------------------------------------
+           CARTE DE QUESTION (CLASSES DE VITESSE AJOUTÉES)
+           ---------------------------------------------------- */
+            .question-card {
+                min-height: 250px;
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+                border-radius: 15px;
+                background-color: #f7faff;
+                border: 2px solid #e2e8f0;
+                transition:
+                    opacity 0.3s ease,
+                    transform 0.3s ease;
+            }
+
+            .question-card.entering {
+                animation: slideIn 0.5s ease-out forwards;
+            }
+
+            /* Contrôle de vitesse basé sur la classe */
+            .question-card.fast-exit {
+                animation: slideOut 0.25s ease-in forwards; /* Rapide pour le succès */
+            }
+            .question-card.slow-exit {
+                animation: slideOut 0.8s ease-in forwards; /* Lent pour l'échec */
+            }
+
+            .question-text {
+                font-size: 1.3rem;
+                font-weight: 700;
+                margin-bottom: 1.5rem;
+                color: #2d3748;
+            }
+
+            .options-container {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            /* ----------------------------------------------------
+           BOUTONS DE RÉPONSE
+           ---------------------------------------------------- */
+            .answer-btn {
+                display: block;
+                width: 100%;
+                padding: 1rem 1.25rem;
+                text-align: left;
+                border-radius: 10px;
+                transition: all 0.2s ease-out;
+                font-weight: 600;
+                border: 1px solid #c3dafe;
+                color: #2b6cb0;
+                background-color: #ebf4ff;
+                cursor: pointer;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            }
+
+            .answer-btn:hover:not(.selected):not(.correct):not(.incorrect) {
+                background-color: #cee0f2;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Sélection utilisateur */
+            .selected {
+                background-color: #3182ce;
+                border-color: #2c5282;
+                color: white;
+                transform: scale(1.01);
+                box-shadow: 0 5px 15px rgba(49, 130, 206, 0.4);
+            }
+
+            /* ----------------------------------------------------
+           FEEDBACK COULEURS (AVEC ANIMATIONS)
+           ---------------------------------------------------- */
+            .correct {
+                background-color: #48bb78 !important;
+                border-color: #2f855a !important;
+                color: white !important;
+                box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
+                pointer-events: none;
+                animation: bounce 0.6s ease-out; /* NOUVEAU: Animation pour la bonne réponse */
+            }
+
+            .incorrect {
+                background-color: #f56565 !important;
+                border-color: #c53030 !important;
+                color: white !important;
+                box-shadow: 0 5px 15px rgba(245, 101, 101, 0.4);
+                pointer-events: none;
+                animation: shake 0.5s ease-in-out; /* NOUVEAU: Animation pour la mauvaise réponse */
+            }
+
+            /* Feedback Area (Animation zoom/fade) */
+            #feedback-area {
+                margin-top: 1rem;
+                padding: 1rem;
+                border-radius: 10px;
+                font-weight: 600;
+                text-align: center;
+                animation: zoomFeedback 0.4s
+                    cubic-bezier(0.68, -0.55, 0.27, 1.55); /* NOUVEAU: Animation de feedback */
+            }
+
+            .feedback-correct {
+                background-color: #e6fffa;
+                color: #38a169;
+                border: 1px solid #48bb78;
+            }
+
+            .feedback-incorrect {
+                background-color: #fff5f5;
+                color: #e53e3e;
+                border: 1px solid #f56565;
+            }
+
+            /* ----------------------------------------------------
+           BOUTON PRINCIPAL (AMÉLIORÉ ET ANIMÉ)
+           ---------------------------------------------------- */
+            .main-btn-container {
+                margin-top: 2.5rem;
+                display: flex;
+                justify-content: center;
+            }
+
+            #main-btn {
+                background-color: #4c51bf;
+                color: white;
+                padding: 1rem 2.5rem;
+                border-radius: 12px;
+                font-weight: 800;
+                font-size: 1.1rem;
+                transition:
+                    background-color 0.3s,
+                    transform 0.2s,
+                    box-shadow 0.3s;
+                width: 100%;
+                border: none;
+                cursor: pointer;
+                box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+            }
+
+            @media (min-width: 768px) {
+                #main-btn {
+                    width: auto;
+                }
+            }
+
+            #main-btn:hover:not(:disabled) {
+                background-color: #3a4294;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(76, 81, 191, 0.4);
+            }
+
+            #main-btn:active:not(:disabled) {
+                animation: pulse 0.3s ease;
+            }
+
+            #main-btn:disabled {
+                background-color: #a0aec0;
+                cursor: not-allowed;
+                box-shadow: none;
+            }
+
+            /* ----------------------------------------------------
+           RÉSULTATS FINAUX (ANIMÉ ET GLOW)
+           ---------------------------------------------------- */
+            #results {
+                margin-top: 2.5rem;
+                padding: 2rem;
+                background-color: #f0fff4;
+                border: 2px solid #68d391;
+                border-radius: 15px;
+                text-align: center;
+            }
+
+            #results.entering {
+                animation: resultsEntry 0.6s ease-out forwards;
+            }
+
+            /* NOUVEAU: Glow pour les résultats si le score est élevé */
+            .high-score-glow {
+                animation: glowCorrect 2s infinite alternate;
+            }
+
+            #results h2 {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: #2f855a;
+                margin-bottom: 1rem;
+            }
+
+            #score-display {
+                font-size: 1.4rem;
+                font-weight: 600;
+                margin-bottom: 0.75rem;
+                color: #38a169;
+            }
+
+            #feedback-message {
+                font-size: 1.1rem;
+                color: #4c51bf;
+            }
+
+            #results button {
+                margin-top: 1.5rem;
+                padding: 0.75rem 2rem;
+                background-color: #48bb78;
+                color: white;
+                border-radius: 10px;
+                font-weight: 700;
+                transition: background-color 0.2s;
+                border: none;
+                cursor: pointer;
+            }
+
+            #results button:hover {
+                background-color: #38a169;
+            }
+
+            /* Utility class */
+            .hidden {
+                display: none;
+            }
+
+            .couleur-qui-change {
+                animation: couleur-qui-change 14s infinite alternate;
+                font-weight: bold;
+            }
+
+            .anim-rotate {
+                animation: rotate 5s linear infinite;
+            }
+
+            .anim-flicker {
+                animation: flicker 0.15s linear infinite alternate;
+            }
+
+            .anim-wipe-in {
+                animation: wipe-in 1s ease-out forwards;
+            }
+
+            /* Exemple d'application sur un élément avec une bordure */
+            .anim-border-fade {
+                border: 3px solid transparent;
+                animation: border-fade 3s ease-in-out infinite;
+            }
+
+            .clignotant {
+                animation: clignotement-leger 1.5s infinite ease-in-out;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="quiz-container anim-border-fade">
+            <header class="header">
+                <h1>
+                    Quiz <span class="couleur-qui-change">EMC</span> : 50<span
+                        class="clignotant"
+                        >-1</span
+                    >
+                    Questions
+                </h1>
+                <p>
+                    Question <span id="current-q-number">1</span> /
+                    <span id="total-q-number">50</span>
+                </p>
+            </header>
+
+            <div id="quiz-area" class="anim-wipe-in">
+                <!-- La question actuelle sera rendue ici -->
+                <div id="current-question-card" class="question-card">
+                    <!-- Contenu dynamique -->
+                </div>
+
+                <div id="feedback-area" class="hidden"></div>
+
+                <div class="main-btn-container">
+                    <button id="main-btn" onclick="checkAnswerAndProceed()">
+                        Valider la Réponse
+                    </button>
+                </div>
+            </div>
+
+            <div id="results" class="hidden">
+                <h2 class="anim-flicker">Quiz Terminé !</h2>
+                <p id="score-display"></p>
+                <p id="feedback-message"></p>
+                <button onclick="restartQuiz()">Recommencer le Quiz</button>
+            </div>
+        </div>
+
+        <script>
+            // --- DATA: 50 Questions basées sur la Fiche de Révision ---
+            const questions = [
+                {
+                    q: "Quelle est la devise de la République française, inscrite sur les frontons des institutions ?",
+                    answers: [
+                        "Travail, Famille, Patrie",
+                        "Honneur, Patrie, Valeur",
+                        "Liberté, Égalité, Fraternité",
+                        "Justice, Paix, Progrès",
+                    ],
+                    correct: "Liberté, Égalité, Fraternité",
+                },
+                {
+                    q: "Quelles sont les trois couleurs qui composent le drapeau français ?",
+                    answers: [
+                        "Vert, Blanc, Rouge",
+                        "Bleu, Jaune, Rouge",
+                        "Bleu, Blanc, Rouge",
+                        "Bleu, Blanc, Vert",
+                    ],
+                    correct: "Bleu, Blanc, Rouge",
+                },
+                {
+                    q: "Qui est l'auteur de La Marseillaise, devenue hymne national ?",
+                    answers: [
+                        "Claude François",
+                        "Rouget de Lisle",
+                        "Hector Berlioz",
+                        "Jean-Jacques Rousseau",
+                    ],
+                    correct: "Rouget de Lisle",
+                },
+                {
+                    q: "Quelle date est le jour de la fête nationale qui commémore la prise de la Bastille ?",
+                    answers: ["11 novembre", "8 mai", "14 juillet", "1er mai"],
+                    correct: "14 juillet",
+                },
+                {
+                    q: "Quel symbole de la République est visible dans chaque mairie et incarne la liberté et la raison ?",
+                    answers: [
+                        "Le Coq Gaulois",
+                        "La Marianne",
+                        "Le Semeur",
+                        "Le Bonnet Phrygien",
+                    ],
+                    correct: "La Marianne",
+                },
+                {
+                    q: "Selon l'infographie Ipsos, quel est le critère le plus important pour se sentir Français ?",
+                    answers: [
+                        "Avoir la nationalité française",
+                        "Parler une langue commune, le français",
+                        "Être attaché aux valeurs de la République",
+                        "Partager un mode de vie (gastronomie...)",
+                    ],
+                    correct: "Être attaché aux valeurs de la République",
+                },
+                {
+                    q: "Quel est le premier principe de la République mentionné dans la Constitution du 4 octobre 1958 ?",
+                    answers: [
+                        "Sociale",
+                        "Démocratique",
+                        "Laïque",
+                        "Indivisible",
+                    ],
+                    correct: "Indivisible",
+                },
+                {
+                    q: "Quel principe de la République garantit l'application uniforme du droit sur tout le territoire national ?",
+                    answers: [
+                        "Le caractère social",
+                        "Le caractère laïque",
+                        "Le caractère démocratique",
+                        "Le caractère indivisible",
+                    ],
+                    correct: "Le caractère indivisible",
+                },
+                {
+                    q: "Quel principe implique la séparation des Églises et de l'État en France ?",
+                    answers: [
+                        "La démocratie",
+                        "La laïcité",
+                        "L'indivisibilité",
+                        "La fraternité",
+                    ],
+                    correct: "La laïcité",
+                },
+                {
+                    q: "Quel principe implique la désignation des différents pouvoirs au suffrage universel, égal et secret ?",
+                    answers: [
+                        "Le caractère social",
+                        "Le caractère démocratique",
+                        "Le caractère laïque",
+                        "Le caractère indivisible",
+                    ],
+                    correct: "Le caractère démocratique",
+                },
+                {
+                    q: "Quel principe vise à la cohésion sociale et à l'amélioration de la condition des plus démunis ?",
+                    answers: [
+                        "Le caractère laïque",
+                        "Le caractère social",
+                        "Le caractère démocratique",
+                        "Le caractère indivisible",
+                    ],
+                    correct: "Le caractère social",
+                },
+                {
+                    q: "Quelle valeur de la devise découle principalement du caractère social de la République ?",
+                    answers: ["Liberté", "Égalité", "Fraternité", "Justice"],
+                    correct: "Fraternité",
+                },
+                {
+                    q: "Quelle valeur de la devise découle de la liberté de croyance garantie par la laïcité ?",
+                    answers: ["Liberté", "Égalité", "Fraternité", "Dignité"],
+                    correct: "Liberté",
+                },
+                {
+                    q: "Quelle valeur de la devise découle du principe d'une République indivisible qui assure une application uniforme du droit ?",
+                    answers: [
+                        "Fraternité",
+                        "Liberté",
+                        "Égalité",
+                        "Souveraineté",
+                    ],
+                    correct: "Égalité",
+                },
+                {
+                    q: "Quel est l'hymne de l'Union européenne ?",
+                    answers: [
+                        "Le Chant du Départ",
+                        "L'Ode à la joie",
+                        "Le Chant des Partisans",
+                        "La Paix de l'Europe",
+                    ],
+                    correct: "L'Ode à la joie",
+                },
+                {
+                    q: "Que symbolisent les 12 étoiles sur le drapeau de l'Union européenne ?",
+                    answers: [
+                        "Le nombre de pays fondateurs",
+                        "La perfection et la plénitude",
+                        "Les 12 mois de l'année",
+                        "Les 12 apôtres",
+                    ],
+                    correct: "La perfection et la plénitude",
+                },
+                {
+                    q: "Quelle est la devise de l'Union européenne ?",
+                    answers: [
+                        "La force dans l'union",
+                        "L'unité dans la diversité",
+                        "L'Europe aux Européens",
+                        "Tous pour un, un pour tous",
+                    ],
+                    correct: "L'unité dans la diversité",
+                },
+                {
+                    q: "Quelle est la date de la Journée de l'Europe ?",
+                    answers: [
+                        "1er janvier",
+                        "9 mai",
+                        "14 juillet",
+                        "25 décembre",
+                    ],
+                    correct: "9 mai",
+                },
+                {
+                    q: "Selon le Code civil, comment s'appelle le droit d'acquérir la nationalité française pour un enfant né d'au moins un parent français ?",
+                    answers: [
+                        "Le droit de résidence",
+                        "Le droit du sol",
+                        "Le droit du sang",
+                        "Le droit de mariage",
+                    ],
+                    correct: "Le droit du sang",
+                },
+                {
+                    q: "Quel est le nom du mode d'acquisition de la nationalité française par l'enfant né en France résidant au moins cinq ans ?",
+                    answers: [
+                        "Le droit de sang",
+                        "La naturalisation",
+                        "Le droit du sol",
+                        "Le droit d'option",
+                    ],
+                    correct: "Le droit du sol",
+                },
+                {
+                    q: "Quel est l'âge minimum pour qu'un citoyen français soit électeur, s'il jouit de ses droits civiques ?",
+                    answers: ["16 ans", "18 ans", "21 ans", "25 ans"],
+                    correct: "18 ans",
+                },
+                {
+                    q: "Comment s'appelle l'acquisition de la nationalité française par décision de l'autorité publique pour un étranger après 18 ans ?",
+                    answers: [
+                        "Le droit du sang",
+                        "La naturalisation",
+                        "Le droit du sol",
+                        "Le mariage",
+                    ],
+                    correct: "La naturalisation",
+                },
+                {
+                    q: "Lors de la cérémonie de naturalisation, quel tableau de Delacroix est imprimé sur le livret de nationalité ?",
+                    answers: [
+                        "Le Radeau de la Méduse",
+                        "La Liberté guidant le peuple",
+                        "Les Glaneuses",
+                        "Un enterrement à Ornans",
+                    ],
+                    correct: "La Liberté guidant le peuple",
+                },
+                {
+                    q: "En plus de voter, quel devoir particulier est lié à la citoyenneté française ?",
+                    answers: [
+                        "Le devoir de se syndiquer",
+                        "Le devoir de concourir à la défense nationale",
+                        "Le devoir de s'instruire jusqu'à 25 ans",
+                        "Le devoir de donner son sang",
+                    ],
+                    correct: "Le devoir de concourir à la défense nationale",
+                },
+                {
+                    q: "Que doit faire chaque citoyen pour contribuer aux dépenses de la Nation selon la Charte des droits et devoirs ?",
+                    answers: [
+                        "Participer à la loterie nationale",
+                        "Payer des impôts et des cotisations sociales",
+                        "Faire du bénévolat",
+                        "Acheter des produits français uniquement",
+                    ],
+                    correct: "Payer des impôts et des cotisations sociales",
+                },
+                {
+                    q: "À quoi fait référence le suffrage 'égal' dans le caractère démocratique de la République ?",
+                    answers: [
+                        "Chaque citoyen a le même âge de vote",
+                        "Chaque électeur dispose d'une voix",
+                        "Le vote est secret",
+                        "Le suffrage est universel",
+                    ],
+                    correct: "Chaque électeur dispose d'une voix",
+                },
+                {
+                    q: "La Sécurité sociale est un 'ferment de la cohésion sociale' en lien avec quel mot de la devise ?",
+                    answers: [
+                        "Liberté",
+                        "Égalité",
+                        "Fraternité",
+                        "Indivisibilité",
+                    ],
+                    correct: "Fraternité",
+                },
+                {
+                    q: "En quelle année la Sécurité sociale a-t-elle été créée en France ?",
+                    answers: ["1958", "1945", "1981", "2004"],
+                    correct: "1945",
+                },
+                {
+                    q: "De quel principe constitutionnel découle l'assurance de l'égalité devant la loi de tous les citoyens sans distinction d'origine, de race ou de religion ?",
+                    answers: [
+                        "République sociale",
+                        "République démocratique",
+                        "République indivisible",
+                        "République laïque",
+                    ],
+                    correct: "République indivisible",
+                },
+                {
+                    q: "Quel symbole est spécifiquement mentionné comme emblème national dans l'article 2 de la Constitution ?",
+                    answers: [
+                        "Le coq",
+                        "Le drapeau tricolore",
+                        "La Marianne",
+                        "Le Bonnet phrygien",
+                    ],
+                    correct: "Le drapeau tricolore",
+                },
+                {
+                    q: "Qui a été intronisée au Panthéon en 2018, comme survivante de la Shoah et figure des combats pour les femmes ?",
+                    answers: [
+                        "Marie Curie",
+                        "Joséphine Baker",
+                        "Simone Veil",
+                        "Jeanne d'Arc",
+                    ],
+                    correct: "Simone Veil",
+                },
+                {
+                    q: "Dans le discours d'Emmanuel Macron au Panthéon, il est dit que l'entrée de Simone Veil doit rester une 'boussole' dans les temps troublés. À quoi fait-il référence ?",
+                    answers: [
+                        "À sa dignité et son espérance",
+                        "À son âge",
+                        "À sa carrière de magistrate",
+                        "À sa déportation",
+                    ],
+                    correct: "À sa dignité et son espérance",
+                },
+                {
+                    q: "Selon l'Article 2 de la Constitution, quel est le principe du gouvernement de la République ?",
+                    answers: [
+                        "Gouvernement pour les riches",
+                        "Gouvernement des élus",
+                        "Gouvernement du peuple, par le peuple et pour le peuple",
+                        "Gouvernement des sages",
+                    ],
+                    correct:
+                        "Gouvernement du peuple, par le peuple et pour le peuple",
+                },
+                {
+                    q: "Quel principe de la République est lié au respect des libertés fondamentales ?",
+                    answers: [
+                        "Laïque",
+                        "Démocratique",
+                        "Sociale",
+                        "Indivisible",
+                    ],
+                    correct: "Démocratique",
+                },
+                {
+                    q: "L'indivisibilité de la République implique que personne ne peut s'attribuer l'exercice de la :",
+                    answers: [
+                        "Souveraineté nationale",
+                        "Liberté de la presse",
+                        "Laïcité",
+                        "Gestion de la police",
+                    ],
+                    correct: "Souveraineté nationale",
+                },
+                {
+                    q: "En plus de la liberté de croyance, le caractère laïque de la République découle du principe de :",
+                    answers: [
+                        "L'égalité des citoyens devant la loi",
+                        "L'indivisibilité du territoire",
+                        "Le suffrage universel",
+                        "La protection de la santé",
+                    ],
+                    correct: "L'égalité des citoyens devant la loi",
+                },
+                {
+                    q: "Le droit de se présenter à une élection est un droit lié à quelle qualité du citoyen français ?",
+                    answers: [
+                        "Âgé de moins de 25 ans",
+                        "Électeur",
+                        "Membre d'un parti",
+                        "Fonctionnaire",
+                    ],
+                    correct: "Électeur",
+                },
+                {
+                    q: "Quel droit fondamental la Nation garantit-elle à toute personne dans l'incapacité de travailler ?",
+                    answers: [
+                        "Le droit de grève",
+                        "Le droit d'obtenir des moyens convenables d'existence",
+                        "Le droit à la retraite anticipée",
+                        "Le droit de s'expatrier",
+                    ],
+                    correct:
+                        "Le droit d'obtenir des moyens convenables d'existence",
+                },
+                {
+                    q: "Quel type de suffrage est 'ouvert à tous les citoyens majeurs' ?",
+                    answers: [
+                        "Suffrage censitaire",
+                        "Suffrage égal",
+                        "Suffrage universel",
+                        "Suffrage indirect",
+                    ],
+                    correct: "Suffrage universel",
+                },
+                {
+                    q: "Que doit avoir une personne naturalisée pour que sa naturalisation ne soit pas refusée ?",
+                    answers: [
+                        "Un diplôme universitaire",
+                        "Une connaissance suffisante de la langue, de l'histoire et des valeurs",
+                        "Une grande fortune",
+                        "Des parents français",
+                    ],
+                    correct:
+                        "Une connaissance suffisante de la langue, de l'histoire et des valeurs",
+                },
+                {
+                    q: "Quel droit est garanti à chacun, sans distinction de race, de religion ni de croyance, sur le territoire de la République ?",
+                    answers: [
+                        "Droits inaliénables",
+                        "Droits professionnels",
+                        "Droits électoraux",
+                        "Droits familiaux",
+                    ],
+                    correct: "Droits inaliénables",
+                },
+                {
+                    q: "Quel emblème national est le symbole du pouvoir royal allié au bleu et au rouge (couleurs de Paris) ?",
+                    answers: [
+                        "La couleur blanche du drapeau",
+                        "Le bonnet phrygien",
+                        "Le 14 juillet",
+                        "La Marianne",
+                    ],
+                    correct: "La couleur blanche du drapeau",
+                },
+                {
+                    q: "Selon l'article 2 du Code civil, un citoyen peut être déchu de sa nationalité s'il se livre à des actes contraires aux :",
+                    answers: [
+                        "Intérêts financiers de sa famille",
+                        "Intérêts fondamentaux de la France",
+                        "Intérêts de l'Union européenne",
+                        "Intérêts de l'État",
+                    ],
+                    correct: "Intérêts fondamentaux de la France",
+                },
+                {
+                    q: "Que marque la cérémonie d'accueil dans la citoyenneté française pour les nouveaux Français ?",
+                    answers: [
+                        "Le début de la retraite",
+                        "La fin de leur séjour en France",
+                        "L'intégration dans la communauté nationale",
+                        "L'obtention d'un passeport gratuit",
+                    ],
+                    correct: "L'intégration dans la communauté nationale",
+                },
+                {
+                    q: "Combien de temps après le mariage peut-on acquérir la nationalité française par déclaration (minimum) ?",
+                    answers: ["1 an", "4 ans", "10 ans", "Le jour du mariage"],
+                    correct: "4 ans",
+                },
+                {
+                    q: "La laïcité implique la séparation entre :",
+                    answers: [
+                        "Les citoyens et l'État",
+                        "Les Églises et l'État",
+                        "Les hommes et les femmes",
+                        "L'école et les parents",
+                    ],
+                    correct: "Les Églises et l'État",
+                },
+                {
+                    q: "Qu'est-ce qui favorise 'l'égal accès des femmes et des hommes aux mandats électoraux et fonctions électives' (Article 3) ?",
+                    answers: [
+                        "La langue de la République",
+                        "La loi",
+                        "Le drapeau",
+                        "La devise",
+                    ],
+                    correct: "La loi",
+                },
+                {
+                    q: "Selon l'Article 2 de la Constitution, la langue de la République est :",
+                    answers: [
+                        "L'anglais",
+                        "Le français",
+                        "Le latin",
+                        "Le patois",
+                    ],
+                    correct: "Le français",
+                },
+                {
+                    q: "Dans le cadre de l'école (selon vos notes), quel exemple d'application illustre le 'caractère social' de la République ?",
+                    answers: [
+                        "Parler français uniquement",
+                        "Voter le délégué de classe",
+                        "Le respect envers tous (élèves et professeurs)",
+                        "Le port de l'uniforme",
+                    ],
+                    correct: "Le respect envers tous (élèves et professeurs)",
+                },
+            ];
+
+            // --- GESTION DE L'ÉTAT DU QUIZ ---
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let userSelection = null;
+            let questionsShuffled = [];
+            let quizInProgress = false;
+
+            // Fonction pour mélanger un tableau (Algorithme de Fisher-Yates)
+            function shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            // Affiche la question actuelle
+            function renderQuestion() {
+                if (currentQuestionIndex >= questionsShuffled.length) {
+                    showResults();
+                    return;
+                }
+
+                const q = questionsShuffled[currentQuestionIndex];
+                const card = document.getElementById("current-question-card");
+                const questionNumber = currentQuestionIndex + 1;
+
+                // 1. Réinitialise la carte et déclenche l'animation d'entrée
+                card.classList.remove("slow-exit", "fast-exit");
+                card.classList.add("entering");
+
+                // Mise à jour de l'UI
+                document.getElementById("current-q-number").textContent =
+                    questionNumber;
+                document.getElementById("total-q-number").textContent =
+                    questionsShuffled.length;
+                document.getElementById("main-btn").textContent =
+                    "Valider la Réponse";
+                document.getElementById("main-btn").disabled = true;
+
+                card.innerHTML = `
+                <p class="question-text">${q.q}</p>
+                <div id="options-container" class="options-container">
+                    <!-- Options de réponse -->
+                </div>
+            `;
+
+                // Réinitialiser le feedback et la sélection
+                document
+                    .getElementById("feedback-area")
+                    .classList.add("hidden");
+                document
+                    .getElementById("feedback-area")
+                    .classList.remove("feedback-correct", "feedback-incorrect");
+                userSelection = null;
+                quizInProgress = true;
+
+                const optionsContainer =
+                    card.querySelector("#options-container");
+                const shuffledAnswers = shuffle([...q.answers]);
+
+                shuffledAnswers.forEach((answer) => {
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "answer-btn";
+                    button.setAttribute("data-answer", answer);
+                    button.textContent = answer;
+                    button.onclick = function () {
+                        selectAnswer(answer, button);
+                    };
+                    optionsContainer.appendChild(button);
+                });
+
+                // Assure que l'animation d'entrée se rejoue lors de la prochaine question
+                setTimeout(() => {
+                    card.classList.remove("entering");
+                }, 500);
+            }
+
+            // Gère la sélection de l'utilisateur
+            function selectAnswer(answer, clickedButton) {
+                if (!quizInProgress) return;
+
+                const optionsContainer =
+                    document.getElementById("options-container");
+                // Désélectionner tous les boutons
+                optionsContainer
+                    .querySelectorAll(".answer-btn")
+                    .forEach((btn) => {
+                        btn.classList.remove("selected");
+                    });
+
+                // Sélectionner le bouton cliqué
+                clickedButton.classList.add("selected");
+
+                userSelection = answer;
+                document.getElementById("main-btn").disabled = false; // Active le bouton Valider
+            }
+
+            // Vérifie la réponse, donne du feedback, puis passe à la question suivante
+            function checkAnswerAndProceed() {
+                if (userSelection === null || !quizInProgress) return;
+
+                quizInProgress = false;
+                document.getElementById("main-btn").disabled = true;
+
+                const q = questionsShuffled[currentQuestionIndex];
+                const isCorrect = userSelection === q.correct;
+                const feedbackArea = document.getElementById("feedback-area");
+                const optionsContainer =
+                    document.getElementById("options-container");
+                const card = document.getElementById("current-question-card");
+
+                feedbackArea.classList.remove("hidden");
+
+                // 1. Appliquer le feedback visuel aux boutons
+                optionsContainer
+                    .querySelectorAll(".answer-btn")
+                    .forEach((btn) => {
+                        const answer = btn.getAttribute("data-answer");
+                        btn.classList.remove("selected");
+
+                        if (answer === q.correct) {
+                            btn.classList.add("correct");
+                        } else if (answer === userSelection && !isCorrect) {
+                            btn.classList.add("incorrect");
+                        }
+                    });
+
+                // 2. Afficher le feedback textuel
+                feedbackArea.classList.remove(
+                    "feedback-correct",
+                    "feedback-incorrect",
+                );
+
+                if (isCorrect) {
+                    score++;
+                    feedbackArea.textContent =
+                        "Bravo ! Réponse correcte. Prochaine question rapidement !";
+                    feedbackArea.classList.add("feedback-correct");
+                    card.classList.add("fast-exit"); // Vitesse rapide
+                } else {
+                    feedbackArea.textContent = `Faux. La bonne réponse était : ${q.correct}. Prenez le temps de réfléchir.`;
+                    feedbackArea.classList.add("feedback-incorrect");
+                    card.classList.add("slow-exit"); // Vitesse lente
+                }
+
+                // 3. Déterminer la durée du délai de transition
+                const delayDuration = isCorrect ? 500 : 3000; // 1.5s pour Correct, 3s pour Incorrect
+
+                // 4. Préparer le bouton pour la prochaine action (désactivé pendant la transition)
+                document.getElementById("main-btn").textContent =
+                    "Question Suivante";
+
+                // 5. Passer à la question suivante après le délai adapté
+                setTimeout(() => {
+                    currentQuestionIndex++;
+
+                    // Si c'est la fin du quiz
+                    if (currentQuestionIndex >= questionsShuffled.length) {
+                        document.getElementById("main-btn").textContent =
+                            "Voir les Résultats";
+                        document.getElementById("main-btn").onclick =
+                            showResults;
+                        document.getElementById("main-btn").disabled = false;
+                    } else {
+                        renderQuestion();
+                        document.getElementById("main-btn").onclick =
+                            checkAnswerAndProceed;
+                    }
+                }, delayDuration);
+            }
+
+            // Affiche les résultats finaux
+            function showResults() {
+                document.getElementById("quiz-area").classList.add("hidden");
+                const resultsDiv = document.getElementById("results");
+                const totalQuestions = questionsShuffled.length;
+                const percentage = Math.round((score / totalQuestions) * 100);
+
+                document.getElementById("score-display").textContent =
+                    `Votre score final est de ${score} / ${totalQuestions} (${percentage}%)`;
+
+                let feedbackMsg = "";
+                resultsDiv.classList.remove("high-score-glow"); // Réinitialiser le glow
+
+                if (percentage === 100) {
+                    feedbackMsg =
+                        "Félicitations ! Maîtrise parfaite de la génétique. Vous êtes prêt(e) !";
+                    resultsDiv.classList.add("high-score-glow"); // Appliquer le glow
+                } else if (percentage >= 80) {
+                    feedbackMsg =
+                        "Excellent travail ! Vous avez une très bonne compréhension des notions.";
+                    resultsDiv.classList.add("high-score-glow");
+                } else if (percentage >= 60) {
+                    feedbackMsg =
+                        "Bon effort ! Revoyez les thèmes où vous avez eu le plus d'erreurs.";
+                } else {
+                    feedbackMsg =
+                        "N'abandonnez pas. Reprenez les sections I, III et V de votre fiche pour consolider les bases.";
+                }
+                document.getElementById("feedback-message").textContent =
+                    feedbackMsg;
+                resultsDiv.classList.remove("hidden");
+
+                // Déclenche l'animation d'entrée des résultats
+                resultsDiv.classList.add("entering");
+
+                // Scroll vers les résultats
+                setTimeout(() => {
+                    resultsDiv.scrollIntoView({ behavior: "smooth" });
+                }, 100);
+            }
+
+            // Redémarre le quiz
+            function restartQuiz() {
+                currentQuestionIndex = 0;
+                score = 0;
+                userSelection = null;
+                questionsShuffled = shuffle([...questions]);
+                document.getElementById("quiz-area").classList.remove("hidden");
+
+                const resultsDiv = document.getElementById("results");
+                resultsDiv.classList.add("hidden");
+                resultsDiv.classList.remove("entering", "high-score-glow"); // Réinitialise l'animation et le glow
+
+                document.getElementById("main-btn").onclick =
+                    checkAnswerAndProceed;
+                renderQuestion();
+            }
+
+            // Initialisation du quiz
+            window.onload = function () {
+                document.getElementById("total-q-number").textContent =
+                    questions.length;
+                questionsShuffled = shuffle([...questions]);
+                renderQuestion();
+            };
+        </script>
+    </body>
+</html>

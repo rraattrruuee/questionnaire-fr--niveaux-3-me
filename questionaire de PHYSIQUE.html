@@ -1,0 +1,1172 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quiz PHYSIQUE - 50 Questions</title>
+        <style>
+            /* ----------------------------------------------------
+           ANIMATIONS (KEYFRAMES)
+           ---------------------------------------------------- */
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes slideOut {
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+
+            /* NOUVEAU: Animation pour l'entrée du titre */
+            @keyframes headerDrop {
+                from {
+                    opacity: 0;
+                    transform: translateY(-50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                    box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+                }
+                50% {
+                    transform: scale(1.02);
+                    box-shadow: 0 8px 20px rgba(76, 81, 191, 0.5);
+                }
+                100% {
+                    transform: scale(1);
+                    box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes resultsEntry {
+                from {
+                    opacity: 0;
+                    transform: translateY(50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* NOUVEAU: Animation pour une bonne réponse */
+            @keyframes bounce {
+                0%,
+                20%,
+                50%,
+                80%,
+                100% {
+                    transform: translateY(0);
+                }
+                40% {
+                    transform: translateY(-5px);
+                }
+                60% {
+                    transform: translateY(-3px);
+                }
+            }
+
+            /* NOUVEAU: Animation pour une mauvaise réponse */
+            @keyframes shake {
+                0%,
+                100% {
+                    transform: translateX(0);
+                }
+                20%,
+                60% {
+                    transform: translateX(-5px);
+                }
+                40%,
+                80% {
+                    transform: translateX(5px);
+                }
+            }
+
+            /* NOUVEAU: Animation de lueur pour les résultats */
+            @keyframes glowCorrect {
+                0% {
+                    box-shadow: 0 0 5px #68d391;
+                }
+                50% {
+                    box-shadow: 0 0 20px #48bb78;
+                }
+                100% {
+                    box-shadow: 0 0 5px #68d391;
+                }
+            }
+
+            /* NOUVEAU: Animation pour faire "pop" le feedback textuel */
+            @keyframes zoomFeedback {
+                0% {
+                    transform: scale(0.9);
+                    opacity: 0;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            /* .couleur-qui-change */
+            @keyframes couleur-qui-change {
+                0%,
+                29% {
+                    color: white;
+                }
+                30% {
+                    color: #00ff00;
+                }
+                38% {
+                    color: #ffff00;
+                }
+                46% {
+                    color: #ff00ff;
+                }
+                54% {
+                    color: #00ffff;
+                }
+                60% {
+                    color: #ffa500;
+                }
+                68% {
+                    color: #7cfc00;
+                }
+                76% {
+                    color: #ff69b4;
+                }
+                84% {
+                    color: #8a2be2;
+                }
+                92% {
+                    color: #ff4500;
+                }
+                100% {
+                    color: deeppink;
+                }
+            }
+
+            /* ----------------------------------------------------
+           STYLE GÉNÉRAL (100% LOCAL - PAS DE POLICE EXTERNE)
+           ---------------------------------------------------- */
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                background-color: #f0f4f8;
+                padding: 1rem;
+                line-height: 1.6;
+                min-height: 100vh;
+            }
+
+            @media (min-width: 768px) {
+                body {
+                    padding: 2rem;
+                }
+            }
+
+            /* ----------------------------------------------------
+           CONTENEUR PRINCIPAL
+           ---------------------------------------------------- */
+            .quiz-container {
+                max-width: 800px;
+                margin: 2rem auto;
+                padding: 2rem;
+                background: #ffffff;
+                border-radius: 20px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            }
+
+            /* ----------------------------------------------------
+           HEADER
+           ---------------------------------------------------- */
+            .header {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #1a202c;
+                margin-bottom: 0.5rem;
+                animation: headerDrop 0.8s ease-out; /* NOUVEAU: Animation au chargement */
+            }
+
+            .header p {
+                color: #4a5568;
+                font-size: 1.125rem;
+                font-weight: 500;
+            }
+
+            /* ----------------------------------------------------
+           CARTE DE QUESTION (CLASSES DE VITESSE AJOUTÉES)
+           ---------------------------------------------------- */
+            .question-card {
+                min-height: 250px;
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+                border-radius: 15px;
+                background-color: #f7faff;
+                border: 2px solid #e2e8f0;
+                transition:
+                    opacity 0.3s ease,
+                    transform 0.3s ease;
+            }
+
+            .question-card.entering {
+                animation: slideIn 0.5s ease-out forwards;
+            }
+
+            /* Contrôle de vitesse basé sur la classe */
+            .question-card.fast-exit {
+                animation: slideOut 0.25s ease-in forwards; /* Rapide pour le succès */
+            }
+            .question-card.slow-exit {
+                animation: slideOut 0.8s ease-in forwards; /* Lent pour l'échec */
+            }
+
+            .question-text {
+                font-size: 1.3rem;
+                font-weight: 700;
+                margin-bottom: 1.5rem;
+                color: #2d3748;
+            }
+
+            .options-container {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            /* ----------------------------------------------------
+           BOUTONS DE RÉPONSE
+           ---------------------------------------------------- */
+            .answer-btn {
+                display: block;
+                width: 100%;
+                padding: 1rem 1.25rem;
+                text-align: left;
+                border-radius: 10px;
+                transition: all 0.2s ease-out;
+                font-weight: 600;
+                border: 1px solid #c3dafe;
+                color: #2b6cb0;
+                background-color: #ebf4ff;
+                cursor: pointer;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            }
+
+            .answer-btn:hover:not(.selected):not(.correct):not(.incorrect) {
+                background-color: #cee0f2;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Sélection utilisateur */
+            .selected {
+                background-color: #3182ce;
+                border-color: #2c5282;
+                color: white;
+                transform: scale(1.01);
+                box-shadow: 0 5px 15px rgba(49, 130, 206, 0.4);
+            }
+
+            /* ----------------------------------------------------
+           FEEDBACK COULEURS (AVEC ANIMATIONS)
+           ---------------------------------------------------- */
+            .correct {
+                background-color: #48bb78 !important;
+                border-color: #2f855a !important;
+                color: white !important;
+                box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
+                pointer-events: none;
+                animation: bounce 0.6s ease-out; /* NOUVEAU: Animation pour la bonne réponse */
+            }
+
+            .incorrect {
+                background-color: #f56565 !important;
+                border-color: #c53030 !important;
+                color: white !important;
+                box-shadow: 0 5px 15px rgba(245, 101, 101, 0.4);
+                pointer-events: none;
+                animation: shake 0.5s ease-in-out; /* NOUVEAU: Animation pour la mauvaise réponse */
+            }
+
+            /* Feedback Area (Animation zoom/fade) */
+            #feedback-area {
+                margin-top: 1rem;
+                padding: 1rem;
+                border-radius: 10px;
+                font-weight: 600;
+                text-align: center;
+                animation: zoomFeedback 0.4s
+                    cubic-bezier(0.68, -0.55, 0.27, 1.55); /* NOUVEAU: Animation de feedback */
+            }
+
+            .feedback-correct {
+                background-color: #e6fffa;
+                color: #38a169;
+                border: 1px solid #48bb78;
+            }
+
+            .feedback-incorrect {
+                background-color: #fff5f5;
+                color: #e53e3e;
+                border: 1px solid #f56565;
+            }
+
+            /* ----------------------------------------------------
+           BOUTON PRINCIPAL (AMÉLIORÉ ET ANIMÉ)
+           ---------------------------------------------------- */
+            .main-btn-container {
+                margin-top: 2.5rem;
+                display: flex;
+                justify-content: center;
+            }
+
+            #main-btn {
+                background-color: #4c51bf;
+                color: white;
+                padding: 1rem 2.5rem;
+                border-radius: 12px;
+                font-weight: 800;
+                font-size: 1.1rem;
+                transition:
+                    background-color 0.3s,
+                    transform 0.2s,
+                    box-shadow 0.3s;
+                width: 100%;
+                border: none;
+                cursor: pointer;
+                box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+            }
+
+            @media (min-width: 768px) {
+                #main-btn {
+                    width: auto;
+                }
+            }
+
+            #main-btn:hover:not(:disabled) {
+                background-color: #3a4294;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(76, 81, 191, 0.4);
+            }
+
+            #main-btn:active:not(:disabled) {
+                animation: pulse 0.3s ease;
+            }
+
+            #main-btn:disabled {
+                background-color: #a0aec0;
+                cursor: not-allowed;
+                box-shadow: none;
+            }
+
+            /* ----------------------------------------------------
+           RÉSULTATS FINAUX (ANIMÉ ET GLOW)
+           ---------------------------------------------------- */
+            #results {
+                margin-top: 2.5rem;
+                padding: 2rem;
+                background-color: #f0fff4;
+                border: 2px solid #68d391;
+                border-radius: 15px;
+                text-align: center;
+            }
+
+            #results.entering {
+                animation: resultsEntry 0.6s ease-out forwards;
+            }
+
+            /* NOUVEAU: Glow pour les résultats si le score est élevé */
+            .high-score-glow {
+                animation: glowCorrect 2s infinite alternate;
+            }
+
+            #results h2 {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: #2f855a;
+                margin-bottom: 1rem;
+            }
+
+            #score-display {
+                font-size: 1.4rem;
+                font-weight: 600;
+                margin-bottom: 0.75rem;
+                color: #38a169;
+            }
+
+            #feedback-message {
+                font-size: 1.1rem;
+                color: #4c51bf;
+            }
+
+            #results button {
+                margin-top: 1.5rem;
+                padding: 0.75rem 2rem;
+                background-color: #48bb78;
+                color: white;
+                border-radius: 10px;
+                font-weight: 700;
+                transition: background-color 0.2s;
+                border: none;
+                cursor: pointer;
+            }
+
+            #results button:hover {
+                background-color: #38a169;
+            }
+
+            /* Utility class */
+            .hidden {
+                display: none;
+            }
+
+            .couleur-qui-change {
+                animation: couleur-qui-change 14s infinite alternate;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="quiz-container">
+            <header class="header">
+                <h1>
+                    Quiz <span class="couleur-qui-change">PHYSIQUE</span> : 50
+                    Questions
+                </h1>
+                <p>
+                    Question <span id="current-q-number">1</span> /
+                    <span id="total-q-number">50</span>
+                </p>
+            </header>
+
+            <div id="quiz-area">
+                <!-- La question actuelle sera rendue ici -->
+                <div id="current-question-card" class="question-card">
+                    <!-- Contenu dynamique -->
+                </div>
+
+                <div id="feedback-area" class="hidden"></div>
+
+                <div class="main-btn-container">
+                    <button id="main-btn" onclick="checkAnswerAndProceed()">
+                        Valider la Réponse
+                    </button>
+                </div>
+            </div>
+
+            <div id="results" class="hidden">
+                <h2>Quiz Terminé !</h2>
+                <p id="score-display"></p>
+                <p id="feedback-message"></p>
+                <button onclick="restartQuiz()">Recommencer le Quiz</button>
+            </div>
+        </div>
+
+        <script>
+            // --- DATA: 50 Questions basées sur la Fiche de Révision ---
+            const questions = [
+                {
+                    q: "Comment est qualifié un atome électriquement à l'état fondamental ?",
+                    answers: ["Positif", "Neutre", "Négatif", "Chargé"],
+                    correct: "Neutre",
+                },
+                {
+                    q: "Quelles particules composent le noyau d'un atome ?",
+                    answers: [
+                        "Électrons et protons",
+                        "Protons et neutrons",
+                        "Électrons uniquement",
+                        "Nucléons et ions",
+                    ],
+                    correct: "Protons et neutrons",
+                },
+                {
+                    q: "Quel terme désigne collectivement les protons et les neutrons ?",
+                    answers: ["Ions", "Nucléons", "Isotopes", "Électrons"],
+                    correct: "Nucléons",
+                },
+                {
+                    q: "Que constitue l'ensemble des électrons en mouvement rapide autour du noyau ?",
+                    answers: [
+                        "Le noyau",
+                        "La cohésion nucléaire",
+                        "Le cortège électronique",
+                        "Le nuage protonique",
+                    ],
+                    correct: "Le cortège électronique",
+                },
+                {
+                    q: "Quelle est la charge électrique d'un proton ?",
+                    answers: [
+                        "Nulle",
+                        "Positive (+)",
+                        "Négative (-)",
+                        "Doublement positive",
+                    ],
+                    correct: "Positive (+)",
+                },
+                {
+                    q: "Quelle est la charge électrique d'un neutron ?",
+                    answers: [
+                        "Positive (+)",
+                        "Négative (-)",
+                        "Nulle (neutre)",
+                        "Alternative",
+                    ],
+                    correct: "Nulle (neutre)",
+                },
+                {
+                    q: "Que signifie le terme 'lacunaire' appliqué à la structure de l'atome ?",
+                    answers: [
+                        "Qu'il est très dense",
+                        "Qu'il y a du vide entre le noyau et les électrons",
+                        "Qu'il a une charge positive",
+                        "Qu'il manque des neutrons",
+                    ],
+                    correct:
+                        "Qu'il y a du vide entre le noyau et les électrons",
+                },
+                {
+                    q: "Quel est l'ordre de grandeur des dimensions de l'atome ?",
+                    answers: ["10^-6 m", "10^-15 m", "10^-10 m", "10^-3 m"],
+                    correct: "10^-10 m",
+                },
+                {
+                    q: "Combien de fois le diamètre de l'atome est-il environ plus grand que celui de son noyau ?",
+                    answers: [
+                        "1 000 fois",
+                        "10 000 fois",
+                        "100 000 fois",
+                        "1 000 000 fois",
+                    ],
+                    correct: "100 000 fois",
+                },
+                {
+                    q: "Où est concentrée la quasi-totalité de la masse d'un atome ?",
+                    answers: [
+                        "Dans le cortège électronique",
+                        "Dans le noyau",
+                        "Dans les couches externes",
+                        "Répartie uniformément",
+                    ],
+                    correct: "Dans le noyau",
+                },
+                {
+                    q: "Laquelle de ces particules a une masse considérée comme négligeable ?",
+                    answers: [
+                        "Le proton",
+                        "Le neutron",
+                        "L'électron",
+                        "Le nucléon",
+                    ],
+                    correct: "L'électron",
+                },
+                {
+                    q: "Quel événement est associé à la création de la matière de l'univers il y a 13,7 milliards d'années ?",
+                    answers: [
+                        "La fusion stellaire",
+                        "La supernova",
+                        "Le Big Bang",
+                        "La fission nucléaire",
+                    ],
+                    correct: "Le Big Bang",
+                },
+                {
+                    q: "Que représente le numéro atomique Z ?",
+                    answers: [
+                        "Le nombre de neutrons",
+                        "Le nombre de protons",
+                        "Le nombre de masse A",
+                        "Le nombre d'électrons libres",
+                    ],
+                    correct: "Le nombre de protons",
+                },
+                {
+                    q: "Que représente le nombre de masse A ?",
+                    answers: [
+                        "Le nombre de protons Z",
+                        "Le nombre de nucléons",
+                        "Le nombre d'électrons",
+                        "Le numéro atomique Z",
+                    ],
+                    correct: "Le nombre de nucléons",
+                },
+                {
+                    q: "Dans un atome neutre, le nombre d'électrons est égal à :",
+                    answers: [
+                        "A-Z",
+                        "Le nombre de neutrons N",
+                        "Le nombre de protons Z",
+                        "Le nombre de masse A",
+                    ],
+                    correct: "Le nombre de protons Z",
+                },
+                {
+                    q: "Des isotopes d'un même élément chimique possèdent :",
+                    answers: [
+                        "Un Z différent",
+                        "Le même nombre de neutrons N",
+                        "Le même Z et un A différent",
+                        "Le même A et un Z différent",
+                    ],
+                    correct: "Le même Z et un A différent",
+                },
+                {
+                    q: "Quel est le nombre de neutrons (N) de l'atome de Carbone 14/6 C ?",
+                    answers: ["14", "6", "8", "7"],
+                    correct: "8",
+                },
+                {
+                    q: "Quel est le seul paramètre qui change entre deux isotopes du même élément ?",
+                    answers: [
+                        "Leur charge électrique",
+                        "Leur numéro atomique Z",
+                        "Leur masse",
+                        "Leur symbole chimique",
+                    ],
+                    correct: "Leur masse",
+                },
+                {
+                    q: "Comment appelle-t-on un atome neutre qui a perdu un ou plusieurs électrons ?",
+                    answers: ["Anion", "Isotope", "Cation", "Molécule"],
+                    correct: "Cation",
+                },
+                {
+                    q: "Comment appelle-t-on un atome neutre qui a gagné un ou plusieurs électrons ?",
+                    answers: ["Cation", "Anion", "Nucléon", "Isotope"],
+                    correct: "Anion",
+                },
+                {
+                    q: "Le mouvement d'un objet est toujours relatif et doit être défini par rapport à un :",
+                    answers: [
+                        "Chronographe",
+                        "Vecteur vitesse",
+                        "Point de départ",
+                        "Référentiel",
+                    ],
+                    correct: "Référentiel",
+                },
+                {
+                    q: "Si un passager est assis dans un train qui roule, quel est son mouvement par rapport au référentiel du train ?",
+                    answers: [
+                        "En mouvement accéléré",
+                        "Immobile",
+                        "En mouvement uniforme",
+                        "En rotation",
+                    ],
+                    correct: "Immobile",
+                },
+                {
+                    q: "Quel est le mouvement de ce même passager par rapport au référentiel terrestre ?",
+                    answers: [
+                        "Immobile",
+                        "Au repos absolu",
+                        "En mouvement",
+                        "En translation circulaire",
+                    ],
+                    correct: "En mouvement",
+                },
+                {
+                    q: "Comment est qualifié un mouvement dont la vitesse augmente au cours du temps ?",
+                    answers: ["Uniforme", "Ralenti", "Accéléré", "Constant"],
+                    correct: "Accéléré",
+                },
+                {
+                    q: "Comment est qualifié un mouvement dont la vitesse diminue au cours du temps ?",
+                    answers: [
+                        "Uniforme",
+                        "Accéléré",
+                        "Ralenti (ou décéléré)",
+                        "Exponentiel",
+                    ],
+                    correct: "Ralenti (ou décéléré)",
+                },
+                {
+                    q: "Comment est qualifié un mouvement dont la vitesse est constante au cours du temps ?",
+                    answers: ["Accéléré", "Ralenti", "Uniforme", "Curviligne"],
+                    correct: "Uniforme",
+                },
+                {
+                    q: "Quel terme désigne la distance parcourue pendant le temps de réaction d'un conducteur ?",
+                    answers: [
+                        "Distance de freinage",
+                        "Distance d'arrêt",
+                        "Distance de sécurité",
+                        "Distance de réaction",
+                    ],
+                    correct: "Distance de réaction",
+                },
+                {
+                    q: "La distance totale d'arrêt (D arrêt) est la somme de :",
+                    answers: [
+                        "D freinage et D sécurité",
+                        "D réaction et D démarrage",
+                        "D réaction et D freinage",
+                        "D freinage multipliée par D réaction",
+                    ],
+                    correct: "D réaction et D freinage",
+                },
+                {
+                    q: "Quelle est la principale variable qui influence le temps de réaction (t réaction) ?",
+                    answers: [
+                        "La vitesse du véhicule",
+                        "L'état des pneus",
+                        "La concentration et l'état du conducteur",
+                        "La masse du véhicule",
+                    ],
+                    correct: "La concentration et l'état du conducteur",
+                },
+                {
+                    q: "Quel est le facteur qui influence le plus la distance de freinage (D freinage) ?",
+                    answers: [
+                        "Le temps de réaction",
+                        "La vitesse initiale du véhicule",
+                        "La couleur du véhicule",
+                        "L'âge des passagers",
+                    ],
+                    correct: "La vitesse initiale du véhicule",
+                },
+                {
+                    q: "Si la vitesse d'un véhicule double, par quel facteur sa distance de freinage est-elle approximativement multipliée ?",
+                    answers: [
+                        "Multipliée par 2",
+                        "Multipliée par 3",
+                        "Multipliée par 4",
+                        "Multipliée par 8",
+                    ],
+                    correct: "Multipliée par 4",
+                },
+                {
+                    q: "Quelle est l'unité de l'énergie cinétique (Ec) dans le Système International ?",
+                    answers: [
+                        "Watt (W)",
+                        "Newton (N)",
+                        "Joule (J)",
+                        "Mètre par seconde (m/s)",
+                    ],
+                    correct: "Joule (J)",
+                },
+                {
+                    q: "Quelle est la formule de l'énergie cinétique (Ec) ?",
+                    answers: [
+                        "Ec = mgh",
+                        "Ec = 1/2 m v²",
+                        "Ec = P x t",
+                        "Ec = F x d",
+                    ],
+                    correct: "Ec = 1/2 m v²",
+                },
+                {
+                    q: "Dans la formule de Ec, quelle est l'unité de la vitesse (v) à utiliser pour obtenir l'énergie en Joules ?",
+                    answers: [
+                        "Kilomètre par heure (km/h)",
+                        "Mètre par seconde (m/s)",
+                        "Mètre par minute (m/min)",
+                        "Kilomètre par minute (km/min)",
+                    ],
+                    correct: "Mètre par seconde (m/s)",
+                },
+                {
+                    q: "Si la masse (m) d'un objet double (vitesse constante), que devient son énergie cinétique (Ec) ?",
+                    answers: [
+                        "Elle reste inchangée",
+                        "Elle double",
+                        "Elle quadruple",
+                        "Elle est divisée par deux",
+                    ],
+                    correct: "Elle double",
+                },
+                {
+                    q: "Un objet de masse 2 kg se déplace à 5 m/s. Quelle est son énergie cinétique (Ec) ?",
+                    answers: ["10 J", "25 J", "50 J", "5 J"],
+                    correct: "25 J",
+                },
+                {
+                    q: "Pourquoi le graphique de Ec en fonction de la vitesse (v) n'est pas une droite ?",
+                    answers: [
+                        "Car Ec est inversement proportionnelle à v",
+                        "Car Ec est proportionnelle à la racine carrée de v",
+                        "Car Ec est proportionnelle au carré de la vitesse (v²)",
+                        "Car la masse n'est pas constante",
+                    ],
+                    correct:
+                        "Car Ec est proportionnelle au carré de la vitesse (v²)",
+                },
+                {
+                    q: "Quel référentiel est adapté pour décrire le mouvement des planètes autour du Soleil ?",
+                    answers: [
+                        "Référentiel terrestre",
+                        "Référentiel géocentrique (Kepler)",
+                        "Référentiel héliocentrique (Copernic)",
+                        "Référentiel du laboratoire",
+                    ],
+                    correct: "Référentiel héliocentrique (Copernic)",
+                },
+                {
+                    q: "Quel référentiel est adapté pour décrire le mouvement d'un satellite autour de la Terre ?",
+                    answers: [
+                        "Référentiel terrestre",
+                        "Référentiel héliocentrique",
+                        "Référentiel géocentrique",
+                        "Référentiel du laboratoire",
+                    ],
+                    correct: "Référentiel géocentrique",
+                },
+                {
+                    q: "Si la vitesse d'un objet est multipliée par 3, par quel facteur son énergie cinétique est-elle multipliée ?",
+                    answers: [
+                        "Multipliée par 3",
+                        "Multipliée par 6",
+                        "Multipliée par 9",
+                        "Multipliée par 27",
+                    ],
+                    correct: "Multipliée par 9",
+                },
+                {
+                    q: "Quel terme désigne l'ensemble des positions successives qu'un corps occupe au cours du temps ?",
+                    answers: [
+                        "Vitesse",
+                        "Référentiel",
+                        "Trajectoire",
+                        "Accélération",
+                    ],
+                    correct: "Trajectoire",
+                },
+                {
+                    q: "Si la trajectoire d'un objet en mouvement est une droite, comment est qualifié ce mouvement ?",
+                    answers: [
+                        "Circulaire",
+                        "Curviligne",
+                        "Rectiligne",
+                        "Aléatoire",
+                    ],
+                    correct: "Rectiligne",
+                },
+                {
+                    q: "Quel est le nombre d'électrons d'un ion d'oxygène O2- sachant que Z=8 pour l'oxygène ?",
+                    answers: ["8", "6", "10", "16"],
+                    correct: "10",
+                },
+                {
+                    q: "Quel est le nombre de protons (Z) de l'atome de Chlore 35/17 Cl ?",
+                    answers: ["35", "17", "18", "52"],
+                    correct: "17",
+                },
+                {
+                    q: "Le nombre de masse A de l'isotope du Fluor qui possède 10 neutrons (Z=9) est :",
+                    answers: ["9", "10", "19", "1"],
+                    correct: "19",
+                },
+                {
+                    q: "Comment appelle-t-on le mouvement dont la trajectoire est un cercle et la vitesse est constante ?",
+                    answers: [
+                        "Mouvement rectiligne uniforme",
+                        "Mouvement curviligne accéléré",
+                        "Mouvement circulaire uniforme",
+                        "Mouvement elliptique",
+                    ],
+                    correct: "Mouvement circulaire uniforme",
+                },
+                {
+                    q: "Quel est le nom de la force qui assure la cohésion du noyau atomique ?",
+                    answers: [
+                        "Force de gravitation",
+                        "Interaction électromagnétique",
+                        "Interaction nucléaire faible",
+                        "Interaction nucléaire forte",
+                    ],
+                    correct: "Interaction nucléaire forte",
+                },
+                {
+                    q: "Quel est le temps de réaction (t réaction) généralement considéré pour un conducteur attentif ?",
+                    answers: ["0,1 s", "1 s", "5 s", "10 s"],
+                    correct: "1 s",
+                },
+                {
+                    q: "Un conducteur roule à 90 km/h (25 m/s) et a t réaction = 1 s. Quelle est sa distance de réaction (D réaction) ?",
+                    answers: ["90 m", "25 m", "9 m", "36 m"],
+                    correct: "25 m",
+                },
+                {
+                    q: "L'augmentation de la distance de réaction due à l'alcool ou la fatigue est causée par :",
+                    answers: [
+                        "Une augmentation de la vitesse",
+                        "Une augmentation de la distance de freinage",
+                        "Une diminution du temps de réaction",
+                        "Un allongement du temps de réaction",
+                    ],
+                    correct: "Un allongement du temps de réaction",
+                },
+            ];
+
+            // --- GESTION DE L'ÉTAT DU QUIZ ---
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let userSelection = null;
+            let questionsShuffled = [];
+            let quizInProgress = false;
+
+            // Fonction pour mélanger un tableau (Algorithme de Fisher-Yates)
+            function shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            // Affiche la question actuelle
+            function renderQuestion() {
+                if (currentQuestionIndex >= questionsShuffled.length) {
+                    showResults();
+                    return;
+                }
+
+                const q = questionsShuffled[currentQuestionIndex];
+                const card = document.getElementById("current-question-card");
+                const questionNumber = currentQuestionIndex + 1;
+
+                // 1. Réinitialise la carte et déclenche l'animation d'entrée
+                card.classList.remove("slow-exit", "fast-exit");
+                card.classList.add("entering");
+
+                // Mise à jour de l'UI
+                document.getElementById("current-q-number").textContent =
+                    questionNumber;
+                document.getElementById("total-q-number").textContent =
+                    questionsShuffled.length;
+                document.getElementById("main-btn").textContent =
+                    "Valider la Réponse";
+                document.getElementById("main-btn").disabled = true;
+
+                card.innerHTML = `
+                <p class="question-text">${q.q}</p>
+                <div id="options-container" class="options-container">
+                    <!-- Options de réponse -->
+                </div>
+            `;
+
+                // Réinitialiser le feedback et la sélection
+                document
+                    .getElementById("feedback-area")
+                    .classList.add("hidden");
+                document
+                    .getElementById("feedback-area")
+                    .classList.remove("feedback-correct", "feedback-incorrect");
+                userSelection = null;
+                quizInProgress = true;
+
+                const optionsContainer =
+                    card.querySelector("#options-container");
+                const shuffledAnswers = shuffle([...q.answers]);
+
+                shuffledAnswers.forEach((answer) => {
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "answer-btn";
+                    button.setAttribute("data-answer", answer);
+                    button.textContent = answer;
+                    button.onclick = function () {
+                        selectAnswer(answer, button);
+                    };
+                    optionsContainer.appendChild(button);
+                });
+
+                // Assure que l'animation d'entrée se rejoue lors de la prochaine question
+                setTimeout(() => {
+                    card.classList.remove("entering");
+                }, 500);
+            }
+
+            // Gère la sélection de l'utilisateur
+            function selectAnswer(answer, clickedButton) {
+                if (!quizInProgress) return;
+
+                const optionsContainer =
+                    document.getElementById("options-container");
+                // Désélectionner tous les boutons
+                optionsContainer
+                    .querySelectorAll(".answer-btn")
+                    .forEach((btn) => {
+                        btn.classList.remove("selected");
+                    });
+
+                // Sélectionner le bouton cliqué
+                clickedButton.classList.add("selected");
+
+                userSelection = answer;
+                document.getElementById("main-btn").disabled = false; // Active le bouton Valider
+            }
+
+            // Vérifie la réponse, donne du feedback, puis passe à la question suivante
+            function checkAnswerAndProceed() {
+                if (userSelection === null || !quizInProgress) return;
+
+                quizInProgress = false;
+                document.getElementById("main-btn").disabled = true;
+
+                const q = questionsShuffled[currentQuestionIndex];
+                const isCorrect = userSelection === q.correct;
+                const feedbackArea = document.getElementById("feedback-area");
+                const optionsContainer =
+                    document.getElementById("options-container");
+                const card = document.getElementById("current-question-card");
+
+                feedbackArea.classList.remove("hidden");
+
+                // 1. Appliquer le feedback visuel aux boutons
+                optionsContainer
+                    .querySelectorAll(".answer-btn")
+                    .forEach((btn) => {
+                        const answer = btn.getAttribute("data-answer");
+                        btn.classList.remove("selected");
+
+                        if (answer === q.correct) {
+                            btn.classList.add("correct");
+                        } else if (answer === userSelection && !isCorrect) {
+                            btn.classList.add("incorrect");
+                        }
+                    });
+
+                // 2. Afficher le feedback textuel
+                feedbackArea.classList.remove(
+                    "feedback-correct",
+                    "feedback-incorrect",
+                );
+
+                if (isCorrect) {
+                    score++;
+                    feedbackArea.textContent =
+                        "Bravo ! Réponse correcte. Prochaine question rapidement !";
+                    feedbackArea.classList.add("feedback-correct");
+                    card.classList.add("fast-exit"); // Vitesse rapide
+                } else {
+                    feedbackArea.textContent = `Faux. La bonne réponse était : ${q.correct}. Prenez le temps de réfléchir.`;
+                    feedbackArea.classList.add("feedback-incorrect");
+                    card.classList.add("slow-exit"); // Vitesse lente
+                }
+
+                // 3. Déterminer la durée du délai de transition
+                const delayDuration = isCorrect ? 500 : 3000; // 1.5s pour Correct, 3s pour Incorrect
+
+                // 4. Préparer le bouton pour la prochaine action (désactivé pendant la transition)
+                document.getElementById("main-btn").textContent =
+                    "Question Suivante";
+
+                // 5. Passer à la question suivante après le délai adapté
+                setTimeout(() => {
+                    currentQuestionIndex++;
+
+                    // Si c'est la fin du quiz
+                    if (currentQuestionIndex >= questionsShuffled.length) {
+                        document.getElementById("main-btn").textContent =
+                            "Voir les Résultats";
+                        document.getElementById("main-btn").onclick =
+                            showResults;
+                        document.getElementById("main-btn").disabled = false;
+                    } else {
+                        renderQuestion();
+                        document.getElementById("main-btn").onclick =
+                            checkAnswerAndProceed;
+                    }
+                }, delayDuration);
+            }
+
+            // Affiche les résultats finaux
+            function showResults() {
+                document.getElementById("quiz-area").classList.add("hidden");
+                const resultsDiv = document.getElementById("results");
+                const totalQuestions = questionsShuffled.length;
+                const percentage = Math.round((score / totalQuestions) * 100);
+
+                document.getElementById("score-display").textContent =
+                    `Votre score final est de ${score} / ${totalQuestions} (${percentage}%)`;
+
+                let feedbackMsg = "";
+                resultsDiv.classList.remove("high-score-glow"); // Réinitialiser le glow
+
+                if (percentage === 100) {
+                    feedbackMsg =
+                        "Félicitations ! Maîtrise parfaite de la génétique. Vous êtes prêt(e) !";
+                    resultsDiv.classList.add("high-score-glow"); // Appliquer le glow
+                } else if (percentage >= 80) {
+                    feedbackMsg =
+                        "Excellent travail ! Vous avez une très bonne compréhension des notions.";
+                    resultsDiv.classList.add("high-score-glow");
+                } else if (percentage >= 60) {
+                    feedbackMsg =
+                        "Bon effort ! Revoyez les thèmes où vous avez eu le plus d'erreurs.";
+                } else {
+                    feedbackMsg =
+                        "N'abandonnez pas. Reprenez les sections I, III et V de votre fiche pour consolider les bases.";
+                }
+                document.getElementById("feedback-message").textContent =
+                    feedbackMsg;
+                resultsDiv.classList.remove("hidden");
+
+                // Déclenche l'animation d'entrée des résultats
+                resultsDiv.classList.add("entering");
+
+                // Scroll vers les résultats
+                setTimeout(() => {
+                    resultsDiv.scrollIntoView({ behavior: "smooth" });
+                }, 100);
+            }
+
+            // Redémarre le quiz
+            function restartQuiz() {
+                currentQuestionIndex = 0;
+                score = 0;
+                userSelection = null;
+                questionsShuffled = shuffle([...questions]);
+                document.getElementById("quiz-area").classList.remove("hidden");
+
+                const resultsDiv = document.getElementById("results");
+                resultsDiv.classList.add("hidden");
+                resultsDiv.classList.remove("entering", "high-score-glow"); // Réinitialise l'animation et le glow
+
+                document.getElementById("main-btn").onclick =
+                    checkAnswerAndProceed;
+                renderQuestion();
+            }
+
+            // Initialisation du quiz
+            window.onload = function () {
+                document.getElementById("total-q-number").textContent =
+                    questions.length;
+                questionsShuffled = shuffle([...questions]);
+                renderQuestion();
+            };
+        </script>
+    </body>
+</html>

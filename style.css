@@ -1,0 +1,326 @@
+:root {
+    --couleur-fond: #121212;
+    --couleur-fond-alternatif: #121229;
+    --couleur-primaire: #4caf50;
+    --couleur-secondaire: #90ee90;
+    --couleur-texte: #e0e0e0;
+    --couleur-gris-clair: #a0a0a0;
+    --ombre-neon:
+        0 0 5px var(--couleur-primaire), 0 0 10px var(--couleur-primaire);
+    --ombre-neon-intense:
+        0 0 15px var(--couleur-primaire), 0 0 30px var(--couleur-primaire);
+    --ombre-carte: 0 4px 12px rgba(0, 0, 0, 0.7);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* 1. KEYFRAMES pour les animations */
+@keyframes fondChange {
+    0% {
+        background-color: var(--couleur-fond);
+    }
+    50% {
+        background-color: var(--couleur-fond-alternatif);
+    }
+    100% {
+        background-color: var(--couleur-fond);
+    }
+}
+
+@keyframes neonPulse {
+    0%,
+    100% {
+        text-shadow: 0 0 5px var(--couleur-primaire);
+    }
+    50% {
+        text-shadow:
+            0 0 10px var(--couleur-primaire),
+            0 0 20px var(--couleur-primaire);
+    }
+}
+
+@keyframes linkHoverPulse {
+    0% {
+        box-shadow: var(--ombre-neon);
+    }
+    50% {
+        box-shadow: var(--ombre-neon-intense);
+    }
+    100% {
+        box-shadow: var(--ombre-neon);
+    }
+}
+
+@keyframes fadeInSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body {
+    font-family: "Arial", sans-serif;
+    background-color: var(--couleur-fond);
+    color: var(--couleur-texte);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    animation: fondChange 20s ease-in-out infinite;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    padding: 30px;
+    margin: 40px 20px;
+    text-align: center;
+    animation: fadeInSlideUp 1s ease-out;
+}
+
+.main-header {
+    width: 100%;
+    max-width: 1000px;
+    padding: 30px 20px;
+    background-color: #1a1a33;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 3px solid var(--couleur-primaire);
+}
+
+h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    color: var(--couleur-primaire);
+    animation: neonPulse 4s ease-in-out infinite alternate;
+    text-shadow: 0 0 8px var(--couleur-primaire);
+    text-align: center;
+}
+
+.main-header p {
+    font-size: 1.1rem;
+    opacity: 0.8;
+    margin-bottom: 20px;
+}
+.main-header p strong {
+    font-weight: bold;
+}
+
+.search-bar {
+    margin-top: 15px;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 25px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid var(--couleur-secondaire);
+    border-radius: 25px;
+    background-color: #2c2c45;
+    color: var(--couleur-texte);
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
+}
+
+.search-input:focus {
+    border-color: var(--couleur-primaire);
+    box-shadow: var(--ombre-neon-intense);
+}
+
+.labels-selection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.label-button {
+    padding: 10px 18px;
+    border: 1px solid var(--couleur-gris-clair);
+    border-radius: 25px;
+    background-color: transparent;
+    color: var(--couleur-gris-clair);
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+.label-button:hover:not(.active) {
+    border-color: var(--couleur-secondaire);
+    color: var(--couleur-secondaire);
+    transform: scale(1.05);
+}
+
+.label-button.active {
+    background-color: var(--couleur-primaire);
+    color: var(--couleur-fond);
+    border-color: var(--couleur-primaire);
+    box-shadow: var(--ombre-neon);
+}
+
+.menu-section {
+    margin-top: 40px;
+    text-align: left;
+    padding: 30px;
+    background-color: #1a1a33;
+    border-radius: 20px;
+    box-shadow: var(--ombre-carte);
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.menu-section.is-animated {
+    animation: fadeInSlideUp 1s ease-out forwards;
+}
+
+.menu-title {
+    font-size: 1.8rem;
+    color: var(--couleur-secondaire);
+    margin-bottom: 25px;
+    border-bottom: 1px dashed var(--couleur-gris-clair);
+    padding-bottom: 10px;
+}
+
+.boutons-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+
+.bouton-lien {
+    flex-grow: 1;
+    min-width: 180px;
+    max-width: 300px;
+    padding: 15px 25px;
+    text-decoration: none;
+    color: var(--couleur-primaire);
+    border: 2px solid var(--couleur-primaire);
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    background-color: transparent;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    box-shadow: none;
+    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bouton-lien:hover {
+    background-color: var(--couleur-primaire);
+    color: var(--couleur-fond);
+    transform: scale(1.03) translateY(-3px);
+    animation: linkHoverPulse 1s ease-in-out infinite;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media (max-width: 600px) {
+    /* AMÉLIORATION MOBILE: Padding général réduit */
+    .container {
+        padding: 15px 10px;
+        margin: 10px 0; /* Élimine les marges latérales inutiles */
+    }
+
+    /* AMÉLIORATION MOBILE: Header compact */
+    .main-header {
+        padding: 20px 10px;
+        margin-bottom: 10px;
+    }
+
+    /* AMÉLIORATION MOBILE: Taille du titre ajustée */
+    h1 {
+        font-size: 1.8rem; /* Plus compact */
+    }
+
+    /* AMÉLIORATION MOBILE: Description plus petite */
+    .main-header p {
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+    }
+
+    /* AMÉLIORATION MOBILE: Recherche plus compacte */
+    .search-input {
+        padding: 12px 18px;
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    /* AMÉLIORATION MOBILE: Labels plus compacts et meilleure gestion du flux */
+    .labels-selection {
+        gap: 6px; /* Réduit l'espace entre les boutons */
+        margin-bottom: 20px;
+        /* Centre l'ensemble des boutons si peu nombreux */
+        justify-content: center;
+    }
+
+    .label-button {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+        /* Permet aux boutons d'utiliser toute la largeur si nécessaire */
+        flex-basis: auto;
+    }
+
+    /* AMÉLIORATION MOBILE: Sections (Cartes) */
+    .menu-section {
+        padding: 20px 15px; /* Padding interne réduit */
+        margin-top: 20px;
+        border-radius: 12px;
+    }
+
+    .menu-title {
+        font-size: 1.5rem; /* Titre de section plus petit */
+        margin-bottom: 20px;
+    }
+
+    /* AMÉLIORATION MOBILE: Liens (Boutons) en colonne */
+    .boutons-flex {
+        flex-direction: column; /* FORCÉ EN COLONNE pour une zone de touche maximale */
+        gap: 12px; /* Espacement réduit entre les boutons */
+    }
+
+    .bouton-lien {
+        /* Chaque lien prend la largeur complète du conteneur */
+        width: 100%;
+        min-width: unset;
+        max-width: unset;
+        padding: 15px 20px; /* Augmente la hauteur pour faciliter le tap */
+        font-size: 1rem;
+        border-radius: 8px; /* Moins arrondi pour un look plus strict */
+        /* Enlève la transformation d'échelle au survol (moins pertinente au touch) */
+        transition:
+            background-color 0.3s,
+            color 0.3s;
+    }
+
+    .bouton-lien:hover {
+        transform: none; /* Désactive la 3D/scale sur mobile */
+        animation: none;
+    }
+}

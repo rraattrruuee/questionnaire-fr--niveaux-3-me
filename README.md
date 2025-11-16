@@ -36,4 +36,17 @@ Ce dépôt a été créé pour offrir un support de révision léger, rapide et 
 
 ---
 
+# ⚙️ fonctionnement du format JSON
+## le format JSON fonctionne comme cela :
+
+```json
+{
+  q: "titre:",
+  answers: ["réponse 1", "réponse 2", "réponse 3", "etc"],
+  correct: "réponse correcte",
+},
+```
+
+---
+
 > Ce projet est maintenu par rraattrruuee. Bonne révision et bon succès ! 🍀

@@ -4,187 +4,208 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="quiz_icon.svg" type="image/x-icon" />
+        <link rel="stylesheet" href="style.css" />
         <title>Portail du questionnaire de rraattrruuee</title>
-        <style>
-            :root {
-                --couleur-fond: #121212;
-                --couleur-fond-alternatif: #121229;
-                --couleur-primaire: #4caf50;
-                --couleur-texte: #e0e0e0;
-                --ombre-neon:
-                    0 0 8px var(--couleur-primaire),
-                    0 0 16px var(--couleur-primaire);
-                --ombre-neon-intense:
-                    0 0 15px var(--couleur-primaire),
-                    0 0 30px var(--couleur-primaire);
-            }
-
-            /* 1. KEYFRAMES pour les animations */
-            @keyframes fondChange {
-                0% {
-                    background-color: var(--couleur-fond);
-                }
-                50% {
-                    background-color: var(--couleur-fond-alternatif);
-                }
-                100% {
-                    background-color: var(--couleur-fond);
-                }
-            }
-
-            @keyframes neonPulse {
-                0%,
-                100% {
-                    text-shadow: 0 0 5px var(--couleur-primaire);
-                }
-                50% {
-                    text-shadow:
-                        0 0 10px var(--couleur-primaire),
-                        0 0 20px var(--couleur-primaire);
-                }
-            }
-
-            @keyframes fadeInSlideUp {
-                0% {
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                100% {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
-            body {
-                font-family: "Arial", sans-serif;
-                background-color: var(--couleur-fond);
-                color: var(--couleur-texte);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                min-height: 100vh;
-                margin: 0;
-                padding: 20px;
-                box-sizing: border-box;
-                animation: fondChange 15s ease-in-out infinite;
-            }
-
-            .container {
-                width: 100%;
-                max-width: 900px;
-                text-align: center;
-                animation: fadeInSlideUp 1s ease-out;
-            }
-
-            .boutons-flex {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 20px;
-                justify-content: center;
-                margin-top: 40px;
-            }
-
-            .bouton-lien {
-                flex-grow: 1;
-                min-width: 200px;
-                max-width: 400px;
-                padding: 15px 30px;
-                text-decoration: none;
-                color: var(--couleur-primaire);
-                border: 2px solid var(--couleur-primaire);
-                border-radius: 8px;
-                font-size: 1.2rem;
-                font-weight: bold;
-                letter-spacing: 1px;
-                background-color: transparent;
-
-                transition: all 0.3s ease-in-out;
-                box-shadow: none;
-                opacity: 0;
-                animation: fadeInSlideUp 0.8s ease-out forwards;
-            }
-
-            .boutons-flex a:nth-child(1) {
-                animation-delay: 0.2s;
-            }
-            .boutons-flex a:nth-child(2) {
-                animation-delay: 0.3s;
-            }
-            .boutons-flex a:nth-child(3) {
-                animation-delay: 0.4s;
-            }
-            .boutons-flex a:nth-child(4) {
-                animation-delay: 0.5s;
-            }
-            .boutons-flex a:nth-child(5) {
-                animation-delay: 0.6s;
-            }
-
-            .bouton-lien:hover {
-                background-color: var(--couleur-primaire);
-                color: var(--couleur-fond);
-                transform: scale(1.05) translateY(-2px);
-                box-shadow: var(--ombre-neon-intense);
-            }
-
-            h1 {
-                font-size: 2.5rem;
-                margin-bottom: 10px;
-                animation: neonPulse 3s ease-in-out infinite;
-                text-shadow: 0 0 5px var(--couleur-primaire);
-            }
-
-            p {
-                font-size: 1.1rem;
-                opacity: 0.8;
-            }
-        </style>
     </head>
     <body>
-        <div class="container">
+        <header class="main-header">
             <h1>🚀 Portail de Redirection du questionnaire de rraattrruuee</h1>
             <p>
-                Cliquez sur un bouton ci-dessous pour accéder à la destination
-                souhaitée.
+                Naviguez à travers les catégories ou utilisez la
+                <strong>barre de recherche</strong> pour trouver votre
+                questionnaire.
             </p>
-
-            <div class="boutons-flex">
-                <a
-                    href="questionaire-d-emc.html"
-                    target="_blank"
-                    class="bouton-lien"
-                >
-                    questionnaire d'EMC
-                </a>
-
-                <a
-                    href="questionaire-de-PHYSIQUE.html"
-                    target="_blank"
-                    class="bouton-lien"
-                >
-                    questionnaire de PHYSIQUE
-                </a>
-
-                <a
-                    href="questionaire-de-svt.html"
-                    target="_blank"
-                    class="bouton-lien"
-                >
-                    questionnaire de SVT
-                </a>
-
-                <a
-                    href="https://github.com/rraattrruuee/questionnaire-fr--niveaux-3-me"
-                    target="_blank"
-                    class="bouton-lien"
-                >
-                    Dépôt GitHub
-                </a>
-
-                <a href="#" target="_blank" class="bouton-lien">
-                    Serveur Discord (arrive bientôt)
-                </a>
+            <div class="search-bar">
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="search-input"
+                    placeholder="Rechercher un questionnaire..."
+                />
             </div>
+
+            <div class="labels-selection">
+                <button class="label-button" data-target="all">
+                    Tout Afficher
+                </button>
+                <button class="label-button" data-target="nouveautes">
+                    ✨ Nouveautés
+                </button>
+
+                <button class="label-button" data-target="mathematiques">
+                    🔢 Mathématiques
+                </button>
+                <button class="label-button" data-target="francais">
+                    🇫🇷 Français
+                </button>
+                <button class="label-button" data-target="histoire-geographie">
+                    📜 Histoire-Géo
+                </button>
+                <button class="label-button" data-target="svt">
+                    🌱 SVT
+                </button>
+                <button class="label-button" data-target="physique-chimie">
+                    ⚛️ Physique-Chimie
+                </button>
+                <button class="label-button" data-target="anglais">
+                    🇬🇧 Anglais
+                </button>
+                <button class="label-button" data-target="italien">
+                    🇮🇹 Italien
+                </button>
+                <button class="label-button" data-target="technologie">
+                    ⚙️ Technologie
+                </button>
+                <button class="label-button" data-target="education-musicale">
+                    🎵 Musique
+                </button>
+                <button class="label-button" data-target="lca-latin">
+                    🏛️ Latin
+                </button>
+                <button class="label-button" data-target="emc">
+                    ⚖️ EMC
+                </button>
+                <button class="label-button" data-target="ressources">
+                    🌐 Ressources
+                </button>
+            </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <section class="menu-section" id="nouveautes">
+                <h2 class="menu-title">✨ Nouveautés</h2>
+                <div class="boutons-flex">
+                    <a
+                        href="questionaire-d-emc.html"
+                        target="_blank"
+                        class="bouton-lien"
+                    >
+                        Questionnaire d'EMC
+                    </a>
+                </div>
+            </section>
+
+            <section class="menu-section" id="mathematiques">
+                <h2 class="menu-title">🔢 Questionnaires de Mathématiques</h2>
+                <div class="boutons-flex">
+                    <a href="#" target="_blank" class="bouton-lien">
+                        Mathématiques
+                    </a>
+                </div>
+            </section>
+
+            <section class="menu-section" id="francais">
+                <h2 class="menu-title">🇫🇷 Questionnaires de Français</h2>
+                <div class="boutons-flex">
+                    <a href="#" target="_blank" class="bouton-lien">
+                        Français
+                    </a>
+                </div>
+            </section>
+
+            <section class="menu-section" id="histoire-geographie">
+                <h2 class="menu-title">
+                    📜 Questionnaires d'Histoire-Géographie
+                </h2>
+                <div class="boutons-flex">
+                    <a href="#" target="_blank" class="bouton-lien">
+                        Géographie
+                    </a>
+                </div>
+            </section>
+
+            <section class="menu-section" id="emc">
+                <h2 class="menu-title">⚖️ Questionnaires d'EMC</h2>
+                <div class="boutons-flex">
+                    <a href="questionaire-d-emc.html" target="_blank" class="bouton-lien">
+                        ⚖️ Questionnaires d'EMC
+                    </a>
+                </div>
+            </section>
+
+            <section class="menu-section" id="svt">
+                <h2 class="menu-title">🌱 Questionnaires de SVT</h2>
+                <div class="boutons-flex">
+                    <a href="#" target="_blank" class="bouton-lien"> SVT </a>
+                </div>
+            </section>
+
+            <section class="menu-section" id="physique-chimie">
+                <h2 class="menu-title">⚛️ Questionnaires de Physique-Chimie</h2>
+                <div class="boutons-flex">
+                    <a href="#" target="_blank" class="bouton-lien"> Chimie </a>
+                </div>
+            </section>
+
+            <section class="menu-section" id="anglais">
+                <h2 class="menu-title">🇬🇧 Questionnaires d'Anglais</h2>
+                <div class="boutons-flex">
+                    <a href="#" target="_blank" class="bouton-lien">
+                        Anglais
+                    </a>
+                </div>
+            </section>
+
+            <section class="menu-section" id="italien">
+                <h2 class="menu-title">🇮🇹 Questionnaires d'Italien</h2>
+                <div class="boutons-flex">
+                    <a href="#" target="_blank" class="bouton-lien">
+                        Italien
+                    </a>
+                </div>
+            </section>
+
+            <section class="menu-section" id="technologie">
+                <h2 class="menu-title">⚙️ Questionnaires de Technologie</h2>
+                <div class="boutons-flex">
+                    <a href="#" target="_blank" class="bouton-lien">
+                        Technologie
+                    </a>
+                </div>
+            </section>
+
+            <section class="menu-section" id="education-musicale">
+                <h2 class="menu-title">
+                    🎵 Questionnaires d'Éducation Musicale
+                </h2>
+                <div class="boutons-flex">
+                    <a href="#" target="_blank" class="bouton-lien">
+                        Musique
+                    </a>
+                </div>
+            </section>
+
+            <section class="menu-section" id="lca-latin">
+                <h2 class="menu-title">🏛️ Questionnaires de LCA Latin</h2>
+                <div class="boutons-flex">
+                    <a href="#" target="_blank" class="bouton-lien"> Latin </a>
+                </div>
+            </section>
+
+            <section class="menu-section" id="ressources">
+                <h2 class="menu-title">🌐 Ressources et Communauté</h2>
+                <div class="boutons-flex">
+                    <a
+                        href="https://github.com/rraattrruuee/questionnaire-fr--niveaux-3-me"
+                        target="_blank"
+                        class="bouton-lien"
+                    >
+                        Dépôt GitHub
+                    </a>
+                    <a href="#" target="_blank" class="bouton-lien">
+                        Serveur Discord (En development)
+                    </a>
+                    <a
+                        href="https://github.com/rraattrruuee/questionnaire-fr--niveaux-3-me/issues"
+                        target="_blank"
+                        class="bouton-lien"
+                    >
+                        Me Contacter
+                    </a>
+                </div>
+            </section>
         </div>
+        <script src="script.js"></script>
     </body>
 </html>

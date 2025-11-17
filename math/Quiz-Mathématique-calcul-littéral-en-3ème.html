@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="quiz_icon.svg" type="image/x-icon" />
+        <title>Quiz Mathématique calcul littéral en 3ème</title>
+        <script
+            id="MathJax-script"
+            async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+        ></script>
+        <style>
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes slideOutFast {
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+            @keyframes slideOutSlow {
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+            @keyframes headerDrop {
+                from {
+                    opacity: 0;
+                    transform: translateY(-50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes zoomFeedback {
+                0% {
+                    transform: scale(0.9);
+                    opacity: 0;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+            @keyframes bounce {
+                0%,
+                20%,
+                50%,
+                80%,
+                100% {
+                    transform: translateY(0);
+                }
+                40% {
+                    transform: translateY(-5px);
+                }
+                60% {
+                    transform: translateY(-3px);
+                }
+            }
+            @keyframes shake {
+                0%,
+                100% {
+                    transform: translateX(0);
+                }
+                20%,
+                60% {
+                    transform: translateX(-5px);
+                }
+                40%,
+                80% {
+                    transform: translateX(5px);
+                }
+            }
+            @keyframes couleur-qui-change {
+                0%,
+                10% {
+                    color: white;
+                }
+                30% {
+                    color: #00ff00;
+                }
+                46% {
+                    color: #ff00ff;
+                }
+                60% {
+                    color: #ffa500;
+                }
+                76% {
+                    color: #ff69b4;
+                }
+                100% {
+                    color: deeppink;
+                }
+            }
+
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f0f4f8;
+                padding: 1rem;
+                line-height: 1.6;
+                min-height: 100vh;
+            }
+            .quiz-container {
+                max-width: 800px;
+                margin: 2rem auto;
+                padding: 2rem;
+                background: #ffffff;
+                border-radius: 20px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            }
+            .header {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+            .header h1 {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #1a202c;
+                margin-bottom: 0.5rem;
+                animation: headerDrop 0.8s ease-out;
+            }
+            #progress-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1rem;
+                color: #4a5568;
+                font-size: 1.125rem;
+                font-weight: 500;
+            }
+            #success-rate {
+                font-weight: 700;
+                color: #4c51bf;
+            }
+            .question-card {
+                min-height: 250px;
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+                border-radius: 15px;
+                background-color: #f7faff;
+                border: 2px solid #e2e8f0;
+                transition:
+                    opacity 0.3s ease,
+                    transform 0.3s ease;
+            }
+            .question-card.entering {
+                animation: slideIn 0.5s ease-out forwards;
+            }
+            .question-card.fast-exit {
+                animation: slideOutFast 0.3s ease-in forwards;
+            }
+            .question-card.slow-exit {
+                animation: slideOutSlow 1.2s ease-in forwards;
+            }
+
+            .question-text {
+                font-size: 1.3rem;
+                font-weight: 700;
+                margin-bottom: 1.5rem;
+                color: #2d3748;
+            }
+            .question-text .MathJax {
+                font-size: 1.5em !important;
+                font-weight: normal !important;
+                color: #2b6cb0 !important;
+                display: block;
+                margin: 1rem 0;
+                padding: 0.5rem;
+                background-color: #ebf4ff;
+                border-radius: 8px;
+            }
+            .options-container {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            .answer-btn {
+                display: block;
+                width: 100%;
+                padding: 1rem 1.25rem;
+                text-align: left;
+                border-radius: 10px;
+                transition: all 0.2s ease-out;
+                font-weight: 600;
+                border: 1px solid #c3dafe;
+                color: #2b6cb0;
+                background-color: #ebf4ff;
+                cursor: pointer;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            }
+            .answer-btn:hover:not(.selected):not(.correct-after-check):not(
+                    .incorrect
+                ) {
+                background-color: #cee0f2;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+            .answer-btn .MathJax {
+                font-size: 1.1em !important;
+                font-weight: 600 !important;
+                color: inherit !important;
+            }
+
+            .selected {
+                background-color: #3182ce;
+                border-color: #2c5282;
+                color: white;
+                transform: scale(1.01);
+                box-shadow: 0 5px 15px rgba(49, 130, 206, 0.4);
+            }
+            .selected .MathJax {
+                color: white !important;
+            }
+
+            .correct-after-check {
+                background-color: #48bb78 !important;
+                border-color: #2f855a !important;
+                color: white !important;
+                box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
+                animation: bounce 0.6s ease-out;
+                pointer-events: none;
+            }
+            .correct-after-check .MathJax {
+                color: white !important;
+            }
+
+            .incorrect {
+                background-color: #f56565 !important;
+                border-color: #c53030 !important;
+                color: white !important;
+                box-shadow: 0 5px 15px rgba(245, 101, 101, 0.4);
+                pointer-events: none;
+                animation: shake 0.5s ease-in-out;
+            }
+            .incorrect .MathJax {
+                color: white !important;
+            }
+
+            #feedback-area {
+                margin-top: 1rem;
+                padding: 1rem;
+                border-radius: 10px;
+                font-weight: 600;
+                text-align: center;
+                animation: zoomFeedback 0.4s
+                    cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            }
+            .feedback-correct {
+                background-color: #e6fffa;
+                color: #38a169;
+                border: 1px solid #48bb78;
+            }
+            .feedback-incorrect {
+                background-color: #fff5f5;
+                color: #e53e3e;
+                border: 1px solid #f56565;
+            }
+
+            .main-btn-container {
+                display: none;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            .top-bar {
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 1rem;
+            }
+            #help-btn {
+                background-color: #4c51bf;
+                color: white;
+                border: none;
+                padding: 0.5rem 1rem;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: background-color 0.2s;
+            }
+            #help-btn:hover {
+                background-color: #3a3f9e;
+            }
+            #help-area {
+                margin-bottom: 1.5rem;
+                padding: 1rem;
+                background-color: #fff3e0;
+                border: 1px solid #ffcc80;
+                border-radius: 10px;
+            }
+            #help-content {
+                margin-top: 0.5rem;
+                font-size: 0.95rem;
+            }
+
+            #scratchpad-label {
+                display: block;
+                font-weight: 700;
+                color: #2d3748;
+                margin-top: 1.5rem;
+                margin-bottom: 0.5rem;
+                font-size: 1.1em;
+            }
+
+            #scratchpad {
+                width: 100%;
+                min-height: 200px;
+                padding: 15px;
+                border: 1px solid #c3dafe;
+                border-radius: 12px;
+                font-family: "Consolas", "Monaco", monospace;
+                font-size: 1rem;
+                line-height: 25px;
+                resize: vertical;
+
+                background-color: #ffffff;
+                color: #1a202c;
+
+                background-image:
+                    linear-gradient(to right, #ddd 1px, transparent 1px),
+                    linear-gradient(to bottom, #ddd 1px, transparent 1px);
+                background-size: 25px 25px;
+                background-position: -1px -1px;
+
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+            }
+
+            #scratchpad:focus {
+                outline: none;
+                border-color: #4c51bf;
+                box-shadow: 0 0 0 3px rgba(76, 81, 191, 0.4);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="quiz-container">
+            <div class="top-bar">
+                <button id="help-btn">📖 Aide</button>
+            </div>
+
+            <div id="help-area" class="hidden">
+                <strong style="color: #d97706">Rappel de cours :</strong>
+                <div id="help-content">Contenu de l'aide contextuelle...</div>
+            </div>
+
+            <div class="header">
+                <h1 class="couleur-qui-change">
+                    Quiz Mathématique calcul littéral en 3ème : Égalités,
+                    Développement & Factorisation
+                </h1>
+                <div id="progress-container">
+                    <span id="progress-text">Question 1</span>
+                    <span id="success-rate">Taux de réussite : N/A</span>
+                </div>
+            </div>
+
+            <div id="question-card" class="question-card entering">
+                <div id="question-text" class="question-text">
+                    Chargement de la question...
+                </div>
+                <div id="options-container" class="options-container"></div>
+            </div>
+
+            <label id="scratchpad-label" for="scratchpad"
+                >✏️ Zone de Brouillon</label
+            >
+            <textarea
+                id="scratchpad"
+                spellcheck="false"
+                autocorrect="off"
+            ></textarea>
+
+            <div id="feedback-area" class="hidden"></div>
+
+            <div class="main-btn-container">
+                <button id="validate-btn" class="quiz-button hidden" disabled>
+                    Valider ma réponse
+                </button>
+            </div>
+        </div>
+
+        <script>
+            let currentQuestionIndex = 0;
+            let correctAnswers = 0;
+            let totalQuestionsAttempted = 0;
+            let isChecking = false;
+            let currentQuestionType = "";
+
+            const questionCard = document.getElementById("question-card");
+            const questionText = document.getElementById("question-text");
+            const optionsContainer =
+                document.getElementById("options-container");
+            const feedbackArea = document.getElementById("feedback-area");
+            const progressText = document.getElementById("progress-text");
+            const successRateDisplay = document.getElementById("success-rate");
+            const scratchpad = document.getElementById("scratchpad");
+            const helpBtn = document.getElementById("help-btn");
+            const helpArea = document.getElementById("help-area");
+            const helpContent = document.getElementById("help-content");
+
+            const HELP_MESSAGES = {
+                development: `
+                Utilisez la double distributivité : $$(ax + b)(cx + d) = acx^2 + (ad + bc)x + bd$$.<br>
+                Identités remarquables (IR) :
+                <ul>
+                    <li>$$(a+b)^2 = a^2 + 2ab + b^2$$</li>
+                    <li>$$(a-b)^2 = a^2 - 2ab + b^2$$</li>
+                    <li>$$(a-b)(a+b) = a^2 - b^2$$</li>
+                </ul>
+            `,
+                factorization: `
+                Recherchez un facteur commun (nombre, $$x$$ ou expression). Factorisez en utilisant $$ka + kb = k(a+b)$$.<br>
+                Si aucun facteur commun n'est évident, cherchez une Identité Remarquable (IR) :
+                <ul>
+                    <li>$$a^2 + 2ab + b^2 = (a+b)^2$$</li>
+                    <li>$$a^2 - 2ab + b^2 = (a-b)^2$$</li>
+                    <li>$$a^2 - b^2 = (a-b)(a+b)$$</li>
+                </ul>
+            `,
+                equality: `
+                Pour vérifier une égalité du type A(x) = B(x), vous devez développer ou factoriser les deux côtés pour déterminer s'ils sont strictement équivalents pour toutes les valeurs de x.
+            `,
+            };
+
+            const Utils = {
+                getRandomInt(min, max) {
+                    return Math.floor(Math.random() * (max - min + 1)) + min;
+                },
+                formatCoeff(val) {
+                    if (val === 1) return "";
+                    if (val === -1) return "-";
+                    return val.toString();
+                },
+                formatTerm(val, isFirst = false) {
+                    if (val === 0) return "";
+                    if (!isFirst && val > 0) return `+${val}`;
+                    return val.toString();
+                },
+                shuffleArray(array) {
+                    for (let i = array.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [array[i], array[j]] = [array[j], array[i]];
+                    }
+                },
+                cleanLatex(latex) {
+                    return latex
+                        .replace(/\s+/g, "")
+                        .replace(/\$+/g, "")
+                        .replace(/\\left/g, "")
+                        .replace(/\\right/g, "")
+                        .replace(/\\cdot/g, "*")
+                        .replace(/\*/g, "")
+                        .trim();
+                },
+            };
+
+            function generateEqualityQuestion(difficultyLevel) {
+                currentQuestionType = "equality";
+                const range = difficultyLevel * 2 + 3;
+                const a = Utils.getRandomInt(1, range);
+                const b = Utils.getRandomInt(1, range);
+
+                let exprA, exprB;
+                let isTrue = Math.random() < 0.6;
+
+                const type = Utils.getRandomInt(1, 4);
+
+                if (type === 1) {
+                    exprA = `${a}\\left(x ${Utils.formatTerm(b)}\\right)`;
+                    let ab = a * b;
+                    exprB = `${a}x ${Utils.formatTerm(ab)}`;
+                } else if (type === 2) {
+                    exprA = `\\left(x ${Utils.formatTerm(a)}\\right)^2`;
+                    let two_a = 2 * a;
+                    let a2 = a * a;
+                    exprB = `x^2 ${Utils.formatTerm(two_a)}x ${Utils.formatTerm(a2)}`;
+                } else if (type === 3) {
+                    exprA = `${a}x ${Utils.formatTerm(b)}`;
+                    let a_half = Math.floor(a / 2) || 1;
+                    exprB = `${a_half}x + ${a - a_half}x ${Utils.formatTerm(b)}`;
+                } else {
+                    const c = Utils.getRandomInt(1, 3);
+                    exprA = `${a}\\left(x ${Utils.formatTerm(b)}\\right) ${Utils.formatTerm(c)}x`;
+                    let new_coeff = a + c;
+                    let ab = a * b;
+                    exprB = `${new_coeff}x ${Utils.formatTerm(ab)}`;
+                }
+
+                if (!isTrue) {
+                    const parts = exprB.match(/([\+\-]?\s*\d+)$/);
+                    if (parts && Math.random() < 0.5) {
+                        const constant = parseInt(
+                            parts[1].replace(/\s/g, ""),
+                            10,
+                        );
+                        const newConst =
+                            constant +
+                            Utils.getRandomInt(1, 2) * (constant > 0 ? -1 : 1);
+                        exprB = exprB.replace(
+                            parts[1],
+                            Utils.formatTerm(newConst),
+                        );
+                    } else {
+                        exprB = exprB
+                            .replace(/\+/g, "PLUS_TEMP")
+                            .replace(/-/g, "+")
+                            .replace(/PLUS_TEMP/g, "-");
+                    }
+                    exprB = exprB.replace("--", "+");
+                }
+
+                return {
+                    text: "L'égalité suivante est-elle vraie pour toutes les valeurs de x ?",
+                    latexFormula: `$$${exprA} = ${exprB}$$`,
+                    correctAnswer: isTrue ? "Vraie" : "Fausse",
+                    incorrectOptions: [isTrue ? "Fausse" : "Vraie"],
+                };
+            }
+
+            function generateIncorrectOptions(correctLatex) {
+                const incorrects = [];
+                const correctClean = Utils.cleanLatex(correctLatex);
+
+                let variation1 = correctLatex
+                    .replace(/x\^2/g, "X2_TEMP")
+                    .replace(/x/g, "x^2")
+                    .replace(/X2_TEMP/g, "x");
+                if (Utils.cleanLatex(variation1) !== correctClean)
+                    incorrects.push(variation1);
+
+                let signError = correctLatex
+                    .replace(/\+/g, "PLUS_TEMP")
+                    .replace(/-/g, "+")
+                    .replace(/PLUS_TEMP/g, "-")
+                    .replace("--", "+");
+                if (Utils.cleanLatex(signError) !== correctClean)
+                    incorrects.push(signError);
+
+                const constantMatch = correctLatex.match(/([\+\-]?\s*\d+)$/);
+                if (constantMatch) {
+                    let constant = parseInt(
+                        constantMatch[1].replace(/\s/g, ""),
+                        10,
+                    );
+                    let newConst =
+                        constant +
+                        Utils.getRandomInt(1, 2) * (constant > 0 ? 1 : -1);
+                    let constantError = correctLatex.replace(
+                        constantMatch[1],
+                        Utils.formatTerm(newConst),
+                    );
+                    if (Utils.cleanLatex(constantError) !== correctClean)
+                        incorrects.push(constantError);
+                }
+
+                let uniqueIncorrects = Array.from(new Set(incorrects))
+                    .filter((i) => Utils.cleanLatex(i) !== correctClean)
+                    .slice(0, 3);
+                while (uniqueIncorrects.length < 3) {
+                    let fallbackError = correctLatex.replace(
+                        /x\^2/g,
+                        "x^2+" + Utils.getRandomInt(1, 5),
+                    );
+                    if (
+                        Utils.cleanLatex(fallbackError) !== correctClean &&
+                        !uniqueIncorrects.includes(fallbackError)
+                    ) {
+                        uniqueIncorrects.push(fallbackError);
+                    } else {
+                        uniqueIncorrects.push(
+                            correctLatex +
+                                " " +
+                                Utils.formatTerm(Utils.getRandomInt(6, 10)),
+                        );
+                    }
+                    uniqueIncorrects = Array.from(new Set(uniqueIncorrects))
+                        .filter((i) => Utils.cleanLatex(i) !== correctClean)
+                        .slice(0, 3);
+                    uniqueIncorrects.sort((a, b) => 0.5 - Math.random());
+                }
+                return uniqueIncorrects
+                    .map((opt) => opt.trim())
+                    .filter((opt) => Utils.cleanLatex(opt) !== correctClean)
+                    .slice(0, 3);
+            }
+
+            function generateDevelopmentQuestion(difficultyLevel) {
+                currentQuestionType = "development";
+                const minCoeff = difficultyLevel < 3 ? 1 : -3;
+                const maxCoeff = difficultyLevel * 2 + 2;
+                const a = Utils.getRandomInt(minCoeff, maxCoeff) || 1;
+                const b = Utils.getRandomInt(minCoeff, maxCoeff);
+                const c = Utils.getRandomInt(minCoeff, maxCoeff) || 1;
+                const d = Utils.getRandomInt(minCoeff, maxCoeff);
+                let latexQuestion, latexAnswer;
+
+                if (
+                    Math.random() < 0.3 + difficultyLevel * 0.1 &&
+                    Math.abs(a) === Math.abs(c) &&
+                    b !== 0 &&
+                    d !== 0
+                ) {
+                    const irType = Utils.getRandomInt(1, 3);
+                    const a_ir = Math.abs(a) || 1;
+                    const b_ir = Math.abs(b) || 1;
+
+                    if (irType === 1) {
+                        latexQuestion = `$$\\left(${Utils.formatCoeff(a_ir)}x ${Utils.formatTerm(b_ir)}\\right)^2$$`;
+                        const a2 = a_ir * a_ir;
+                        const b2 = b_ir * b_ir;
+                        const two_ab = 2 * a_ir * b_ir;
+                        latexAnswer = `$$${a2}x^2 ${Utils.formatTerm(two_ab)}x ${Utils.formatTerm(b2)}$$`;
+                    } else if (irType === 2) {
+                        latexQuestion = `$$\\left(${Utils.formatCoeff(a_ir)}x ${Utils.formatTerm(-b_ir)}\\right)^2$$`;
+                        const a2 = a_ir * a_ir;
+                        const b2 = b_ir * b_ir;
+                        const two_ab = 2 * a_ir * b_ir;
+                        latexAnswer = `$$${a2}x^2 ${Utils.formatTerm(-two_ab)}x ${Utils.formatTerm(b2)}$$`;
+                    } else {
+                        latexQuestion = `$$\\left(${Utils.formatCoeff(a_ir)}x ${Utils.formatTerm(-b_ir)}\\right)\\left(${Utils.formatCoeff(a_ir)}x ${Utils.formatTerm(b_ir)}\\right)$$`;
+                        const a2 = a_ir * a_ir;
+                        const b2 = b_ir * b_ir;
+                        latexAnswer = `$$${a2}x^2 ${Utils.formatTerm(-b2)}$$`;
+                    }
+                } else {
+                    const b_term = Utils.formatTerm(b);
+                    const d_term = Utils.formatTerm(d);
+                    latexQuestion = `$$\\left(${Utils.formatCoeff(a)}x ${b_term}\\right)\\left(${Utils.formatCoeff(c)}x ${d_term}\\right)$$`;
+
+                    const ac = a * c;
+                    const ad_bc = a * d + b * c;
+                    const bd = b * d;
+
+                    let answer = `${Utils.formatCoeff(ac)}x^2 ${Utils.formatTerm(ad_bc)}x ${Utils.formatTerm(bd)}`;
+                    if (answer.startsWith("+")) answer = answer.substring(1);
+                    latexAnswer = `$$${answer}$$`;
+                }
+
+                return {
+                    text: "Développez et réduisez l'expression :",
+                    latexFormula: latexQuestion,
+                    correctAnswer: latexAnswer.replace(/\$\$/g, "").trim(),
+                    incorrectOptions: generateIncorrectOptions(
+                        latexAnswer.replace(/\$\$/g, "").trim(),
+                    ),
+                };
+            }
+
+            function generateFactorizationQuestion(difficultyLevel) {
+                currentQuestionType = "factorization";
+                const minCoeff = difficultyLevel < 3 ? 1 : 2;
+                const maxCoeff = difficultyLevel * 2 + 3;
+                let latexQuestion, latexAnswer;
+                const type = Utils.getRandomInt(1, 2);
+
+                if (type === 1 || difficultyLevel < 2) {
+                    const k = Utils.getRandomInt(minCoeff, maxCoeff);
+                    const a = Utils.getRandomInt(1, maxCoeff);
+                    const b = Utils.getRandomInt(1, maxCoeff);
+
+                    if (difficultyLevel >= 2 && Math.random() < 0.5) {
+                        latexQuestion = `$$${k * a}x^2 ${Utils.formatTerm(k * b)}x $$`;
+                        latexAnswer = `$$${k}x\\left(${a}x ${Utils.formatTerm(b)}\\right)$$`;
+                    } else {
+                        latexQuestion = `$$${k * a}x ${Utils.formatTerm(k * b)} $$`;
+                        latexAnswer = `$$${k}\\left(${a}x ${Utils.formatTerm(b)}\\right)$$`;
+                    }
+                } else {
+                    const a_ir = Utils.getRandomInt(2, maxCoeff);
+                    const b_ir = Utils.getRandomInt(1, a_ir - 1);
+
+                    latexQuestion = `$$${a_ir * a_ir}x^2 ${Utils.formatTerm(-b_ir * b_ir)}$$`;
+                    latexAnswer = `$$\\left(${a_ir}x - ${b_ir}\\right)\\left(${a_ir}x + ${b_ir}\\right)$$`;
+                }
+                return {
+                    text: "Factorisez l'expression au maximum :",
+                    latexFormula: latexQuestion,
+                    correctAnswer: latexAnswer.replace(/\$\$/g, "").trim(),
+                    incorrectOptions: generateIncorrectOptions(
+                        latexAnswer.replace(/\$\$/g, "").trim(),
+                    ),
+                };
+            }
+
+            function getHelpContent(type) {
+                return (
+                    HELP_MESSAGES[type] ||
+                    "Aide non disponible pour ce type de question."
+                );
+            }
+
+            function generateQuestion() {
+                const difficultyLevel =
+                    Math.floor(currentQuestionIndex / 5) + 1;
+
+                const questionType = currentQuestionIndex % 3;
+
+                if (questionType === 0) {
+                    return generateDevelopmentQuestion(difficultyLevel);
+                } else if (questionType === 1) {
+                    return generateFactorizationQuestion(
+                        Math.max(1, difficultyLevel - 1),
+                    );
+                } else {
+                    return generateEqualityQuestion(difficultyLevel);
+                }
+            }
+
+            function updateSuccessRate() {
+                if (totalQuestionsAttempted > 0) {
+                    const rate =
+                        (correctAnswers / totalQuestionsAttempted) * 100;
+                    successRateDisplay.innerText = `Taux de réussite : ${rate.toFixed(1)}%`;
+
+                    if (rate >= 80) successRateDisplay.style.color = "#48bb78";
+                    else if (rate >= 50)
+                        successRateDisplay.style.color = "#f6ad55";
+                    else successRateDisplay.style.color = "#e53e3e";
+                } else {
+                    successRateDisplay.innerText = "Taux de réussite : N/A";
+                    successRateDisplay.style.color = "#4c51bf";
+                }
+            }
+
+            function loadQuestion() {
+                currentQuestion = generateQuestion();
+                isChecking = false;
+
+                feedbackArea.classList.add("hidden");
+                optionsContainer.innerHTML = "";
+
+                questionCard.classList.remove("slow-exit", "fast-exit");
+                questionCard.classList.remove("entering");
+                void questionCard.offsetWidth;
+                questionCard.classList.add("entering");
+
+                questionText.innerHTML = `<span>${currentQuestion.text}</span> ${currentQuestion.latexFormula}`;
+                progressText.innerText = `Question ${currentQuestionIndex + 1} (Niv. ${Math.floor(currentQuestionIndex / 5) + 1})`;
+                updateSuccessRate();
+
+                helpContent.innerHTML = getHelpContent(currentQuestionType);
+                scratchpad.value = "";
+                helpArea.classList.add("hidden");
+
+                const correctOption = currentQuestion.correctAnswer;
+
+                let allOptions = [...currentQuestion.incorrectOptions];
+
+                if (currentQuestionType !== "equality") {
+                    if (allOptions.length < 3) {
+                        const needed = 3 - allOptions.length;
+                        const supplementary = generateIncorrectOptions(
+                            correctOption,
+                        ).slice(0, needed);
+                        allOptions.push(...supplementary);
+                    }
+                    allOptions = allOptions.slice(0, 3);
+                } else {
+                    allOptions = allOptions.slice(0, 1);
+                }
+
+                allOptions.push(correctOption);
+                Utils.shuffleArray(allOptions);
+
+                allOptions.forEach((option) => {
+                    const button = document.createElement("button");
+                    button.classList.add("answer-btn");
+
+                    // Si c'est une question d'égalité, les options sont 'Vraie' ou 'Fausse' (texte simple).
+                    if (currentQuestionType === "equality") {
+                        button.innerText = option;
+                        button.dataset.cleanAnswer = option;
+                    } else {
+                        // Pour le Développement et la Factorisation, les options sont des expressions LaTeX.
+                        button.innerHTML = `$$${option}$$`;
+                        button.dataset.cleanAnswer = Utils.cleanLatex(option);
+                    }
+
+                    button.onclick = () => checkAnswer(button);
+                    optionsContainer.appendChild(button);
+                });
+
+                if (window.MathJax) {
+                    window.MathJax.typesetPromise([questionCard, helpArea]);
+                }
+            }
+
+            function checkAnswer(selectedButton) {
+                if (isChecking) return;
+
+                isChecking = true;
+                totalQuestionsAttempted++;
+
+                document
+                    .querySelectorAll(".answer-btn")
+                    .forEach((btn) => btn.classList.remove("selected"));
+                selectedButton.classList.add("selected");
+
+                const correctLatexStripped = Utils.cleanLatex(
+                    currentQuestion.correctAnswer,
+                );
+                const selectedAnswerStripped =
+                    selectedButton.dataset.cleanAnswer;
+                const isCorrect =
+                    selectedAnswerStripped === correctLatexStripped;
+
+                let transitionDuration;
+                if (isCorrect) {
+                    transitionDuration = 500;
+                    questionCard.classList.add("fast-exit");
+                    correctAnswers++;
+                    feedbackArea.innerText =
+                        "✅ Correct ! Passage rapide à la question suivante...";
+                    feedbackArea.classList.remove("feedback-incorrect");
+                    feedbackArea.classList.add("feedback-correct");
+                } else {
+                    transitionDuration = 2000;
+                    questionCard.classList.add("slow-exit");
+                    feedbackArea.innerText =
+                        "❌ Incorrect. Prenez le temps de revoir et de lire l'aide.";
+                    feedbackArea.classList.remove("feedback-correct");
+                    feedbackArea.classList.add("feedback-incorrect");
+                }
+                feedbackArea.classList.remove("hidden");
+
+                document.querySelectorAll(".answer-btn").forEach((btn) => {
+                    const optionLatexStripped = btn.dataset.cleanAnswer;
+                    btn.onclick = null;
+
+                    if (optionLatexStripped === correctLatexStripped) {
+                        btn.classList.add("correct-after-check");
+                    } else if (btn.classList.contains("selected")) {
+                        btn.classList.add("incorrect");
+                    }
+                    btn.disabled = true;
+                });
+
+                updateSuccessRate();
+                if (window.MathJax) {
+                    window.MathJax.typesetPromise([optionsContainer]);
+                }
+
+                setTimeout(nextQuestion, transitionDuration);
+            }
+
+            function nextQuestion() {
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+
+            helpBtn.addEventListener("click", () => {
+                helpArea.classList.toggle("hidden");
+            });
+
+            document.addEventListener("DOMContentLoaded", loadQuestion);
+        </script>
+    </body>
+</html>

@@ -1,1383 +1,1383 @@
 <!doctype html>
 <html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="../quiz_icon.svg" type="image/x-icon" />
+        <title>Quiz Pythagore, Thales, Calcul</title>
+        <style>
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="quiz_icon.svg" type="image/x-icon" />
-    <title>Quiz Pythagore, Thales, Calcul</title>
-    <style>
-        @keyframes slideIn {
-            from {
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes slideOut {
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+
+                to {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+
+            @keyframes headerDrop {
+                from {
+                    opacity: 0;
+                    transform: translateY(-50px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes bounce {
+                0%,
+                20%,
+                50%,
+                80%,
+                100% {
+                    transform: translateY(0);
+                }
+
+                40% {
+                    transform: translateY(-5px);
+                }
+
+                60% {
+                    transform: translateY(-3px);
+                }
+            }
+
+            @keyframes shake {
+                0%,
+                100% {
+                    transform: translateX(0);
+                }
+
+                20%,
+                60% {
+                    transform: translateX(-5px);
+                }
+
+                40%,
+                80% {
+                    transform: translateX(5px);
+                }
+            }
+
+            @keyframes zoomFeedback {
+                0% {
+                    transform: scale(0.9);
+                    opacity: 0;
+                }
+
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes couleur-qui-change {
+                0%,
+                10% {
+                    color: white;
+                }
+
+                30% {
+                    color: #00ff00;
+                }
+
+                38% {
+                    color: #ffff00;
+                }
+
+                46% {
+                    color: #ff00ff;
+                }
+
+                54% {
+                    color: #00ffff;
+                }
+
+                60% {
+                    color: #ffa500;
+                }
+
+                68% {
+                    color: #7cfc00;
+                }
+
+                76% {
+                    color: #ff69b4;
+                }
+
+                84% {
+                    color: #8a2be2;
+                }
+
+                92% {
+                    color: #ff4500;
+                }
+
+                100% {
+                    color: deeppink;
+                }
+            }
+
+            @keyframes wipe-in {
+                from {
+                    clip-path: inset(0 100% 0 0);
+                }
+
+                to {
+                    clip-path: inset(0 0 0 0);
+                }
+            }
+
+            body {
+                font-family: "Segoe UI", Arial, sans-serif;
+                background-color: #f0f4f8;
+                padding: 1rem;
+                line-height: 1.6;
+                min-height: 100vh;
+            }
+
+            .quiz-container {
+                max-width: 800px;
+                margin: 2rem auto;
+                padding: 2rem;
+                background: #ffffff;
+                border-radius: 20px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+                overflow: hidden;
+            }
+
+            .header {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #1a202c;
+                animation: headerDrop 0.8s ease-out;
+            }
+
+            .progress-bar-container {
+                width: 100%;
+                height: 8px;
+                background-color: #edf2f7;
+                border-radius: 4px;
+                margin-bottom: 20px;
+                overflow: hidden;
+            }
+
+            .progress-bar-fill {
+                height: 100%;
+                background: linear-gradient(90deg, #4c51bf, #667eea);
+                width: 0%;
+                transition: width 0.4s ease-out;
+            }
+
+            .nav-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+                animation: slideIn 0.6s ease-out;
+            }
+
+            .nav-btn {
+                display: block;
+                width: 100%;
+                padding: 1.5rem;
+                text-align: center;
+                border-radius: 15px;
+                transition: all 0.2s;
+                font-weight: 700;
+                border: 2px solid #c3dafe;
+                color: #2b6cb0;
+                background-color: #ebf4ff;
+                cursor: pointer;
+                box-sizing: border-box;
+            }
+
+            .nav-btn:hover {
+                background-color: #cee0f2;
+                transform: translateY(-3px);
+                border-color: #4c51bf;
+            }
+
+            .question-card {
+                min-height: 200px;
+                padding: 2rem;
+                margin-bottom: 1.5rem;
+                border-radius: 15px;
+                background-color: #f7faff;
+                border: 2px solid #e2e8f0;
                 opacity: 0;
                 transform: translateY(20px);
             }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideOut {
-            from {
-                opacity: 1;
-                transform: translateY(0);
+            .question-card.entering {
+                animation: slideIn 0.5s ease-out forwards;
             }
 
-            to {
+            .question-card.fast-exit {
+                animation: slideOut 0.3s ease-in forwards;
+            }
+
+            .question-text {
+                font-size: 1.3rem;
+                font-weight: 700;
+                margin-bottom: 1.5rem;
+                color: #2d3748;
+            }
+
+            .img-container {
+                text-align: center;
+                margin: 15px 0;
+            }
+
+            .img-container img {
+                max-width: 100%;
+                border-radius: 8px;
+            }
+
+            .options-container {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .option-item {
+                position: relative;
+            }
+
+            .option-item input[type="radio"] {
+                position: absolute;
                 opacity: 0;
-                transform: translateY(-10px);
-            }
-        }
-
-        @keyframes headerDrop {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
+                height: 0;
+                width: 0;
             }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes bounce {
-
-            0%,
-            20%,
-            50%,
-            80%,
-            100% {
-                transform: translateY(0);
-            }
-
-            40% {
-                transform: translateY(-5px);
+            .answer-btn {
+                display: block;
+                width: 100%;
+                padding: 1rem 1.25rem;
+                text-align: left;
+                border-radius: 10px;
+                transition: all 0.2s;
+                font-weight: 600;
+                border: 1px solid #c3dafe;
+                color: #2b6cb0;
+                background-color: #ebf4ff;
+                cursor: pointer;
+                box-sizing: border-box;
             }
 
-            60% {
-                transform: translateY(-3px);
-            }
-        }
-
-        @keyframes shake {
-
-            0%,
-            100% {
-                transform: translateX(0);
+            .answer-btn:hover {
+                background-color: #cee0f2;
+                transform: translateY(-1px);
             }
 
-            20%,
-            60% {
-                transform: translateX(-5px);
-            }
-
-            40%,
-            80% {
-                transform: translateX(5px);
-            }
-        }
-
-        @keyframes zoomFeedback {
-            0% {
-                transform: scale(0.9);
-                opacity: 0;
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        @keyframes couleur-qui-change {
-
-            0%,
-            10% {
+            .option-item input:checked + .answer-btn {
+                background-color: #3182ce;
+                border-color: #2c5282;
                 color: white;
             }
 
-            30% {
-                color: #00ff00;
+            .answer-btn.correct {
+                background-color: #48bb78 !important;
+                border-color: #2f855a !important;
+                color: white !important;
+                animation: bounce 0.6s ease-out;
             }
 
-            38% {
-                color: #ffff00;
+            .answer-btn.incorrect {
+                background-color: #f56565 !important;
+                border-color: #c53030 !important;
+                color: white !important;
+                animation: shake 0.5s ease-in-out;
             }
 
-            46% {
-                color: #ff00ff;
+            .text-input-styled {
+                width: 100%;
+                padding: 1rem 1.25rem;
+                font-size: 1.1rem;
+                border: 2px solid #c3dafe;
+                border-radius: 10px;
+                box-sizing: border-box;
             }
 
-            54% {
-                color: #00ffff;
+            .text-input-styled.correct {
+                border-color: #48bb78;
+                background-color: #f0fff4;
+                color: #2f855a;
+                animation: bounce 0.6s ease-out;
             }
 
-            60% {
-                color: #ffa500;
+            .text-input-styled.incorrect {
+                border-color: #f56565;
+                background-color: #fff5f5;
+                color: #c53030;
+                animation: shake 0.5s ease-in-out;
             }
 
-            68% {
-                color: #7cfc00;
+            #feedback-area {
+                margin-top: 1rem;
+                padding: 1.5rem;
+                border-radius: 10px;
+                font-weight: 500;
+                display: none;
+                opacity: 0;
             }
 
-            76% {
-                color: #ff69b4;
+            #feedback-area.visible {
+                display: block;
+                animation: zoomFeedback 0.4s forwards;
             }
 
-            84% {
-                color: #8a2be2;
+            .feedback-correct {
+                background-color: #e6fffa;
+                color: #276749;
+                border: 1px solid #48bb78;
             }
 
-            92% {
-                color: #ff4500;
+            .feedback-incorrect {
+                background-color: #fff5f5;
+                color: #c53030;
+                border: 1px solid #f56565;
             }
 
-            100% {
-                color: deeppink;
-            }
-        }
-
-        @keyframes wipe-in {
-            from {
-                clip-path: inset(0 100% 0 0);
+            .main-btn-container {
+                margin-top: 2rem;
+                display: flex;
+                justify-content: center;
             }
 
-            to {
-                clip-path: inset(0 0 0 0);
+            #main-btn {
+                background-color: #4c51bf;
+                color: white;
+                padding: 1rem 2.5rem;
+                border-radius: 12px;
+                font-weight: 800;
+                font-size: 1.1rem;
+                transition: all 0.3s;
+                width: 100%;
+                border: none;
+                cursor: pointer;
             }
-        }
 
-        body {
-            font-family: "Segoe UI", Arial, sans-serif;
-            background-color: #f0f4f8;
-            padding: 1rem;
-            line-height: 1.6;
-            min-height: 100vh;
-        }
+            #main-btn:disabled {
+                background-color: #a0aec0;
+                cursor: not-allowed;
+                transform: none;
+                box-shadow: none;
+            }
 
-        .quiz-container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-        }
+            .math-frac {
+                display: inline-block;
+                vertical-align: middle;
+                text-align: center;
+                font-size: 0.9em;
+            }
 
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
+            .math-num {
+                border-bottom: 1px solid;
+                display: block;
+                padding: 0 2px;
+            }
 
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #1a202c;
-            animation: headerDrop 0.8s ease-out;
-        }
+            .math-den {
+                display: block;
+                padding: 0 2px;
+            }
 
-        .progress-bar-container {
-            width: 100%;
-            height: 8px;
-            background-color: #edf2f7;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
+            .couleur-qui-change {
+                animation: couleur-qui-change 14s infinite alternate;
+                font-weight: bold;
+            }
 
-        .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4c51bf, #667eea);
-            width: 0%;
-            transition: width 0.4s ease-out;
-        }
+            .hidden {
+                display: none !important;
+            }
+        </style>
+    </head>
 
-        .nav-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            animation: slideIn 0.6s ease-out;
-        }
-
-        .nav-btn {
-            display: block;
-            width: 100%;
-            padding: 1.5rem;
-            text-align: center;
-            border-radius: 15px;
-            transition: all 0.2s;
-            font-weight: 700;
-            border: 2px solid #c3dafe;
-            color: #2b6cb0;
-            background-color: #ebf4ff;
-            cursor: pointer;
-            box-sizing: border-box;
-        }
-
-        .nav-btn:hover {
-            background-color: #cee0f2;
-            transform: translateY(-3px);
-            border-color: #4c51bf;
-        }
-
-        .question-card {
-            min-height: 200px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            border-radius: 15px;
-            background-color: #f7faff;
-            border: 2px solid #e2e8f0;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .question-card.entering {
-            animation: slideIn 0.5s ease-out forwards;
-        }
-
-        .question-card.fast-exit {
-            animation: slideOut 0.3s ease-in forwards;
-        }
-
-        .question-text {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: #2d3748;
-        }
-
-        .img-container {
-            text-align: center;
-            margin: 15px 0;
-        }
-
-        .img-container img {
-            max-width: 100%;
-            border-radius: 8px;
-        }
-
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .option-item {
-            position: relative;
-        }
-
-        .option-item input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            height: 0;
-            width: 0;
-        }
-
-        .answer-btn {
-            display: block;
-            width: 100%;
-            padding: 1rem 1.25rem;
-            text-align: left;
-            border-radius: 10px;
-            transition: all 0.2s;
-            font-weight: 600;
-            border: 1px solid #c3dafe;
-            color: #2b6cb0;
-            background-color: #ebf4ff;
-            cursor: pointer;
-            box-sizing: border-box;
-        }
-
-        .answer-btn:hover {
-            background-color: #cee0f2;
-            transform: translateY(-1px);
-        }
-
-        .option-item input:checked+.answer-btn {
-            background-color: #3182ce;
-            border-color: #2c5282;
-            color: white;
-        }
-
-        .answer-btn.correct {
-            background-color: #48bb78 !important;
-            border-color: #2f855a !important;
-            color: white !important;
-            animation: bounce 0.6s ease-out;
-        }
-
-        .answer-btn.incorrect {
-            background-color: #f56565 !important;
-            border-color: #c53030 !important;
-            color: white !important;
-            animation: shake 0.5s ease-in-out;
-        }
-
-        .text-input-styled {
-            width: 100%;
-            padding: 1rem 1.25rem;
-            font-size: 1.1rem;
-            border: 2px solid #c3dafe;
-            border-radius: 10px;
-            box-sizing: border-box;
-        }
-
-        .text-input-styled.correct {
-            border-color: #48bb78;
-            background-color: #f0fff4;
-            color: #2f855a;
-            animation: bounce 0.6s ease-out;
-        }
-
-        .text-input-styled.incorrect {
-            border-color: #f56565;
-            background-color: #fff5f5;
-            color: #c53030;
-            animation: shake 0.5s ease-in-out;
-        }
-
-        #feedback-area {
-            margin-top: 1rem;
-            padding: 1.5rem;
-            border-radius: 10px;
-            font-weight: 500;
-            display: none;
-            opacity: 0;
-        }
-
-        #feedback-area.visible {
-            display: block;
-            animation: zoomFeedback 0.4s forwards;
-        }
-
-        .feedback-correct {
-            background-color: #e6fffa;
-            color: #276749;
-            border: 1px solid #48bb78;
-        }
-
-        .feedback-incorrect {
-            background-color: #fff5f5;
-            color: #c53030;
-            border: 1px solid #f56565;
-        }
-
-        .main-btn-container {
-            margin-top: 2rem;
-            display: flex;
-            justify-content: center;
-        }
-
-        #main-btn {
-            background-color: #4c51bf;
-            color: white;
-            padding: 1rem 2.5rem;
-            border-radius: 12px;
-            font-weight: 800;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            width: 100%;
-            border: none;
-            cursor: pointer;
-        }
-
-        #main-btn:disabled {
-            background-color: #a0aec0;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .math-frac {
-            display: inline-block;
-            vertical-align: middle;
-            text-align: center;
-            font-size: 0.9em;
-        }
-
-        .math-num {
-            border-bottom: 1px solid;
-            display: block;
-            padding: 0 2px;
-        }
-
-        .math-den {
-            display: block;
-            padding: 0 2px;
-        }
-
-        .couleur-qui-change {
-            animation: couleur-qui-change 14s infinite alternate;
-            font-weight: bold;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="quiz-container">
-        <div class="header">
-            <h1>Quiz Pythagore, Thales, Calcul</h1>
-            <p class="anim-wipe-in">Troisième - QCM Aléatoire</p>
-        </div>
-        <div id="nav-container" class="nav-grid"></div>
-
-        <div id="quiz-ui" class="hidden">
-            <div class="progress-bar-container">
-                <div id="progress-fill" class="progress-bar-fill"></div>
+    <body>
+        <div class="quiz-container">
+            <div class="header">
+                <h1>Quiz Pythagore, Thales, Calcul</h1>
+                <p class="anim-wipe-in">Troisième - QCM Aléatoire</p>
             </div>
+            <div id="nav-container" class="nav-grid"></div>
 
-            <div style="
+            <div id="quiz-ui" class="hidden">
+                <div class="progress-bar-container">
+                    <div id="progress-fill" class="progress-bar-fill"></div>
+                </div>
+
+                <div
+                    style="
                         display: flex;
                         justify-content: space-between;
                         color: #a0aec0;
                         font-size: 0.9em;
                         margin-bottom: 10px;
                         font-weight: 600;
-                    ">
-                <span id="cat-label">CATÉGORIE</span>
-                <span id="counter-label">1/10</span>
-            </div>
+                    "
+                >
+                    <span id="cat-label">CATÉGORIE</span>
+                    <span id="counter-label">1/10</span>
+                </div>
 
-            <div id="question-card-container" class="question-card entering">
-                <div id="question-text" class="question-text"></div>
-                <div id="image-area" class="img-container hidden"></div>
+                <div
+                    id="question-card-container"
+                    class="question-card entering"
+                >
+                    <div id="question-text" class="question-text"></div>
+                    <div id="image-area" class="img-container hidden"></div>
 
-                <div id="input-area"></div>
-            </div>
+                    <div id="input-area"></div>
+                </div>
 
-            <div id="feedback-area"></div>
+                <div id="feedback-area"></div>
 
-            <div class="main-btn-container">
-                <button id="main-btn" onclick="app.checkAnswer()">
-                    Valider la réponse
-                </button>
+                <div class="main-btn-container">
+                    <button id="main-btn" onclick="app.checkAnswer()">
+                        Valider la réponse
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        const db = [
-            {
-                category:
-                    "Géométrie : Pythagore et Thalès (Théorèmes et Réciproques)",
-                questions: [
-                    {
-                        text: "Soit un triangle ABC rectangle en A. On donne AB = 5 cm et AC = 12 cm. Calculer la longueur BC.",
-                        type: "text",
-                        accepted: ["13", "13 cm"],
-                        solution:
-                            "Théorème de Pythagore : BC<sup>2</sup> = AB<sup>2</sup> + AC<sup>2</sup> = 25 + 144 = 169. BC = √169 = 13 cm.",
-                        image: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pg0KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHNoYXBlLXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiB2aWV3Qm94PSI1NTAgMTMwIDMwMCA1ODAiIHdpZHRoPSIzMDBweCIgaGVpZ2h0PSI1ODBweCI+PGRlZnM+PG1hcmtlciBpZD0iYXJyb3doZWFkIiBtYXJrZXJXaWR0aD0iMTAiIG1hcmtlckhlaWdodD0iNyIgcmVmWD0iOSIgcmVmWT0iMy41IiBvcmllbnQ9ImF1dG8iPjxwb2x5Z29uIHBvaW50cz0iMCAwLCAxMCAzLjUsIDAgNyIgZmlsbD0iIzY0NzQ4YiIvPjwvbWFya2VyPjwvZGVmcz48Zz48Zz48bGluZSB4MT0iNjAwIiB5MT0iNjYwIiB4Mj0iODAwIiB5Mj0iNjYwIiBzdHJva2U9InRyYW5zcGFyZW50IiBzdHJva2Utd2lkdGg9IjEyLjQwIi8+PGxpbmUgeDE9IjYwMCIgeTE9IjY2MCIgeDI9IjgwMCIgeTI9IjY2MCIgc3Ryb2tlPSIjM2I4MmY2IiBzdHJva2Utd2lkdGg9IjIiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg3MDAsIDY2MCkiPjxyZWN0IHg9Ii0yMCIgeT0iLTEwIiB3aWR0aD0iNDAiIGhlaWdodD0iMjAiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuOSIgcng9IjQiIHRyYW5zZm9ybT0ic2NhbGUoMC44MykiLz48dGV4dCB5PSI0LjEzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjMWUyOTNiIiBmb250LXNpemU9IjE0Ij41LjAwPC90ZXh0PjwvZz48L2c+PGc+PGxpbmUgeDE9IjgwMCIgeTE9IjY2MCIgeDI9IjYwMCIgeTI9IjE4MCIgc3Ryb2tlPSJ0cmFuc3BhcmVudCIgc3Ryb2tlLXdpZHRoPSIxMi40MCIvPjxsaW5lIHgxPSI4MDAiIHkxPSI2NjAiIHgyPSI2MDAiIHkyPSIxODAiIHN0cm9rZT0iIzNiODJmNiIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjxnPjxsaW5lIHgxPSI2MDAiIHkxPSIxODAiIHgyPSI2MDAiIHkyPSI2NjAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHN0cm9rZS13aWR0aD0iMTIuNDAiLz48bGluZSB4MT0iNjAwIiB5MT0iMTgwIiB4Mj0iNjAwIiB5Mj0iNjYwIiBzdHJva2U9IiMzYjgyZjYiIHN0cm9rZS13aWR0aD0iMiIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYwMCwgNDIwKSI+PHJlY3QgeD0iLTIwIiB5PSItMTAiIHdpZHRoPSI0MCIgaGVpZ2h0PSIyMCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC45IiByeD0iNCIgdHJhbnNmb3JtPSJzY2FsZSgwLjgzKSIvPjx0ZXh0IHk9IjQuMTMiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiMxZTI5M2IiIGZvbnQtc2l6ZT0iMTQiPjEyLjAwPC90ZXh0PjwvZz48L2c+PGc+PGNpcmNsZSBjeD0iNjAwIiBjeT0iNjYwIiByPSIxMy4yMiIgZmlsbD0idHJhbnNwYXJlbnQiLz48Y2lyY2xlIGN4PSI2MDAiIGN5PSI2NjAiIHI9IjYiIGZpbGw9IiNmNDNmNWUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjx0ZXh0IHg9IjYxMCIgeT0iNjUwIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMWUyOTNiIiBmb250LXdlaWdodD0iYm9sZCIgZmlsdGVyPSJ1cmwoI2JnKSI+QTwvdGV4dD48L2c+PGc+PGNpcmNsZSBjeD0iODAwIiBjeT0iNjYwIiByPSIxMy4yMiIgZmlsbD0idHJhbnNwYXJlbnQiLz48Y2lyY2xlIGN4PSI4MDAiIGN5PSI2NjAiIHI9IjYiIGZpbGw9IiMzYjgyZjYiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjx0ZXh0IHg9IjgxMCIgeT0iNjUwIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMWUyOTNiIiBmb250LXdlaWdodD0iYm9sZCIgZmlsdGVyPSJ1cmwoI2JnKSI+QjwvdGV4dD48L2c+PGc+PGNpcmNsZSBjeD0iNjAwIiBjeT0iMTgwIiByPSIxMy4yMiIgZmlsbD0idHJhbnNwYXJlbnQiLz48Y2lyY2xlIGN4PSI2MDAiIGN5PSIxODAiIHI9IjYiIGZpbGw9IiMzYjgyZjYiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjx0ZXh0IHg9IjYxMCIgeT0iMTcwIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMWUyOTNiIiBmb250LXdlaWdodD0iYm9sZCIgZmlsdGVyPSJ1cmwoI2JnKSI+QzwvdGV4dD48L2c+PC9nPjxkZWZzPjxmaWx0ZXIgeD0iLTAuMSIgeT0iLTAuMSIgd2lkdGg9IjEuMiIgaGVpZ2h0PSIxLjIiIGlkPSJiZyI+PGZlRmxvb2QgZmxvb2QtY29sb3I9IiNmZmZmZmYiIHJlc3VsdD0iYmciLz48ZmVNZXJnZT48ZmVNZXJnZU5vZGUgaW49ImJnIi8+PGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+PC9mZU1lcmdlPjwvZmlsdGVyPjwvZGVmcz48L3N2Zz4=",
-                    },
-                    {
-                        text: "Un triangle DEF a pour dimensions : DE = 8 cm, EF = 15 cm et DF = 17 cm. Ce triangle est-il rectangle ?",
-                        type: "mcq",
-                        options: [
-                            "Oui, rectangle en E",
-                            "Oui, rectangle en D",
-                            "Non, il n'est pas rectangle",
-                        ],
-                        correct: 0,
-                        solution:
-                            "Le plus grand côté est DF. DF<sup>2</sup> = 289. DE<sup>2</sup> + EF<sup>2</sup> = 64 + 225 = 289. L'égalité est vérifiée, donc d'après la réciproque de Pythagore, le triangle est rectangle en E (sommet opposé à l'hypoténuse).",
-                    },
-                    {
-                        text: "Configuration Papillon : Les droites (AB) et (CD) sont sécantes en O. Les droites (AC) et (BD) sont parallèles. On donne OA = 4, OB = 6, OC = 5. Calculer OD.",
-                        type: "text",
-                        accepted: ["7.5", "7,5"],
-                        solution:
-                            "Théorème de Thalès : <div class='math-frac'><span class='math-num'>OA</span><span class='math-den'>OB</span></div> = <div class='math-frac'><span class='math-num'>OC</span><span class='math-den'>OD</span></div>. Soit <div class='math-frac'><span class='math-num'>4</span><span class='math-den'>6</span></div> = <div class='math-frac'><span class='math-num'>5</span><span class='math-den'>OD</span></div>. OD = (6 × 5) ÷ 4 = 7,5.",
-                        image: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pg0KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHNoYXBlLXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiB2aWV3Qm94PSI1NTAgMjEwIDQyMCAzODAiIHdpZHRoPSI0MjBweCIgaGVpZ2h0PSIzODBweCI+PGRlZnM+PG1hcmtlciBpZD0iYXJyb3doZWFkIiBtYXJrZXJXaWR0aD0iMTAiIG1hcmtlckhlaWdodD0iNyIgcmVmWD0iOSIgcmVmWT0iMy41IiBvcmllbnQ9ImF1dG8iPjxwb2x5Z29uIHBvaW50cz0iMCAwLCAxMCAzLjUsIDAgNyIgZmlsbD0iIzY0NzQ4YiIvPjwvbWFya2VyPjwvZGVmcz48Zz48Zz48bGluZSB4MT0iNjAwIiB5MT0iNTQwIiB4Mj0iNjgwIiB5Mj0iNDAwIiBzdHJva2U9InRyYW5zcGFyZW50IiBzdHJva2Utd2lkdGg9IjEzLjY0Ii8+PGxpbmUgeDE9IjYwMCIgeTE9IjU0MCIgeDI9IjY4MCIgeTI9IjQwMCIgc3Ryb2tlPSIjM2I4MmY2IiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PGc+PGxpbmUgeDE9IjkyMCIgeTE9IjU0MCIgeDI9Ijg0MCIgeTI9IjQwMCIgc3Ryb2tlPSJ0cmFuc3BhcmVudCIgc3Ryb2tlLXdpZHRoPSIxMy42NCIvPjxsaW5lIHgxPSI5MjAiIHkxPSI1NDAiIHgyPSI4NDAiIHkyPSI0MDAiIHN0cm9rZT0iIzNiODJmNiIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjxnPjxsaW5lIHgxPSI4NDAiIHkxPSI0MDAiIHgyPSI3NjAiIHkyPSIyNjAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHN0cm9rZS13aWR0aD0iMTMuNjQiLz48bGluZSB4MT0iODQwIiB5MT0iNDAwIiB4Mj0iNzYwIiB5Mj0iMjYwIiBzdHJva2U9IiMzYjgyZjYiIHN0cm9rZS13aWR0aD0iMiIvPjwvZz48Zz48bGluZSB4MT0iNzYwIiB5MT0iMjYwIiB4Mj0iNjgwIiB5Mj0iNDAwIiBzdHJva2U9InRyYW5zcGFyZW50IiBzdHJva2Utd2lkdGg9IjEzLjY0Ii8+PGxpbmUgeDE9Ijc2MCIgeTE9IjI2MCIgeDI9IjY4MCIgeTI9IjQwMCIgc3Ryb2tlPSIjM2I4MmY2IiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PGc+PGxpbmUgeDE9IjY4MCIgeTE9IjQwMCIgeDI9Ijg0MCIgeTI9IjQwMCIgc3Ryb2tlPSJ0cmFuc3BhcmVudCIgc3Ryb2tlLXdpZHRoPSIxMy42NCIvPjxsaW5lIHgxPSI2ODAiIHkxPSI0MDAiIHgyPSI4NDAiIHkyPSI0MDAiIHN0cm9rZT0iIzNiODJmNiIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjxnPjxsaW5lIHgxPSI2MDAiIHkxPSI1NDAiIHgyPSI5MjAiIHkyPSI1NDAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHN0cm9rZS13aWR0aD0iMTMuNjQiLz48bGluZSB4MT0iNjAwIiB5MT0iNTQwIiB4Mj0iOTIwIiB5Mj0iNTQwIiBzdHJva2U9IiMzYjgyZjYiIHN0cm9rZS13aWR0aD0iMiIvPjwvZz48Zz48Y2lyY2xlIGN4PSI2MDAiIGN5PSI1NDAiIHI9IjE0LjU1IiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxjaXJjbGUgY3g9IjYwMCIgY3k9IjU0MCIgcj0iNiIgZmlsbD0iIzNiODJmNiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iNjEwIiB5PSI1MzAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiMxZTI5M2IiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWx0ZXI9InVybCgjYmcpIj5BPC90ZXh0PjwvZz48Zz48Y2lyY2xlIGN4PSI2ODAiIGN5PSI0MDAiIHI9IjE0LjU1IiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxjaXJjbGUgY3g9IjY4MCIgY3k9IjQwMCIgcj0iNiIgZmlsbD0iIzNiODJmNiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iNjkwIiB5PSIzOTAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiMxZTI5M2IiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWx0ZXI9InVybCgjYmcpIj5CPC90ZXh0PjwvZz48Zz48Y2lyY2xlIGN4PSI5MjAiIGN5PSI1NDAiIHI9IjE0LjU1IiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxjaXJjbGUgY3g9IjkyMCIgY3k9IjU0MCIgcj0iNiIgZmlsbD0iI2Y0M2Y1ZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iOTMwIiB5PSI1MzAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiMxZTI5M2IiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWx0ZXI9InVybCgjYmcpIj5DPC90ZXh0PjwvZz48Zz48Y2lyY2xlIGN4PSI4NDAiIGN5PSI0MDAiIHI9IjE0LjU1IiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxjaXJjbGUgY3g9Ijg0MCIgY3k9IjQwMCIgcj0iNiIgZmlsbD0iIzNiODJmNiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iODUwIiB5PSIzOTAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiMxZTI5M2IiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWx0ZXI9InVybCgjYmcpIj5EPC90ZXh0PjwvZz48Zz48Y2lyY2xlIGN4PSI3NjAiIGN5PSIyNjAiIHI9IjE0LjU1IiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxjaXJjbGUgY3g9Ijc2MCIgY3k9IjI2MCIgcj0iNiIgZmlsbD0iIzNiODJmNiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iNzcwIiB5PSIyNTAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiMxZTI5M2IiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWx0ZXI9InVybCgjYmcpIj5PPC90ZXh0PjwvZz48L2c+PGRlZnM+PGZpbHRlciB4PSItMC4xIiB5PSItMC4xIiB3aWR0aD0iMS4yIiBoZWlnaHQ9IjEuMiIgaWQ9ImJnIj48ZmVGbG9vZCBmbG9vZC1jb2xvcj0iI2ZmZmZmZiIgcmVzdWx0PSJiZyIvPjxmZU1lcmdlPjxmZU1lcmdlTm9kZSBpbj0iYmciLz48ZmVNZXJnZU5vZGUgaW49IlNvdXJjZUdyYXBoaWMiLz48L2ZlTWVyZ2U+PC9maWx0ZXI+PC9kZWZzPjwvc3ZnPg=="
-                    },
-                    {
-                        text: "Dans un triangle MNP, MN = 6, NP = 9, MP = 12. Ce triangle est-il rectangle ?",
-                        type: "mcq",
-                        options: ["Oui", "Non"],
-                        correct: 1,
-                        solution:
-                            "Plus grand côté MP. MP<sup>2</sup> = 144. MN<sup>2</sup> + NP<sup>2</sup> = 36 + 81 = 117. Comme 144 ≠ 117, d'après la contraposée de Pythagore, le triangle n'est pas rectangle.",
-                    },
-                    {
-                        text: "[IMAGE] Sur la figure, les points A, B, C sont alignés, ainsi que A, D, E. On donne AB=5, AC=15, AD=4, AE=12. Les droites (BD) et (CE) sont-elles parallèles ?",
-                        type: "mcq",
-                        options: ["Oui", "Non", "On ne peut pas savoir"],
-                        correct: 0,
-                        solution:
-                            "On calcule les rapports : <div class='math-frac'><span class='math-num'>AB</span><span class='math-den'>AC</span></div> = <div class='math-frac'><span class='math-num'>5</span><span class='math-den'>15</span></div> = <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>3</span></div>. <div class='math-frac'><span class='math-num'>AD</span><span class='math-den'>AE</span></div> = <div class='math-frac'><span class='math-num'>4</span><span class='math-den'>12</span></div> = <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>3</span></div>. Les rapports sont égaux et les points alignés dans le même ordre, donc les droites sont parallèles (Réciproque de Thalès).",
-                    },
-                    {
-                        text: "Quelle est la longueur de la diagonale d'un rectangle de longueur 8 cm et de largeur 6 cm ?",
-                        type: "text",
-                        accepted: ["10", "10 cm"],
-                        solution:
-                            "Diagonale d<sup>2</sup> = 8<sup>2</sup> + 6<sup>2</sup> = 64 + 36 = 100. d = 10.",
-                    },
-                    {
-                        text: "[IMAGE] Une échelle de 6 m est posée contre un mur vertical. Le pied de l'échelle est à 2 m du mur. À quelle hauteur (arrondie au dixième) l'échelle touche-t-elle le mur ?",
-                        type: "text",
-                        accepted: ["5,7", "5.7", "5,66"],
-                        solution:
-                            "Triangle rectangle formé par l'échelle, le mur et le sol. h<sup>2</sup> + 2<sup>2</sup> = 6<sup>2</sup>. h<sup>2</sup> = 36 - 4 = 32. h = √32 ≈ 5,66 m.",
-                    },
-                    {
-                        text: "On sait que les droites (MN) et (BC) sont parallèles. AM=3, MB=6, AN=4. Calculer AC.",
-                        type: "text",
-                        accepted: ["12", "AC=12"],
-                        solution:
-                            "Attention, il faut utiliser AB et AC ! AB = AM+MB = 9. Thalès : <div class='math-frac'><span class='math-num'>AM</span><span class='math-den'>AB</span></div> = <div class='math-frac'><span class='math-num'>AN</span><span class='math-den'>AC</span></div> ⇒ <div class='math-frac'><span class='math-num'>3</span><span class='math-den'>9</span></div> = <div class='math-frac'><span class='math-num'>4</span><span class='math-den'>AC</span></div>. AC = (9 × 4) ÷ 3 = 12.",
-                    },
-                    {
-                        text: "Pour démontrer que deux droites NE sont PAS parallèles, quel théorème utilise-t-on ?",
-                        type: "mcq",
-                        options: [
-                            "La réciproque de Thalès",
-                            "La contraposée de Thalès",
-                            "Le théorème de Pythagore",
-                        ],
-                        correct: 1,
-                        solution:
-                            "Si les rapports ne sont pas égaux, c'est la contraposée de Thalès qui permet d'affirmer que les droites ne sont pas parallèles.",
-                    },
-                    {
-                        text: "[IMAGE] Un câble de téléphérique mesure 500m. La différence d'altitude entre le départ et l'arrivée est de 300m. Quelle est la distance horizontale parcourue ?",
-                        type: "text",
-                        accepted: ["400", "400 m"],
-                        solution:
-                            "500 est l'hypoténuse. d<sup>2</sup> + 300<sup>2</sup> = 500<sup>2</sup>. d<sup>2</sup> = 250000 - 90000 = 160000. d = 400.",
-                    },
-                    {
-                        text: "ABC est un triangle tel que AB=6, AC=8, BC=11. Est-il rectangle ?",
-                        type: "mcq",
-                        options: ["Oui", "Non"],
-                        correct: 1,
-                        solution:
-                            "11<sup>2</sup> = 121. 6<sup>2</sup>+8<sup>2</sup> = 36+64=100. 121 ≠ 100. Non (Contraposée de Pythagore).",
-                    },
-                    {
-                        text: "[IMAGE] Soit deux cercles concentriques. Une corde du grand cercle est tangente au petit cercle. Si le rayon du grand est 10 et celui du petit est 6, quelle est la demi-longueur de la corde ?",
-                        type: "text",
-                        accepted: ["8"],
-                        solution:
-                            "Cela forme un triangle rectangle d'hypoténuse 10 et de côté 6. x<sup>2</sup> = 100 - 36 = 64. x = 8.",
-                    },
-                    {
-                        text: "Dans une configuration de Thalès, si le rapport de réduction est k=0,5, par combien est divisée l'aire du triangle ?",
-                        type: "mcq",
-                        options: ["Par 2", "Par 4", "Par 0,5"],
-                        correct: 1,
-                        solution:
-                            "Si les longueurs sont multipliées par k, les aires sont multipliées par k<sup>2</sup>. 0,5<sup>2</sup> = 0,25 (soit une division par 4).",
-                    },
-                    {
-                        text: "Un triangle équilatéral a pour côté 4 cm. Quelle est sa hauteur (arrondie au dixième) ?",
-                        type: "text",
-                        accepted: ["3,5", "3.5"],
-                        solution:
-                            "La hauteur coupe la base en son milieu (2 cm). h<sup>2</sup> + 2<sup>2</sup> = 4<sup>2</sup>. h<sup>2</sup> = 16 - 4 = 12. h = √12 ≈ 3,46.",
-                    },
-                    {
-                        text: "[IMAGE] Thalès papillon : (d1) // (d2). Calculer x sachant que les rapports sont <div class='math-frac'><span class='math-num'>3</span><span class='math-den'>x</span></div> = <div class='math-frac'><span class='math-num'>5</span><span class='math-den'>7</span></div>",
-                        type: "text",
-                        accepted: ["4,2", "4.2", "21/5"],
-                        solution:
-                            "Produit en croix : 5x = 21, donc x = 21 ÷ 5 = 4,2.",
-                    },
-                    {
-                        text: "Si un triangle est rectangle en A, alors :",
-                        type: "mcq",
-                        options: [
-                            "BC² = AB² + AC²",
-                            "AB² = AC² + BC²",
-                            "AC² = AB² + BC²",
-                        ],
-                        correct: 0,
-                        solution:
-                            "L'hypoténuse est le côté opposé à l'angle droit (BC).",
-                    },
-                    {
-                        text: "Peut-on utiliser Thalès si les points ne sont pas alignés ?",
-                        type: "mcq",
-                        options: [
-                            "Oui",
-                            "Non",
-                            "Seulement s'ils sont coplanaires",
-                        ],
-                        correct: 1,
-                        solution:
-                            "L'alignement des points sur deux droites sécantes est une condition fondamentale.",
-                    },
-                    {
-                        text: "[IMAGE] Un mât de 10m se brise. Son sommet touche le sol à 3m du pied. A quelle hauteur s'est-il brisé ? (Problème difficile : soit x la hauteur restante)",
-                        type: "text",
-                        accepted: ["4,55", "4,55m", "91/20"],
-                        solution:
-                            "Soit x la partie au sol, la partie debout est 10-x... Non, inversement. Partie debout = x, partie tombée = 10-x (hypoténuse). x<sup>2</sup> + 3<sup>2</sup> = (10-x)<sup>2</sup>. x<sup>2</sup> + 9 = 100 - 20x + x<sup>2</sup>. 20x = 91. x = 4,55m.",
-                    },
-                    {
-                        text: "Les diagonales d'un losange mesurent 10cm et 24cm. Quel est le périmètre de ce losange ?",
-                        type: "text",
-                        accepted: ["52", "52 cm"],
-                        solution:
-                            "Les demi-diagonales (5 et 12) forment un triangle rectangle avec le côté. c<sup>2</sup> = 5<sup>2</sup> + 12<sup>2</sup> = 25 + 144 = 169. c=13. Périmètre = 13 × 4 = 52.",
-                    },
-                    {
-                        text: "Réciproque de Thalès : Si <div class='math-frac'><span class='math-num'>AM</span><span class='math-den'>AB</span></div> ≠ <div class='math-frac'><span class='math-num'>AN</span><span class='math-den'>AC</span></div>, que peut-on conclure ?",
-                        type: "mcq",
-                        options: [
-                            "Les droites ne sont pas parallèles",
-                            "Les droites sont parallèles",
-                            "On ne peut rien conclure",
-                        ],
-                        correct: 0,
-                        solution:
-                            "C'est la contraposée : si les rapports ne sont pas égaux, pas de parallélisme.",
-                    },
-                ],
-            },
-            {
-                category:
-                    "Calculs : Fractions, Puissances, Écriture Scientifique",
-                questions: [
-                    {
-                        text: "Calculer : A = <div class='math-frac'><span class='math-num'>5</span><span class='math-den'>3</span></div> - <div class='math-frac'><span class='math-num'>2</span><span class='math-den'>3</span></div> ÷ <div class='math-frac'><span class='math-num'>4</span><span class='math-den'>7</span></div>",
-                        type: "mcq",
-                        options: [
-                            "<div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div>",
-                            "<div class='math-frac'><span class='math-num'>7</span><span class='math-den'>4</span></div>",
-                            "<div class='math-frac'><span class='math-num'>21</span><span class='math-den'>12</span></div>",
-                        ],
-                        correct: 0,
-                        solution:
-                            "Priorité division : <div class='math-frac'><span class='math-num'>2</span><span class='math-den'>3</span></div> × <div class='math-frac'><span class='math-num'>7</span><span class='math-den'>4</span></div> = <div class='math-frac'><span class='math-num'>14</span><span class='math-den'>12</span></div> = <div class='math-frac'><span class='math-num'>7</span><span class='math-den'>6</span></div>. Ensuite soustraction : <div class='math-frac'><span class='math-num'>10</span><span class='math-den'>6</span></div> - <div class='math-frac'><span class='math-num'>7</span><span class='math-den'>6</span></div> = <div class='math-frac'><span class='math-num'>3</span><span class='math-den'>6</span></div> = <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div>.",
-                    },
-                    {
-                        text: "Donner l'écriture scientifique de : 0,000 056 × 10<sup>2</sup>",
-                        type: "text",
-                        accepted: ["5,6x10^-3", "5,6*10^-3"],
-                        solution:
-                            "0,000 056 = 5,6 × 10<sup>-5</sup>. Donc 5,6 × 10<sup>-5</sup> × 10<sup>2</sup> = 5,6 × 10<sup>-3</sup>.",
-                    },
-                    {
-                        text: "Simplifier B = <div class='math-frac'><span class='math-num'>7 × 10<sup>-12</sup> × 4 × 10<sup>5</sup></span><span class='math-den'>2 × 10<sup>-4</sup></span></div>",
-                        type: "text",
-                        accepted: ["1,4x10^-2", "0,014"],
-                        solution:
-                            "Nombres : (7×4)/2 = 14. Puissances : (-12+5) - (-4) = -7 + 4 = -3. Soit 14 × 10<sup>-3</sup> = 1,4 × 10<sup>-2</sup>.",
-                    },
-                    {
-                        text: "Quel est le signe de (-2)<sup>15</sup> ?",
-                        type: "mcq",
-                        options: ["Positif", "Négatif"],
-                        correct: 1,
-                        solution:
-                            "Base négative et exposant impair donnent un résultat négatif.",
-                    },
-                    {
-                        text: "Calculer la somme : <div class='math-frac'><span class='math-num'>3</span><span class='math-den'>4</span></div> + <div class='math-frac'><span class='math-num'>5</span><span class='math-den'>6</span></div>",
-                        type: "text",
-                        accepted: ["19/12", "19 sur 12"],
-                        solution:
-                            "Dénominateur commun est 12. <div class='math-frac'><span class='math-num'>9</span><span class='math-den'>12</span></div> + <div class='math-frac'><span class='math-num'>10</span><span class='math-den'>12</span></div> = <div class='math-frac'><span class='math-num'>19</span><span class='math-den'>12</span></div>.",
-                    },
-                    {
-                        text: "Écrire sous la forme a<sup>n</sup> : 3<sup>4</sup> × 3<sup>-7</sup>",
-                        type: "text",
-                        accepted: ["3^-3", "3^(-3)"],
-                        solution:
-                            "On additionne les exposants : 4 + (-7) = -3.",
-                    },
-                    {
-                        text: "La distance Terre-Soleil est d'environ 150 millions de km. En écriture scientifique (en km) :",
-                        type: "mcq",
-                        options: [
-                            "1,5 × 10<sup>8</sup>",
-                            "1,5 × 10<sup>6</sup>",
-                            "150 × 10<sup>6</sup>",
-                        ],
-                        correct: 0,
-                        solution: "150 000 000 = 1,5 × 10<sup>8</sup>.",
-                    },
-                    {
-                        text: "Calculer le carré de la fraction <div class='math-frac'><span class='math-num'>-2</span><span class='math-den'>3</span></div>",
-                        type: "text",
-                        accepted: ["4/9", "4 sur 9"],
-                        solution:
-                            "(<div class='math-frac'><span class='math-num'>-2</span><span class='math-den'>3</span></div>)<sup>2</sup> = <div class='math-frac'><span class='math-num'>4</span><span class='math-den'>9</span></div>.",
-                    },
-                    {
-                        text: "Un virus mesure 0,000 000 12 m. Un globule rouge est 60 fois plus gros. Quelle est la taille du globule en écriture scientifique ?",
-                        type: "text",
-                        accepted: ["7,2x10^-6", "7.2x10^-6"],
-                        solution:
-                            "1,2 × 10<sup>-7</sup> × 60 = 72 × 10<sup>-7</sup> = 7,2 × 10<sup>-6</sup> m.",
-                    },
-                    {
-                        text: "Simplifier l'expression : (5<sup>2</sup>)<sup>-3</sup> × 5<sup>4</sup>",
-                        type: "mcq",
-                        options: [
-                            "5<sup>-2</sup>",
-                            "5<sup>10</sup>",
-                            "5<sup>-10</sup>",
-                        ],
-                        correct: 0,
-                        solution:
-                            "5<sup>-6</sup> × 5<sup>4</sup> = 5<sup>-2</sup>.",
-                    },
-                    {
-                        text: "Quel est le résultat de : 10 - 3 × 2<sup>2</sup>",
-                        type: "text",
-                        accepted: ["-2"],
-                        solution:
-                            "Priorité à la puissance, puis multiplication : 10 - 3 × 4 = 10 - 12 = -2.",
-                    },
-                    {
-                        text: "Calculer pour x = -2 : x<sup>2</sup> - 3x + 1",
-                        type: "text",
-                        accepted: ["11"],
-                        solution:
-                            "(-2)<sup>2</sup> - 3(-2) + 1 = 4 + 6 + 1 = 11.",
-                    },
-                    {
-                        text: "L'inverse de <div class='math-frac'><span class='math-num'>-3</span><span class='math-den'>7</span></div> est :",
-                        type: "mcq",
-                        options: [
-                            "<div class='math-frac'><span class='math-num'>7</span><span class='math-den'>-3</span></div>",
-                            "<div class='math-frac'><span class='math-num'>3</span><span class='math-den'>7</span></div>",
-                            "<div class='math-frac'><span class='math-num'>-7</span><span class='math-den'>3</span></div>",
-                        ],
-                        correct: 2,
-                        solution:
-                            "L'inverse inverse le numérateur et le dénominateur (le signe reste).",
-                    },
-                    {
-                        text: "La masse d'un atome d'hydrogène est 1,67 × 10<sup>-27</sup> kg. Quelle est la masse de 10<sup>24</sup> atomes ?",
-                        type: "text",
-                        accepted: ["1,67x10^-3", "0,00167"],
-                        solution:
-                            "1,67 × 10<sup>-27</sup> × 10<sup>24</sup> = 1,67 × 10<sup>-3</sup> kg.",
-                    },
-                    {
-                        text: "Calculer : <div class='math-frac'><span class='math-num'>3</span><span class='math-den'>5</span></div> de 40% de 200",
-                        type: "text",
-                        accepted: ["48"],
-                        solution:
-                            "40% de 200 = 80. <div class='math-frac'><span class='math-num'>3</span><span class='math-den'>5</span></div> × 80 = (80÷5)×3 = 16×3 = 48.",
-                    },
-                    {
-                        text: "Écriture décimale de 3,04 × 10<sup>-2</sup>",
-                        type: "text",
-                        accepted: ["0,0304"],
-                        solution:
-                            "On décale la virgule de 2 rangs vers la gauche.",
-                    },
-                    {
-                        text: "Que vaut 2<sup>0</sup> + 2<sup>1</sup> + 2<sup>2</sup> ?",
-                        type: "text",
-                        accepted: ["7"],
-                        solution: "1 + 2 + 4 = 7.",
-                    },
-                    {
-                        text: "Réduire : <div class='math-frac'><span class='math-num'>18</span><span class='math-den'>30</span></div> en fraction irréductible",
-                        type: "text",
-                        accepted: ["3/5"],
-                        solution: "On divise par 6 en haut et en bas.",
-                    },
-                    {
-                        text: "Résultat de (10<sup>3</sup>)<sup>2</sup> ÷ 10<sup>9</sup>",
-                        type: "mcq",
-                        options: [
-                            "10<sup>-3</sup>",
-                            "10<sup>3</sup>",
-                            "10<sup>-4</sup>",
-                        ],
-                        correct: 0,
-                        solution:
-                            "10<sup>6</sup> ÷ 10<sup>9</sup> = 10<sup>6-9</sup> = 10<sup>-3</sup>.",
-                    },
-                    {
-                        text: "Un téraoctet (To) correspond à 10<sup>12</sup> octets. Combien de fichiers de 10<sup>6</sup> octets (1 Mo) peut-on mettre dedans ?",
-                        type: "text",
-                        accepted: ["10^6", "1000000", "un million"],
-                        solution:
-                            "10<sup>12</sup> ÷ 10<sup>6</sup> = 10<sup>6</sup>.",
-                    },
-                ],
-            },
-            {
-                category: "Algèbre : Calcul Littéral et Équations",
-                questions: [
-                    {
-                        text: "Développer et réduire : D = (2x - 3)(4x + 1)",
-                        type: "mcq",
-                        options: [
-                            "8x<sup>2</sup> - 10x - 3",
-                            "8x<sup>2</sup> + 14x - 3",
-                            "6x<sup>2</sup> - 10x - 3",
-                        ],
-                        correct: 0,
-                        solution:
-                            "8x<sup>2</sup> + 2x - 12x - 3 = 8x<sup>2</sup> - 10x - 3.",
-                    },
-                    {
-                        text: "Factoriser l'expression : F = (3x + 2)<sup>2</sup> - (3x + 2)(x - 5)",
-                        type: "text",
-                        accepted: ["(3x+2)(2x+7)", "(3x+2)(2x + 7)"],
-                        solution:
-                            "Facteur commun (3x+2). [(3x+2) - (x-5)] = (3x+2)(3x+2-x+5) = (3x+2)(2x+7).",
-                    },
-                    {
-                        text: "Résoudre l'équation : 3x - 7 = 9 - 11x",
-                        type: "text",
-                        accepted: ["8/7", "x=8/7"],
-                        solution:
-                            "3x + 11x = 9 + 7 ⇒ 14x = 16 ⇒ x = 16/14 = 8/7.",
-                    },
-                    {
-                        text: "Calculer l'expression E = 5x - 4 pour x = <div class='math-frac'><span class='math-num'>-7</span><span class='math-den'>5</span></div>",
-                        type: "text",
-                        accepted: ["-11"],
-                        solution:
-                            "E = 5 × (<div class='math-frac'><span class='math-num'>-7</span><span class='math-den'>5</span></div>) - 4 = -7 - 4 = -11.",
-                    },
-                    {
-                        text: "Développer (Identité remarquable) : (3x - 5)<sup>2</sup>",
-                        type: "mcq",
-                        options: [
-                            "9x<sup>2</sup> - 30x + 25",
-                            "9x<sup>2</sup> - 25",
-                            "3x<sup>2</sup> - 15x + 25",
-                        ],
-                        correct: 0,
-                        solution:
-                            "(a-b)<sup>2</sup> = a<sup>2</sup> - 2ab + b<sup>2</sup>. (3x)<sup>2</sup> - 2×3x×5 + 5<sup>2</sup> = 9x<sup>2</sup> - 30x + 25.",
-                    },
-                    {
-                        text: "Résoudre : 4(x - 2) = 3(2x + 1)",
-                        type: "text",
-                        accepted: ["-5,5", "-5.5", "-11/2"],
-                        solution:
-                            "4x - 8 = 6x + 3 ⇒ 4x - 6x = 3 + 8 ⇒ -2x = 11 ⇒ x = -5,5.",
-                    },
-                    {
-                        text: "Quelle est la forme factorisée de 16x<sup>2</sup> - 49 ?",
-                        type: "mcq",
-                        options: [
-                            "(4x - 7)(4x + 7)",
-                            "(4x - 7)<sup>2</sup>",
-                            "(16x - 7)(16x + 7)",
-                        ],
-                        correct: 0,
-                        solution:
-                            "Identité a<sup>2</sup> - b<sup>2</sup> = (a-b)(a+b). Ici a=4x, b=7.",
-                    },
-                    {
-                        text: "Exprimer le périmètre d'un rectangle de longueur L = x+3 et largeur l = 2x en fonction de x.",
-                        type: "text",
-                        accepted: ["6x+6", "6x + 6"],
-                        solution:
-                            "P = 2(L + l) = 2(x + 3 + 2x) = 2(3x + 3) = 6x + 6.",
-                    },
-                    {
-                        text: "Factoriser : 25x<sup>2</sup> + 30x + 9",
-                        type: "text",
-                        accepted: ["(5x+3)^2", "(5x+3)(5x+3)"],
-                        solution:
-                            "Reconnaître a<sup>2</sup> + 2ab + b<sup>2</sup> avec a=5x et b=3.",
-                    },
-                    {
-                        text: "Tester si x = -2 est solution de x<sup>2</sup> + x = 2",
-                        type: "mcq",
-                        options: ["Oui", "Non"],
-                        correct: 0,
-                        solution:
-                            "(-2)<sup>2</sup> + (-2) = 4 - 2 = 2. L'égalité est vérifiée.",
-                    },
-                    {
-                        text: "Développer et réduire : A = 2x(x - 4) - (x<sup>2</sup> + 3)",
-                        type: "text",
-                        accepted: ["x^2-8x-3", "x^2 - 8x - 3"],
-                        solution:
-                            "2x<sup>2</sup> - 8x - x<sup>2</sup> - 3 = x<sup>2</sup> - 8x - 3.",
-                    },
-                    {
-                        text: "Pierre a le double de l'âge de Paul. Il y a 5 ans, leur somme d'âge était 20. Quel est l'âge de Paul actuel ?",
-                        type: "text",
-                        accepted: ["10"],
-                        solution:
-                            "Soit x l'âge de Paul. Pierre = 2x. Il y a 5 ans : (x-5) + (2x-5) = 20. 3x - 10 = 20. 3x = 30. x = 10.",
-                    },
-                    {
-                        text: "Résoudre l'équation produit nul : (2x - 1)(x + 4) = 0",
-                        type: "text",
-                        accepted: ["0,5 et -4", "1/2 et -4", "0.5; -4"],
-                        solution:
-                            "Un produit est nul si l'un des facteurs est nul. 2x-1=0 ⇒ x=0,5. x+4=0 ⇒ x=-4.",
-                    },
-                    {
-                        text: "Simplifier l'expression : 3x - (5 - 2x) + 4",
-                        type: "text",
-                        accepted: ["5x - 1", "5x-1"],
-                        solution: "3x - 5 + 2x + 4 = 5x - 1.",
-                    },
-                    {
-                        text: "Si A = 2x<sup>2</sup> - 3, calculer A pour x = -10",
-                        type: "text",
-                        accepted: ["197"],
-                        solution:
-                            "2(-10)<sup>2</sup> - 3 = 2(100) - 3 = 200 - 3 = 197.",
-                    },
-                    {
-                        text: "Mettre sous forme (x+a)(x+b) l'expression x(x+3) - 2(x+3)",
-                        type: "text",
-                        accepted: ["(x+3)(x-2)"],
-                        solution: "Facteur commun (x+3). Reste (x-2).",
-                    },
-                    {
-                        text: "Résoudre x/3 = 5/6",
-                        type: "text",
-                        accepted: ["2.5", "5/2"],
-                        solution: "x = (5 × 3) ÷ 6 = 15 ÷ 6 = 2,5.",
-                    },
-                    {
-                        text: "Développer : -4(2x - 5)",
-                        type: "text",
-                        accepted: ["-8x+20", "20-8x"],
-                        solution: "-8x + 20 (Attention aux signes !)",
-                    },
-                    {
-                        text: "L'aire d'un carré est donnée par (2x-1)<sup>2</sup>. Développer cette aire.",
-                        type: "text",
-                        accepted: ["4x^2-4x+1"],
-                        solution: "4x<sup>2</sup> - 4x + 1.",
-                    },
-                    {
-                        text: "Quel nombre augmenté de 7 est égal à son triple diminué de 5 ?",
-                        type: "text",
-                        accepted: ["6"],
-                        solution:
-                            "x + 7 = 3x - 5. 7 + 5 = 3x - x. 12 = 2x. x = 6.",
-                    },
-                ],
-            },
-            {
-                category: "Transformations et Programmes de Calcul",
-                questions: [
-                    {
-                        text: "Programme de calcul : Choisir un nombre -> Ajouter 3 -> Mettre au carré -> Soustraire 9. Si je choisis 4, résultat ?",
-                        type: "text",
-                        accepted: ["40"],
-                        solution:
-                            "(4+3)<sup>2</sup> - 9 = 7<sup>2</sup> - 9 = 49 - 9 = 40.",
-                    },
-                    {
-                        text: "Même programme (x+3)<sup>2</sup> - 9. Développer l'expression littérale.",
-                        type: "mcq",
-                        options: [
-                            "x<sup>2</sup> + 6x",
-                            "x<sup>2</sup> + 9",
-                            "x<sup>2</sup> - 6x",
-                        ],
-                        correct: 0,
-                        solution:
-                            "(x<sup>2</sup> + 6x + 9) - 9 = x<sup>2</sup> + 6x.",
-                    },
-                    {
-                        text: "[IMAGE] Quelle transformation transforme la figure A en B par glissement sans rotation ?",
-                        type: "mcq",
-                        options: [
-                            "Translation",
-                            "Rotation",
-                            "Symétrie Axiale",
-                        ],
-                        correct: 0,
-                        solution:
-                            "Seule la translation conserve l'orientation sans tourner.",
-                    },
-                    {
-                        text: "Si le point A(2;3) subit une symétrie centrale par rapport à l'origine O(0;0), quelles sont les coordonnées de A' ?",
-                        type: "text",
-                        accepted: ["(-2;-3)", "-2;-3", "(-2,-3)"],
-                        solution:
-                            "L'origine est le milieu, on inverse les signes : (-2; -3).",
-                    },
-                    {
-                        text: "Une homothétie de rapport k = -0,5 :",
-                        type: "mcq",
-                        options: [
-                            "Réduit et inverse la figure",
-                            "Agrandit et inverse la figure",
-                            "Réduit sans inverser",
-                        ],
-                        correct: 0,
-                        solution:
-                            "|k|<1 donc réduction, k<0 donc inversion (rotation 180°).",
-                    },
-                    {
-                        text: "Programme : Choisir x, multiplier par -2, ajouter 10. Pour quelle valeur de départ obtient-on 0 ?",
-                        type: "text",
-                        accepted: ["5"],
-                        solution: "-2x + 10 = 0 ⇒ -2x = -10 ⇒ x = 5.",
-                    },
-                    {
-                        text: "Si j'applique une homothétie de rapport 3 à un triangle d'aire 5 cm<sup>2</sup>, quelle est la nouvelle aire ?",
-                        type: "mcq",
-                        options: [
-                            "45 cm<sup>2</sup>",
-                            "15 cm<sup>2</sup>",
-                            "9 cm<sup>2</sup>",
-                        ],
-                        correct: 0,
-                        solution:
-                            "Aire × k<sup>2</sup> = 5 × 3<sup>2</sup> = 5 × 9 = 45.",
-                    },
-                    {
-                        text: "[IMAGE] Une rotation de 90° sens horaire transforme un point A(0;1) en :",
-                        type: "text",
-                        accepted: ["(1;0)", "1;0"],
-                        solution:
-                            "On tourne d'un quart de tour vers la droite autour de l'origine.",
-                    },
-                    {
-                        text: "On considère la fonction f(x) = 3x - 5. Quelle est l'image de -2 ?",
-                        type: "text",
-                        accepted: ["-11"],
-                        solution: "3(-2) - 5 = -6 - 5 = -11.",
-                    },
-                    {
-                        text: "L'antécédent de 7 par la fonction g(x) = 2x + 1 est :",
-                        type: "text",
-                        accepted: ["3"],
-                        solution:
-                            "On cherche x tel que 2x + 1 = 7. 2x = 6 ⇒ x = 3.",
-                    },
-                    {
-                        text: "Programme A : 4x. Programme B : 2x + 8. Quand A = B ?",
-                        type: "text",
-                        accepted: ["4", "x=4"],
-                        solution: "4x = 2x + 8 ⇒ 2x = 8 ⇒ x = 4.",
-                    },
-                    {
-                        text: "[IMAGE] Quel est le centre de l'homothétie qui transforme le petit carré en le grand carré aligné ?",
-                        type: "mcq",
-                        options: [
-                            "Le point d'intersection des droites passant par les sommets",
-                            "Le centre du petit carré",
-                            "Le milieu du segment reliant les centres",
-                        ],
-                        correct: 0,
-                        solution:
-                            "C'est la définition géométrique du centre d'homothétie.",
-                    },
-                    {
-                        text: "Translation de vecteur u(3; -1) appliquée à B(-1; 4). Coordonnées de B' ?",
-                        type: "text",
-                        accepted: ["(2;3)", "2;3"],
-                        solution: "x' = -1 + 3 = 2. y' = 4 - 1 = 3.",
-                    },
-                    {
-                        text: "Une symétrie axiale conserve-t-elle les longueurs ?",
-                        type: "mcq",
-                        options: [
-                            "Oui, toujours",
-                            "Non, ça dépend de l'axe",
-                            "Seulement si l'axe est vertical",
-                        ],
-                        correct: 0,
-                        solution:
-                            "Toutes les isométries (translations, rotations, symétries) conservent les longueurs.",
-                    },
-                    {
-                        text: "Programme : Choisir un nombre, soustraire 2, multiplier par le nombre de départ. Écriture littérale ?",
-                        type: "mcq",
-                        options: ["x(x-2)", "x-2x", "(x-2)x<sup>2</sup>"],
-                        correct: 0,
-                        solution:
-                            "Nombre x. Soustraire 2 : (x-2). Multiplier par x : x(x-2).",
-                    },
-                    {
-                        text: "Résoudre x(x-2) = x<sup>2</sup> - 8",
-                        type: "text",
-                        accepted: ["4", "x=4"],
-                        solution:
-                            "Développer : x<sup>2</sup> - 2x = x<sup>2</sup> - 8. Les x<sup>2</sup> s'annulent : -2x = -8 ⇒ x = 4.",
-                    },
-                    {
-                        text: "Si une voiture roule à v km/h, quelle formule donne la distance d en fonction du temps t ?",
-                        type: "mcq",
-                        options: ["d = v × t", "d = v / t", "d = t / v"],
-                        correct: 0,
-                        solution: "Base de la cinématique.",
-                    },
-                    {
-                        text: "[IMAGE] Rotation : Triangle ABC équilatéral de centre O. L'image de A par la rotation de centre O et d'angle 120° (sens horaire) est :",
-                        type: "mcq",
-                        options: ["C", "B", "A"],
-                        correct: 1,
-                        solution:
-                            "(Dépend du nommage sur l'image, supposons A en haut, B à droite). 120° = 360/3. A va sur B.",
-                    },
-                    {
-                        text: "Quel nombre ne change pas si on lui applique le programme : multiplier par 5, puis soustraire 12 ?",
-                        type: "text",
-                        accepted: ["3"],
-                        solution: "5x - 12 = x. 4x = 12. x = 3.",
-                    },
-                    {
-                        text: "Agrandissement : Si les longueurs sont x3, le volume est multiplié par :",
-                        type: "mcq",
-                        options: ["27", "9", "3"],
-                        correct: 0,
-                        solution:
-                            "Volume × k<sup>3</sup>. 3<sup>3</sup> = 27.",
-                    },
-                ],
-            },
-        ];
-
-        const app = {
-            state: {
-                catIdx: 0,
-                qIdx: 0,
-            },
-
-            init: function () {
-                this.renderMenu();
-            },
-
-            renderMenu: function () {
-                const nav = document.getElementById("nav-container");
-                nav.innerHTML = "";
-                document.getElementById("quiz-ui").classList.add("hidden");
-                document
-                    .getElementById("nav-container")
-                    .classList.remove("hidden");
-
-                db.forEach((cat, idx) => {
-                    const btn = document.createElement("div");
-                    btn.className = "nav-btn";
-                    btn.textContent = cat.category;
-                    btn.onclick = () => this.startCategory(idx);
-                    nav.appendChild(btn);
-                });
-            },
-
-            startCategory: function (idx) {
-                this.state.catIdx = idx;
-                this.state.qIdx = 0;
-
-                document
-                    .getElementById("nav-container")
-                    .classList.add("hidden");
-                document
-                    .getElementById("quiz-ui")
-                    .classList.remove("hidden");
-                this.renderQuestion();
-            },
-
-            renderQuestion: function () {
-                const q = db[this.state.catIdx].questions[this.state.qIdx];
-                const card = document.getElementById(
-                    "question-card-container",
-                );
-                const feedback = document.getElementById("feedback-area");
-                const btn = document.getElementById("main-btn");
-
-                card.classList.remove("fast-exit", "entering");
-                void card.offsetWidth;
-                card.classList.add("entering");
-
-                feedback.className = "";
-                feedback.classList.remove("visible");
-                feedback.style.display = "none";
-
-                btn.textContent = "Valider la réponse";
-                btn.disabled = false;
-                btn.style.backgroundColor = "#4c51bf";
-
-                document.getElementById("cat-label").textContent =
-                    db[this.state.catIdx].category;
-                document.getElementById("counter-label").textContent =
-                    `${this.state.qIdx + 1} / ${db[this.state.catIdx].questions.length}`;
-                document.getElementById("question-text").innerHTML = q.text;
-
-                const imgArea = document.getElementById("image-area");
-                if (q.image) {
-                    imgArea.innerHTML = `<img src="${q.image}">`;
-                    imgArea.classList.remove("hidden");
-                } else {
-                    imgArea.classList.add("hidden");
-                }
-
-                const pct =
-                    (this.state.qIdx /
-                        db[this.state.catIdx].questions.length) *
-                    100;
-                document.getElementById("progress-fill").style.width =
-                    pct + "%";
-
-                const inputArea = document.getElementById("input-area");
-                inputArea.innerHTML = "";
-
-                if (q.type === "mcq") {
-                    const container = document.createElement("div");
-                    container.className = "options-container";
-
-                    let mixedOptions = q.options.map(
-                        (optText, originalIndex) => {
-                            return { text: optText, val: originalIndex };
+        <script>
+            const db = [
+                {
+                    category:
+                        "Géométrie : Pythagore et Thalès (Théorèmes et Réciproques)",
+                    questions: [
+                        {
+                            text: "Soit un triangle ABC rectangle en A. On donne AB = 5 cm et AC = 12 cm. Calculer la longueur BC.",
+                            type: "text",
+                            accepted: ["13", "13 cm"],
+                            solution:
+                                "Théorème de Pythagore : BC<sup>2</sup> = AB<sup>2</sup> + AC<sup>2</sup> = 25 + 144 = 169. BC = √169 = 13 cm.",
+                            image: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pg0KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHNoYXBlLXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiB2aWV3Qm94PSI1NTAgMTMwIDMwMCA1ODAiIHdpZHRoPSIzMDBweCIgaGVpZ2h0PSI1ODBweCI+PGRlZnM+PG1hcmtlciBpZD0iYXJyb3doZWFkIiBtYXJrZXJXaWR0aD0iMTAiIG1hcmtlckhlaWdodD0iNyIgcmVmWD0iOSIgcmVmWT0iMy41IiBvcmllbnQ9ImF1dG8iPjxwb2x5Z29uIHBvaW50cz0iMCAwLCAxMCAzLjUsIDAgNyIgZmlsbD0iIzY0NzQ4YiIvPjwvbWFya2VyPjwvZGVmcz48Zz48Zz48bGluZSB4MT0iNjAwIiB5MT0iNjYwIiB4Mj0iODAwIiB5Mj0iNjYwIiBzdHJva2U9InRyYW5zcGFyZW50IiBzdHJva2Utd2lkdGg9IjEyLjQwIi8+PGxpbmUgeDE9IjYwMCIgeTE9IjY2MCIgeDI9IjgwMCIgeTI9IjY2MCIgc3Ryb2tlPSIjM2I4MmY2IiBzdHJva2Utd2lkdGg9IjIiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg3MDAsIDY2MCkiPjxyZWN0IHg9Ii0yMCIgeT0iLTEwIiB3aWR0aD0iNDAiIGhlaWdodD0iMjAiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuOSIgcng9IjQiIHRyYW5zZm9ybT0ic2NhbGUoMC44MykiLz48dGV4dCB5PSI0LjEzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjMWUyOTNiIiBmb250LXNpemU9IjE0Ij41LjAwPC90ZXh0PjwvZz48L2c+PGc+PGxpbmUgeDE9IjgwMCIgeTE9IjY2MCIgeDI9IjYwMCIgeTI9IjE4MCIgc3Ryb2tlPSJ0cmFuc3BhcmVudCIgc3Ryb2tlLXdpZHRoPSIxMi40MCIvPjxsaW5lIHgxPSI4MDAiIHkxPSI2NjAiIHgyPSI2MDAiIHkyPSIxODAiIHN0cm9rZT0iIzNiODJmNiIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjxnPjxsaW5lIHgxPSI2MDAiIHkxPSIxODAiIHgyPSI2MDAiIHkyPSI2NjAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHN0cm9rZS13aWR0aD0iMTIuNDAiLz48bGluZSB4MT0iNjAwIiB5MT0iMTgwIiB4Mj0iNjAwIiB5Mj0iNjYwIiBzdHJva2U9IiMzYjgyZjYiIHN0cm9rZS13aWR0aD0iMiIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYwMCwgNDIwKSI+PHJlY3QgeD0iLTIwIiB5PSItMTAiIHdpZHRoPSI0MCIgaGVpZ2h0PSIyMCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC45IiByeD0iNCIgdHJhbnNmb3JtPSJzY2FsZSgwLjgzKSIvPjx0ZXh0IHk9IjQuMTMiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiMxZTI5M2IiIGZvbnQtc2l6ZT0iMTQiPjEyLjAwPC90ZXh0PjwvZz48L2c+PGc+PGNpcmNsZSBjeD0iNjAwIiBjeT0iNjYwIiByPSIxMy4yMiIgZmlsbD0idHJhbnNwYXJlbnQiLz48Y2lyY2xlIGN4PSI2MDAiIGN5PSI2NjAiIHI9IjYiIGZpbGw9IiNmNDNmNWUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjx0ZXh0IHg9IjYxMCIgeT0iNjUwIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMWUyOTNiIiBmb250LXdlaWdodD0iYm9sZCIgZmlsdGVyPSJ1cmwoI2JnKSI+QTwvdGV4dD48L2c+PGc+PGNpcmNsZSBjeD0iODAwIiBjeT0iNjYwIiByPSIxMy4yMiIgZmlsbD0idHJhbnNwYXJlbnQiLz48Y2lyY2xlIGN4PSI4MDAiIGN5PSI2NjAiIHI9IjYiIGZpbGw9IiMzYjgyZjYiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjx0ZXh0IHg9IjgxMCIgeT0iNjUwIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMWUyOTNiIiBmb250LXdlaWdodD0iYm9sZCIgZmlsdGVyPSJ1cmwoI2JnKSI+QjwvdGV4dD48L2c+PGc+PGNpcmNsZSBjeD0iNjAwIiBjeT0iMTgwIiByPSIxMy4yMiIgZmlsbD0idHJhbnNwYXJlbnQiLz48Y2lyY2xlIGN4PSI2MDAiIGN5PSIxODAiIHI9IjYiIGZpbGw9IiMzYjgyZjYiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjx0ZXh0IHg9IjYxMCIgeT0iMTcwIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMWUyOTNiIiBmb250LXdlaWdodD0iYm9sZCIgZmlsdGVyPSJ1cmwoI2JnKSI+QzwvdGV4dD48L2c+PC9nPjxkZWZzPjxmaWx0ZXIgeD0iLTAuMSIgeT0iLTAuMSIgd2lkdGg9IjEuMiIgaGVpZ2h0PSIxLjIiIGlkPSJiZyI+PGZlRmxvb2QgZmxvb2QtY29sb3I9IiNmZmZmZmYiIHJlc3VsdD0iYmciLz48ZmVNZXJnZT48ZmVNZXJnZU5vZGUgaW49ImJnIi8+PGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+PC9mZU1lcmdlPjwvZmlsdGVyPjwvZGVmcz48L3N2Zz4=",
                         },
+                        {
+                            text: "Un triangle DEF a pour dimensions : DE = 8 cm, EF = 15 cm et DF = 17 cm. Ce triangle est-il rectangle ?",
+                            type: "mcq",
+                            options: [
+                                "Oui, rectangle en E",
+                                "Oui, rectangle en D",
+                                "Non, il n'est pas rectangle",
+                            ],
+                            correct: 0,
+                            solution:
+                                "Le plus grand côté est DF. DF<sup>2</sup> = 289. DE<sup>2</sup> + EF<sup>2</sup> = 64 + 225 = 289. L'égalité est vérifiée, donc d'après la réciproque de Pythagore, le triangle est rectangle en E (sommet opposé à l'hypoténuse).",
+                        },
+                        {
+                            text: "Configuration Papillon : Les droites (AB) et (CD) sont sécantes en O. Les droites (AC) et (BD) sont parallèles. On donne OA = 4, OB = 6, OC = 5. Calculer OD.",
+                            type: "text",
+                            accepted: ["7.5", "7,5"],
+                            solution:
+                                "Théorème de Thalès : <div class='math-frac'><span class='math-num'>OA</span><span class='math-den'>OB</span></div> = <div class='math-frac'><span class='math-num'>OC</span><span class='math-den'>OD</span></div>. Soit <div class='math-frac'><span class='math-num'>4</span><span class='math-den'>6</span></div> = <div class='math-frac'><span class='math-num'>5</span><span class='math-den'>OD</span></div>. OD = (6 × 5) ÷ 4 = 7,5.",
+                            image: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pg0KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHNoYXBlLXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiB2aWV3Qm94PSI1NTAgMjEwIDQyMCAzODAiIHdpZHRoPSI0MjBweCIgaGVpZ2h0PSIzODBweCI+PGRlZnM+PG1hcmtlciBpZD0iYXJyb3doZWFkIiBtYXJrZXJXaWR0aD0iMTAiIG1hcmtlckhlaWdodD0iNyIgcmVmWD0iOSIgcmVmWT0iMy41IiBvcmllbnQ9ImF1dG8iPjxwb2x5Z29uIHBvaW50cz0iMCAwLCAxMCAzLjUsIDAgNyIgZmlsbD0iIzY0NzQ4YiIvPjwvbWFya2VyPjwvZGVmcz48Zz48Zz48bGluZSB4MT0iNjAwIiB5MT0iNTQwIiB4Mj0iNjgwIiB5Mj0iNDAwIiBzdHJva2U9InRyYW5zcGFyZW50IiBzdHJva2Utd2lkdGg9IjEzLjY0Ii8+PGxpbmUgeDE9IjYwMCIgeTE9IjU0MCIgeDI9IjY4MCIgeTI9IjQwMCIgc3Ryb2tlPSIjM2I4MmY2IiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PGc+PGxpbmUgeDE9IjkyMCIgeTE9IjU0MCIgeDI9Ijg0MCIgeTI9IjQwMCIgc3Ryb2tlPSJ0cmFuc3BhcmVudCIgc3Ryb2tlLXdpZHRoPSIxMy42NCIvPjxsaW5lIHgxPSI5MjAiIHkxPSI1NDAiIHgyPSI4NDAiIHkyPSI0MDAiIHN0cm9rZT0iIzNiODJmNiIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjxnPjxsaW5lIHgxPSI4NDAiIHkxPSI0MDAiIHgyPSI3NjAiIHkyPSIyNjAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHN0cm9rZS13aWR0aD0iMTMuNjQiLz48bGluZSB4MT0iODQwIiB5MT0iNDAwIiB4Mj0iNzYwIiB5Mj0iMjYwIiBzdHJva2U9IiMzYjgyZjYiIHN0cm9rZS13aWR0aD0iMiIvPjwvZz48Zz48bGluZSB4MT0iNzYwIiB5MT0iMjYwIiB4Mj0iNjgwIiB5Mj0iNDAwIiBzdHJva2U9InRyYW5zcGFyZW50IiBzdHJva2Utd2lkdGg9IjEzLjY0Ii8+PGxpbmUgeDE9Ijc2MCIgeTE9IjI2MCIgeDI9IjY4MCIgeTI9IjQwMCIgc3Ryb2tlPSIjM2I4MmY2IiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PGc+PGxpbmUgeDE9IjY4MCIgeTE9IjQwMCIgeDI9Ijg0MCIgeTI9IjQwMCIgc3Ryb2tlPSJ0cmFuc3BhcmVudCIgc3Ryb2tlLXdpZHRoPSIxMy42NCIvPjxsaW5lIHgxPSI2ODAiIHkxPSI0MDAiIHgyPSI4NDAiIHkyPSI0MDAiIHN0cm9rZT0iIzNiODJmNiIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjxnPjxsaW5lIHgxPSI2MDAiIHkxPSI1NDAiIHgyPSI5MjAiIHkyPSI1NDAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHN0cm9rZS13aWR0aD0iMTMuNjQiLz48bGluZSB4MT0iNjAwIiB5MT0iNTQwIiB4Mj0iOTIwIiB5Mj0iNTQwIiBzdHJva2U9IiMzYjgyZjYiIHN0cm9rZS13aWR0aD0iMiIvPjwvZz48Zz48Y2lyY2xlIGN4PSI2MDAiIGN5PSI1NDAiIHI9IjE0LjU1IiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxjaXJjbGUgY3g9IjYwMCIgY3k9IjU0MCIgcj0iNiIgZmlsbD0iIzNiODJmNiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iNjEwIiB5PSI1MzAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiMxZTI5M2IiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWx0ZXI9InVybCgjYmcpIj5BPC90ZXh0PjwvZz48Zz48Y2lyY2xlIGN4PSI2ODAiIGN5PSI0MDAiIHI9IjE0LjU1IiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxjaXJjbGUgY3g9IjY4MCIgY3k9IjQwMCIgcj0iNiIgZmlsbD0iIzNiODJmNiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iNjkwIiB5PSIzOTAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiMxZTI5M2IiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWx0ZXI9InVybCgjYmcpIj5CPC90ZXh0PjwvZz48Zz48Y2lyY2xlIGN4PSI5MjAiIGN5PSI1NDAiIHI9IjE0LjU1IiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxjaXJjbGUgY3g9IjkyMCIgY3k9IjU0MCIgcj0iNiIgZmlsbD0iI2Y0M2Y1ZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iOTMwIiB5PSI1MzAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiMxZTI5M2IiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWx0ZXI9InVybCgjYmcpIj5DPC90ZXh0PjwvZz48Zz48Y2lyY2xlIGN4PSI4NDAiIGN5PSI0MDAiIHI9IjE0LjU1IiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxjaXJjbGUgY3g9Ijg0MCIgY3k9IjQwMCIgcj0iNiIgZmlsbD0iIzNiODJmNiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iODUwIiB5PSIzOTAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiMxZTI5M2IiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWx0ZXI9InVybCgjYmcpIj5EPC90ZXh0PjwvZz48Zz48Y2lyY2xlIGN4PSI3NjAiIGN5PSIyNjAiIHI9IjE0LjU1IiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxjaXJjbGUgY3g9Ijc2MCIgY3k9IjI2MCIgcj0iNiIgZmlsbD0iIzNiODJmNiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iNzcwIiB5PSIyNTAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiMxZTI5M2IiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWx0ZXI9InVybCgjYmcpIj5PPC90ZXh0PjwvZz48L2c+PGRlZnM+PGZpbHRlciB4PSItMC4xIiB5PSItMC4xIiB3aWR0aD0iMS4yIiBoZWlnaHQ9IjEuMiIgaWQ9ImJnIj48ZmVGbG9vZCBmbG9vZC1jb2xvcj0iI2ZmZmZmZiIgcmVzdWx0PSJiZyIvPjxmZU1lcmdlPjxmZU1lcmdlTm9kZSBpbj0iYmciLz48ZmVNZXJnZU5vZGUgaW49IlNvdXJjZUdyYXBoaWMiLz48L2ZlTWVyZ2U+PC9maWx0ZXI+PC9kZWZzPjwvc3ZnPg==",
+                        },
+                        {
+                            text: "Dans un triangle MNP, MN = 6, NP = 9, MP = 12. Ce triangle est-il rectangle ?",
+                            type: "mcq",
+                            options: ["Oui", "Non"],
+                            correct: 1,
+                            solution:
+                                "Plus grand côté MP. MP<sup>2</sup> = 144. MN<sup>2</sup> + NP<sup>2</sup> = 36 + 81 = 117. Comme 144 ≠ 117, d'après la contraposée de Pythagore, le triangle n'est pas rectangle.",
+                        },
+                        {
+                            text: "[IMAGE] Sur la figure, les points A, B, C sont alignés, ainsi que A, D, E. On donne AB=5, AC=15, AD=4, AE=12. Les droites (BD) et (CE) sont-elles parallèles ?",
+                            type: "mcq",
+                            options: ["Oui", "Non", "On ne peut pas savoir"],
+                            correct: 0,
+                            solution:
+                                "On calcule les rapports : <div class='math-frac'><span class='math-num'>AB</span><span class='math-den'>AC</span></div> = <div class='math-frac'><span class='math-num'>5</span><span class='math-den'>15</span></div> = <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>3</span></div>. <div class='math-frac'><span class='math-num'>AD</span><span class='math-den'>AE</span></div> = <div class='math-frac'><span class='math-num'>4</span><span class='math-den'>12</span></div> = <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>3</span></div>. Les rapports sont égaux et les points alignés dans le même ordre, donc les droites sont parallèles (Réciproque de Thalès).",
+                        },
+                        {
+                            text: "Quelle est la longueur de la diagonale d'un rectangle de longueur 8 cm et de largeur 6 cm ?",
+                            type: "text",
+                            accepted: ["10", "10 cm"],
+                            solution:
+                                "Diagonale d<sup>2</sup> = 8<sup>2</sup> + 6<sup>2</sup> = 64 + 36 = 100. d = 10.",
+                        },
+                        {
+                            text: "[IMAGE] Une échelle de 6 m est posée contre un mur vertical. Le pied de l'échelle est à 2 m du mur. À quelle hauteur (arrondie au dixième) l'échelle touche-t-elle le mur ?",
+                            type: "text",
+                            accepted: ["5,7", "5.7", "5,66"],
+                            solution:
+                                "Triangle rectangle formé par l'échelle, le mur et le sol. h<sup>2</sup> + 2<sup>2</sup> = 6<sup>2</sup>. h<sup>2</sup> = 36 - 4 = 32. h = √32 ≈ 5,66 m.",
+                        },
+                        {
+                            text: "On sait que les droites (MN) et (BC) sont parallèles. AM=3, MB=6, AN=4. Calculer AC.",
+                            type: "text",
+                            accepted: ["12", "AC=12"],
+                            solution:
+                                "Attention, il faut utiliser AB et AC ! AB = AM+MB = 9. Thalès : <div class='math-frac'><span class='math-num'>AM</span><span class='math-den'>AB</span></div> = <div class='math-frac'><span class='math-num'>AN</span><span class='math-den'>AC</span></div> ⇒ <div class='math-frac'><span class='math-num'>3</span><span class='math-den'>9</span></div> = <div class='math-frac'><span class='math-num'>4</span><span class='math-den'>AC</span></div>. AC = (9 × 4) ÷ 3 = 12.",
+                        },
+                        {
+                            text: "Pour démontrer que deux droites NE sont PAS parallèles, quel théorème utilise-t-on ?",
+                            type: "mcq",
+                            options: [
+                                "La réciproque de Thalès",
+                                "La contraposée de Thalès",
+                                "Le théorème de Pythagore",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Si les rapports ne sont pas égaux, c'est la contraposée de Thalès qui permet d'affirmer que les droites ne sont pas parallèles.",
+                        },
+                        {
+                            text: "[IMAGE] Un câble de téléphérique mesure 500m. La différence d'altitude entre le départ et l'arrivée est de 300m. Quelle est la distance horizontale parcourue ?",
+                            type: "text",
+                            accepted: ["400", "400 m"],
+                            solution:
+                                "500 est l'hypoténuse. d<sup>2</sup> + 300<sup>2</sup> = 500<sup>2</sup>. d<sup>2</sup> = 250000 - 90000 = 160000. d = 400.",
+                        },
+                        {
+                            text: "ABC est un triangle tel que AB=6, AC=8, BC=11. Est-il rectangle ?",
+                            type: "mcq",
+                            options: ["Oui", "Non"],
+                            correct: 1,
+                            solution:
+                                "11<sup>2</sup> = 121. 6<sup>2</sup>+8<sup>2</sup> = 36+64=100. 121 ≠ 100. Non (Contraposée de Pythagore).",
+                        },
+                        {
+                            text: "[IMAGE] Soit deux cercles concentriques. Une corde du grand cercle est tangente au petit cercle. Si le rayon du grand est 10 et celui du petit est 6, quelle est la demi-longueur de la corde ?",
+                            type: "text",
+                            accepted: ["8"],
+                            solution:
+                                "Cela forme un triangle rectangle d'hypoténuse 10 et de côté 6. x<sup>2</sup> = 100 - 36 = 64. x = 8.",
+                        },
+                        {
+                            text: "Dans une configuration de Thalès, si le rapport de réduction est k=0,5, par combien est divisée l'aire du triangle ?",
+                            type: "mcq",
+                            options: ["Par 2", "Par 4", "Par 0,5"],
+                            correct: 1,
+                            solution:
+                                "Si les longueurs sont multipliées par k, les aires sont multipliées par k<sup>2</sup>. 0,5<sup>2</sup> = 0,25 (soit une division par 4).",
+                        },
+                        {
+                            text: "Un triangle équilatéral a pour côté 4 cm. Quelle est sa hauteur (arrondie au dixième) ?",
+                            type: "text",
+                            accepted: ["3,5", "3.5"],
+                            solution:
+                                "La hauteur coupe la base en son milieu (2 cm). h<sup>2</sup> + 2<sup>2</sup> = 4<sup>2</sup>. h<sup>2</sup> = 16 - 4 = 12. h = √12 ≈ 3,46.",
+                        },
+                        {
+                            text: "[IMAGE] Thalès papillon : (d1) // (d2). Calculer x sachant que les rapports sont <div class='math-frac'><span class='math-num'>3</span><span class='math-den'>x</span></div> = <div class='math-frac'><span class='math-num'>5</span><span class='math-den'>7</span></div>",
+                            type: "text",
+                            accepted: ["4,2", "4.2", "21/5"],
+                            solution:
+                                "Produit en croix : 5x = 21, donc x = 21 ÷ 5 = 4,2.",
+                        },
+                        {
+                            text: "Si un triangle est rectangle en A, alors :",
+                            type: "mcq",
+                            options: [
+                                "BC² = AB² + AC²",
+                                "AB² = AC² + BC²",
+                                "AC² = AB² + BC²",
+                            ],
+                            correct: 0,
+                            solution:
+                                "L'hypoténuse est le côté opposé à l'angle droit (BC).",
+                        },
+                        {
+                            text: "Peut-on utiliser Thalès si les points ne sont pas alignés ?",
+                            type: "mcq",
+                            options: [
+                                "Oui",
+                                "Non",
+                                "Seulement s'ils sont coplanaires",
+                            ],
+                            correct: 1,
+                            solution:
+                                "L'alignement des points sur deux droites sécantes est une condition fondamentale.",
+                        },
+                        {
+                            text: "[IMAGE] Un mât de 10m se brise. Son sommet touche le sol à 3m du pied. A quelle hauteur s'est-il brisé ? (Problème difficile : soit x la hauteur restante)",
+                            type: "text",
+                            accepted: ["4,55", "4,55m", "91/20"],
+                            solution:
+                                "Soit x la partie au sol, la partie debout est 10-x... Non, inversement. Partie debout = x, partie tombée = 10-x (hypoténuse). x<sup>2</sup> + 3<sup>2</sup> = (10-x)<sup>2</sup>. x<sup>2</sup> + 9 = 100 - 20x + x<sup>2</sup>. 20x = 91. x = 4,55m.",
+                        },
+                        {
+                            text: "Les diagonales d'un losange mesurent 10cm et 24cm. Quel est le périmètre de ce losange ?",
+                            type: "text",
+                            accepted: ["52", "52 cm"],
+                            solution:
+                                "Les demi-diagonales (5 et 12) forment un triangle rectangle avec le côté. c<sup>2</sup> = 5<sup>2</sup> + 12<sup>2</sup> = 25 + 144 = 169. c=13. Périmètre = 13 × 4 = 52.",
+                        },
+                        {
+                            text: "Réciproque de Thalès : Si <div class='math-frac'><span class='math-num'>AM</span><span class='math-den'>AB</span></div> ≠ <div class='math-frac'><span class='math-num'>AN</span><span class='math-den'>AC</span></div>, que peut-on conclure ?",
+                            type: "mcq",
+                            options: [
+                                "Les droites ne sont pas parallèles",
+                                "Les droites sont parallèles",
+                                "On ne peut rien conclure",
+                            ],
+                            correct: 0,
+                            solution:
+                                "C'est la contraposée : si les rapports ne sont pas égaux, pas de parallélisme.",
+                        },
+                    ],
+                },
+                {
+                    category:
+                        "Calculs : Fractions, Puissances, Écriture Scientifique",
+                    questions: [
+                        {
+                            text: "Calculer : A = <div class='math-frac'><span class='math-num'>5</span><span class='math-den'>3</span></div> - <div class='math-frac'><span class='math-num'>2</span><span class='math-den'>3</span></div> ÷ <div class='math-frac'><span class='math-num'>4</span><span class='math-den'>7</span></div>",
+                            type: "mcq",
+                            options: [
+                                "<div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div>",
+                                "<div class='math-frac'><span class='math-num'>7</span><span class='math-den'>4</span></div>",
+                                "<div class='math-frac'><span class='math-num'>21</span><span class='math-den'>12</span></div>",
+                            ],
+                            correct: 0,
+                            solution:
+                                "Priorité division : <div class='math-frac'><span class='math-num'>2</span><span class='math-den'>3</span></div> × <div class='math-frac'><span class='math-num'>7</span><span class='math-den'>4</span></div> = <div class='math-frac'><span class='math-num'>14</span><span class='math-den'>12</span></div> = <div class='math-frac'><span class='math-num'>7</span><span class='math-den'>6</span></div>. Ensuite soustraction : <div class='math-frac'><span class='math-num'>10</span><span class='math-den'>6</span></div> - <div class='math-frac'><span class='math-num'>7</span><span class='math-den'>6</span></div> = <div class='math-frac'><span class='math-num'>3</span><span class='math-den'>6</span></div> = <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div>.",
+                        },
+                        {
+                            text: "Donner l'écriture scientifique de : 0,000 056 × 10<sup>2</sup>",
+                            type: "text",
+                            accepted: ["5,6x10^-3", "5,6*10^-3"],
+                            solution:
+                                "0,000 056 = 5,6 × 10<sup>-5</sup>. Donc 5,6 × 10<sup>-5</sup> × 10<sup>2</sup> = 5,6 × 10<sup>-3</sup>.",
+                        },
+                        {
+                            text: "Simplifier B = <div class='math-frac'><span class='math-num'>7 × 10<sup>-12</sup> × 4 × 10<sup>5</sup></span><span class='math-den'>2 × 10<sup>-4</sup></span></div>",
+                            type: "text",
+                            accepted: ["1,4x10^-2", "0,014"],
+                            solution:
+                                "Nombres : (7×4)/2 = 14. Puissances : (-12+5) - (-4) = -7 + 4 = -3. Soit 14 × 10<sup>-3</sup> = 1,4 × 10<sup>-2</sup>.",
+                        },
+                        {
+                            text: "Quel est le signe de (-2)<sup>15</sup> ?",
+                            type: "mcq",
+                            options: ["Positif", "Négatif"],
+                            correct: 1,
+                            solution:
+                                "Base négative et exposant impair donnent un résultat négatif.",
+                        },
+                        {
+                            text: "Calculer la somme : <div class='math-frac'><span class='math-num'>3</span><span class='math-den'>4</span></div> + <div class='math-frac'><span class='math-num'>5</span><span class='math-den'>6</span></div>",
+                            type: "text",
+                            accepted: ["19/12", "19 sur 12"],
+                            solution:
+                                "Dénominateur commun est 12. <div class='math-frac'><span class='math-num'>9</span><span class='math-den'>12</span></div> + <div class='math-frac'><span class='math-num'>10</span><span class='math-den'>12</span></div> = <div class='math-frac'><span class='math-num'>19</span><span class='math-den'>12</span></div>.",
+                        },
+                        {
+                            text: "Écrire sous la forme a<sup>n</sup> : 3<sup>4</sup> × 3<sup>-7</sup>",
+                            type: "text",
+                            accepted: ["3^-3", "3^(-3)"],
+                            solution:
+                                "On additionne les exposants : 4 + (-7) = -3.",
+                        },
+                        {
+                            text: "La distance Terre-Soleil est d'environ 150 millions de km. En écriture scientifique (en km) :",
+                            type: "mcq",
+                            options: [
+                                "1,5 × 10<sup>8</sup>",
+                                "1,5 × 10<sup>6</sup>",
+                                "150 × 10<sup>6</sup>",
+                            ],
+                            correct: 0,
+                            solution: "150 000 000 = 1,5 × 10<sup>8</sup>.",
+                        },
+                        {
+                            text: "Calculer le carré de la fraction <div class='math-frac'><span class='math-num'>-2</span><span class='math-den'>3</span></div>",
+                            type: "text",
+                            accepted: ["4/9", "4 sur 9"],
+                            solution:
+                                "(<div class='math-frac'><span class='math-num'>-2</span><span class='math-den'>3</span></div>)<sup>2</sup> = <div class='math-frac'><span class='math-num'>4</span><span class='math-den'>9</span></div>.",
+                        },
+                        {
+                            text: "Un virus mesure 0,000 000 12 m. Un globule rouge est 60 fois plus gros. Quelle est la taille du globule en écriture scientifique ?",
+                            type: "text",
+                            accepted: ["7,2x10^-6", "7.2x10^-6"],
+                            solution:
+                                "1,2 × 10<sup>-7</sup> × 60 = 72 × 10<sup>-7</sup> = 7,2 × 10<sup>-6</sup> m.",
+                        },
+                        {
+                            text: "Simplifier l'expression : (5<sup>2</sup>)<sup>-3</sup> × 5<sup>4</sup>",
+                            type: "mcq",
+                            options: [
+                                "5<sup>-2</sup>",
+                                "5<sup>10</sup>",
+                                "5<sup>-10</sup>",
+                            ],
+                            correct: 0,
+                            solution:
+                                "5<sup>-6</sup> × 5<sup>4</sup> = 5<sup>-2</sup>.",
+                        },
+                        {
+                            text: "Quel est le résultat de : 10 - 3 × 2<sup>2</sup>",
+                            type: "text",
+                            accepted: ["-2"],
+                            solution:
+                                "Priorité à la puissance, puis multiplication : 10 - 3 × 4 = 10 - 12 = -2.",
+                        },
+                        {
+                            text: "Calculer pour x = -2 : x<sup>2</sup> - 3x + 1",
+                            type: "text",
+                            accepted: ["11"],
+                            solution:
+                                "(-2)<sup>2</sup> - 3(-2) + 1 = 4 + 6 + 1 = 11.",
+                        },
+                        {
+                            text: "L'inverse de <div class='math-frac'><span class='math-num'>-3</span><span class='math-den'>7</span></div> est :",
+                            type: "mcq",
+                            options: [
+                                "<div class='math-frac'><span class='math-num'>7</span><span class='math-den'>-3</span></div>",
+                                "<div class='math-frac'><span class='math-num'>3</span><span class='math-den'>7</span></div>",
+                                "<div class='math-frac'><span class='math-num'>-7</span><span class='math-den'>3</span></div>",
+                            ],
+                            correct: 2,
+                            solution:
+                                "L'inverse inverse le numérateur et le dénominateur (le signe reste).",
+                        },
+                        {
+                            text: "La masse d'un atome d'hydrogène est 1,67 × 10<sup>-27</sup> kg. Quelle est la masse de 10<sup>24</sup> atomes ?",
+                            type: "text",
+                            accepted: ["1,67x10^-3", "0,00167"],
+                            solution:
+                                "1,67 × 10<sup>-27</sup> × 10<sup>24</sup> = 1,67 × 10<sup>-3</sup> kg.",
+                        },
+                        {
+                            text: "Calculer : <div class='math-frac'><span class='math-num'>3</span><span class='math-den'>5</span></div> de 40% de 200",
+                            type: "text",
+                            accepted: ["48"],
+                            solution:
+                                "40% de 200 = 80. <div class='math-frac'><span class='math-num'>3</span><span class='math-den'>5</span></div> × 80 = (80÷5)×3 = 16×3 = 48.",
+                        },
+                        {
+                            text: "Écriture décimale de 3,04 × 10<sup>-2</sup>",
+                            type: "text",
+                            accepted: ["0,0304"],
+                            solution:
+                                "On décale la virgule de 2 rangs vers la gauche.",
+                        },
+                        {
+                            text: "Que vaut 2<sup>0</sup> + 2<sup>1</sup> + 2<sup>2</sup> ?",
+                            type: "text",
+                            accepted: ["7"],
+                            solution: "1 + 2 + 4 = 7.",
+                        },
+                        {
+                            text: "Réduire : <div class='math-frac'><span class='math-num'>18</span><span class='math-den'>30</span></div> en fraction irréductible",
+                            type: "text",
+                            accepted: ["3/5"],
+                            solution: "On divise par 6 en haut et en bas.",
+                        },
+                        {
+                            text: "Résultat de (10<sup>3</sup>)<sup>2</sup> ÷ 10<sup>9</sup>",
+                            type: "mcq",
+                            options: [
+                                "10<sup>-3</sup>",
+                                "10<sup>3</sup>",
+                                "10<sup>-4</sup>",
+                            ],
+                            correct: 0,
+                            solution:
+                                "10<sup>6</sup> ÷ 10<sup>9</sup> = 10<sup>6-9</sup> = 10<sup>-3</sup>.",
+                        },
+                        {
+                            text: "Un téraoctet (To) correspond à 10<sup>12</sup> octets. Combien de fichiers de 10<sup>6</sup> octets (1 Mo) peut-on mettre dedans ?",
+                            type: "text",
+                            accepted: ["10^6", "1000000", "un million"],
+                            solution:
+                                "10<sup>12</sup> ÷ 10<sup>6</sup> = 10<sup>6</sup>.",
+                        },
+                    ],
+                },
+                {
+                    category: "Algèbre : Calcul Littéral et Équations",
+                    questions: [
+                        {
+                            text: "Développer et réduire : D = (2x - 3)(4x + 1)",
+                            type: "mcq",
+                            options: [
+                                "8x<sup>2</sup> - 10x - 3",
+                                "8x<sup>2</sup> + 14x - 3",
+                                "6x<sup>2</sup> - 10x - 3",
+                            ],
+                            correct: 0,
+                            solution:
+                                "8x<sup>2</sup> + 2x - 12x - 3 = 8x<sup>2</sup> - 10x - 3.",
+                        },
+                        {
+                            text: "Factoriser l'expression : F = (3x + 2)<sup>2</sup> - (3x + 2)(x - 5)",
+                            type: "text",
+                            accepted: ["(3x+2)(2x+7)", "(3x+2)(2x + 7)"],
+                            solution:
+                                "Facteur commun (3x+2). [(3x+2) - (x-5)] = (3x+2)(3x+2-x+5) = (3x+2)(2x+7).",
+                        },
+                        {
+                            text: "Résoudre l'équation : 3x - 7 = 9 - 11x",
+                            type: "text",
+                            accepted: ["8/7", "x=8/7"],
+                            solution:
+                                "3x + 11x = 9 + 7 ⇒ 14x = 16 ⇒ x = 16/14 = 8/7.",
+                        },
+                        {
+                            text: "Calculer l'expression E = 5x - 4 pour x = <div class='math-frac'><span class='math-num'>-7</span><span class='math-den'>5</span></div>",
+                            type: "text",
+                            accepted: ["-11"],
+                            solution:
+                                "E = 5 × (<div class='math-frac'><span class='math-num'>-7</span><span class='math-den'>5</span></div>) - 4 = -7 - 4 = -11.",
+                        },
+                        {
+                            text: "Développer (Identité remarquable) : (3x - 5)<sup>2</sup>",
+                            type: "mcq",
+                            options: [
+                                "9x<sup>2</sup> - 30x + 25",
+                                "9x<sup>2</sup> - 25",
+                                "3x<sup>2</sup> - 15x + 25",
+                            ],
+                            correct: 0,
+                            solution:
+                                "(a-b)<sup>2</sup> = a<sup>2</sup> - 2ab + b<sup>2</sup>. (3x)<sup>2</sup> - 2×3x×5 + 5<sup>2</sup> = 9x<sup>2</sup> - 30x + 25.",
+                        },
+                        {
+                            text: "Résoudre : 4(x - 2) = 3(2x + 1)",
+                            type: "text",
+                            accepted: ["-5,5", "-5.5", "-11/2"],
+                            solution:
+                                "4x - 8 = 6x + 3 ⇒ 4x - 6x = 3 + 8 ⇒ -2x = 11 ⇒ x = -5,5.",
+                        },
+                        {
+                            text: "Quelle est la forme factorisée de 16x<sup>2</sup> - 49 ?",
+                            type: "mcq",
+                            options: [
+                                "(4x - 7)(4x + 7)",
+                                "(4x - 7)<sup>2</sup>",
+                                "(16x - 7)(16x + 7)",
+                            ],
+                            correct: 0,
+                            solution:
+                                "Identité a<sup>2</sup> - b<sup>2</sup> = (a-b)(a+b). Ici a=4x, b=7.",
+                        },
+                        {
+                            text: "Exprimer le périmètre d'un rectangle de longueur L = x+3 et largeur l = 2x en fonction de x.",
+                            type: "text",
+                            accepted: ["6x+6", "6x + 6"],
+                            solution:
+                                "P = 2(L + l) = 2(x + 3 + 2x) = 2(3x + 3) = 6x + 6.",
+                        },
+                        {
+                            text: "Factoriser : 25x<sup>2</sup> + 30x + 9",
+                            type: "text",
+                            accepted: ["(5x+3)^2", "(5x+3)(5x+3)"],
+                            solution:
+                                "Reconnaître a<sup>2</sup> + 2ab + b<sup>2</sup> avec a=5x et b=3.",
+                        },
+                        {
+                            text: "Tester si x = -2 est solution de x<sup>2</sup> + x = 2",
+                            type: "mcq",
+                            options: ["Oui", "Non"],
+                            correct: 0,
+                            solution:
+                                "(-2)<sup>2</sup> + (-2) = 4 - 2 = 2. L'égalité est vérifiée.",
+                        },
+                        {
+                            text: "Développer et réduire : A = 2x(x - 4) - (x<sup>2</sup> + 3)",
+                            type: "text",
+                            accepted: ["x^2-8x-3", "x^2 - 8x - 3"],
+                            solution:
+                                "2x<sup>2</sup> - 8x - x<sup>2</sup> - 3 = x<sup>2</sup> - 8x - 3.",
+                        },
+                        {
+                            text: "Pierre a le double de l'âge de Paul. Il y a 5 ans, leur somme d'âge était 20. Quel est l'âge de Paul actuel ?",
+                            type: "text",
+                            accepted: ["10"],
+                            solution:
+                                "Soit x l'âge de Paul. Pierre = 2x. Il y a 5 ans : (x-5) + (2x-5) = 20. 3x - 10 = 20. 3x = 30. x = 10.",
+                        },
+                        {
+                            text: "Résoudre l'équation produit nul : (2x - 1)(x + 4) = 0",
+                            type: "text",
+                            accepted: ["0,5 et -4", "1/2 et -4", "0.5; -4"],
+                            solution:
+                                "Un produit est nul si l'un des facteurs est nul. 2x-1=0 ⇒ x=0,5. x+4=0 ⇒ x=-4.",
+                        },
+                        {
+                            text: "Simplifier l'expression : 3x - (5 - 2x) + 4",
+                            type: "text",
+                            accepted: ["5x - 1", "5x-1"],
+                            solution: "3x - 5 + 2x + 4 = 5x - 1.",
+                        },
+                        {
+                            text: "Si A = 2x<sup>2</sup> - 3, calculer A pour x = -10",
+                            type: "text",
+                            accepted: ["197"],
+                            solution:
+                                "2(-10)<sup>2</sup> - 3 = 2(100) - 3 = 200 - 3 = 197.",
+                        },
+                        {
+                            text: "Mettre sous forme (x+a)(x+b) l'expression x(x+3) - 2(x+3)",
+                            type: "text",
+                            accepted: ["(x+3)(x-2)"],
+                            solution: "Facteur commun (x+3). Reste (x-2).",
+                        },
+                        {
+                            text: "Résoudre x/3 = 5/6",
+                            type: "text",
+                            accepted: ["2.5", "5/2"],
+                            solution: "x = (5 × 3) ÷ 6 = 15 ÷ 6 = 2,5.",
+                        },
+                        {
+                            text: "Développer : -4(2x - 5)",
+                            type: "text",
+                            accepted: ["-8x+20", "20-8x"],
+                            solution: "-8x + 20 (Attention aux signes !)",
+                        },
+                        {
+                            text: "L'aire d'un carré est donnée par (2x-1)<sup>2</sup>. Développer cette aire.",
+                            type: "text",
+                            accepted: ["4x^2-4x+1"],
+                            solution: "4x<sup>2</sup> - 4x + 1.",
+                        },
+                        {
+                            text: "Quel nombre augmenté de 7 est égal à son triple diminué de 5 ?",
+                            type: "text",
+                            accepted: ["6"],
+                            solution:
+                                "x + 7 = 3x - 5. 7 + 5 = 3x - x. 12 = 2x. x = 6.",
+                        },
+                    ],
+                },
+                {
+                    category: "Transformations et Programmes de Calcul",
+                    questions: [
+                        {
+                            text: "Programme de calcul : Choisir un nombre -> Ajouter 3 -> Mettre au carré -> Soustraire 9. Si je choisis 4, résultat ?",
+                            type: "text",
+                            accepted: ["40"],
+                            solution:
+                                "(4+3)<sup>2</sup> - 9 = 7<sup>2</sup> - 9 = 49 - 9 = 40.",
+                        },
+                        {
+                            text: "Même programme (x+3)<sup>2</sup> - 9. Développer l'expression littérale.",
+                            type: "mcq",
+                            options: [
+                                "x<sup>2</sup> + 6x",
+                                "x<sup>2</sup> + 9",
+                                "x<sup>2</sup> - 6x",
+                            ],
+                            correct: 0,
+                            solution:
+                                "(x<sup>2</sup> + 6x + 9) - 9 = x<sup>2</sup> + 6x.",
+                        },
+                        {
+                            text: "[IMAGE] Quelle transformation transforme la figure A en B par glissement sans rotation ?",
+                            type: "mcq",
+                            options: [
+                                "Translation",
+                                "Rotation",
+                                "Symétrie Axiale",
+                            ],
+                            correct: 0,
+                            solution:
+                                "Seule la translation conserve l'orientation sans tourner.",
+                        },
+                        {
+                            text: "Si le point A(2;3) subit une symétrie centrale par rapport à l'origine O(0;0), quelles sont les coordonnées de A' ?",
+                            type: "text",
+                            accepted: ["(-2;-3)", "-2;-3", "(-2,-3)"],
+                            solution:
+                                "L'origine est le milieu, on inverse les signes : (-2; -3).",
+                        },
+                        {
+                            text: "Une homothétie de rapport k = -0,5 :",
+                            type: "mcq",
+                            options: [
+                                "Réduit et inverse la figure",
+                                "Agrandit et inverse la figure",
+                                "Réduit sans inverser",
+                            ],
+                            correct: 0,
+                            solution:
+                                "|k|<1 donc réduction, k<0 donc inversion (rotation 180°).",
+                        },
+                        {
+                            text: "Programme : Choisir x, multiplier par -2, ajouter 10. Pour quelle valeur de départ obtient-on 0 ?",
+                            type: "text",
+                            accepted: ["5"],
+                            solution: "-2x + 10 = 0 ⇒ -2x = -10 ⇒ x = 5.",
+                        },
+                        {
+                            text: "Si j'applique une homothétie de rapport 3 à un triangle d'aire 5 cm<sup>2</sup>, quelle est la nouvelle aire ?",
+                            type: "mcq",
+                            options: [
+                                "45 cm<sup>2</sup>",
+                                "15 cm<sup>2</sup>",
+                                "9 cm<sup>2</sup>",
+                            ],
+                            correct: 0,
+                            solution:
+                                "Aire × k<sup>2</sup> = 5 × 3<sup>2</sup> = 5 × 9 = 45.",
+                        },
+                        {
+                            text: "[IMAGE] Une rotation de 90° sens horaire transforme un point A(0;1) en :",
+                            type: "text",
+                            accepted: ["(1;0)", "1;0"],
+                            solution:
+                                "On tourne d'un quart de tour vers la droite autour de l'origine.",
+                        },
+                        {
+                            text: "On considère la fonction f(x) = 3x - 5. Quelle est l'image de -2 ?",
+                            type: "text",
+                            accepted: ["-11"],
+                            solution: "3(-2) - 5 = -6 - 5 = -11.",
+                        },
+                        {
+                            text: "L'antécédent de 7 par la fonction g(x) = 2x + 1 est :",
+                            type: "text",
+                            accepted: ["3"],
+                            solution:
+                                "On cherche x tel que 2x + 1 = 7. 2x = 6 ⇒ x = 3.",
+                        },
+                        {
+                            text: "Programme A : 4x. Programme B : 2x + 8. Quand A = B ?",
+                            type: "text",
+                            accepted: ["4", "x=4"],
+                            solution: "4x = 2x + 8 ⇒ 2x = 8 ⇒ x = 4.",
+                        },
+                        {
+                            text: "[IMAGE] Quel est le centre de l'homothétie qui transforme le petit carré en le grand carré aligné ?",
+                            type: "mcq",
+                            options: [
+                                "Le point d'intersection des droites passant par les sommets",
+                                "Le centre du petit carré",
+                                "Le milieu du segment reliant les centres",
+                            ],
+                            correct: 0,
+                            solution:
+                                "C'est la définition géométrique du centre d'homothétie.",
+                        },
+                        {
+                            text: "Translation de vecteur u(3; -1) appliquée à B(-1; 4). Coordonnées de B' ?",
+                            type: "text",
+                            accepted: ["(2;3)", "2;3"],
+                            solution: "x' = -1 + 3 = 2. y' = 4 - 1 = 3.",
+                        },
+                        {
+                            text: "Une symétrie axiale conserve-t-elle les longueurs ?",
+                            type: "mcq",
+                            options: [
+                                "Oui, toujours",
+                                "Non, ça dépend de l'axe",
+                                "Seulement si l'axe est vertical",
+                            ],
+                            correct: 0,
+                            solution:
+                                "Toutes les isométries (translations, rotations, symétries) conservent les longueurs.",
+                        },
+                        {
+                            text: "Programme : Choisir un nombre, soustraire 2, multiplier par le nombre de départ. Écriture littérale ?",
+                            type: "mcq",
+                            options: ["x(x-2)", "x-2x", "(x-2)x<sup>2</sup>"],
+                            correct: 0,
+                            solution:
+                                "Nombre x. Soustraire 2 : (x-2). Multiplier par x : x(x-2).",
+                        },
+                        {
+                            text: "Résoudre x(x-2) = x<sup>2</sup> - 8",
+                            type: "text",
+                            accepted: ["4", "x=4"],
+                            solution:
+                                "Développer : x<sup>2</sup> - 2x = x<sup>2</sup> - 8. Les x<sup>2</sup> s'annulent : -2x = -8 ⇒ x = 4.",
+                        },
+                        {
+                            text: "Si une voiture roule à v km/h, quelle formule donne la distance d en fonction du temps t ?",
+                            type: "mcq",
+                            options: ["d = v × t", "d = v / t", "d = t / v"],
+                            correct: 0,
+                            solution: "Base de la cinématique.",
+                        },
+                        {
+                            text: "[IMAGE] Rotation : Triangle ABC équilatéral de centre O. L'image de A par la rotation de centre O et d'angle 120° (sens horaire) est :",
+                            type: "mcq",
+                            options: ["C", "B", "A"],
+                            correct: 1,
+                            solution:
+                                "(Dépend du nommage sur l'image, supposons A en haut, B à droite). 120° = 360/3. A va sur B.",
+                        },
+                        {
+                            text: "Quel nombre ne change pas si on lui applique le programme : multiplier par 5, puis soustraire 12 ?",
+                            type: "text",
+                            accepted: ["3"],
+                            solution: "5x - 12 = x. 4x = 12. x = 3.",
+                        },
+                        {
+                            text: "Agrandissement : Si les longueurs sont x3, le volume est multiplié par :",
+                            type: "mcq",
+                            options: ["27", "9", "3"],
+                            correct: 0,
+                            solution:
+                                "Volume × k<sup>3</sup>. 3<sup>3</sup> = 27.",
+                        },
+                    ],
+                },
+            ];
+
+            const app = {
+                state: {
+                    catIdx: 0,
+                    qIdx: 0,
+                },
+
+                init: function () {
+                    this.renderMenu();
+                },
+
+                renderMenu: function () {
+                    const nav = document.getElementById("nav-container");
+                    nav.innerHTML = "";
+                    document.getElementById("quiz-ui").classList.add("hidden");
+                    document
+                        .getElementById("nav-container")
+                        .classList.remove("hidden");
+
+                    db.forEach((cat, idx) => {
+                        const btn = document.createElement("div");
+                        btn.className = "nav-btn";
+                        btn.textContent = cat.category;
+                        btn.onclick = () => this.startCategory(idx);
+                        nav.appendChild(btn);
+                    });
+                },
+
+                startCategory: function (idx) {
+                    this.state.catIdx = idx;
+                    this.state.qIdx = 0;
+
+                    document
+                        .getElementById("nav-container")
+                        .classList.add("hidden");
+                    document
+                        .getElementById("quiz-ui")
+                        .classList.remove("hidden");
+                    this.renderQuestion();
+                },
+
+                renderQuestion: function () {
+                    const q = db[this.state.catIdx].questions[this.state.qIdx];
+                    const card = document.getElementById(
+                        "question-card-container",
                     );
+                    const feedback = document.getElementById("feedback-area");
+                    const btn = document.getElementById("main-btn");
 
-                    mixedOptions.sort(() => Math.random() - 0.5);
+                    card.classList.remove("fast-exit", "entering");
+                    void card.offsetWidth;
+                    card.classList.add("entering");
 
-                    mixedOptions.forEach((optObj, i) => {
-                        const item = document.createElement("div");
-                        item.className = "option-item";
-                        item.innerHTML = `
+                    feedback.className = "";
+                    feedback.classList.remove("visible");
+                    feedback.style.display = "none";
+
+                    btn.textContent = "Valider la réponse";
+                    btn.disabled = false;
+                    btn.style.backgroundColor = "#4c51bf";
+
+                    document.getElementById("cat-label").textContent =
+                        db[this.state.catIdx].category;
+                    document.getElementById("counter-label").textContent =
+                        `${this.state.qIdx + 1} / ${db[this.state.catIdx].questions.length}`;
+                    document.getElementById("question-text").innerHTML = q.text;
+
+                    const imgArea = document.getElementById("image-area");
+                    if (q.image) {
+                        imgArea.innerHTML = `<img src="${q.image}">`;
+                        imgArea.classList.remove("hidden");
+                    } else {
+                        imgArea.classList.add("hidden");
+                    }
+
+                    const pct =
+                        (this.state.qIdx /
+                            db[this.state.catIdx].questions.length) *
+                        100;
+                    document.getElementById("progress-fill").style.width =
+                        pct + "%";
+
+                    const inputArea = document.getElementById("input-area");
+                    inputArea.innerHTML = "";
+
+                    if (q.type === "mcq") {
+                        const container = document.createElement("div");
+                        container.className = "options-container";
+
+                        let mixedOptions = q.options.map(
+                            (optText, originalIndex) => {
+                                return { text: optText, val: originalIndex };
+                            },
+                        );
+
+                        mixedOptions.sort(() => Math.random() - 0.5);
+
+                        mixedOptions.forEach((optObj, i) => {
+                            const item = document.createElement("div");
+                            item.className = "option-item";
+                            item.innerHTML = `
                         <input type="radio" name="quiz-opt" id="opt-${i}" value="${optObj.val}">
                         <label class="answer-btn" for="opt-${i}">${optObj.text}</label>
                     `;
-                        container.appendChild(item);
-                    });
-                    inputArea.appendChild(container);
-                } else {
-                    inputArea.innerHTML = `<input type="text" id="text-answer" class="text-input-styled" placeholder="Ta réponse..." autocomplete="off">`;
-                    document
-                        .getElementById("text-answer")
-                        .addEventListener("keypress", (e) => {
-                            if (e.key === "Enter") this.checkAnswer();
+                            container.appendChild(item);
                         });
-                    setTimeout(
-                        () =>
-                            document.getElementById("text-answer").focus(),
-                        100,
-                    );
-                }
-            },
-
-            checkAnswer: function () {
-                const q = db[this.state.catIdx].questions[this.state.qIdx];
-                const feedback = document.getElementById("feedback-area");
-                feedback.style.display = "block";
-                const btn = document.getElementById("main-btn");
-                let isCorrect = false;
-                let userElement = null;
-
-                if (q.type === "mcq") {
-                    const selected = document.querySelector(
-                        'input[name="quiz-opt"]:checked',
-                    );
-                    if (!selected) return alert("Choisis une réponse !");
-
-                    const label = document.querySelector(
-                        `label[for="${selected.id}"]`,
-                    );
-                    userElement = label;
-
-                    if (parseInt(selected.value) === q.correct) {
-                        isCorrect = true;
+                        inputArea.appendChild(container);
+                    } else {
+                        inputArea.innerHTML = `<input type="text" id="text-answer" class="text-input-styled" placeholder="Ta réponse..." autocomplete="off">`;
+                        document
+                            .getElementById("text-answer")
+                            .addEventListener("keypress", (e) => {
+                                if (e.key === "Enter") this.checkAnswer();
+                            });
+                        setTimeout(
+                            () =>
+                                document.getElementById("text-answer").focus(),
+                            100,
+                        );
                     }
-                } else {
-                    const input = document.getElementById("text-answer");
-                    if (!input.value.trim())
-                        return alert("Écris une réponse !");
-                    userElement = input;
+                },
 
-                    const val = input.value
-                        .toLowerCase()
-                        .replace(/\s/g, "")
-                        .replace(",", ".");
-                    const accepted = q.accepted.map((a) =>
-                        a
+                checkAnswer: function () {
+                    const q = db[this.state.catIdx].questions[this.state.qIdx];
+                    const feedback = document.getElementById("feedback-area");
+                    feedback.style.display = "block";
+                    const btn = document.getElementById("main-btn");
+                    let isCorrect = false;
+                    let userElement = null;
+
+                    if (q.type === "mcq") {
+                        const selected = document.querySelector(
+                            'input[name="quiz-opt"]:checked',
+                        );
+                        if (!selected) return alert("Choisis une réponse !");
+
+                        const label = document.querySelector(
+                            `label[for="${selected.id}"]`,
+                        );
+                        userElement = label;
+
+                        if (parseInt(selected.value) === q.correct) {
+                            isCorrect = true;
+                        }
+                    } else {
+                        const input = document.getElementById("text-answer");
+                        if (!input.value.trim())
+                            return alert("Écris une réponse !");
+                        userElement = input;
+
+                        const val = input.value
                             .toLowerCase()
                             .replace(/\s/g, "")
-                            .replace(",", "."),
-                    );
-                    if (accepted.includes(val)) isCorrect = true;
-                }
+                            .replace(",", ".");
+                        const accepted = q.accepted.map((a) =>
+                            a
+                                .toLowerCase()
+                                .replace(/\s/g, "")
+                                .replace(",", "."),
+                        );
+                        if (accepted.includes(val)) isCorrect = true;
+                    }
 
-                btn.disabled = true;
+                    btn.disabled = true;
 
-                if (isCorrect) {
-                    userElement.classList.add("correct");
-                    feedback.className = "feedback-correct visible";
-                    feedback.innerHTML = `
+                    if (isCorrect) {
+                        userElement.classList.add("correct");
+                        feedback.className = "feedback-correct visible";
+                        feedback.innerHTML = `
                     <div style="font-size: 1.2em; margin-bottom: 5px;">✅ <span class="couleur-qui-change">Excellent !</span></div>
                     <div>${q.solution}</div>
                 `;
-                    btn.style.backgroundColor = "#48bb78";
-                    btn.textContent = "Bravo !";
-                } else {
-                    userElement.classList.add("incorrect");
+                        btn.style.backgroundColor = "#48bb78";
+                        btn.textContent = "Bravo !";
+                    } else {
+                        userElement.classList.add("incorrect");
 
-                    if (q.type === "mcq") {
-                        const correctInput = document.querySelector(
-                            `input[name="quiz-opt"][value="${q.correct}"]`,
-                        );
-                        if (correctInput) {
-                            const correctLabel = document.querySelector(
-                                `label[for="${correctInput.id}"]`,
+                        if (q.type === "mcq") {
+                            const correctInput = document.querySelector(
+                                `input[name="quiz-opt"][value="${q.correct}"]`,
                             );
-                            correctLabel.classList.add("correct");
+                            if (correctInput) {
+                                const correctLabel = document.querySelector(
+                                    `label[for="${correctInput.id}"]`,
+                                );
+                                correctLabel.classList.add("correct");
+                            }
                         }
-                    }
 
-                    feedback.className = "feedback-incorrect visible";
-                    feedback.innerHTML = `
+                        feedback.className = "feedback-incorrect visible";
+                        feedback.innerHTML = `
                     <div style="font-size: 1.2em; margin-bottom: 5px;">❌ Aïe... Regarde la correction :</div>
                     <div><strong>${q.solution}</strong></div>
                 `;
-                    btn.style.backgroundColor = "#c53030";
-                    btn.textContent = "Lecture correction...";
-                }
+                        btn.style.backgroundColor = "#c53030";
+                        btn.textContent = "Lecture correction...";
+                    }
 
-                const pct =
-                    ((this.state.qIdx + 1) /
-                        db[this.state.catIdx].questions.length) *
-                    100;
-                document.getElementById("progress-fill").style.width =
-                    pct + "%";
+                    const pct =
+                        ((this.state.qIdx + 1) /
+                            db[this.state.catIdx].questions.length) *
+                        100;
+                    document.getElementById("progress-fill").style.width =
+                        pct + "%";
 
-                const delayDuration = isCorrect ? 1200 : 4000;
+                    const delayDuration = isCorrect ? 1200 : 4000;
 
-                setTimeout(() => {
-                    this.handleTransition();
-                }, delayDuration);
-            },
+                    setTimeout(() => {
+                        this.handleTransition();
+                    }, delayDuration);
+                },
 
-            handleTransition: function () {
-                if (
-                    this.state.qIdx >=
-                    db[this.state.catIdx].questions.length - 1
-                ) {
-                    alert("Série terminée ! Retour au menu.");
-                    this.renderMenu();
-                    return;
-                }
+                handleTransition: function () {
+                    if (
+                        this.state.qIdx >=
+                        db[this.state.catIdx].questions.length - 1
+                    ) {
+                        alert("Série terminée ! Retour au menu.");
+                        this.renderMenu();
+                        return;
+                    }
 
-                const card = document.getElementById(
-                    "question-card-container",
-                );
-                card.classList.remove("entering");
-                card.classList.add("fast-exit");
+                    const card = document.getElementById(
+                        "question-card-container",
+                    );
+                    card.classList.remove("entering");
+                    card.classList.add("fast-exit");
 
-                setTimeout(() => {
-                    this.state.qIdx++;
-                    this.renderQuestion();
-                }, 300);
-            },
-        };
+                    setTimeout(() => {
+                        this.state.qIdx++;
+                        this.renderQuestion();
+                    }, 300);
+                },
+            };
 
-        window.onload = () => app.init();
-    </script>
-</body>
-
+            window.onload = () => app.init();
+        </script>
+    </body>
 </html>

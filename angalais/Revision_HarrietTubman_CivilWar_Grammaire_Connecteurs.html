@@ -1,0 +1,1301 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="../quiz_icon.svg" type="image/x-icon" />
+        <title>
+            Révision Unité 2 : Harriet Tubman, Guerre Civile & Connecteurs
+            Logique
+        </title>
+        <style>
+            /* ----------------------------------------------------
+           ANIMATIONS (KEYFRAMES)
+           ---------------------------------------------------- */
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes slideOut {
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+
+            @keyframes headerDrop {
+                from {
+                    opacity: 0;
+                    transform: translateY(-50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                    box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+                }
+                50% {
+                    transform: scale(1.02);
+                    box-shadow: 0 8px 20px rgba(76, 81, 191, 0.5);
+                }
+                100% {
+                    transform: scale(1);
+                    box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes resultsEntry {
+                from {
+                    opacity: 0;
+                    transform: translateY(50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes bounce {
+                0%,
+                20%,
+                50%,
+                80%,
+                100% {
+                    transform: translateY(0);
+                }
+                40% {
+                    transform: translateY(-5px);
+                }
+                60% {
+                    transform: translateY(-3px);
+                }
+            }
+
+            @keyframes shake {
+                0%,
+                100% {
+                    transform: translateX(0);
+                }
+                20%,
+                60% {
+                    transform: translateX(-5px);
+                }
+                40%,
+                80% {
+                    transform: translateX(5px);
+                }
+            }
+
+            @keyframes glowCorrect {
+                0% {
+                    box-shadow: 0 0 5px #68d391;
+                }
+                50% {
+                    box-shadow: 0 0 20px #48bb78;
+                }
+                100% {
+                    box-shadow: 0 0 5px #68d391;
+                }
+            }
+
+            @keyframes zoomFeedback {
+                0% {
+                    transform: scale(0.9);
+                    opacity: 0;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes couleur-qui-change {
+                0%,
+                10% {
+                    color: white;
+                }
+                30% {
+                    color: #00ff00;
+                }
+                38% {
+                    color: #ffff00;
+                }
+                46% {
+                    color: #ff00ff;
+                }
+                54% {
+                    color: #00ffff;
+                }
+                60% {
+                    color: #ffa500;
+                }
+                68% {
+                    color: #7cfc00;
+                }
+                76% {
+                    color: #ff69b4;
+                }
+                84% {
+                    color: #8a2be2;
+                }
+                92% {
+                    color: #ff4500;
+                }
+                100% {
+                    color: deeppink;
+                }
+            }
+
+            @keyframes rotate {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            @keyframes flicker {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                5%,
+                25%,
+                45%,
+                65%,
+                85% {
+                    opacity: 0.85;
+                }
+                10%,
+                30%,
+                50%,
+                70%,
+                90% {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes wipe-in {
+                from {
+                    clip-path: inset(0 100% 0 0);
+                }
+                to {
+                    clip-path: inset(0 0 0 0);
+                }
+            }
+
+            @keyframes border-fade {
+                0% {
+                    border-color: #3182ce;
+                }
+                33% {
+                    border-color: #48bb78;
+                }
+                66% {
+                    border-color: #f6ad55;
+                }
+                100% {
+                    border-color: #3182ce;
+                }
+            }
+
+            @keyframes clignotement-leger {
+                0%,
+                100% {
+                    color: red;
+                    opacity: 1;
+                }
+                50% {
+                    color: orange;
+                    opacity: 0.7;
+                }
+            }
+
+            /* ----------------------------------------------------
+           STYLE GÉNÉRAL
+           ---------------------------------------------------- */
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                background-color: #f0f4f8;
+                padding: 1rem;
+                line-height: 1.6;
+                min-height: 100vh;
+            }
+
+            @media (min-width: 768px) {
+                body {
+                    padding: 2rem;
+                }
+            }
+
+            .quiz-container {
+                max-width: 800px;
+                margin: 2rem auto;
+                padding: 2rem;
+                background: #ffffff;
+                border-radius: 20px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            }
+
+            .header {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #1a202c;
+                margin-bottom: 0.5rem;
+                animation: headerDrop 0.8s ease-out;
+            }
+
+            .header p {
+                color: #4a5568;
+                font-size: 1.125rem;
+                font-weight: 500;
+            }
+
+            .question-card {
+                min-height: 250px;
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+                border-radius: 15px;
+                background-color: #f7faff;
+                border: 2px solid #e2e8f0;
+                transition:
+                    opacity 0.3s ease,
+                    transform 0.3s ease;
+            }
+
+            .question-card.entering {
+                animation: slideIn 0.5s ease-out forwards;
+            }
+
+            .question-card.fast-exit {
+                animation: slideOut 0.25s ease-in forwards; /* Rapide pour le succès */
+            }
+            .question-card.slow-exit {
+                animation: slideOut 0.8s ease-in forwards; /* Lent pour l'échec */
+            }
+
+            .question-text {
+                font-size: 1.3rem;
+                font-weight: 700;
+                margin-bottom: 1.5rem;
+                color: #2d3748;
+            }
+
+            .options-container {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .answer-btn {
+                display: block;
+                width: 100%;
+                padding: 1rem 1.25rem;
+                text-align: left;
+                border-radius: 10px;
+                transition: all 0.2s ease-out;
+                font-weight: 600;
+                border: 1px solid #c3dafe;
+                color: #2b6cb0;
+                background-color: #ebf4ff;
+                cursor: pointer;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            }
+
+            .answer-btn:hover:not(.selected):not(.correct):not(.incorrect) {
+                background-color: #cee0f2;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .selected {
+                background-color: #3182ce;
+                border-color: #2c5282;
+                color: white;
+                transform: scale(1.01);
+                box-shadow: 0 5px 15px rgba(49, 130, 206, 0.4);
+            }
+
+            .correct {
+                background-color: #48bb78 !important;
+                border-color: #2f855a !important;
+                color: white !important;
+                box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
+                pointer-events: none;
+                animation: bounce 0.6s ease-out;
+            }
+
+            .incorrect {
+                background-color: #f56565 !important;
+                border-color: #c53030 !important;
+                color: white !important;
+                box-shadow: 0 5px 15px rgba(245, 101, 101, 0.4);
+                pointer-events: none;
+                animation: shake 0.5s ease-in-out;
+            }
+
+            #feedback-area {
+                margin-top: 1rem;
+                padding: 1rem;
+                border-radius: 10px;
+                font-weight: 600;
+                text-align: center;
+                animation: zoomFeedback 0.4s
+                    cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            }
+
+            .feedback-correct {
+                background-color: #e6fffa;
+                color: #38a169;
+                border: 1px solid #48bb78;
+            }
+
+            .feedback-incorrect {
+                background-color: #fff5f5;
+                color: #e53e3e;
+                border: 1px solid #f56565;
+            }
+            .main-btn-container {
+                margin-top: 2.5rem;
+                display: flex;
+                justify-content: center;
+            }
+
+            #main-btn {
+                background-color: #4c51bf;
+                color: white;
+                padding: 1rem 2.5rem;
+                border-radius: 12px;
+                font-weight: 800;
+                font-size: 1.1rem;
+                transition:
+                    background-color 0.3s,
+                    transform 0.2s,
+                    box-shadow 0.3s;
+                width: 100%;
+                border: none;
+                cursor: pointer;
+                box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+            }
+
+            @media (min-width: 768px) {
+                #main-btn {
+                    width: auto;
+                }
+            }
+
+            #main-btn:hover:not(:disabled) {
+                background-color: #3a4294;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(76, 81, 191, 0.4);
+            }
+
+            #main-btn:active:not(:disabled) {
+                animation: pulse 0.3s ease;
+            }
+
+            #main-btn:disabled {
+                background-color: #a0aec0;
+                cursor: not-allowed;
+                box-shadow: none;
+            }
+
+            #results {
+                margin-top: 2.5rem;
+                padding: 2rem;
+                background-color: #f0fff4;
+                border: 2px solid #68d391;
+                border-radius: 15px;
+                text-align: center;
+            }
+
+            #results.entering {
+                animation: resultsEntry 0.6s ease-out forwards;
+            }
+
+            .high-score-glow {
+                animation: glowCorrect 2s infinite alternate;
+            }
+
+            #results h2 {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: #2f855a;
+                margin-bottom: 1rem;
+            }
+
+            #score-display {
+                font-size: 1.4rem;
+                font-weight: 600;
+                margin-bottom: 0.75rem;
+                color: #38a169;
+            }
+
+            #feedback-message {
+                font-size: 1.1rem;
+                color: #4c51bf;
+            }
+
+            #results button {
+                margin-top: 1.5rem;
+                padding: 0.75rem 2rem;
+                background-color: #48bb78;
+                color: white;
+                border-radius: 10px;
+                font-weight: 700;
+                transition: background-color 0.2s;
+                border: none;
+                cursor: pointer;
+            }
+
+            #results button:hover {
+                background-color: #38a169;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            .couleur-qui-change {
+                animation: couleur-qui-change 14s infinite alternate;
+                font-weight: bold;
+            }
+
+            .anim-rotate {
+                animation: rotate 5s linear infinite;
+            }
+
+            .anim-flicker {
+                animation: flicker 0.15s linear infinite alternate;
+            }
+
+            .anim-wipe-in {
+                animation: wipe-in 1s ease-out forwards;
+            }
+
+            .anim-border-fade {
+                border: 3px solid transparent;
+                animation: border-fade 3s ease-in-out infinite;
+            }
+
+            .clignotant {
+                animation: clignotement-leger 1.5s infinite ease-in-out;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="quiz-container anim-border-fade">
+            <header class="header">
+                <h1>
+                    Révision <span class="couleur-qui-change">Unité 2 </span>
+                    <span class="clignotant">:</span> Harriet Tubman, Guerre
+                    Civile & Connecteurs Logique
+                </h1>
+                <p>
+                    Question <span id="current-q-number">1</span> /
+                    <span id="total-q-number">65</span>
+                </p>
+            </header>
+
+            <div id="quiz-area" class="anim-wipe-in">
+                <div id="current-question-card" class="question-card"></div>
+
+                <div id="feedback-area" class="hidden"></div>
+
+                <div class="main-btn-container">
+                    <button id="main-btn" onclick="checkAnswerAndProceed()">
+                        Valider la Réponse
+                    </button>
+                </div>
+            </div>
+
+            <div id="results" class="hidden">
+                <h2 class="anim-flicker">Quiz Terminé !</h2>
+                <p id="score-display"></p>
+                <p id="feedback-message"></p>
+                <button onclick="restartQuiz()">Recommencer le Quiz</button>
+            </div>
+        </div>
+
+        <script>
+            // --- DATA: ---
+            const questions = [
+                {
+                    q: "Choisissez le meilleur connecteur : The resistance was constituted [...] all races.",
+                    answers: ["of", "by", "from", "with"],
+                    correct: "of",
+                },
+                {
+                    q: "Choisissez le meilleur connecteur : [...] the fact that slavery was illegal in Pennsylvania, she was finally released.",
+                    answers: ["Due to", "In spite of", "However", "Although"],
+                    correct: "Due to",
+                },
+                {
+                    q: "Quelle a été la principale route commerciale représentée par le deuxième document ?",
+                    answers: [
+                        "The Middle Passage",
+                        "The Silk Road",
+                        "The Triangular Trade",
+                        "The Underground Railroad",
+                    ],
+                    correct: "The Triangular Trade",
+                },
+                {
+                    q: "Où les esclaves ont-ils été transportés depuis l'Afrique lors du 'Middle Passage' ?",
+                    answers: ["Europe", "Asia", "America", "Australia"],
+                    correct: "America",
+                },
+                {
+                    q: "Quelle description correspond au troisième document (plan du navire) ?",
+                    answers: [
+                        "It shows the trade route.",
+                        "It shows the horrible reality of the journey.",
+                        "It shows the crops grown in the South.",
+                        "It shows the structure of the cotton gin.",
+                    ],
+                    correct: "It shows the horrible reality of the journey.",
+                },
+                {
+                    q: "En quelle année les premiers Africains sont-ils arrivés dans le Sud américain ?",
+                    answers: ["1776", "1619", "1808", "1865"],
+                    correct: "1619",
+                },
+                {
+                    q: "Selon les historiens, comment les premiers Africains étaient-ils traités initialement ?",
+                    answers: [
+                        "As citizens",
+                        "As indentured servants",
+                        "As property",
+                        "As free workers",
+                    ],
+                    correct: "As indentured servants",
+                },
+                {
+                    q: "Qu'est-ce qui a marqué le changement de statut des esclaves à la fin des années 1600 ?",
+                    answers: [
+                        "They became free.",
+                        "They became citizens.",
+                        "Their status became hereditary property.",
+                        "They could own houses.",
+                    ],
+                    correct: "Their status became hereditary property.",
+                },
+                {
+                    q: "Choisissez le meilleur connecteur : The arrows show the movement of goods, [...] enslaved people.",
+                    answers: ["but", "for", "and", "so"],
+                    correct: "and",
+                },
+                {
+                    q: "Choisissez le meilleur connecteur : Manufactured goods were shipped from Europe to Africa, [...] they were traded for slaves.",
+                    answers: ["where", "because", "although", "unless"],
+                    correct: "where",
+                },
+                {
+                    q: "Choisissez le meilleur connecteur : Slaves were packed together in terrible conditions. [...] this document shows the horrible reality of that journey.",
+                    answers: ["Moreover", "Because", "But", "This is why"],
+                    correct: "This is why",
+                },
+                {
+                    q: "Choisissez le meilleur connecteur : [...] the late 1600s, slaves became property and their status became hereditary.",
+                    answers: ["Despite", "By", "If", "While"],
+                    correct: "By",
+                },
+                {
+                    q: "Choisissez le meilleur connecteur : Rice and tobacco became less profitable, [...] Eli Whitney invented the cotton gin.",
+                    answers: [
+                        "however",
+                        "furthermore",
+                        "as a result",
+                        "therefore",
+                    ],
+                    correct: "therefore",
+                },
+                {
+                    q: "Choisissez le meilleur connecteur : Eli Whitney invented the cotton gin [...] owners could increase the production.",
+                    answers: [
+                        "so that",
+                        "in spite of",
+                        "due to",
+                        "in addition to",
+                    ],
+                    correct: "so that",
+                },
+                {
+                    q: "Choisissez le meilleur connecteur : The importation of slaves was banned in 1808. [...], by 1860, there were 4 million slaves.",
+                    answers: [
+                        "As a consequence",
+                        "Nevertheless",
+                        "For instance",
+                        "In other words",
+                    ],
+                    correct: "Nevertheless",
+                },
+                {
+                    q: "Choisissez le meilleur connecteur : Families were torn apart [...] the production of cotton expanded westward.",
+                    answers: ["although", "in spite of", "because", "yet"],
+                    correct: "because",
+                },
+                {
+                    q: "Quel inventeur a créé le 'cotton gin' ?",
+                    answers: [
+                        "Abraham Lincoln",
+                        "Harriet Tubman",
+                        "Eli Whitney",
+                        "William Shakespeare",
+                    ],
+                    correct: "Eli Whitney",
+                },
+                {
+                    q: "Quel était l'objectif principal du 'cotton gin' ?",
+                    answers: [
+                        "To pick tobacco faster.",
+                        "To clean cotton faster.",
+                        "To transport slaves faster.",
+                        "To ban the importation of slaves.",
+                    ],
+                    correct: "To clean cotton faster.",
+                },
+                {
+                    q: "En quelle année l'importation d'esclaves a-t-elle été interdite ?",
+                    answers: ["1619", "1860", "1808", "1865"],
+                    correct: "1808",
+                },
+                {
+                    q: "Pourquoi certaines familles d'esclaves ont-elles été séparées vers l'Ouest ?",
+                    answers: [
+                        "To fight the Civil War.",
+                        "Because of the expansion of cotton production.",
+                        "To join the Underground Railroad.",
+                        "To work in factories.",
+                    ],
+                    correct: "Because of the expansion of cotton production.",
+                },
+                {
+                    q: "Quel mot signifie qu'une personne n'a pas la capacité de posséder une maison ?",
+                    answers: [
+                        "Interdiction",
+                        "Obligation",
+                        "Impossibility",
+                        "Resistance",
+                    ],
+                    correct: "Impossibility",
+                },
+                {
+                    q: "Quel mot signifie qu'il était défendu aux esclaves de se marier ?",
+                    answers: [
+                        "Obligation",
+                        "Impossibility",
+                        "Interdiction",
+                        "Freedom",
+                    ],
+                    correct: "Interdiction",
+                },
+                {
+                    q: "Quel était le rôle principal de l'Underground Railroad ?",
+                    answers: [
+                        "To transport cotton.",
+                        "A secret network to help slaves escape.",
+                        "A new railway in the North.",
+                        "A communication system for owners.",
+                    ],
+                    correct: "A secret network to help slaves escape.",
+                },
+                {
+                    q: "Choisissez le meilleur connecteur : The Underground Railroad was not actually a railroad, [...] a group of people working together.",
+                    answers: ["but", "so", "and", "or"],
+                    correct: "but",
+                },
+                {
+                    q: "Choisissez le meilleur connecteur : Fugitives traveled great distances at night, [...] crossing icy rivers and deep snow.",
+                    answers: ["also", "whereas", "such as", "including"],
+                    correct: "including",
+                },
+                {
+                    q: "Choisissez le meilleur connecteur : She returned to the South to help her family [...] friends.",
+                    answers: [
+                        "besides",
+                        "as well as",
+                        "not only",
+                        "in addition to",
+                    ],
+                    correct: "as well as",
+                },
+                {
+                    q: "Choisissez le meilleur connecteur : [...] the narrator concludes by explaining that the Civil War broke out in 1861.",
+                    answers: [
+                        "As a result",
+                        "Finally",
+                        "In contrast",
+                        "Similarly",
+                    ],
+                    correct: "Finally",
+                },
+                {
+                    q: "Choisissez le meilleur connecteur : The South's economy was agricultural, [...] slavery was necessary to harvest the crops.",
+                    answers: ["so", "but", "despite", "while"],
+                    correct: "so",
+                },
+                {
+                    q: "Qui est surnommée 'The Black Moses' ?",
+                    answers: [
+                        "Rosa Parks",
+                        "Harriet Tubman",
+                        "Queen Victoria",
+                        "Harriet Beecher Stowe",
+                    ],
+                    correct: "Harriet Tubman",
+                },
+                {
+                    q: "En quelle année Harriet Tubman est-elle née et où ?",
+                    answers: [
+                        "1865, New York",
+                        "1822, Maryland",
+                        "1808, Virginia",
+                        "1849, Pennsylvania",
+                    ],
+                    correct: "1822, Maryland",
+                },
+                {
+                    q: "Pourquoi Harriet Tubman a-t-elle décidé de s'échapper ?",
+                    answers: [
+                        "To start a family.",
+                        "She feared being sold and separated from her family.",
+                        "To join the army.",
+                        "To become a writer.",
+                    ],
+                    correct:
+                        "She feared being sold and separated from her family.",
+                },
+                {
+                    q: "Où Harriet Tubman s'est-elle échappée pour trouver la liberté ?",
+                    answers: [
+                        "To Canada",
+                        "To South Carolina",
+                        "To Pennsylvania",
+                        "To Europe",
+                    ],
+                    correct: "To Pennsylvania",
+                },
+                {
+                    q: "Combien de fois Harriet Tubman est-elle retournée dans le Sud pour guider d'autres esclaves ?",
+                    answers: [
+                        "Once",
+                        "Three times",
+                        "Seven times",
+                        "About 13 times",
+                    ],
+                    correct: "About 13 times",
+                },
+                {
+                    q: "Qu'est-ce qu'une 'Civil War' ?",
+                    answers: [
+                        "A war between two different countries.",
+                        "A war fought between citizens of the same country.",
+                        "A war about civil rights.",
+                        "A war against an invention.",
+                    ],
+                    correct:
+                        "A war fought between citizens of the same country.",
+                },
+                {
+                    q: "Quel a été le point de départ de la Guerre Civile américaine ?",
+                    answers: [
+                        "The North attacked the South.",
+                        "The Southern states seceded from the USA.",
+                        "Lincoln was assassinated.",
+                        "The cotton gin was invented.",
+                    ],
+                    correct: "The Southern states seceded from the USA.",
+                },
+                {
+                    q: "Quelle était la principale économie du Nord des États-Unis ?",
+                    answers: [
+                        "Agricultural",
+                        "Industrialized (Factories)",
+                        "Based on slavery",
+                        "Service-based",
+                    ],
+                    correct: "Industrialized (Factories)",
+                },
+                {
+                    q: "Quelle était la principale économie du Sud des États-Unis ?",
+                    answers: [
+                        "Industrialized",
+                        "Agricultural (Slavery necessary)",
+                        "Fishing-based",
+                        "Technological",
+                    ],
+                    correct: "Agricultural (Slavery necessary)",
+                },
+                {
+                    q: "En quelle année Lincoln est-il devenu président, provoquant la sécession du Sud ?",
+                    answers: ["1859", "1860", "1863", "1865"],
+                    correct: "1860",
+                },
+                {
+                    q: "Comment s'appelait le Sud des États-Unis après sa sécession ?",
+                    answers: [
+                        "The Union",
+                        "The Confederates",
+                        "The Abolitionists",
+                        "The North",
+                    ],
+                    correct: "The Confederates",
+                },
+                {
+                    q: "Qu'est-ce que Lincoln a publié en 1863 qui a libéré les esclaves ?",
+                    answers: [
+                        "The Constitution",
+                        "The Bill of Rights",
+                        "The Declaration of Independence",
+                        "The Emancipation Proclamation",
+                    ],
+                    correct: "The Emancipation Proclamation",
+                },
+                {
+                    q: "Quand la Guerre Civile américaine a-t-elle pris fin ?",
+                    answers: ["1861", "1863", "1865", "1870"],
+                    correct: "1865",
+                },
+                {
+                    q: "Quel terme décrit le réseau de routes et de refuges clandestins ?",
+                    answers: [
+                        "The Confederacy",
+                        "The Cotton Belt",
+                        "The Underground Railroad",
+                        "The Middle Passage",
+                    ],
+                    correct: "The Underground Railroad",
+                },
+                {
+                    q: "Comment les fugitifs voyageaient-ils sur l'Underground Railroad ?",
+                    answers: [
+                        "In crowded trains.",
+                        "In secret messages.",
+                        "Traveling great distances at night.",
+                        "By ship to Europe.",
+                    ],
+                    correct: "Traveling great distances at night.",
+                },
+                {
+                    q: "Quel est le mot anglais pour 'esclave' ?",
+                    answers: ["Servant", "Worker", "Slave", "Fugitive"],
+                    correct: "Slave",
+                },
+                {
+                    q: "Quel est le mot anglais pour 'propriété' ?",
+                    answers: ["Freedom", "Property", "Contract", "Servitude"],
+                    correct: "Property",
+                },
+                {
+                    q: "Quel est le mot anglais pour 'résistance' ?",
+                    answers: ["Obedience", "Resistance", "Work", "Capture"],
+                    correct: "Resistance",
+                },
+                {
+                    q: "Quel est le mot anglais pour 'sécurité/sûreté' ?",
+                    answers: ["Danger", "Safety", "Risk", "Peril"],
+                    correct: "Safety",
+                },
+                {
+                    q: "Quel connecteur est utilisé pour introduire une idée de temps (e.g., 'quand la guerre a pris fin') ?",
+                    answers: ["Therefore", "When", "But", "Although"],
+                    correct: "When",
+                },
+                {
+                    q: "Quel connecteur est utilisé pour exprimer une conséquence (e.g., 'Par conséquent, elle est retournée au Sud') ?",
+                    answers: ["However", "Consequently", "Despite", "While"],
+                    correct: "Consequently",
+                },
+                {
+                    q: "Quel connecteur est utilisé pour introduire une opposition ou un contraste (e.g., 'bien que') ?",
+                    answers: ["As a result", "Although", "So that", "Since"],
+                    correct: "Although",
+                },
+                {
+                    q: "Quel connecteur est utilisé pour ajouter une idée (e.g., 'De plus, ils étaient souvent maltraités') ?",
+                    answers: ["Moreover", "Instead", "Conversely", "Thus"],
+                    correct: "Moreover",
+                },
+                {
+                    q: "Complétez la phrase : The North was industrialized, [...] the South was agricultural.",
+                    answers: ["so", "therefore", "whereas", "as"],
+                    correct: "whereas",
+                },
+                {
+                    q: "Complétez la phrase : She was afraid of being separated, [...] she ran away.",
+                    answers: ["in spite of", "however", "so", "unless"],
+                    correct: "so",
+                },
+                {
+                    q: "Complétez la phrase : [...] the name suggests otherwise, it was not a real railroad.",
+                    answers: [
+                        "Because",
+                        "Although",
+                        "In addition",
+                        "Therefore",
+                    ],
+                    correct: "Although",
+                },
+                {
+                    q: "Complétez la phrase : [...] she knew the risk, she continued her missions.",
+                    answers: ["Despite", "Even though", "Due to", "So that"],
+                    correct: "Even though",
+                },
+                {
+                    q: "Quel type de biens était expédié d'Europe vers l'Afrique ?",
+                    answers: [
+                        "Slaves",
+                        "Cotton and Rice",
+                        "Manufactured goods",
+                        "Gold",
+                    ],
+                    correct: "Manufactured goods",
+                },
+                {
+                    q: "Que signifie l'expression 'to be or not to be' mentionnée dans vos notes ?",
+                    answers: [
+                        "A famous line from Shakespeare.",
+                        "A secret message for the Railroad.",
+                        "A law against slavery.",
+                        "A Civil War battle cry.",
+                    ],
+                    correct: "A famous line from Shakespeare.",
+                },
+                {
+                    q: "Le statut d'esclave était-il héréditaire à la fin du XVIIe siècle ?",
+                    answers: [
+                        "Yes",
+                        "No",
+                        "Only for men",
+                        "Only for field workers",
+                    ],
+                    correct: "Yes",
+                },
+                {
+                    q: "Pourquoi la Guerre Civile a-t-elle rendu l'Underground Railroad obsolète ?",
+                    answers: [
+                        "Because Lincoln was elected.",
+                        "Because slavery became illegal throughout the US.",
+                        "Because the North lost the war.",
+                        "Because Harriet Tubman was captured.",
+                    ],
+                    correct:
+                        "Because slavery became illegal throughout the US.",
+                },
+                {
+                    q: "Quel nom d'État est mentionné où l'esclavage était illégal, offrant la liberté à Harriet ?",
+                    answers: [
+                        "Maryland",
+                        "South Carolina",
+                        "Virginia",
+                        "Pennsylvania",
+                    ],
+                    correct: "Pennsylvania",
+                },
+                {
+                    q: "Le terme 'fugitives' désigne qui ?",
+                    answers: [
+                        "Hired slave catchers.",
+                        "Slave owners.",
+                        "Enslaved people running away.",
+                        "Union soldiers.",
+                    ],
+                    correct: "Enslaved people running away.",
+                },
+                {
+                    q: "Que signifie 'secède' ou 'seceded' en français dans ce contexte ?",
+                    answers: [
+                        "Rejoindre",
+                        "Faire la paix",
+                        "Se séparer / Faire sécession",
+                        "Voter",
+                    ],
+                    correct: "Se séparer / Faire sécession",
+                },
+                {
+                    q: "Quel était le rôle de la 'génisse de coton' (cotton gin) dans l'expansion vers l'Ouest ?",
+                    answers: [
+                        "It reduced cotton production.",
+                        "It made cotton less profitable.",
+                        "It increased production, expanding the demand for land and labor (slavery).",
+                        "It ended slavery.",
+                    ],
+                    correct:
+                        "It increased production, expanding the demand for land and labor (slavery).",
+                },
+                {
+                    q: "La résistance à l'esclavage était-elle composée uniquement de Noirs selon vos notes ?",
+                    answers: [
+                        "Yes",
+                        "No, it was constituted of all races.",
+                        "Only of white people.",
+                        "Only of women.",
+                    ],
+                    correct: "No, it was constituted of all races.",
+                },
+                {
+                    q: "Selon le document, les esclaves avaient-ils le droit d'être payés pour leur travail ?",
+                    answers: [
+                        "Yes",
+                        "No, they were forced to work without pay.",
+                        "Sometimes",
+                        "Only on Sundays",
+                    ],
+                    correct: "No, they were forced to work without pay.",
+                },
+            ];
+
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let userSelection = null;
+            let questionsShuffled = [];
+            let quizInProgress = false;
+
+            // Fonction pour mélanger un tableau (Algorithme de Fisher-Yates)
+            function shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            // Affiche la question actuelle
+            function renderQuestion() {
+                if (currentQuestionIndex >= questionsShuffled.length) {
+                    showResults();
+                    return;
+                }
+
+                const q = questionsShuffled[currentQuestionIndex];
+                const card = document.getElementById("current-question-card");
+                const questionNumber = currentQuestionIndex + 1;
+
+                card.classList.remove("slow-exit", "fast-exit");
+                card.classList.add("entering");
+
+                document.getElementById("current-q-number").textContent =
+                    questionNumber;
+                document.getElementById("total-q-number").textContent =
+                    questionsShuffled.length;
+                document.getElementById("main-btn").textContent =
+                    "Valider la Réponse";
+                document.getElementById("main-btn").disabled = true;
+
+                card.innerHTML = `
+                <p class="question-text">${q.q}</p>
+                <div id="options-container" class="options-container">
+                    <!-- Options de réponse -->
+                </div>
+            `;
+
+                document
+                    .getElementById("feedback-area")
+                    .classList.add("hidden");
+                document
+                    .getElementById("feedback-area")
+                    .classList.remove("feedback-correct", "feedback-incorrect");
+                userSelection = null;
+                quizInProgress = true;
+
+                const optionsContainer =
+                    card.querySelector("#options-container");
+                const shuffledAnswers = shuffle([...q.answers]);
+
+                shuffledAnswers.forEach((answer) => {
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "answer-btn";
+                    button.setAttribute("data-answer", answer);
+                    button.textContent = answer;
+                    button.onclick = function () {
+                        selectAnswer(answer, button);
+                    };
+                    optionsContainer.appendChild(button);
+                });
+
+                setTimeout(() => {
+                    card.classList.remove("entering");
+                }, 500);
+            }
+
+            function selectAnswer(answer, clickedButton) {
+                if (!quizInProgress) return;
+
+                const optionsContainer =
+                    document.getElementById("options-container");
+                optionsContainer
+                    .querySelectorAll(".answer-btn")
+                    .forEach((btn) => {
+                        btn.classList.remove("selected");
+                    });
+
+                clickedButton.classList.add("selected");
+
+                userSelection = answer;
+                document.getElementById("main-btn").disabled = false;
+            }
+
+            function checkAnswerAndProceed() {
+                if (userSelection === null || !quizInProgress) return;
+
+                quizInProgress = false;
+                document.getElementById("main-btn").disabled = true;
+
+                const q = questionsShuffled[currentQuestionIndex];
+                const isCorrect = userSelection === q.correct;
+                const feedbackArea = document.getElementById("feedback-area");
+                const optionsContainer =
+                    document.getElementById("options-container");
+                const card = document.getElementById("current-question-card");
+
+                feedbackArea.classList.remove("hidden");
+
+                optionsContainer
+                    .querySelectorAll(".answer-btn")
+                    .forEach((btn) => {
+                        const answer = btn.getAttribute("data-answer");
+                        btn.classList.remove("selected");
+
+                        if (answer === q.correct) {
+                            btn.classList.add("correct");
+                        } else if (answer === userSelection && !isCorrect) {
+                            btn.classList.add("incorrect");
+                        }
+                    });
+
+                feedbackArea.classList.remove(
+                    "feedback-correct",
+                    "feedback-incorrect",
+                );
+
+                if (isCorrect) {
+                    score++;
+                    feedbackArea.textContent =
+                        "Bravo ! Réponse correcte. Prochaine question rapidement !";
+                    feedbackArea.classList.add("feedback-correct");
+                    card.classList.add("fast-exit");
+                } else {
+                    feedbackArea.textContent = `Faux. La bonne réponse était : ${q.correct}. Prenez le temps de réfléchir.`;
+                    feedbackArea.classList.add("feedback-incorrect");
+                    card.classList.add("slow-exit");
+                }
+
+                // Déterminer la durée du délai de transition
+                const delayDuration = isCorrect ? 500 : 3000;
+
+                document.getElementById("main-btn").textContent =
+                    "Question Suivante";
+
+                setTimeout(() => {
+                    currentQuestionIndex++;
+
+                    if (currentQuestionIndex >= questionsShuffled.length) {
+                        document.getElementById("main-btn").textContent =
+                            "Voir les Résultats";
+                        document.getElementById("main-btn").onclick =
+                            showResults;
+                        document.getElementById("main-btn").disabled = false;
+                    } else {
+                        renderQuestion();
+                        document.getElementById("main-btn").onclick =
+                            checkAnswerAndProceed;
+                    }
+                }, delayDuration);
+            }
+
+            function showResults() {
+                document.getElementById("quiz-area").classList.add("hidden");
+                const resultsDiv = document.getElementById("results");
+                const totalQuestions = questionsShuffled.length;
+                const percentage = Math.round((score / totalQuestions) * 100);
+
+                document.getElementById("score-display").textContent =
+                    `Votre score final est de ${score} / ${totalQuestions} (${percentage}%)`;
+
+                let feedbackMsg = "";
+                resultsDiv.classList.remove("high-score-glow");
+
+                if (percentage === 100) {
+                    feedbackMsg =
+                        "Félicitations ! Maîtrise parfaite de la génétique. Vous êtes prêt(e) !";
+                    resultsDiv.classList.add("high-score-glow");
+                } else if (percentage >= 80) {
+                    feedbackMsg =
+                        "Excellent travail ! Vous avez une très bonne compréhension des notions.";
+                    resultsDiv.classList.add("high-score-glow");
+                } else if (percentage >= 60) {
+                    feedbackMsg =
+                        "Bon effort ! Revoyez les thèmes où vous avez eu le plus d'erreurs.";
+                } else {
+                    feedbackMsg =
+                        "N'abandonnez pas. Reprenez les sections I, III et V de votre fiche pour consolider les bases.";
+                }
+                document.getElementById("feedback-message").textContent =
+                    feedbackMsg;
+                resultsDiv.classList.remove("hidden");
+
+                resultsDiv.classList.add("entering");
+
+                setTimeout(() => {
+                    resultsDiv.scrollIntoView({ behavior: "smooth" });
+                }, 100);
+            }
+
+            function restartQuiz() {
+                currentQuestionIndex = 0;
+                score = 0;
+                userSelection = null;
+                questionsShuffled = shuffle([...questions]);
+                document.getElementById("quiz-area").classList.remove("hidden");
+
+                const resultsDiv = document.getElementById("results");
+                resultsDiv.classList.add("hidden");
+                resultsDiv.classList.remove("entering", "high-score-glow");
+
+                document.getElementById("main-btn").onclick =
+                    checkAnswerAndProceed;
+                renderQuestion();
+            }
+
+            window.onload = function () {
+                document.getElementById("total-q-number").textContent =
+                    questions.length;
+                questionsShuffled = shuffle([...questions]);
+                renderQuestion();
+            };
+        </script>
+    </body>
+</html>

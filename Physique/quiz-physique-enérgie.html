@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="../quiz_icon.svg" type="image/x-icon" />
+        <title>Quiz Physique sur l'énergie</title>
+        <style>
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes slideOut {
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+
+                to {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+
+            @keyframes headerDrop {
+                from {
+                    opacity: 0;
+                    transform: translateY(-50px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes bounce {
+                0%,
+                20%,
+                50%,
+                80%,
+                100% {
+                    transform: translateY(0);
+                }
+
+                40% {
+                    transform: translateY(-5px);
+                }
+
+                60% {
+                    transform: translateY(-3px);
+                }
+            }
+
+            @keyframes shake {
+                0%,
+                100% {
+                    transform: translateX(0);
+                }
+
+                20%,
+                60% {
+                    transform: translateX(-5px);
+                }
+
+                40%,
+                80% {
+                    transform: translateX(5px);
+                }
+            }
+
+            @keyframes zoomFeedback {
+                0% {
+                    transform: scale(0.9);
+                    opacity: 0;
+                }
+
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes couleur-qui-change {
+                0%,
+                10% {
+                    color: white;
+                }
+
+                30% {
+                    color: #00ff00;
+                }
+
+                38% {
+                    color: #ffff00;
+                }
+
+                46% {
+                    color: #ff00ff;
+                }
+
+                54% {
+                    color: #00ffff;
+                }
+
+                60% {
+                    color: #ffa500;
+                }
+
+                68% {
+                    color: #7cfc00;
+                }
+
+                76% {
+                    color: #ff69b4;
+                }
+
+                84% {
+                    color: #8a2be2;
+                }
+
+                92% {
+                    color: #ff4500;
+                }
+
+                100% {
+                    color: deeppink;
+                }
+            }
+
+            @keyframes wipe-in {
+                from {
+                    clip-path: inset(0 100% 0 0);
+                }
+
+                to {
+                    clip-path: inset(0 0 0 0);
+                }
+            }
+
+            body {
+                font-family: "Segoe UI", Arial, sans-serif;
+                background-color: #f0f4f8;
+                padding: 1rem;
+                line-height: 1.6;
+                min-height: 100vh;
+            }
+
+            .quiz-container {
+                max-width: 800px;
+                margin: 2rem auto;
+                padding: 2rem;
+                background: #ffffff;
+                border-radius: 20px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+                overflow: hidden;
+            }
+
+            .header {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #1a202c;
+                animation: headerDrop 0.8s ease-out;
+            }
+
+            .progress-bar-container {
+                width: 100%;
+                height: 8px;
+                background-color: #edf2f7;
+                border-radius: 4px;
+                margin-bottom: 20px;
+                overflow: hidden;
+            }
+
+            .progress-bar-fill {
+                height: 100%;
+                background: linear-gradient(90deg, #4c51bf, #667eea);
+                width: 0%;
+                transition: width 0.4s ease-out;
+            }
+
+            .nav-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+                animation: slideIn 0.6s ease-out;
+            }
+
+            .nav-btn {
+                display: block;
+                width: 100%;
+                padding: 1.5rem;
+                text-align: center;
+                border-radius: 15px;
+                transition: all 0.2s;
+                font-weight: 700;
+                border: 2px solid #c3dafe;
+                color: #2b6cb0;
+                background-color: #ebf4ff;
+                cursor: pointer;
+                box-sizing: border-box;
+            }
+
+            .nav-btn:hover {
+                background-color: #cee0f2;
+                transform: translateY(-3px);
+                border-color: #4c51bf;
+            }
+
+            .question-card {
+                min-height: 200px;
+                padding: 2rem;
+                margin-bottom: 1.5rem;
+                border-radius: 15px;
+                background-color: #f7faff;
+                border: 2px solid #e2e8f0;
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            .question-card.entering {
+                animation: slideIn 0.5s ease-out forwards;
+            }
+
+            .question-card.fast-exit {
+                animation: slideOut 0.3s ease-in forwards;
+            }
+
+            .question-text {
+                font-size: 1.3rem;
+                font-weight: 700;
+                margin-bottom: 1.5rem;
+                color: #2d3748;
+            }
+
+            .img-container {
+                text-align: center;
+                margin: 15px 0;
+            }
+
+            .img-container img {
+                max-width: 100%;
+                border-radius: 8px;
+            }
+
+            .options-container {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .option-item {
+                position: relative;
+            }
+
+            .option-item input[type="radio"] {
+                position: absolute;
+                opacity: 0;
+                height: 0;
+                width: 0;
+            }
+
+            .answer-btn {
+                display: block;
+                width: 100%;
+                padding: 1rem 1.25rem;
+                text-align: left;
+                border-radius: 10px;
+                transition: all 0.2s;
+                font-weight: 600;
+                border: 1px solid #c3dafe;
+                color: #2b6cb0;
+                background-color: #ebf4ff;
+                cursor: pointer;
+                box-sizing: border-box;
+            }
+
+            .answer-btn:hover {
+                background-color: #cee0f2;
+                transform: translateY(-1px);
+            }
+
+            .option-item input:checked + .answer-btn {
+                background-color: #3182ce;
+                border-color: #2c5282;
+                color: white;
+            }
+
+            .answer-btn.correct {
+                background-color: #48bb78 !important;
+                border-color: #2f855a !important;
+                color: white !important;
+                animation: bounce 0.6s ease-out;
+            }
+
+            .answer-btn.incorrect {
+                background-color: #f56565 !important;
+                border-color: #c53030 !important;
+                color: white !important;
+                animation: shake 0.5s ease-in-out;
+            }
+
+            .text-input-styled {
+                width: 100%;
+                padding: 1rem 1.25rem;
+                font-size: 1.1rem;
+                border: 2px solid #c3dafe;
+                border-radius: 10px;
+                box-sizing: border-box;
+            }
+
+            .text-input-styled.correct {
+                border-color: #48bb78;
+                background-color: #f0fff4;
+                color: #2f855a;
+                animation: bounce 0.6s ease-out;
+            }
+
+            .text-input-styled.incorrect {
+                border-color: #f56565;
+                background-color: #fff5f5;
+                color: #c53030;
+                animation: shake 0.5s ease-in-out;
+            }
+
+            #feedback-area {
+                margin-top: 1rem;
+                padding: 1.5rem;
+                border-radius: 10px;
+                font-weight: 500;
+                display: none;
+                opacity: 0;
+            }
+
+            #feedback-area.visible {
+                display: block;
+                animation: zoomFeedback 0.4s forwards;
+            }
+
+            .feedback-correct {
+                background-color: #e6fffa;
+                color: #276749;
+                border: 1px solid #48bb78;
+            }
+
+            .feedback-incorrect {
+                background-color: #fff5f5;
+                color: #c53030;
+                border: 1px solid #f56565;
+            }
+
+            .main-btn-container {
+                margin-top: 2rem;
+                display: flex;
+                justify-content: center;
+            }
+
+            #main-btn {
+                background-color: #4c51bf;
+                color: white;
+                padding: 1rem 2.5rem;
+                border-radius: 12px;
+                font-weight: 800;
+                font-size: 1.1rem;
+                transition: all 0.3s;
+                width: 100%;
+                border: none;
+                cursor: pointer;
+            }
+
+            #main-btn:disabled {
+                background-color: #a0aec0;
+                cursor: not-allowed;
+                transform: none;
+                box-shadow: none;
+            }
+
+            .math-frac {
+                display: inline-block;
+                vertical-align: middle;
+                text-align: center;
+                font-size: 0.9em;
+            }
+
+            .math-num {
+                border-bottom: 1px solid;
+                display: block;
+                padding: 0 2px;
+            }
+
+            .math-den {
+                display: block;
+                padding: 0 2px;
+            }
+
+            .couleur-qui-change {
+                animation: couleur-qui-change 14s infinite alternate;
+                font-weight: bold;
+            }
+
+            .hidden {
+                display: none !important;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="quiz-container">
+            <div class="header">
+                <h1>Quiz Physique sur l'énergie</h1>
+                <p class="anim-wipe-in">Troisième - QCM Aléatoire</p>
+            </div>
+            <div id="nav-container" class="nav-grid"></div>
+
+            <div id="quiz-ui" class="hidden">
+                <div class="progress-bar-container">
+                    <div id="progress-fill" class="progress-bar-fill"></div>
+                </div>
+
+                <div
+                    style="
+                        display: flex;
+                        justify-content: space-between;
+                        color: #a0aec0;
+                        font-size: 0.9em;
+                        margin-bottom: 10px;
+                        font-weight: 600;
+                    "
+                >
+                    <span id="cat-label">CATÉGORIE</span>
+                    <span id="counter-label">1/10</span>
+                </div>
+
+                <div
+                    id="question-card-container"
+                    class="question-card entering"
+                >
+                    <div id="question-text" class="question-text"></div>
+                    <div id="image-area" class="img-container hidden"></div>
+
+                    <div id="input-area"></div>
+                </div>
+
+                <div id="feedback-area"></div>
+
+                <div class="main-btn-container">
+                    <button id="main-btn" onclick="app.checkAnswer()">
+                        Valider la réponse
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const db = [
+                {
+                    category: "L'énergie Cinétique (Ec = 1/2 × m × v²)",
+                    questions: [
+                        {
+                            text: "Quelle est la formule correcte pour calculer l'énergie cinétique (Ec) d'un objet de masse 'm' et de vitesse 'v' ?",
+                            type: "mcq",
+                            options: [
+                                "Ec = m × v",
+                                "Ec = 2 × m × v",
+                                "Ec = <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div> × m × v<sup>2</sup>",
+                                "Ec = <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div> × m<sup>2</sup> × v",
+                            ],
+                            correct: 2,
+                            solution:
+                                "La formule de l'énergie cinétique est la moitié du produit de la masse (m) par le carré de la vitesse (v).",
+                        },
+                        {
+                            text: "Quelle est l'unité de mesure standard de l'énergie cinétique (Ec) selon le Système International d'Unités, lorsque la masse est en kg et la vitesse en m/s ?",
+                            type: "mcq",
+                            options: [
+                                "Newton (N)",
+                                "Watt (W)",
+                                "Kilogramme-force (kgf)",
+                                "Joule (J)",
+                            ],
+                            correct: 3,
+                            solution:
+                                "L'énergie cinétique, comme toute autre forme d'énergie, s'exprime en Joules (J).",
+                        },
+                        {
+                            text: "Calculez l'énergie cinétique d'un objet de 10 kg se déplaçant à 4 m/s. Donnez la réponse numérique en Joules.",
+                            type: "text",
+                            accepted: ["80"],
+                            solution:
+                                "Ec = <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div> × m × v<sup>2</sup>. Ec = <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div> × 10 kg × (4 m/s)<sup>2</sup> = 80 J.",
+                        },
+                        {
+                            text: "Si la vitesse (v) d'un objet est doublée, par quel facteur son énergie cinétique (Ec) est-elle multipliée, en supposant que la masse reste constante ?",
+                            type: "mcq",
+                            options: [
+                                "Le facteur 2",
+                                "Le facteur 3",
+                                "Le facteur 4",
+                                "Le facteur <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div>",
+                            ],
+                            correct: 2,
+                            solution:
+                                "L'énergie cinétique est proportionnelle au carré de la vitesse (v<sup>2</sup>). Si v est doublée (×2), Ec est multipliée par 2<sup>2</sup>, soit 4.",
+                        },
+                        {
+                            text: "Un objet a une énergie cinétique de 100 J et se déplace à 5 m/s. Quelle est sa masse (m) en kg ? Donnez la réponse numérique.",
+                            type: "text",
+                            accepted: ["8"],
+                            solution:
+                                "En réarrangeant la formule : m = <div class='math-frac'><span class='math-num'>2 × Ec</span><span class='math-den'>v<sup>2</sup></span></div>. m = <div class='math-frac'><span class='math-num'>2 × 100</span><span class='math-den'>5<sup>2</sup></span></div> = <div class='math-frac'><span class='math-num'>200</span><span class='math-den'>25</span></div> = 8 kg.",
+                        },
+                        {
+                            text: "Quelle est la vitesse (v) en m/s d'un objet de 2 kg si son énergie cinétique est de 36 J ? Donnez la réponse numérique.",
+                            type: "text",
+                            accepted: ["6"],
+                            solution:
+                                "v<sup>2</sup> = <div class='math-frac'><span class='math-num'>2 × Ec</span><span class='math-den'>m</span></div>. v<sup>2</sup> = <div class='math-frac'><span class='math-num'>2 × 36</span><span class='math-den'>2</span></div> = 36. Donc, v = √36 = 6 m/s.",
+                        },
+                        {
+                            text: "Quelles sont les unités de base de la masse et de la vitesse à utiliser pour que l'énergie cinétique (Ec) soit directement exprimée en Joules (J) ?",
+                            type: "mcq",
+                            options: [
+                                "Masse en grammes (g) et vitesse en m/s",
+                                "Masse en kg et vitesse en km/h",
+                                "Masse en kg et vitesse en m/s",
+                                "Masse en tonnes et vitesse en m/s",
+                            ],
+                            correct: 2,
+                            solution:
+                                "Pour obtenir des Joules (J), la masse doit être en kilogrammes (kg) et la vitesse en mètres par seconde (m/s).",
+                        },
+                        {
+                            text: "Un vélo de 15 kg roule à 10 m/s. Une voiture de 1000 kg est à l'arrêt (0 m/s). Lequel a la plus grande énergie cinétique ?",
+                            type: "mcq",
+                            options: [
+                                "La voiture, car elle a une masse beaucoup plus grande.",
+                                "Le vélo.",
+                                "Ils ont la même énergie cinétique, car l'énergie est conservée.",
+                                "Cela dépend du type de moteur.",
+                            ],
+                            correct: 1,
+                            solution:
+                                "L'Ec du vélo est de 750 J, tandis que l'Ec de la voiture est de 0 J (car sa vitesse est nulle). Tout objet à l'arrêt a une énergie cinétique nulle.",
+                        },
+                        {
+                            text: "Calculez l'énergie cinétique d'un palet de hockey de 0,17 kg glissant à 30 m/s. Donnez la réponse numérique avec un chiffre après la virgule.",
+                            type: "text",
+                            accepted: ["76.5", "76,5"],
+                            solution:
+                                "Ec = <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div> × 0,17 kg × (30 m/s)<sup>2</sup> = 76,5 J. (Le point et la virgule sont acceptés pour la réponse décimale).",
+                        },
+                        {
+                            text: "Un camion de 2000 kg roule à 36 km/h. Quelle est son énergie cinétique ? (Rappel : il faut utiliser la vitesse en m/s. 36 km/h = 10 m/s)",
+                            type: "mcq",
+                            options: [
+                                "36000 J",
+                                "100000 J",
+                                "72000 J",
+                                "1296000 J",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Il faut d'abord convertir la vitesse : 36 km/h = 10 m/s. Ec = <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div> × 2000 kg × (10 m/s)<sup>2</sup> = 100 000 J.",
+                        },
+                    ],
+                },
+            ];
+
+            const app = {
+                state: {
+                    catIdx: 0,
+                    qIdx: 0,
+                },
+
+                init: function () {
+                    this.renderMenu();
+                },
+
+                renderMenu: function () {
+                    const nav = document.getElementById("nav-container");
+                    nav.innerHTML = "";
+                    document.getElementById("quiz-ui").classList.add("hidden");
+                    document
+                        .getElementById("nav-container")
+                        .classList.remove("hidden");
+
+                    db.forEach((cat, idx) => {
+                        const btn = document.createElement("div");
+                        btn.className = "nav-btn";
+                        btn.textContent = cat.category;
+                        btn.onclick = () => this.startCategory(idx);
+                        nav.appendChild(btn);
+                    });
+                },
+
+                startCategory: function (idx) {
+                    this.state.catIdx = idx;
+                    this.state.qIdx = 0;
+
+                    document
+                        .getElementById("nav-container")
+                        .classList.add("hidden");
+                    document
+                        .getElementById("quiz-ui")
+                        .classList.remove("hidden");
+                    this.renderQuestion();
+                },
+
+                renderQuestion: function () {
+                    const q = db[this.state.catIdx].questions[this.state.qIdx];
+                    const card = document.getElementById(
+                        "question-card-container",
+                    );
+                    const feedback = document.getElementById("feedback-area");
+                    const btn = document.getElementById("main-btn");
+
+                    card.classList.remove("fast-exit", "entering");
+                    void card.offsetWidth;
+                    card.classList.add("entering");
+
+                    feedback.className = "";
+                    feedback.classList.remove("visible");
+                    feedback.style.display = "none";
+
+                    btn.textContent = "Valider la réponse";
+                    btn.disabled = false;
+                    btn.style.backgroundColor = "#4c51bf";
+
+                    document.getElementById("cat-label").textContent =
+                        db[this.state.catIdx].category;
+                    document.getElementById("counter-label").textContent =
+                        `${this.state.qIdx + 1} / ${db[this.state.catIdx].questions.length}`;
+                    document.getElementById("question-text").innerHTML = q.text;
+
+                    const imgArea = document.getElementById("image-area");
+                    if (q.image) {
+                        imgArea.innerHTML = `<img src="${q.image}">`;
+                        imgArea.classList.remove("hidden");
+                    } else {
+                        imgArea.classList.add("hidden");
+                    }
+
+                    const pct =
+                        (this.state.qIdx /
+                            db[this.state.catIdx].questions.length) *
+                        100;
+                    document.getElementById("progress-fill").style.width =
+                        pct + "%";
+
+                    const inputArea = document.getElementById("input-area");
+                    inputArea.innerHTML = "";
+
+                    if (q.type === "mcq") {
+                        const container = document.createElement("div");
+                        container.className = "options-container";
+
+                        let mixedOptions = q.options.map(
+                            (optText, originalIndex) => {
+                                return { text: optText, val: originalIndex };
+                            },
+                        );
+
+                        mixedOptions.sort(() => Math.random() - 0.5);
+
+                        mixedOptions.forEach((optObj, i) => {
+                            const item = document.createElement("div");
+                            item.className = "option-item";
+                            item.innerHTML = `
+                        <input type="radio" name="quiz-opt" id="opt-${i}" value="${optObj.val}">
+                        <label class="answer-btn" for="opt-${i}">${optObj.text}</label>
+                    `;
+                            container.appendChild(item);
+                        });
+                        inputArea.appendChild(container);
+                    } else {
+                        inputArea.innerHTML = `<input type="text" id="text-answer" class="text-input-styled" placeholder="Ta réponse..." autocomplete="off">`;
+                        document
+                            .getElementById("text-answer")
+                            .addEventListener("keypress", (e) => {
+                                if (e.key === "Enter") this.checkAnswer();
+                            });
+                        setTimeout(
+                            () =>
+                                document.getElementById("text-answer").focus(),
+                            100,
+                        );
+                    }
+                },
+
+                checkAnswer: function () {
+                    const q = db[this.state.catIdx].questions[this.state.qIdx];
+                    const feedback = document.getElementById("feedback-area");
+                    feedback.style.display = "block";
+                    const btn = document.getElementById("main-btn");
+                    let isCorrect = false;
+                    let userElement = null;
+
+                    if (q.type === "mcq") {
+                        const selected = document.querySelector(
+                            'input[name="quiz-opt"]:checked',
+                        );
+                        if (!selected) return alert("Choisis une réponse !");
+
+                        const label = document.querySelector(
+                            `label[for="${selected.id}"]`,
+                        );
+                        userElement = label;
+
+                        if (parseInt(selected.value) === q.correct) {
+                            isCorrect = true;
+                        }
+                    } else {
+                        const input = document.getElementById("text-answer");
+                        if (!input.value.trim())
+                            return alert("Écris une réponse !");
+                        userElement = input;
+
+                        const val = input.value
+                            .toLowerCase()
+                            .replace(/\s/g, "")
+                            .replace(",", ".");
+                        const accepted = q.accepted.map((a) =>
+                            a
+                                .toLowerCase()
+                                .replace(/\s/g, "")
+                                .replace(",", "."),
+                        );
+                        if (accepted.includes(val)) isCorrect = true;
+                    }
+
+                    btn.disabled = true;
+
+                    if (isCorrect) {
+                        userElement.classList.add("correct");
+                        feedback.className = "feedback-correct visible";
+                        feedback.innerHTML = `
+                    <div style="font-size: 1.2em; margin-bottom: 5px;">✅ <span class="couleur-qui-change">Excellent !</span></div>
+                    <div>${q.solution}</div>
+                `;
+                        btn.style.backgroundColor = "#48bb78";
+                        btn.textContent = "Bravo !";
+                    } else {
+                        userElement.classList.add("incorrect");
+
+                        if (q.type === "mcq") {
+                            const correctInput = document.querySelector(
+                                `input[name="quiz-opt"][value="${q.correct}"]`,
+                            );
+                            if (correctInput) {
+                                const correctLabel = document.querySelector(
+                                    `label[for="${correctInput.id}"]`,
+                                );
+                                correctLabel.classList.add("correct");
+                            }
+                        }
+
+                        feedback.className = "feedback-incorrect visible";
+                        feedback.innerHTML = `
+                    <div style="font-size: 1.2em; margin-bottom: 5px;">❌ Aïe... Regarde la correction :</div>
+                    <div><strong>${q.solution}</strong></div>
+                `;
+                        btn.style.backgroundColor = "#c53030";
+                        btn.textContent = "Lecture correction...";
+                    }
+
+                    const pct =
+                        ((this.state.qIdx + 1) /
+                            db[this.state.catIdx].questions.length) *
+                        100;
+                    document.getElementById("progress-fill").style.width =
+                        pct + "%";
+
+                    const delayDuration = isCorrect ? 1200 : 4000;
+
+                    setTimeout(() => {
+                        this.handleTransition();
+                    }, delayDuration);
+                },
+
+                handleTransition: function () {
+                    if (
+                        this.state.qIdx >=
+                        db[this.state.catIdx].questions.length - 1
+                    ) {
+                        alert("Série terminée ! Retour au menu.");
+                        this.renderMenu();
+                        return;
+                    }
+
+                    const card = document.getElementById(
+                        "question-card-container",
+                    );
+                    card.classList.remove("entering");
+                    card.classList.add("fast-exit");
+
+                    setTimeout(() => {
+                        this.state.qIdx++;
+                        this.renderQuestion();
+                    }, 300);
+                },
+            };
+
+            window.onload = () => app.init();
+        </script>
+    </body>
+</html>

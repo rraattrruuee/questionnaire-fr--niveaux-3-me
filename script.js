@@ -84,3 +84,21 @@ if (initialButton) {
 } else {
   document.querySelector('.label-button[data-target="all"]').click();
 }
+document.querySelectorAll('.bouton-lien').forEach(link => {
+    // 1. Créer le conteneur (wrapper)
+    const wrapper = document.createElement('div');
+    wrapper.className = 'quiz-wrapper';
+    // 2. Créer le bouton de téléchargement
+    const dlBtn = document.createElement('a');
+    dlBtn.href = link.href;
+    dlBtn.download = ""; // Force le téléchargement
+    dlBtn.className = 'btn-dl';
+    dlBtn.innerHTML = '📥';
+    dlBtn.title = "Télécharger le fichier";
+    // 3. Placer le wrapper là où était le lien
+    link.parentNode.insertBefore(wrapper, link);
+    
+    // 4. Mettre le lien et le bouton de téléchargement dans le wrapper
+    wrapper.appendChild(link);
+    wrapper.appendChild(dlBtn);
+});

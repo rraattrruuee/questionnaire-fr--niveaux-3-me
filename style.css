@@ -324,3 +324,32 @@ h1 {
         animation: none;
     }
 }
+
+/* Conteneur pour aligner le lien et le téléchargement */
+.quiz-wrapper {
+    display: inline-flex;
+    align-items: stretch;
+    margin: 5px;
+}
+/* On ajuste ton bouton bleu actuel pour qu'il ne soit arrondi qu'à gauche */
+.bouton-lien {
+    margin: 0 !important;
+    border-radius: 8px 0 0 8px !important;
+    border-right: 1px solid rgba(255,255,255,0.2);
+}
+/* Style du bouton de téléchargement (arrondi à droite) */
+.btn-dl {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2ecc71; /* Vert pour le téléchargement */
+    color: white;
+    text-decoration: none;
+    padding: 0 15px;
+    border-radius: 0 8px 8px 0;
+    font-size: 1.2rem;
+    transition: background 0.3s;
+}
+.btn-dl:hover {
+    background-color: #27ae60;
+}

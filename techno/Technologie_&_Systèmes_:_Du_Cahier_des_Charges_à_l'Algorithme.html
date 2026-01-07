@@ -1,0 +1,1023 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="../quiz_icon.svg" type="image/x-icon" />
+        <title>Mission Technologie & Systèmes : Du Cahier des Charges à l'Algorithme</title>
+        <style>
+            /* ----------------------------------------------------
+           ANIMATIONS (KEYFRAMES)
+           ---------------------------------------------------- */
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes slideOut {
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+
+            @keyframes headerDrop {
+                from {
+                    opacity: 0;
+                    transform: translateY(-50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                    box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+                }
+                50% {
+                    transform: scale(1.02);
+                    box-shadow: 0 8px 20px rgba(76, 81, 191, 0.5);
+                }
+                100% {
+                    transform: scale(1);
+                    box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes resultsEntry {
+                from {
+                    opacity: 0;
+                    transform: translateY(50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes bounce {
+                0%,
+                20%,
+                50%,
+                80%,
+                100% {
+                    transform: translateY(0);
+                }
+                40% {
+                    transform: translateY(-5px);
+                }
+                60% {
+                    transform: translateY(-3px);
+                }
+            }
+
+            @keyframes shake {
+                0%,
+                100% {
+                    transform: translateX(0);
+                }
+                20%,
+                60% {
+                    transform: translateX(-5px);
+                }
+                40%,
+                80% {
+                    transform: translateX(5px);
+                }
+            }
+
+            @keyframes glowCorrect {
+                0% {
+                    box-shadow: 0 0 5px #68d391;
+                }
+                50% {
+                    box-shadow: 0 0 20px #48bb78;
+                }
+                100% {
+                    box-shadow: 0 0 5px #68d391;
+                }
+            }
+
+            @keyframes zoomFeedback {
+                0% {
+                    transform: scale(0.9);
+                    opacity: 0;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes couleur-qui-change {
+                0%,
+                10% {
+                    color: white;
+                }
+                30% {
+                    color: #00ff00;
+                }
+                38% {
+                    color: #ffff00;
+                }
+                46% {
+                    color: #ff00ff;
+                }
+                54% {
+                    color: #00ffff;
+                }
+                60% {
+                    color: #ffa500;
+                }
+                68% {
+                    color: #7cfc00;
+                }
+                76% {
+                    color: #ff69b4;
+                }
+                84% {
+                    color: #8a2be2;
+                }
+                92% {
+                    color: #ff4500;
+                }
+                100% {
+                    color: deeppink;
+                }
+            }
+
+            @keyframes rotate {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            @keyframes flicker {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                5%,
+                25%,
+                45%,
+                65%,
+                85% {
+                    opacity: 0.85;
+                }
+                10%,
+                30%,
+                50%,
+                70%,
+                90% {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes wipe-in {
+                from {
+                    clip-path: inset(0 100% 0 0);
+                }
+                to {
+                    clip-path: inset(0 0 0 0);
+                }
+            }
+
+            @keyframes border-fade {
+                0% {
+                    border-color: #3182ce;
+                }
+                33% {
+                    border-color: #48bb78;
+                }
+                66% {
+                    border-color: #f6ad55;
+                }
+                100% {
+                    border-color: #3182ce;
+                }
+            }
+
+            @keyframes clignotement-leger {
+                0%,
+                100% {
+                    color: red;
+                    opacity: 1;
+                }
+                50% {
+                    color: orange;
+                    opacity: 0.7;
+                }
+            }
+
+            /* ----------------------------------------------------
+           STYLE GÉNÉRAL
+           ---------------------------------------------------- */
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                background-color: #f0f4f8;
+                padding: 1rem;
+                line-height: 1.6;
+                min-height: 100vh;
+            }
+
+            @media (min-width: 768px) {
+                body {
+                    padding: 2rem;
+                }
+            }
+
+            .quiz-container {
+                max-width: 800px;
+                margin: 2rem auto;
+                padding: 2rem;
+                background: #ffffff;
+                border-radius: 20px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            }
+
+            .header {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #1a202c;
+                margin-bottom: 0.5rem;
+                animation: headerDrop 0.8s ease-out;
+            }
+
+            .header p {
+                color: #4a5568;
+                font-size: 1.125rem;
+                font-weight: 500;
+            }
+
+            .question-card {
+                min-height: 250px;
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+                border-radius: 15px;
+                background-color: #f7faff;
+                border: 2px solid #e2e8f0;
+                transition:
+                    opacity 0.3s ease,
+                    transform 0.3s ease;
+            }
+
+            .question-card.entering {
+                animation: slideIn 0.5s ease-out forwards;
+            }
+
+            .question-card.fast-exit {
+                animation: slideOut 0.25s ease-in forwards; /* Rapide pour le succès */
+            }
+            .question-card.slow-exit {
+                animation: slideOut 0.8s ease-in forwards; /* Lent pour l'échec */
+            }
+
+            .question-text {
+                font-size: 1.3rem;
+                font-weight: 700;
+                margin-bottom: 1.5rem;
+                color: #2d3748;
+            }
+
+            .options-container {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .answer-btn {
+                display: block;
+                width: 100%;
+                padding: 1rem 1.25rem;
+                text-align: left;
+                border-radius: 10px;
+                transition: all 0.2s ease-out;
+                font-weight: 600;
+                border: 1px solid #c3dafe;
+                color: #2b6cb0;
+                background-color: #ebf4ff;
+                cursor: pointer;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            }
+
+            .answer-btn:hover:not(.selected):not(.correct):not(.incorrect) {
+                background-color: #cee0f2;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .selected {
+                background-color: #3182ce;
+                border-color: #2c5282;
+                color: white;
+                transform: scale(1.01);
+                box-shadow: 0 5px 15px rgba(49, 130, 206, 0.4);
+            }
+
+            .correct {
+                background-color: #48bb78 !important;
+                border-color: #2f855a !important;
+                color: white !important;
+                box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
+                pointer-events: none;
+                animation: bounce 0.6s ease-out;
+            }
+
+            .incorrect {
+                background-color: #f56565 !important;
+                border-color: #c53030 !important;
+                color: white !important;
+                box-shadow: 0 5px 15px rgba(245, 101, 101, 0.4);
+                pointer-events: none;
+                animation: shake 0.5s ease-in-out;
+            }
+
+            #feedback-area {
+                margin-top: 1rem;
+                padding: 1rem;
+                border-radius: 10px;
+                font-weight: 600;
+                text-align: center;
+                animation: zoomFeedback 0.4s
+                    cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            }
+
+            .feedback-correct {
+                background-color: #e6fffa;
+                color: #38a169;
+                border: 1px solid #48bb78;
+            }
+
+            .feedback-incorrect {
+                background-color: #fff5f5;
+                color: #e53e3e;
+                border: 1px solid #f56565;
+            }
+            .main-btn-container {
+                margin-top: 2.5rem;
+                display: flex;
+                justify-content: center;
+            }
+
+            #main-btn {
+                background-color: #4c51bf;
+                color: white;
+                padding: 1rem 2.5rem;
+                border-radius: 12px;
+                font-weight: 800;
+                font-size: 1.1rem;
+                transition:
+                    background-color 0.3s,
+                    transform 0.2s,
+                    box-shadow 0.3s;
+                width: 100%;
+                border: none;
+                cursor: pointer;
+                box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+            }
+
+            @media (min-width: 768px) {
+                #main-btn {
+                    width: auto;
+                }
+            }
+
+            #main-btn:hover:not(:disabled) {
+                background-color: #3a4294;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(76, 81, 191, 0.4);
+            }
+
+            #main-btn:active:not(:disabled) {
+                animation: pulse 0.3s ease;
+            }
+
+            #main-btn:disabled {
+                background-color: #a0aec0;
+                cursor: not-allowed;
+                box-shadow: none;
+            }
+
+            #results {
+                margin-top: 2.5rem;
+                padding: 2rem;
+                background-color: #f0fff4;
+                border: 2px solid #68d391;
+                border-radius: 15px;
+                text-align: center;
+            }
+
+            #results.entering {
+                animation: resultsEntry 0.6s ease-out forwards;
+            }
+
+            .high-score-glow {
+                animation: glowCorrect 2s infinite alternate;
+            }
+
+            #results h2 {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: #2f855a;
+                margin-bottom: 1rem;
+            }
+
+            #score-display {
+                font-size: 1.4rem;
+                font-weight: 600;
+                margin-bottom: 0.75rem;
+                color: #38a169;
+            }
+
+            #feedback-message {
+                font-size: 1.1rem;
+                color: #4c51bf;
+            }
+
+            #results button {
+                margin-top: 1.5rem;
+                padding: 0.75rem 2rem;
+                background-color: #48bb78;
+                color: white;
+                border-radius: 10px;
+                font-weight: 700;
+                transition: background-color 0.2s;
+                border: none;
+                cursor: pointer;
+            }
+
+            #results button:hover {
+                background-color: #38a169;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            .couleur-qui-change {
+                animation: couleur-qui-change 14s infinite alternate;
+                font-weight: bold;
+            }
+
+            .anim-rotate {
+                animation: rotate 5s linear infinite;
+            }
+
+            .anim-flicker {
+                animation: flicker 0.15s linear infinite alternate;
+            }
+
+            .anim-wipe-in {
+                animation: wipe-in 1s ease-out forwards;
+            }
+
+            .anim-border-fade {
+                border: 3px solid transparent;
+                animation: border-fade 3s ease-in-out infinite;
+            }
+
+            .clignotant {
+                animation: clignotement-leger 1.5s infinite ease-in-out;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="quiz-container anim-border-fade">
+            <header class="header">
+                <h1>
+                    Mission Technologie & Systèmes <span class="couleur-qui-change">:</span> 
+                    <span class="clignotant">Du Cahier des Charges à l'Algorithme</span>
+                </h1>
+                <p>
+                    Question <span id="current-q-number">1</span> /
+                    <span id="total-q-number">50</span>
+                </p>
+            </header>
+
+            <div id="quiz-area" class="anim-wipe-in">
+                <div id="current-question-card" class="question-card"></div>
+
+                <div id="feedback-area" class="hidden"></div>
+
+                <div class="main-btn-container">
+                    <button id="main-btn" onclick="checkAnswerAndProceed()">
+                        Valider la Réponse
+                    </button>
+                </div>
+            </div>
+
+            <div id="results" class="hidden">
+                <h2 class="anim-flicker">Quiz Terminé !</h2>
+                <p id="score-display"></p>
+                <p id="feedback-message"></p>
+                <button onclick="restartQuiz()">Recommencer le Quiz</button>
+            </div>
+        </div>
+
+        <script>
+            // --- DATA: ---
+            const questions = [
+  {
+    "q": "Dans un système automatisé, quelle partie donne les ordres ?",
+    "answers": ["La partie commande", "La partie opérative", "Le capteur", "L'actionneur"],
+    "correct": "La partie commande"
+  },
+  {
+    "q": "Dans un système automatisé, quelle partie exécute le travail ?",
+    "answers": ["La partie commande", "La partie opérative", "L'interface", "Le programme"],
+    "correct": "La partie opérative"
+  },
+  {
+    "q": "Quel composant transforme l'énergie en action (mouvement, chaleur) ?",
+    "answers": ["Un capteur", "Un actionneur", "Un microprocesseur", "Une batterie"],
+    "correct": "Un actionneur"
+  },
+  {
+    "q": "L'information prélevée sur l'environnement par le système vient d'un :",
+    "answers": ["Actionneur", "Moteur", "Capteur", "Câble"],
+    "correct": "Capteur"
+  },
+  {
+    "q": "Quelle chaîne traite les données et décide des actions ?",
+    "answers": ["La chaîne d'énergie", "La chaîne d'information", "La chaîne cinématique", "La chaîne de production"],
+    "correct": "La chaîne d'information"
+  },
+  {
+    "q": "Quelle chaîne apporte la puissance nécessaire au mouvement ?",
+    "answers": ["La chaîne d'information", "La chaîne d'énergie", "La chaîne de commande", "La chaîne binaire"],
+    "correct": "La chaîne d'énergie"
+  },
+  {
+    "q": "Dans la chaîne d'information, quelle est la première étape ?",
+    "answers": ["Traiter", "Acquérir", "Communiquer", "Transmettre"],
+    "correct": "Acquérir"
+  },
+  {
+    "q": "Quel bloc de la chaîne d'information correspond au cerveau (automate) ?",
+    "answers": ["Acquérir", "Traiter", "Communiquer", "Distribuer"],
+    "correct": "Traiter"
+  },
+  {
+    "q": "Quel bloc de la chaîne d'information envoie les ordres à la chaîne d'énergie ?",
+    "answers": ["Communiquer", "Acquérir", "Stocker", "Alimenter"],
+    "correct": "Communiquer"
+  },
+  {
+    "q": "Dans la chaîne d'énergie, quel bloc reçoit l'énergie extérieure ?",
+    "answers": ["Distribuer", "Alimenter", "Convertir", "Transmettre"],
+    "correct": "Alimenter"
+  },
+  {
+    "q": "Quel composant joue souvent le rôle du bloc 'Distribuer' ?",
+    "answers": ["Le moteur", "Le contacteur ou relais", "La prise secteur", "L'engrenage"],
+    "correct": "Le contacteur ou relais"
+  },
+  {
+    "q": "Quel bloc de la chaîne d'énergie transforme l'énergie (ex: électrique en mécanique) ?",
+    "answers": ["Alimenter", "Distribuer", "Convertir", "Transmettre"],
+    "correct": "Convertir"
+  },
+  {
+    "q": "Le langage binaire est composé de quels chiffres ?",
+    "answers": ["1 et 2", "0 et 1", "0 à 9", "A et B"],
+    "correct": "0 et 1"
+  },
+  {
+    "q": "Comment appelle-t-on un seul chiffre binaire (0 ou 1) ?",
+    "answers": ["Un octet", "Un bit", "Un pixel", "Un code"],
+    "correct": "Un bit"
+  },
+  {
+    "q": "Combien de bits y a-t-il dans un octet ?",
+    "answers": ["4", "8", "10", "16"],
+    "correct": "8"
+  },
+  {
+    "q": "Quelle est la valeur décimale du nombre binaire 101 ?",
+    "answers": ["3", "5", "101", "4"],
+    "correct": "5"
+  },
+  {
+    "q": "Quelle est la valeur décimale du nombre binaire 111 ?",
+    "answers": ["3", "7", "6", "11"],
+    "correct": "7"
+  },
+  {
+    "q": "En binaire, que suit le chiffre 1 ?",
+    "answers": ["2", "10", "11", "0"],
+    "correct": "10"
+  },
+  {
+    "q": "Le Cahier des Charges Fonctionnel (CDCF) sert à :",
+    "answers": ["Vendre l'objet", "Lister les besoins et contraintes", "Réparer l'objet", "Recycler l'objet"],
+    "correct": "Lister les besoins et contraintes"
+  },
+  {
+    "q": "Une contrainte liée à l'impact sur la nature est une contrainte :",
+    "answers": ["Économique", "Environnementale", "Ergonomique", "Esthétique"],
+    "correct": "Environnementale"
+  },
+  {
+    "q": "Une contrainte liée au prix de fabrication est une contrainte :",
+    "answers": ["Technique", "Économique", "De sécurité", "D'usage"],
+    "correct": "Économique"
+  },
+  {
+    "q": "Quel outil graphique utilise-t-on pour identifier les fonctions d'un objet ?",
+    "answers": ["Le diagramme bête à cornes", "Le diagramme pieuvre", "L'organigramme", "Le schéma binaire"],
+    "correct": "Le diagramme pieuvre"
+  },
+  {
+    "q": "Le diagramme 'Bête à cornes' permet de répondre à quelle question ?",
+    "answers": ["Combien ça coûte ?", "À quel besoin répond l'objet ?", "Comment est-il fabriqué ?", "En quoi est-il fait ?"],
+    "correct": "À quel besoin répond l'objet ?"
+  },
+  {
+    "q": "Qu'est-ce qu'une fonction de service ?",
+    "answers": ["Une pièce détachée", "Une action attendue par l'utilisateur", "Un coût de réparation", "Un logiciel"],
+    "correct": "Une action attendue par l'utilisateur"
+  },
+  {
+    "q": "Comment appelle-t-on la capacité d'un objet à être facile à utiliser ?",
+    "answers": ["Esthétique", "Ergonomie", "Robustesse", "Économie"],
+    "correct": "Ergonomie"
+  },
+  {
+    "q": "Quelle étape du cycle de vie consiste à imaginer l'objet ?",
+    "answers": ["Production", "Conception", "Distribution", "Valorisation"],
+    "correct": "Conception"
+  },
+  {
+    "q": "L'extraction des matières premières fait partie de quelle phase ?",
+    "answers": ["Conception", "Production", "Utilisation", "Fin de vie"],
+    "correct": "Production"
+  },
+  {
+    "q": "L'étape de transport du produit vers le magasin est la :",
+    "answers": ["Production", "Conception", "Distribution", "Maintenance"],
+    "correct": "Distribution"
+  },
+  {
+    "q": "Que signifie la 'Valorisation' en fin de vie d'un objet ?",
+    "answers": ["Le jeter à la poubelle", "Le recycler ou réutiliser", "Le vendre plus cher", "Le cacher"],
+    "correct": "Le recycler ou réutiliser"
+  },
+  {
+    "q": "Quelle analyse étudie l'impact d'un produit du début à la fin de sa vie ?",
+    "answers": ["L'analyse binaire", "L'analyse du cycle de vie (ACV)", "L'analyse financière", "L'analyse fonctionnelle"],
+    "correct": "L'analyse du cycle de vie (ACV)"
+  },
+  {
+    "q": "L'obsolescence programmée est une stratégie pour :",
+    "answers": ["Durer plus longtemps", "Réduire la durée de vie de l'objet", "Protéger la planète", "Baisser le prix"],
+    "correct": "Réduire la durée de vie de l'objet"
+  },
+  {
+    "q": "Quel bloc assure le transport de l'énergie mécanique (ex: engrenages) ?",
+    "answers": ["Convertir", "Transmettre", "Distribuer", "Acquérir"],
+    "correct": "Transmettre"
+  },
+  {
+    "q": "Un capteur de présence est un capteur :",
+    "answers": ["Analogique", "Logique (Tout ou Rien)", "Numérique", "Mécanique"],
+    "correct": "Logique (Tout ou Rien)"
+  },
+  {
+    "q": "Quel est le rôle du microcontrôleur ?",
+    "answers": ["Alimenter en 230V", "Traiter les informations du programme", "Convertir le mouvement", "Réchauffer le système"],
+    "correct": "Traiter les informations du programme"
+  },
+  {
+    "q": "Un signal qui ne peut prendre que deux valeurs (0 ou 1) est dit :",
+    "answers": ["Analogique", "Numérique", "Continu", "Infini"],
+    "correct": "Numérique"
+  },
+  {
+    "q": "La fonction 'Alimenter' d'un aspirateur sans fil est assurée par :",
+    "answers": ["Le moteur", "La batterie", "L'hélice", "Le bouton"],
+    "correct": "La batterie"
+  },
+  {
+    "q": "Dans un lampadaire automatique, quelle est la grandeur d'entrée ?",
+    "answers": ["La lumière du jour", "L'électricité", "Le mouvement", "La chaleur"],
+    "correct": "La lumière du jour"
+  },
+  {
+    "q": "La règle des '3R' en fin de vie signifie : Réduire, Réutiliser et...",
+    "answers": ["Réparer", "Recycler", "Remplacer", "Revendre"],
+    "correct": "Recycler"
+  },
+  {
+    "q": "En quoi consiste la 'Maintenance' ?",
+    "answers": ["Fabriquer l'objet", "Maintenir l'objet en bon état de marche", "Le détruire", "Le transporter"],
+    "correct": "Maintenir l'objet en bon état de marche"
+  },
+  {
+    "q": "Quel symbole binaire correspond généralement à 'éteint' ?",
+    "answers": ["1", "0", "X", "V"],
+    "correct": "0"
+  },
+  {
+    "q": "Un vérin est un actionneur qui crée un mouvement :",
+    "answers": ["Rotatif", "Linéaire (rectiligne)", "Oscillant", "Circulaire"],
+    "correct": "Linéaire (rectiligne)"
+  },
+  {
+    "q": "Le cahier des charges impose que le produit soit recyclable. C'est une :",
+    "answers": ["Fonction d'estime", "Contrainte environnementale", "Solution technique", "Option inutile"],
+    "correct": "Contrainte environnementale"
+  },
+  {
+    "q": "Quelle est la valeur binaire du chiffre 2 ?",
+    "answers": ["11", "10", "100", "01"],
+    "correct": "10"
+  },
+  {
+    "q": "L'énergie solaire est convertie en électricité par :",
+    "answers": ["Une éolienne", "Un panneau photovoltaïque", "Une pile", "Un moteur"],
+    "correct": "Un panneau photovoltaïque"
+  },
+  {
+    "q": "Une DEL (LED) convertit l'électricité en :",
+    "answers": ["Mouvement", "Lumière", "Chaleur", "Son"],
+    "correct": "Lumière"
+  },
+  {
+    "q": "Le schéma qui montre les étapes du fonctionnement d'un programme est :",
+    "answers": ["Un caryotype", "Un algorithme (ou logigramme)", "Un diagramme pieuvre", "Un plan"],
+    "correct": "Un algorithme (ou logigramme)"
+  },
+  {
+    "q": "Une 'entrée' dans un système automatisé est souvent liée à :",
+    "answers": ["Un actionneur", "Un capteur", "Un voyant", "Une sirène"],
+    "correct": "Un capteur"
+  },
+  {
+    "q": "Une 'sortie' dans un système automatisé est souvent liée à :",
+    "answers": ["Un actionneur", "Un capteur", "Un bouton", "Un utilisateur"],
+    "correct": "Un actionneur"
+  },
+  {
+    "q": "Que signifie l'acronyme CAO ?",
+    "answers": ["Calcul Assisté par Ordinateur", "Conception Assistée par Ordinateur", "Construction Aléatoire Organisée", "Circuit Automatique Optimisé"],
+    "correct": "Conception Assistée par Ordinateur"
+  },
+  {
+    "q": "Le recyclage permet de limiter :",
+    "answers": ["Le prix de vente", "Le gaspillage des matières premières", "Le nombre d'ouvriers", "Le transport"],
+    "correct": "Le gaspillage des matières premières"
+  }
+];
+
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let userSelection = null;
+            let questionsShuffled = [];
+            let quizInProgress = false;
+
+            // Fonction pour mélanger un tableau (Algorithme de Fisher-Yates)
+            function shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            // Affiche la question actuelle
+            function renderQuestion() {
+                if (currentQuestionIndex >= questionsShuffled.length) {
+                    showResults();
+                    return;
+                }
+
+                const q = questionsShuffled[currentQuestionIndex];
+                const card = document.getElementById("current-question-card");
+                const questionNumber = currentQuestionIndex + 1;
+
+                card.classList.remove("slow-exit", "fast-exit");
+                card.classList.add("entering");
+
+                document.getElementById("current-q-number").textContent =
+                    questionNumber;
+                document.getElementById("total-q-number").textContent =
+                    questionsShuffled.length;
+                document.getElementById("main-btn").textContent =
+                    "Valider la Réponse";
+                document.getElementById("main-btn").disabled = true;
+
+                card.innerHTML = `
+                <p class="question-text">${q.q}</p>
+                <div id="options-container" class="options-container">
+                    <!-- Options de réponse -->
+                </div>
+            `;
+
+                document
+                    .getElementById("feedback-area")
+                    .classList.add("hidden");
+                document
+                    .getElementById("feedback-area")
+                    .classList.remove("feedback-correct", "feedback-incorrect");
+                userSelection = null;
+                quizInProgress = true;
+
+                const optionsContainer =
+                    card.querySelector("#options-container");
+                const shuffledAnswers = shuffle([...q.answers]);
+
+                shuffledAnswers.forEach((answer) => {
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "answer-btn";
+                    button.setAttribute("data-answer", answer);
+                    button.textContent = answer;
+                    button.onclick = function () {
+                        selectAnswer(answer, button);
+                    };
+                    optionsContainer.appendChild(button);
+                });
+
+                setTimeout(() => {
+                    card.classList.remove("entering");
+                }, 500);
+            }
+
+            function selectAnswer(answer, clickedButton) {
+                if (!quizInProgress) return;
+
+                const optionsContainer =
+                    document.getElementById("options-container");
+                optionsContainer
+                    .querySelectorAll(".answer-btn")
+                    .forEach((btn) => {
+                        btn.classList.remove("selected");
+                    });
+
+                clickedButton.classList.add("selected");
+
+                userSelection = answer;
+                document.getElementById("main-btn").disabled = false;
+            }
+
+            function checkAnswerAndProceed() {
+                if (userSelection === null || !quizInProgress) return;
+
+                quizInProgress = false;
+                document.getElementById("main-btn").disabled = true;
+
+                const q = questionsShuffled[currentQuestionIndex];
+                const isCorrect = userSelection === q.correct;
+                const feedbackArea = document.getElementById("feedback-area");
+                const optionsContainer =
+                    document.getElementById("options-container");
+                const card = document.getElementById("current-question-card");
+
+                feedbackArea.classList.remove("hidden");
+
+                optionsContainer
+                    .querySelectorAll(".answer-btn")
+                    .forEach((btn) => {
+                        const answer = btn.getAttribute("data-answer");
+                        btn.classList.remove("selected");
+
+                        if (answer === q.correct) {
+                            btn.classList.add("correct");
+                        } else if (answer === userSelection && !isCorrect) {
+                            btn.classList.add("incorrect");
+                        }
+                    });
+
+                feedbackArea.classList.remove(
+                    "feedback-correct",
+                    "feedback-incorrect",
+                );
+
+                if (isCorrect) {
+                    score++;
+                    feedbackArea.textContent =
+                        "Bravo ! Réponse correcte. Prochaine question rapidement !";
+                    feedbackArea.classList.add("feedback-correct");
+                    card.classList.add("fast-exit");
+                } else {
+                    feedbackArea.textContent = `Faux. La bonne réponse était : ${q.correct}. Prenez le temps de réfléchir.`;
+                    feedbackArea.classList.add("feedback-incorrect");
+                    card.classList.add("slow-exit");
+                }
+
+                // Déterminer la durée du délai de transition
+                const delayDuration = isCorrect ? 500 : 3000;
+
+                document.getElementById("main-btn").textContent =
+                    "Question Suivante";
+
+                setTimeout(() => {
+                    currentQuestionIndex++;
+
+                    if (currentQuestionIndex >= questionsShuffled.length) {
+                        document.getElementById("main-btn").textContent =
+                            "Voir les Résultats";
+                        document.getElementById("main-btn").onclick =
+                            showResults;
+                        document.getElementById("main-btn").disabled = false;
+                    } else {
+                        renderQuestion();
+                        document.getElementById("main-btn").onclick =
+                            checkAnswerAndProceed;
+                    }
+                }, delayDuration);
+            }
+
+            function showResults() {
+                document.getElementById("quiz-area").classList.add("hidden");
+                const resultsDiv = document.getElementById("results");
+                const totalQuestions = questionsShuffled.length;
+                const percentage = Math.round((score / totalQuestions) * 100);
+
+                document.getElementById("score-display").textContent =
+                    `Votre score final est de ${score} / ${totalQuestions} (${percentage}%)`;
+
+                let feedbackMsg = "";
+                resultsDiv.classList.remove("high-score-glow");
+
+                if (percentage === 100) {
+                    feedbackMsg =
+                        "Félicitations ! Maîtrise parfaite de la génétique. Vous êtes prêt(e) !";
+                    resultsDiv.classList.add("high-score-glow");
+                } else if (percentage >= 80) {
+                    feedbackMsg =
+                        "Excellent travail ! Vous avez une très bonne compréhension des notions.";
+                    resultsDiv.classList.add("high-score-glow");
+                } else if (percentage >= 60) {
+                    feedbackMsg =
+                        "Bon effort ! Revoyez les thèmes où vous avez eu le plus d'erreurs.";
+                } else {
+                    feedbackMsg =
+                        "N'abandonnez pas. Reprenez les sections I, III et V de votre fiche pour consolider les bases.";
+                }
+                document.getElementById("feedback-message").textContent =
+                    feedbackMsg;
+                resultsDiv.classList.remove("hidden");
+
+                resultsDiv.classList.add("entering");
+
+                setTimeout(() => {
+                    resultsDiv.scrollIntoView({ behavior: "smooth" });
+                }, 100);
+            }
+
+            function restartQuiz() {
+                currentQuestionIndex = 0;
+                score = 0;
+                userSelection = null;
+                questionsShuffled = shuffle([...questions]);
+                document.getElementById("quiz-area").classList.remove("hidden");
+
+                const resultsDiv = document.getElementById("results");
+                resultsDiv.classList.add("hidden");
+                resultsDiv.classList.remove("entering", "high-score-glow");
+
+                document.getElementById("main-btn").onclick =
+                    checkAnswerAndProceed;
+                renderQuestion();
+            }
+
+            window.onload = function () {
+                document.getElementById("total-q-number").textContent =
+                    questions.length;
+                questionsShuffled = shuffle([...questions]);
+                renderQuestion();
+            };
+        </script>
+    </body>
+</html>

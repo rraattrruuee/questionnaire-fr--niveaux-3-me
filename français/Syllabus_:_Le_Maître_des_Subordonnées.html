@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link rel="icon" href="../quiz_icon.svg" type="image/x-icon" />
+    <title>Syllabus : Le Maître des Subordonnées</title>
+    <style>
+      :root {
+        --primary: #6366f1;
+        --primary-hover: #4f46e5;
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+        --success: #10b981;
+        --error: #ef4444;
+        --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+          0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+        font-family: "Inter", system-ui, -apple-system, sans-serif;
+        background: var(--bg);
+        color: var(--text-main);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .app-container {
+        width: 100%;
+        max-width: 600px;
+        margin-top: 10px;
+        margin-bottom: auto;
+      }
+
+      #toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        opacity: 0;
+        transition: 0.3s;
+        z-index: 1000;
+      }
+      #toast.show {
+        opacity: 1;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        position: relative;
+        animation: slideUp 0.5s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+      }
+
+      .progress-container {
+        height: 6px;
+        background: #f1f5f9;
+        width: 100%;
+      }
+
+      .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--primary), #a5b4fc);
+        transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .content {
+        padding: 32px;
+      }
+
+      #toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(15, 23, 42, 0.9);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        backdrop-filter: blur(5px);
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      #toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .header-ui {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .badge {
+        background: #eef2ff;
+        color: var(--primary);
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        font-size: 1.6rem;
+        margin-bottom: 8px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+      }
+      .instruction {
+        color: var(--text-muted);
+        font-size: 1rem;
+        line-height: 1.5;
+        margin-bottom: 24px;
+      }
+
+      input {
+        width: 100%;
+        padding: 18px 24px;
+        border: 2px solid #e2e8f0;
+        border-radius: 16px;
+        font-size: 1.1rem;
+        margin-bottom: 16px;
+        transition: all 0.2s;
+        background: #fdfdfd;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+      }
+
+      .btn-main {
+        width: 100%;
+        padding: 18px;
+        border: none;
+        border-radius: 16px;
+        background: var(--primary);
+        color: white;
+        font-weight: 700;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .btn-main:hover {
+        background: var(--primary-hover);
+        transform: translateY(-1px);
+      }
+      .btn-main:active {
+        transform: scale(0.98);
+      }
+
+      /* Boîtes d'infos */
+      .box {
+        margin-top: 16px;
+        padding: 16px;
+        border-radius: 16px;
+        font-size: 0.95rem;
+        display: none;
+        line-height: 1.5;
+        animation: fadeIn 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+      }
+
+      .feedback {
+        text-align: center;
+        font-weight: 700;
+      }
+      .help {
+        background: #fffbeb;
+        color: #92400e;
+        border: 1px solid #fef3c7;
+      }
+      .example {
+        background: #f0fdf4;
+        color: #166534;
+        border: 1px solid #dcfce7;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      @media (min-width: 768px) {
+        .content {
+          padding: 48px;
+        }
+        h2 {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="toast">Question 1 sur 20</div>
+
+    <div class="app-container">
+      <div id="quiz-ui" class="card">
+        <div class="progress-container">
+          <div id="p-bar" class="progress-bar"></div>
+        </div>
+
+        <div class="content">
+          <div class="header-ui">
+            <span id="q-type" class="badge">RELATIVE</span>
+            <button
+              onclick="toggleHelp()"
+              style="
+                background: none;
+                border: none;
+                color: var(--primary);
+                font-weight: bold;
+                cursor: pointer;
+                font-size: 0.8rem;
+              "
+            >
+              BESOIN D'AIDE ?
+            </button>
+          </div>
+
+          <h2 id="q-title">Chargement...</h2>
+          <p id="q-desc" class="instruction"></p>
+
+          <div id="help-box" class="box help"></div>
+
+          <input
+            type="text"
+            id="u-input"
+            placeholder="Ecrivez ici..."
+            autocomplete="off"
+          />
+
+          <div id="feedback" class="box feedback"></div>
+          <div id="example-box" class="box example"></div>
+
+          <button id="action-btn" class="btn-main">VÉRIFIER</button>
+        </div>
+      </div>
+
+      <div
+        id="end-ui"
+        class="card hidden"
+        style="text-align: center; padding: 60px 30px"
+      >
+        <h2 style="font-size: 2.5rem">Félicitations ! 🎉</h2>
+        <p style="margin: 20px 0; color: var(--text-muted)">
+          Vous avez terminé votre entraînement de syntaxe.
+        </p>
+        <div
+          style="font-size: 4rem; font-weight: 900; color: var(--primary)"
+          id="final-score"
+        >
+          0/20
+        </div>
+        <button
+          class="btn-main"
+          style="margin-top: 40px"
+          onclick="location.reload()"
+        >
+          RECOMMENCER
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const questions = [
+        {
+          t: "Relative (qui)",
+          d: "Utilisez 'qui' pour parler d'un 'chien'.",
+          h: "Le 'qui' suit le nom. Exemple: 'Le chien qui dort'.",
+          r: /chien\s+qui\s+\w+/i,
+          ex: "Le chien qui court dans le parc est heureux.",
+        },
+        {
+          t: "Complétive (que)",
+          d: "Utilisez 'que' avec le verbe 'dire'.",
+          h: "Le 'que' suit le verbe. Exemple: 'Je dis que...'.",
+          r: /di(t|s|te)\s+que\s+\w+/i,
+          ex: "Il me dit que tout va bien se passer.",
+        },
+        {
+          t: "Cause (parce que)",
+          d: "Expliquez une absence avec 'parce que'.",
+          h: "Relie deux idées par la cause. Exemple: 'Je pars parce que...'",
+          r: /parce\s+que\s+\w+/i,
+          ex: "Je suis absent parce que je suis malade.",
+        },
+        {
+          t: "Temps (quand)",
+          d: "Commencez par 'quand'.",
+          h: "Marque le temps. Exemple: 'Quand tu viendras...'",
+          r: /^quand\s+\w+/i,
+          ex: "Quand tu seras là nous mangerons.",
+        },
+        {
+          t: "But (pour que)",
+          d: "Utilisez 'pour que'.",
+          h: "Exprime l'objectif. Exemple: 'Je travaille pour que...'",
+          r: /pour\s+que\s+\w+/i,
+          ex: "Je t'explique pour que tu comprennes.",
+        },
+        {
+          t: "Relative (que)",
+          d: "Décrivez un 'film' avec 'que'.",
+          h: "Complète le nom. Exemple: 'Le film que j'aime'.",
+          r: /film\s+que\s+\w+/i,
+          ex: "Le film que je regarde est passionnant.",
+        },
+        {
+          t: "Condition (si)",
+          d: "Commencez par 'si' pour une hypothèse.",
+          h: "Introduit une condition. Exemple: 'Si je gagne...'",
+          r: /^si\s+\w+/i,
+          ex: "Si je gagne je ferai le tour du monde.",
+        },
+        {
+          t: "Relative (où)",
+          d: "Parlez d'une 'maison' avec 'où'.",
+          h: "Indique le lieu. Exemple: 'La maison où j'habite'.",
+          r: /maison\s+où\s+\w+/i,
+          ex: "La maison où je vis est très ancienne.",
+        },
+        {
+          t: "Complétive (penser)",
+          d: "Utilisez 'penser que'.",
+          h: "Exprime l'opinion. Exemple: 'Je pense que...'",
+          r: /pense\s+que\s+\w+/i,
+          ex: "Je pense que nous avons fait le bon choix.",
+        },
+        {
+          t: "Temps (pendant que)",
+          d: "Utilisez 'pendant que'.",
+          h: "Simultanéité. Exemple: 'Je lis pendant que...'",
+          r: /pendant\s+que\s+\w+/i,
+          ex: "Je lis pendant que tu prépares le repas.",
+        },
+        {
+          t: "Relative (dont)",
+          d: "Décrivez un 'livre' avec 'dont'.",
+          h: "Indique le complément de nom. Exemple: 'Le livre dont je parle'.",
+          r: /livre\s+dont\s+\w+/i,
+          ex: "Le livre dont j'ai parlé est un best-seller.",
+        },
+        {
+          t: "Crainte (que)",
+          d: "Exprimez une peur avec 'peur que'.",
+          h: "Suivi du subjonctif. Exemple: 'J'ai peur que...'",
+          r: /peur\s+que\s+\w+/i,
+          ex: "J'ai peur que l'orage n'éclate bientôt.",
+        },
+        {
+          t: "Opposition (bien que)",
+          d: "Utilisez 'bien que'.",
+          h: "Concession. Exemple: 'Bien que fatigué...'",
+          r: /bien\s+que\s+\w+/i,
+          ex: "Bien que fatigué il continue de travailler.",
+        },
+        {
+          t: "Conséquence (si bien que)",
+          d: "Utilisez 'si bien que'.",
+          h: "Résultat d'une action. Exemple: 'Il a crié si bien que...'",
+          r: /si\s+bien\s+que\s+\w+/i,
+          ex: "La neige est tombée si bien que la route est bloquée.",
+        },
+        {
+          t: "Relative (lequel)",
+          d: "Utilisez 'lequel' après 'pour'.",
+          h: "Pronom composé. Exemple: 'Le but pour lequel...'",
+          r: /pour\s+lequel\s+\w+/i,
+          ex: "C'est l'objectif pour lequel nous nous battons.",
+        },
+        {
+          t: "Volonté (vouloir que)",
+          d: "Utilisez 'vouloir que'.",
+          h: "Souhait. Exemple: 'Je veux que tu...'",
+          r: /veu[tx]\s+que\s+\w+/i,
+          ex: "Je veux que tu fasses attention à toi.",
+        },
+        {
+          t: "Cause (puisque)",
+          d: "Utilisez 'puisque'.",
+          h: "Cause évidente. Exemple: 'Puisque tu sais...'",
+          r: /puisque\s+\w+/i,
+          ex: "Puisque tu es là tu peux m'aider.",
+        },
+        {
+          t: "Temps (dès que)",
+          d: "Utilisez 'dès que'.",
+          h: "Immédiateté. Exemple: 'Dès que j'arrive...'",
+          r: /dès\s+que\s+\w+/i,
+          ex: "Dès que je serai arrivé je t'appellerai.",
+        },
+        {
+          t: "Relative (qui)",
+          d: "Décrivez un 'oiseau' avec 'qui'.",
+          h: "Nom + qui. Exemple: 'L'oiseau qui chante'.",
+          r: /oiseau\s+qui\s+\w+/i,
+          ex: "L'oiseau qui siffle est sur la branche.",
+        },
+        {
+          t: "Complétive (croire)",
+          d: "Utilisez 'croire que'.",
+          h: "Croyance. Exemple: 'Je crois que...'",
+          r: /croi(t|s|vent)\s+que\s+\w+/i,
+          ex: "Je crois que ce projet va réussir.",
+        },
+      ];
+
+      let current = 0,
+        score = 0;
+
+      const input = document.getElementById("u-input"),
+        btn = document.getElementById("action-btn"),
+        fb = document.getElementById("feedback"),
+        exBox = document.getElementById("example-box"),
+        pBar = document.getElementById("p-bar"),
+        toast = document.getElementById("toast"),
+        helpBox = document.getElementById("help-box");
+
+      function showToast() {
+        toast.innerText = `Question ${current + 1} sur ${questions.length}`;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2500);
+      }
+
+      function toggleHelp() {
+        helpBox.style.display =
+          helpBox.style.display === "block" ? "none" : "block";
+      }
+
+      function load() {
+        const q = questions[current];
+        document.getElementById("q-type").innerText = q.t.split(" ")[0];
+        document.getElementById("q-title").innerText = q.t;
+        document.getElementById("q-desc").innerText = q.d;
+        helpBox.innerText = q.h;
+        input.value = "";
+        input.disabled = false;
+        fb.style.display = "none";
+        exBox.style.display = "none";
+        helpBox.style.display = "none";
+        btn.innerText = "VÉRIFIER";
+        pBar.style.width = `${(current / questions.length) * 100}%`;
+        showToast();
+      }
+
+      btn.addEventListener("click", () => {
+        if (btn.innerText === "CONTINUER") {
+          current++;
+          if (current < questions.length) load();
+          else {
+            document.getElementById("quiz-ui").classList.add("hidden");
+            document.getElementById("end-ui").classList.remove("hidden");
+            document.getElementById(
+              "final-score"
+            ).innerText = `${score}/${questions.length}`;
+          }
+          return;
+        }
+
+        const val = input.value.trim().toLowerCase();
+        if (val.length < 2) return;
+
+        const q = questions[current];
+        const isOk = q.r.test(val);
+
+        fb.innerText = isOk
+          ? "Correct ! Excellent travail."
+          : "La structure n'est pas tout à fait bonne.";
+        fb.style.display = "block";
+        fb.style.background = isOk ? "#dcfce7" : "#fee2e2";
+        fb.style.color = isOk ? "#166534" : "#991b1b";
+        if (isOk) score++;
+
+        exBox.innerHTML = `💡 <b>Exemple attendu :</b><br>${q.ex}`;
+        exBox.style.display = "block";
+        input.disabled = true;
+        btn.innerText = "CONTINUER";
+      });
+
+      load();
+    </script>
+  </body>
+</html>

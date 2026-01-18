@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../quiz_icon.svg" type="image/x-icon" />
+    <title>Maître du Latin - Les verbes</title>
+    <style>
+      :root {
+        --primary: #6366f1;
+        --primary-hover: #4f46e5;
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+        --success: #10b981;
+        --error: #ef4444;
+        --shadow:
+          0 10px 25px -5px rgba(0, 0, 0, 0.1),
+          0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text-main);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .app-container {
+        width: 100%;
+        max-width: 700px;
+        position: relative;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        animation: slideUp 0.5s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+      }
+
+      .progress-container {
+        height: 6px;
+        background: #f1f5f9;
+        width: 100%;
+      }
+      .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: var(--primary);
+        transition: width 0.4s ease;
+      }
+
+      .content {
+        padding: 32px;
+      }
+
+      .header-ui {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 10px;
+      }
+
+      .badge {
+        background: #eef2ff;
+        color: var(--primary);
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .btn-circle {
+        background: #f1f5f9;
+        border: none;
+        color: var(--text-muted);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-weight: 800;
+        transition: 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .btn-circle:hover {
+        background: #e2e8f0;
+        color: var(--primary);
+      }
+
+      .verb-header {
+        text-align: center;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #f1f5f9;
+      }
+      .verb-display {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--primary);
+      }
+      .tense-display {
+        font-size: 0.85rem;
+        color: var(--text-main);
+        font-weight: 700;
+        text-transform: uppercase;
+        background: #f1f5f9;
+        padding: 4px 12px;
+        border-radius: 6px;
+        margin-top: 8px;
+        display: inline-block;
+      }
+
+      .conjugation-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 24px;
+      }
+      .column-title {
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      .person-row {
+        margin-bottom: 12px;
+      }
+
+      .input-group {
+        display: flex;
+        align-items: center;
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 6px 14px;
+        border: 2px solid #e2e8f0;
+      }
+      .input-group:focus-within {
+        border-color: var(--primary);
+        background: #fff;
+      }
+      .person-label {
+        width: 35px;
+        font-weight: 700;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+      .input-group input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        padding: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        outline: none;
+      }
+
+      .input-group.correct {
+        border-color: var(--success);
+        background: #f0fdf4;
+      }
+      .input-group.wrong {
+        border-color: var(--error);
+        background: #fef2f2;
+      }
+      .correct-answer-hint {
+        font-size: 0.75rem;
+        color: var(--error);
+        margin-top: 4px;
+        padding-left: 35px;
+        font-weight: 600;
+        display: none;
+      }
+
+      .btn-main {
+        width: 100%;
+        padding: 16px;
+        border: none;
+        border-radius: 16px;
+        background: var(--primary);
+        color: white;
+        font-weight: 700;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .btn-main:hover {
+        background: var(--primary-hover);
+        transform: translateY(-1px);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 23, 42, 0.6);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(4px);
+      }
+      .modal-content {
+        background: white;
+        padding: 32px;
+        border-radius: 24px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: var(--shadow);
+      }
+      .modal-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        color: var(--text-main);
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        margin-bottom: 5px;
+      }
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        outline: none;
+        font-size: 1rem;
+      }
+      .modal-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      .btn-secondary {
+        background: #f1f5f9;
+        color: var(--text-muted);
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .box {
+        margin-top: 16px;
+        padding: 20px;
+        border-radius: 16px;
+        font-size: 0.95rem;
+        display: none;
+        line-height: 1.6;
+      }
+      .help-box {
+        background: #f0f7ff;
+        color: #1e40af;
+        border: 1px solid #dbeafe;
+      }
+
+      .score-circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 8px solid var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 20px auto;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--primary);
+      }
+
+      @media (max-width: 500px) {
+        .conjugation-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <div class="card">
+        <div class="progress-container">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <div class="content">
+          <div class="header-ui">
+            <span id="counterBadge" class="badge">Question 1/20</span>
+            <div style="display: flex; gap: 8px">
+              <button
+                class="btn-circle"
+                onclick="openModal()"
+                title="Ajouter un verbe"
+              >
+                +
+              </button>
+              <button class="btn-circle" onclick="toggleHelp()" title="Aide">
+                ?
+              </button>
+            </div>
+          </div>
+
+          <div class="verb-header">
+            <div id="verbTarget" class="verb-display">---</div>
+            <div id="tenseTarget" class="tense-display">---</div>
+          </div>
+
+          <div class="conjugation-grid">
+            <div class="column">
+              <div class="column-title">Singulier</div>
+              <div class="person-row">
+                <div class="input-group" id="group-0">
+                  <span class="person-label">1s</span
+                  ><input
+                    type="text"
+                    id="input-0"
+                    tabindex="1"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="correct-answer-hint" id="hint-0"></div>
+              </div>
+              <div class="person-row">
+                <div class="input-group" id="group-1">
+                  <span class="person-label">2s</span
+                  ><input
+                    type="text"
+                    id="input-1"
+                    tabindex="2"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="correct-answer-hint" id="hint-1"></div>
+              </div>
+              <div class="person-row">
+                <div class="input-group" id="group-2">
+                  <span class="person-label">3s</span
+                  ><input
+                    type="text"
+                    id="input-2"
+                    tabindex="3"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="correct-answer-hint" id="hint-2"></div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="column-title">Pluriel</div>
+              <div class="person-row">
+                <div class="input-group" id="group-3">
+                  <span class="person-label">1p</span
+                  ><input
+                    type="text"
+                    id="input-3"
+                    tabindex="4"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="correct-answer-hint" id="hint-3"></div>
+              </div>
+              <div class="person-row">
+                <div class="input-group" id="group-4">
+                  <span class="person-label">2p</span
+                  ><input
+                    type="text"
+                    id="input-4"
+                    tabindex="5"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="correct-answer-hint" id="hint-4"></div>
+              </div>
+              <div class="person-row">
+                <div class="input-group" id="group-5">
+                  <span class="person-label">3p</span
+                  ><input
+                    type="text"
+                    id="input-5"
+                    tabindex="6"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="correct-answer-hint" id="hint-5"></div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            id="submitBtn"
+            class="btn-main"
+            tabindex="7"
+            onclick="handleAction()"
+          >
+            Vérifier
+          </button>
+
+          <div id="helpBox" class="box help-box">
+            <div id="helpContent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="verbModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-title">Ajouter un verbe</div>
+        <div class="form-group">
+          <label>Nom complet (ex: LEGO, IS, ERE)</label>
+          <input
+            type="text"
+            id="customLabel"
+            placeholder="NOM, ES, ERE (Sens)"
+          />
+        </div>
+        <div class="form-group">
+          <label>Radical Présent (LEGO -> leg)</label>
+          <input type="text" id="customStemP" placeholder="leg" />
+        </div>
+        <div class="form-group">
+          <label>Radical Parfait (LEGO -> leg)</label>
+          <input type="text" id="customStemF" placeholder="leg" />
+        </div>
+        <div class="form-group">
+          <label>Groupe de conjugaison</label>
+          <select id="customConj">
+            <option value="conj1">1ère (-are)</option>
+            <option value="conj2">2ème (-ere)</option>
+            <option value="conj3">3ème (-ere)</option>
+            <option value="conj3m">3ème Mixte (-io / -ere)</option>
+            <option value="conj4">4ème (-ire)</option>
+          </select>
+        </div>
+        <div class="modal-buttons">
+          <button class="btn-secondary" onclick="closeModal()">Annuler</button>
+          <button
+            class="btn-main"
+            onclick="saveCustomVerb()"
+            style="flex: 1; padding: 12px"
+          >
+            Ajouter
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const terminaisons = {
+        present: {
+          conj1: ["o", "as", "at", "amus", "atis", "ant"],
+          conj2: ["eo", "es", "et", "emus", "etis", "ent"],
+          conj3: ["o", "is", "it", "imus", "itis", "unt"],
+          conj3m: ["io", "is", "it", "imus", "itis", "iunt"],
+          conj4: ["io", "is", "it", "imus", "itis", "iunt"],
+          sum: ["sum", "es", "est", "sumus", "estis", "sunt"],
+          possum: [
+            "possum",
+            "potes",
+            "potest",
+            "possumus",
+            "potestis",
+            "possunt",
+          ],
+        },
+        imperfect: {
+          conj1: ["abam", "abas", "abat", "abamus", "abatis", "abant"],
+          conj2: ["ebam", "ebas", "ebat", "ebamus", "ebatis", "ebant"],
+          conj3: ["ebam", "ebas", "ebat", "ebamus", "ebatis", "ebant"],
+          conj3m: ["iebam", "iebas", "iebat", "iebamus", "iebatis", "iebant"],
+          conj4: ["iebam", "iebas", "iebat", "iebamus", "iebatis", "iebant"],
+          sum: ["eram", "eras", "erat", "eramus", "eratis", "erant"],
+          possum: [
+            "poteram",
+            "poteras",
+            "poterat",
+            "poteramus",
+            "poteratis",
+            "poterant",
+          ],
+        },
+        future: {
+          conj1: ["abo", "abis", "abit", "abimus", "abitis", "abunt"],
+          conj2: ["ebo", "ebis", "ebit", "ebimus", "ebitis", "ebunt"],
+          conj3: ["am", "es", "et", "emus", "etis", "ent"],
+          conj3m: ["iam", "ies", "iet", "iemus", "ietis", "ient"],
+          conj4: ["iam", "ies", "iet", "iemus", "ietis", "ient"],
+          sum: ["ero", "eris", "erit", "erimus", "eritis", "erunt"],
+          possum: [
+            "potero",
+            "poteris",
+            "poterit",
+            "poterimus",
+            "poteritis",
+            "poterunt",
+          ],
+        },
+        parfait: ["i", "isti", "it", "imus", "istis", "erunt"],
+        plusqueparfait: ["eram", "eras", "erat", "eramus", "eratis", "erant"],
+        futur_anterieur: ["ero", "eris", "erit", "erimus", "eritis", "erint"],
+      };
+
+      const initialVerbes = [
+        {
+          label: "AMO, AS, ARE (Aimer)",
+          stemP: "am",
+          stemF: "amav",
+          conj: "conj1",
+        },
+        {
+          label: "HABEO, ES, ERE (Avoir)",
+          stemP: "hab",
+          stemF: "habu",
+          conj: "conj2",
+        },
+        {
+          label: "AGO, IS, ERE (Faire/Pousser)",
+          stemP: "ag",
+          stemF: "eg",
+          conj: "conj3",
+        },
+        {
+          label: "DIC_O, IS, ERE (Dire)",
+          stemP: "dic",
+          stemF: "dix",
+          conj: "conj3",
+        },
+        {
+          label: "VENIO, IS, IRE (Venir)",
+          stemP: "ven",
+          stemF: "ven",
+          conj: "conj4",
+        },
+        {
+          label: "AUDIO, IS, IRE (Entendre)",
+          stemP: "aud",
+          stemF: "audiv",
+          conj: "conj4",
+        },
+        {
+          label: "FACIO, IS, ERE (Faire)",
+          stemP: "fac",
+          stemF: "fec",
+          conj: "conj3m",
+        },
+        {
+          label: "CAPIO, IS, ERE (Prendre)",
+          stemP: "cap",
+          stemF: "cep",
+          conj: "conj3m",
+        },
+        { label: "SUM, ES, ESSE (Être)", stemP: "", stemF: "fu", conj: "sum" },
+        {
+          label: "POSSUM, POTES, POSSE (Pouvoir)",
+          stemP: "",
+          stemF: "potu",
+          conj: "possum",
+        },
+      ];
+
+      let verbes = [...initialVerbes];
+      const tempsPossibles = [
+        "present",
+        "imperfect",
+        "future",
+        "parfait",
+        "plusqueparfait",
+        "futur_anterieur",
+      ];
+      let totalCorrectPersons = 0;
+      let totalQuestions = 20;
+      let currentCount = 0;
+      let currentVerbe, currentTemps;
+      let reviewMode = false;
+
+      function initQuestion() {
+        currentCount++;
+        if (currentCount > totalQuestions) return finish();
+
+        currentVerbe = verbes[Math.floor(Math.random() * verbes.length)];
+        currentTemps =
+          tempsPossibles[Math.floor(Math.random() * tempsPossibles.length)];
+
+        document.getElementById("verbTarget").textContent = currentVerbe.label;
+        document.getElementById("tenseTarget").textContent = currentTemps
+          .replace(/_/g, " ")
+          .toUpperCase();
+        document.getElementById("counterBadge").textContent =
+          `Question ${currentCount}/${totalQuestions}`;
+        document.getElementById("progressBar").style.width =
+          `${((currentCount - 1) / totalQuestions) * 100}%`;
+
+        for (let i = 0; i < 6; i++) {
+          const inp = document.getElementById(`input-${i}`);
+          inp.value = "";
+          inp.disabled = false;
+          document.getElementById(`group-${i}`).className = "input-group";
+          document.getElementById(`hint-${i}`).style.display = "none";
+        }
+        document.getElementById("helpBox").style.display = "none";
+        document.getElementById("submitBtn").textContent = "Vérifier";
+        reviewMode = false;
+        document.getElementById("input-0").focus();
+      }
+
+      function getReponses() {
+        const isPerfectSeries = [
+          "parfait",
+          "plusqueparfait",
+          "futur_anterieur",
+        ].includes(currentTemps);
+        if (isPerfectSeries)
+          return terminaisons[currentTemps].map((t) => currentVerbe.stemF + t);
+
+        const conjType = currentVerbe.conj;
+        const radical = currentVerbe.stemP;
+        const suffixList = terminaisons[currentTemps][conjType];
+        return suffixList.map((t) =>
+          conjType === "sum" || conjType === "possum" ? t : radical + t,
+        );
+      }
+
+      function handleAction() {
+        if (reviewMode) initQuestion();
+        else check();
+      }
+
+      function check() {
+        const reponses = getReponses();
+        let tableCorrectPersons = 0;
+        for (let i = 0; i < 6; i++) {
+          const val = document
+            .getElementById(`input-${i}`)
+            .value.trim()
+            .toLowerCase();
+          const group = document.getElementById(`group-${i}`);
+          const hint = document.getElementById(`hint-${i}`);
+          if (val === reponses[i]) {
+            group.classList.add("correct");
+            tableCorrectPersons++;
+          } else {
+            group.classList.add("wrong");
+            hint.textContent = `Correction : ${reponses[i]}`;
+            hint.style.display = "block";
+          }
+          document.getElementById(`input-${i}`).disabled = true;
+        }
+        totalCorrectPersons += tableCorrectPersons;
+        document.getElementById("submitBtn").textContent =
+          currentCount === totalQuestions ? "Voir le score final" : "Continuer";
+        reviewMode = true;
+      }
+
+      function finish() {
+        const totalPossible = totalQuestions * 6;
+        const percentage = Math.round(
+          (totalCorrectPersons / totalPossible) * 100,
+        );
+        document.getElementById("progressBar").style.width = "100%";
+        document.querySelector(".verb-header").innerHTML =
+          `<div class="verb-display">Session Terminée</div>`;
+        document.querySelector(".conjugation-grid").innerHTML = `
+                <div style="grid-column: 1/-1; text-align:center;">
+                    <div class="score-circle">${percentage}%</div>
+                    <p style="font-weight: 700; color: var(--text-main); margin-bottom: 5px;">${totalCorrectPersons} / ${totalPossible} formes correctes</p>
+                </div>
+            `;
+        const btn = document.getElementById("submitBtn");
+        btn.textContent = "Recommencer";
+        btn.onclick = () => location.reload();
+      }
+
+      function openModal() {
+        document.getElementById("verbModal").style.display = "flex";
+      }
+      function closeModal() {
+        document.getElementById("verbModal").style.display = "none";
+      }
+
+      function saveCustomVerb() {
+        const label = document.getElementById("customLabel").value;
+        const stemP = document.getElementById("customStemP").value;
+        const stemF = document.getElementById("customStemF").value;
+        const conj = document.getElementById("customConj").value;
+
+        if (!label || !stemP || !stemF) {
+          alert("Veuillez remplir tous les champs.");
+          return;
+        }
+
+        verbes.push({ label, stemP, stemF, conj });
+        closeModal();
+
+        document.getElementById("customLabel").value = "";
+        document.getElementById("customStemP").value = "";
+        document.getElementById("customStemF").value = "";
+
+        console.log("Verbe ajouté !");
+      }
+
+      function toggleHelp() {
+        const box = document.getElementById("helpBox");
+        if (box.style.display === "block") box.style.display = "none";
+        else {
+          const isPerfect = [
+            "parfait",
+            "plusqueparfait",
+            "futur_anterieur",
+          ].includes(currentTemps);
+          let html = isPerfect
+            ? `<strong>Radical du Parfait :</strong> <em>${currentVerbe.stemF}</em><br>Les terminaisons du parfait sont identiques pour tous les verbes.`
+            : `<strong>Radical du Présent :</strong> <em>${currentVerbe.stemP || "Irrégulier"}</em><br>Groupe : ${currentVerbe.conj}`;
+          document.getElementById("helpContent").innerHTML = html;
+          box.style.display = "block";
+        }
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") handleAction();
+      });
+      window.onload = initQuestion;
+    </script>
+  </body>
+</html>

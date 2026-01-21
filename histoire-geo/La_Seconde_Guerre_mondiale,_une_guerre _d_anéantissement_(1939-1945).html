@@ -1,0 +1,1312 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../quiz_icon.svg" type="image/x-icon" />
+    <title>
+      La Seconde Guerre mondiale, une guerre d'anéantissement (1939-1945)
+    </title>
+    <style>
+      /* ----------------------------------------------------
+           ANIMATIONS (KEYFRAMES)
+           ---------------------------------------------------- */
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes headerDrop {
+        from {
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+        }
+        50% {
+          transform: scale(1.02);
+          box-shadow: 0 8px 20px rgba(76, 81, 191, 0.5);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes resultsEntry {
+        from {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-5px);
+        }
+        60% {
+          transform: translateY(-3px);
+        }
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20%,
+        60% {
+          transform: translateX(-5px);
+        }
+        40%,
+        80% {
+          transform: translateX(5px);
+        }
+      }
+
+      @keyframes glowCorrect {
+        0% {
+          box-shadow: 0 0 5px #68d391;
+        }
+        50% {
+          box-shadow: 0 0 20px #48bb78;
+        }
+        100% {
+          box-shadow: 0 0 5px #68d391;
+        }
+      }
+
+      @keyframes zoomFeedback {
+        0% {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes couleur-qui-change {
+        0%,
+        10% {
+          color: white;
+        }
+        30% {
+          color: #00ff00;
+        }
+        38% {
+          color: #ffff00;
+        }
+        46% {
+          color: #ff00ff;
+        }
+        54% {
+          color: #00ffff;
+        }
+        60% {
+          color: #ffa500;
+        }
+        68% {
+          color: #7cfc00;
+        }
+        76% {
+          color: #ff69b4;
+        }
+        84% {
+          color: #8a2be2;
+        }
+        92% {
+          color: #ff4500;
+        }
+        100% {
+          color: deeppink;
+        }
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes flicker {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        5%,
+        25%,
+        45%,
+        65%,
+        85% {
+          opacity: 0.85;
+        }
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+          opacity: 1;
+        }
+      }
+
+      @keyframes wipe-in {
+        from {
+          clip-path: inset(0 100% 0 0);
+        }
+        to {
+          clip-path: inset(0 0 0 0);
+        }
+      }
+
+      @keyframes border-fade {
+        0% {
+          border-color: #3182ce;
+        }
+        33% {
+          border-color: #48bb78;
+        }
+        66% {
+          border-color: #f6ad55;
+        }
+        100% {
+          border-color: #3182ce;
+        }
+      }
+
+      @keyframes clignotement-leger {
+        0%,
+        100% {
+          color: red;
+          opacity: 1;
+        }
+        50% {
+          color: orange;
+          opacity: 0.7;
+        }
+      }
+
+      /* ----------------------------------------------------
+           STYLE GÉNÉRAL
+           ---------------------------------------------------- */
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #f0f4f8;
+        padding: 1rem;
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      @media (min-width: 768px) {
+        body {
+          padding: 2rem;
+        }
+      }
+
+      .quiz-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 0.5rem;
+        animation: headerDrop 0.8s ease-out;
+      }
+
+      .header p {
+        color: #4a5568;
+        font-size: 1.125rem;
+        font-weight: 500;
+      }
+
+      .question-card {
+        min-height: 250px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-radius: 15px;
+        background-color: #f7faff;
+        border: 2px solid #e2e8f0;
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      .question-card.entering {
+        animation: slideIn 0.5s ease-out forwards;
+      }
+
+      .question-card.fast-exit {
+        animation: slideOut 0.25s ease-in forwards; /* Rapide pour le succès */
+      }
+      .question-card.slow-exit {
+        animation: slideOut 0.8s ease-in forwards; /* Lent pour l'échec */
+      }
+
+      .question-text {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3748;
+      }
+
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .answer-btn {
+        display: block;
+        width: 100%;
+        padding: 1rem 1.25rem;
+        text-align: left;
+        border-radius: 10px;
+        transition: all 0.2s ease-out;
+        font-weight: 600;
+        border: 1px solid #c3dafe;
+        color: #2b6cb0;
+        background-color: #ebf4ff;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .answer-btn:hover:not(.selected):not(.correct):not(.incorrect) {
+        background-color: #cee0f2;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .selected {
+        background-color: #3182ce;
+        border-color: #2c5282;
+        color: white;
+        transform: scale(1.01);
+        box-shadow: 0 5px 15px rgba(49, 130, 206, 0.4);
+      }
+
+      .correct {
+        background-color: #48bb78 !important;
+        border-color: #2f855a !important;
+        color: white !important;
+        box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
+        pointer-events: none;
+        animation: bounce 0.6s ease-out;
+      }
+
+      .incorrect {
+        background-color: #f56565 !important;
+        border-color: #c53030 !important;
+        color: white !important;
+        box-shadow: 0 5px 15px rgba(245, 101, 101, 0.4);
+        pointer-events: none;
+        animation: shake 0.5s ease-in-out;
+      }
+
+      #feedback-area {
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: 10px;
+        font-weight: 600;
+        text-align: center;
+        animation: zoomFeedback 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      }
+
+      .feedback-correct {
+        background-color: #e6fffa;
+        color: #38a169;
+        border: 1px solid #48bb78;
+      }
+
+      .feedback-incorrect {
+        background-color: #fff5f5;
+        color: #e53e3e;
+        border: 1px solid #f56565;
+      }
+      .main-btn-container {
+        margin-top: 2.5rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      #main-btn {
+        background-color: #4c51bf;
+        color: white;
+        padding: 1rem 2.5rem;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1.1rem;
+        transition:
+          background-color 0.3s,
+          transform 0.2s,
+          box-shadow 0.3s;
+        width: 100%;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+      }
+
+      @media (min-width: 768px) {
+        #main-btn {
+          width: auto;
+        }
+      }
+
+      #main-btn:hover:not(:disabled) {
+        background-color: #3a4294;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(76, 81, 191, 0.4);
+      }
+
+      #main-btn:active:not(:disabled) {
+        animation: pulse 0.3s ease;
+      }
+
+      #main-btn:disabled {
+        background-color: #a0aec0;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      #results {
+        margin-top: 2.5rem;
+        padding: 2rem;
+        background-color: #f0fff4;
+        border: 2px solid #68d391;
+        border-radius: 15px;
+        text-align: center;
+      }
+
+      #results.entering {
+        animation: resultsEntry 0.6s ease-out forwards;
+      }
+
+      .high-score-glow {
+        animation: glowCorrect 2s infinite alternate;
+      }
+
+      #results h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #2f855a;
+        margin-bottom: 1rem;
+      }
+
+      #score-display {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: #38a169;
+      }
+
+      #feedback-message {
+        font-size: 1.1rem;
+        color: #4c51bf;
+      }
+
+      #results button {
+        margin-top: 1.5rem;
+        padding: 0.75rem 2rem;
+        background-color: #48bb78;
+        color: white;
+        border-radius: 10px;
+        font-weight: 700;
+        transition: background-color 0.2s;
+        border: none;
+        cursor: pointer;
+      }
+
+      #results button:hover {
+        background-color: #38a169;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .couleur-qui-change {
+        animation: couleur-qui-change 14s infinite alternate;
+        font-weight: bold;
+      }
+
+      .anim-rotate {
+        animation: rotate 5s linear infinite;
+      }
+
+      .anim-flicker {
+        animation: flicker 0.15s linear infinite alternate;
+      }
+
+      .anim-wipe-in {
+        animation: wipe-in 1s ease-out forwards;
+      }
+
+      .anim-border-fade {
+        border: 3px solid transparent;
+        animation: border-fade 3s ease-in-out infinite;
+      }
+
+      .clignotant {
+        animation: clignotement-leger 1.5s infinite ease-in-out;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="quiz-container anim-border-fade">
+      <header class="header">
+        <h1>
+          La Seconde Guerre mondiale, une guerre
+          <span class="couleur-qui-change">d'anéantissement</span>
+          <span class="clignotant"> (1939-1945)</span>
+        </h1>
+        <p>
+          Question <span id="current-q-number">1</span> /
+          <span id="total-q-number">65</span>
+        </p>
+      </header>
+
+      <div id="quiz-area" class="anim-wipe-in">
+        <div id="current-question-card" class="question-card"></div>
+
+        <div id="feedback-area" class="hidden"></div>
+
+        <div class="main-btn-container">
+          <button id="main-btn" onclick="checkAnswerAndProceed()">
+            Valider la Réponse
+          </button>
+        </div>
+      </div>
+
+      <div id="results" class="hidden">
+        <h2 class="anim-flicker">Quiz Terminé !</h2>
+        <p id="score-display"></p>
+        <p id="feedback-message"></p>
+        <button onclick="restartQuiz()">Recommencer le Quiz</button>
+      </div>
+    </div>
+
+    <script>
+      // --- DATA: ---
+      const questions = [
+        {
+          q: "Quelles sont les dates exactes de la Seconde Guerre mondiale ?",
+          answers: ["1914-1918", "1939-1945", "1940-1944", "1936-1945"],
+          correct: "1939-1945",
+        },
+        {
+          q: "Quels pays composaient initialement l'Axe ?",
+          answers: [
+            "Allemagne, Italie, Japon",
+            "France, Royaume-Uni, USA",
+            "Allemagne, URSS, Japon",
+            "Italie, Espagne, Allemagne",
+          ],
+          correct: "Allemagne, Italie, Japon",
+        },
+        {
+          q: "Quel événement marque le début de la guerre en Europe le 1er septembre 1939 ?",
+          answers: [
+            "L'invasion de la France",
+            "L'invasion de la Pologne",
+            "L'attaque de Pearl Harbor",
+            "L'opération Barbarossa",
+          ],
+          correct: "L'invasion de la Pologne",
+        },
+        {
+          q: "Qui dirige l'Allemagne nazie pendant le conflit ?",
+          answers: [
+            "Benito Mussolini",
+            "Joseph Staline",
+            "Adolf Hitler",
+            "Winston Churchill",
+          ],
+          correct: "Adolf Hitler",
+        },
+        {
+          q: "Quels pays déclarent la guerre à l'Allemagne après l'invasion de la Pologne ?",
+          answers: [
+            "USA et URSS",
+            "France et Royaume-Uni",
+            "Italie et Japon",
+            "Espagne et Belgique",
+          ],
+          correct: "France et Royaume-Uni",
+        },
+        {
+          q: "En quel mois et année la France est-elle envahie par l'Allemagne ?",
+          answers: [
+            "Septembre 1939",
+            "Mai-Juin 1940",
+            "Décembre 1941",
+            "Juin 1944",
+          ],
+          correct: "Mai-Juin 1940",
+        },
+        {
+          q: "Qu'est-ce que l'Opération Barbarossa déclenchée en 1941 ?",
+          answers: [
+            "L'invasion du Royaume-Uni",
+            "L'attaque de Pearl Harbor",
+            "L'attaque de l'Union soviétique par Hitler",
+            "Le débarquement en Normandie",
+          ],
+          correct: "L'attaque de l'Union soviétique par Hitler",
+        },
+        {
+          q: "Quelle est la date de l'attaque japonaise sur Pearl Harbor ?",
+          answers: [
+            "6 juin 1944",
+            "1er septembre 1939",
+            "7 décembre 1941",
+            "8 mai 1945",
+          ],
+          correct: "7 décembre 1941",
+        },
+        {
+          q: "Quelle conséquence directe a l'attaque de Pearl Harbor ?",
+          answers: [
+            "La capitulation de la France",
+            "L'entrée en guerre des États-Unis",
+            "La fin de la guerre",
+            "L'invasion de l'Italie",
+          ],
+          correct: "L'entrée en guerre des États-Unis",
+        },
+        {
+          q: "Quelle bataille (1942-1943) est considérée comme le tournant majeur sur le front de l'Est ?",
+          answers: [
+            "Bataille de Verdun",
+            "Bataille de Stalingrad",
+            "Bataille de Berlin",
+            "Bataille de Londres",
+          ],
+          correct: "Bataille de Stalingrad",
+        },
+        {
+          q: "Quelle bataille navale de 1942 marque un tournant dans le Pacifique ?",
+          answers: ["Midway", "El-Alamein", "Normandie", "Sicile"],
+          correct: "Midway",
+        },
+        {
+          q: "Où les Alliés remportent-ils une victoire décisive en Afrique du Nord en 1943 ?",
+          answers: ["À Casablanca", "À Alger", "À El-Alamein", "Au Caire"],
+          correct: "À El-Alamein",
+        },
+        {
+          q: "En quelle année l'Italie se rend-elle officiellement aux Alliés ?",
+          answers: ["1941", "1943", "1944", "1945"],
+          correct: "1943",
+        },
+        {
+          q: "Quelle est la date du débarquement allié en Normandie ?",
+          answers: [
+            "8 mai 1945",
+            "11 novembre 1918",
+            "6 juin 1944",
+            "15 août 1944",
+          ],
+          correct: "6 juin 1944",
+        },
+        {
+          q: "Quelle armée entre dans Berlin en avril 1945 ?",
+          answers: [
+            "L'armée américaine",
+            "L'armée britannique",
+            "L'armée soviétique",
+            "L'armée française",
+          ],
+          correct: "L'armée soviétique",
+        },
+        {
+          q: "À quelle date l'Allemagne capitule-t-elle officiellement ?",
+          answers: [
+            "6 juin 1944",
+            "8 mai 1945 (signé le 7 mai)",
+            "2 septembre 1945",
+            "15 août 1945",
+          ],
+          correct: "8 mai 1945 (signé le 7 mai)",
+        },
+        {
+          q: "Quelles villes japonaises ont été frappées par des bombes atomiques en août 1945 ?",
+          answers: [
+            "Tokyo et Osaka",
+            "Hiroshima et Nagasaki",
+            "Kyoto et Kobe",
+            "Nagoya et Hiroshima",
+          ],
+          correct: "Hiroshima et Nagasaki",
+        },
+        {
+          q: "Pourquoi qualifie-t-on ce conflit de 'guerre d’anéantissement' ?",
+          answers: [
+            "À cause de la rapidité des combats",
+            "À cause de la volonté de détruire totalement l'adversaire (humain et matériel)",
+            "Parce qu'il n'y a eu aucun survivant",
+            "Parce que seules les usines étaient visées",
+          ],
+          correct:
+            "À cause de la volonté de détruire totalement l'adversaire (humain et matériel)",
+        },
+        {
+          q: "Qu'est-ce que la 'guerre totale' ?",
+          answers: [
+            "Une guerre qui ne dure qu'un jour",
+            "La mobilisation de toutes les ressources (économiques, humaines, industrielles)",
+            "Une guerre uniquement entre soldats",
+            "L'utilisation de chars uniquement",
+          ],
+          correct:
+            "La mobilisation de toutes les ressources (économiques, humaines, industrielles)",
+        },
+        {
+          q: "Environ combien de personnes les Alliés ont-ils mobilisées ?",
+          answers: [
+            "10 millions",
+            "25 millions",
+            "70 millions",
+            "100 millions",
+          ],
+          correct: "70 millions",
+        },
+        {
+          q: "Combien d'avions les usines américaines ont-elles produit environ ?",
+          answers: ["50 000", "150 000", "300 000", "1 million"],
+          correct: "300 000",
+        },
+        {
+          q: "Quel est le nombre total estimé de victimes de la Seconde Guerre mondiale ?",
+          answers: [
+            "10 millions",
+            "20 millions",
+            "60 millions",
+            "100 millions",
+          ],
+          correct: "60 millions",
+        },
+        {
+          q: "Quel pays a perdu 15% de sa population totale ?",
+          answers: ["La France", "La Pologne", "Le Japon", "L'Italie"],
+          correct: "La Pologne",
+        },
+        {
+          q: "Combien de morts compte l'URSS à la fin du conflit ?",
+          answers: [
+            "5 millions",
+            "10 millions",
+            "Plus de 20 millions",
+            "50 millions",
+          ],
+          correct: "Plus de 20 millions",
+        },
+        {
+          q: "Citez une nouvelle technologie militaire utilisée durant cette guerre.",
+          answers: [
+            "Le fusil à baïonnette",
+            "La bombe atomique",
+            "Le château fort",
+            "La catapulte",
+          ],
+          correct: "La bombe atomique",
+        },
+        {
+          q: "Pendant combien de temps a duré la bataille de Stalingrad ?",
+          answers: ["1 mois", "5 mois", "1 an", "3 ans"],
+          correct: "5 mois",
+        },
+        {
+          q: "Quel était le bilan humain des soldats à Stalingrad ?",
+          answers: [
+            "10 000 morts",
+            "100 000 morts",
+            "1 million de morts",
+            "5 millions de morts",
+          ],
+          correct: "1 million de morts",
+        },
+        {
+          q: "Quelle était la température minimale atteinte lors de l'hiver à Stalingrad ?",
+          answers: ["0°C", "-10°C", "-30°C", "-60°C"],
+          correct: "-30°C",
+        },
+        {
+          q: "Quel pourcentage des bâtiments de Stalingrad a été détruit ?",
+          answers: ["25%", "50%", "90%", "100%"],
+          correct: "90%",
+        },
+        {
+          q: "Combien de soldats allemands ont été capturés à la fin de la bataille de Stalingrad ?",
+          answers: ["10 000", "91 000", "300 000", "1 million"],
+          correct: "91 000",
+        },
+        {
+          q: "Qu'est-ce que la 'Shoah par balles' ?",
+          answers: [
+            "Une bataille de chars",
+            "L'assassinat systématique des Juifs par fusillades de masse",
+            "Une loi nazie",
+            "Le bombardement de Berlin",
+          ],
+          correct:
+            "L'assassinat systématique des Juifs par fusillades de masse",
+        },
+        {
+          q: "Qui étaient les Einsatzgruppen ?",
+          answers: [
+            "Des résistants français",
+            "Des unités mobiles de tuerie nazies",
+            "Des pilotes américains",
+            "Des médecins de la Croix-Rouge",
+          ],
+          correct: "Des unités mobiles de tuerie nazies",
+        },
+        {
+          q: "Où a eu lieu le massacre de Babi Yar ?",
+          answers: [
+            "Près de Paris",
+            "Près de Kiev",
+            "Près de Varsovie",
+            "Près de Berlin",
+          ],
+          correct: "Près de Kiev",
+        },
+        {
+          q: "Combien de Juifs ont été exécutés en deux jours à Babi Yar ?",
+          answers: ["1 000", "10 000", "Plus de 33 000", "100 000"],
+          correct: "Plus de 33 000",
+        },
+        {
+          q: "Quel est le nombre total de victimes de la Shoah par balles ?",
+          answers: ["100 000", "500 000", "Environ 1,5 million", "6 millions"],
+          correct: "Environ 1,5 million",
+        },
+        {
+          q: "Quelle est la différence entre un camp de concentration et un centre d'extermination ?",
+          answers: [
+            "Il n'y a aucune différence",
+            "Le centre d'extermination est conçu pour le meurtre immédiat et industriel",
+            "Le camp de concentration est pour les vacances",
+            "Le centre d'extermination est pour les prisonniers de guerre",
+          ],
+          correct:
+            "Le centre d'extermination est conçu pour le meurtre immédiat et industriel",
+        },
+        {
+          q: "Comment les nazis détruisaient-ils les prisonniers dans les camps de concentration ?",
+          answers: [
+            "Par le sport",
+            "Par le travail forcé, la faim et les maladies",
+            "Par des discussions politiques",
+            "Ils ne les détruisaient pas",
+          ],
+          correct: "Par le travail forcé, la faim et les maladies",
+        },
+        {
+          q: "En quelle année le système évolue-t-il vers une extermination planifiée ?",
+          answers: ["1939", "1940", "1942", "1945"],
+          correct: "1942",
+        },
+        {
+          q: "Lequel de ces sites était un centre d'extermination ?",
+          answers: ["Londres", "Treblinka", "Stalingrad", "Pearl Harbor"],
+          correct: "Treblinka",
+        },
+        {
+          q: "Qu'est-ce qu'Auschwitz-Birkenau ?",
+          answers: [
+            "Une ville allemande",
+            "Un complexe camp de concentration et d'extermination",
+            "Un avion de chasse",
+            "Un traité de paix",
+          ],
+          correct: "Un complexe camp de concentration et d'extermination",
+        },
+        {
+          q: "Que se passait-il lors de la 'sélection' à l'arrivée des convois ?",
+          answers: [
+            "On choisissait les meilleurs vêtements",
+            "On séparait les 'aptes' au travail de ceux destinés à la mort immédiate",
+            "On distribuait de la nourriture",
+            "On organisait un tirage au sort",
+          ],
+          correct:
+            "On séparait les 'aptes' au travail de ceux destinés à la mort immédiate",
+        },
+        {
+          q: "Qui était généralement envoyé directement aux chambres à gaz ?",
+          answers: [
+            "Les soldats uniquement",
+            "Les enfants, les personnes âgées et les malades",
+            "Les officiers SS",
+            "Les ouvriers qualifiés",
+          ],
+          correct: "Les enfants, les personnes âgées et les malades",
+        },
+        {
+          q: "Quel est le bilan total du génocide des Juifs ?",
+          answers: ["1 million", "3 millions", "6 millions", "10 millions"],
+          correct: "6 millions",
+        },
+        {
+          q: "Quelles populations ont été victimes du génocide nazi ?",
+          answers: [
+            "Juifs et Tziganes",
+            "Américains et Anglais",
+            "Italiens et Japonais",
+            "Uniquement les militaires",
+          ],
+          correct: "Juifs et Tziganes",
+        },
+        {
+          q: "Que signifie le terme 'Génocide' ?",
+          answers: [
+            "Une victoire militaire",
+            "L'extermination programmée et systématique d'un peuple",
+            "Un accord entre deux nations",
+            "Le nom d'un missile",
+          ],
+          correct: "L'extermination programmée et systématique d'un peuple",
+        },
+        {
+          q: "Qu'est-ce qu'un 'Ghetto' ?",
+          answers: [
+            "Un palais nazi",
+            "Un quartier isolé et fermé où étaient regroupés les Juifs",
+            "Une arme secrète",
+            "Un camp d'entraînement",
+          ],
+          correct: "Un quartier isolé et fermé où étaient regroupés les Juifs",
+        },
+        {
+          q: "Que signifie 'Shoah' en hébreu ?",
+          answers: ["Victoire", "Catastrophe", "Renaissance", "Guerre"],
+          correct: "Catastrophe",
+        },
+        {
+          q: "Que signifie l'abréviation 'SS' ?",
+          answers: [
+            "Section Secrète",
+            "Schutzstaffel (échelon de protection)",
+            "Soldats Supérieurs",
+            "Service de Santé",
+          ],
+          correct: "Schutzstaffel (échelon de protection)",
+        },
+        {
+          q: "Quelle expression les nazis utilisaient-ils pour désigner la destruction des Juifs ?",
+          answers: [
+            "Le grand nettoyage",
+            "La Solution finale",
+            "L'opération finale",
+            "La victoire totale",
+          ],
+          correct: "La Solution finale",
+        },
+        {
+          q: "Quelle était la fonction des fours crématoires ?",
+          answers: [
+            "Cuisiner pour les soldats",
+            "Brûler les corps des victimes",
+            "Chauffer les bâtiments",
+            "Produire de l'énergie",
+          ],
+          correct: "Brûler les corps des victimes",
+        },
+        {
+          q: "Quel était l'objectif des bombardements sur les civils (ex: Londres, Berlin) ?",
+          answers: [
+            "Tester de nouveaux avions",
+            "Anéantir la capacité et le moral de l'ennemi",
+            "Éclairer les villes la nuit",
+            "Détruire uniquement les monuments",
+          ],
+          correct: "Anéantir la capacité et le moral de l'ennemi",
+        },
+        {
+          q: "Qu'est-ce que le missile V-2 ?",
+          answers: [
+            "Un char lourd",
+            "Une nouvelle technologie de missile",
+            "Un navire de guerre",
+            "Un type de fusil",
+          ],
+          correct: "Une nouvelle technologie de missile",
+        },
+        {
+          q: "Quelle condition climatique a été terrible pour les soldats à Stalingrad ?",
+          answers: [
+            "La canicule",
+            "Le froid intense (hiver)",
+            "La pluie tropicale",
+            "Le brouillard permanent",
+          ],
+          correct: "Le froid intense (hiver)",
+        },
+        {
+          q: "En mai 1940, quels autres pays que la France sont occupés ?",
+          answers: [
+            "Espagne et Portugal",
+            "Pays-Bas, Belgique, Danemark, Norvège",
+            "Suède et Suisse",
+            "Grèce et Turquie",
+          ],
+          correct: "Pays-Bas, Belgique, Danemark, Norvège",
+        },
+        {
+          q: "Qui a dominé la production d'armements grâce à ses usines ?",
+          answers: ["L'Allemagne", "L'Italie", "Les États-Unis", "Le Japon"],
+          correct: "Les États-Unis",
+        },
+        {
+          q: "Quelle était la mission des Einsatzgruppen derrière l'armée allemande en URSS ?",
+          answers: [
+            "Construire des routes",
+            "Exécuter les Juifs, Tziganes et cadres communistes",
+            "Soigner les blessés",
+            "Distribuer du courrier",
+          ],
+          correct: "Exécuter les Juifs, Tziganes et cadres communistes",
+        },
+        {
+          q: "Pourquoi la survie dans les camps de concentration était-elle 'précaire' ?",
+          answers: [
+            "À cause du manque de divertissement",
+            "À cause de la faim, des maladies et de l'épuisement",
+            "À cause du climat tropical",
+            "À cause des attaques alliées",
+          ],
+          correct: "À cause de la faim, des maladies et de l'épuisement",
+        },
+        {
+          q: "Quand le Japon capitule-t-il ?",
+          answers: [
+            "Mai 1945",
+            "Août/Septembre 1945",
+            "Juin 1944",
+            "Décembre 1941",
+          ],
+          correct: "Août/Septembre 1945",
+        },
+        {
+          q: "Lequel de ces camps est un centre de mise à mort ?",
+          answers: ["Sobibor", "Berlin", "Londres", "Paris"],
+          correct: "Sobibor",
+        },
+        {
+          q: "Comment appelle-t-on le meurtre industriel par le gaz ?",
+          answers: [
+            "Le gazage",
+            "La fusillade",
+            "Le bombardement",
+            "La famine",
+          ],
+          correct: "Le gazage",
+        },
+        {
+          q: "Combien de navires ont été produits par les USA environ ?",
+          answers: ["1 000", "10 000", "100 000", "500 000"],
+          correct: "100 000",
+        },
+        {
+          q: "Dans quel pays se trouve le site de Babi Yar ?",
+          answers: ["Pologne", "Allemagne", "Ukraine (ex-URSS)", "France"],
+          correct: "Ukraine (ex-URSS)",
+        },
+        {
+          q: "Quel était le rôle de la SS dans les camps ?",
+          answers: [
+            "Prisonniers",
+            "Contrôle de la police et des camps",
+            "Libérateurs",
+            "Journalistes",
+          ],
+          correct: "Contrôle de la police et des camps",
+        },
+        {
+          q: "Quel était l'état de la ville de Stalingrad après la bataille ?",
+          answers: [
+            "Intacte",
+            "Légèrement endommagée",
+            "Quasiment entièrement détruite",
+            "En pleine reconstruction",
+          ],
+          correct: "Quasiment entièrement détruite",
+        },
+        {
+          q: "Quelle a été la principale cause de mortalité dans les ghettos ?",
+          answers: [
+            "Les accidents de voiture",
+            "La famine et les privations",
+            "La vieillesse naturelle",
+            "Les bombardements alliés",
+          ],
+          correct: "La famine et les privations",
+        },
+      ];
+
+      let currentQuestionIndex = 0;
+      let score = 0;
+      let userSelection = null;
+      let questionsShuffled = [];
+      let quizInProgress = false;
+
+      // Fonction pour mélanger un tableau (Algorithme de Fisher-Yates)
+      function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
+
+      // Affiche la question actuelle
+      function renderQuestion() {
+        if (currentQuestionIndex >= questionsShuffled.length) {
+          showResults();
+          return;
+        }
+
+        const q = questionsShuffled[currentQuestionIndex];
+        const card = document.getElementById("current-question-card");
+        const questionNumber = currentQuestionIndex + 1;
+
+        card.classList.remove("slow-exit", "fast-exit");
+        card.classList.add("entering");
+
+        document.getElementById("current-q-number").textContent =
+          questionNumber;
+        document.getElementById("total-q-number").textContent =
+          questionsShuffled.length;
+        document.getElementById("main-btn").textContent = "Valider la Réponse";
+        document.getElementById("main-btn").disabled = true;
+
+        card.innerHTML = `
+                      <p class="question-text">${q.q}</p>
+                      <div id="options-container" class="options-container">
+                          <!-- Options de réponse -->
+                      </div>
+                  `;
+
+        document.getElementById("feedback-area").classList.add("hidden");
+        document
+          .getElementById("feedback-area")
+          .classList.remove("feedback-correct", "feedback-incorrect");
+        userSelection = null;
+        quizInProgress = true;
+
+        const optionsContainer = card.querySelector("#options-container");
+        const shuffledAnswers = shuffle([...q.answers]);
+
+        shuffledAnswers.forEach((answer) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "answer-btn";
+          button.setAttribute("data-answer", answer);
+          button.textContent = answer;
+          button.onclick = function () {
+            selectAnswer(answer, button);
+          };
+          optionsContainer.appendChild(button);
+        });
+
+        setTimeout(() => {
+          card.classList.remove("entering");
+        }, 500);
+      }
+
+      function selectAnswer(answer, clickedButton) {
+        if (!quizInProgress) return;
+
+        const optionsContainer = document.getElementById("options-container");
+        optionsContainer.querySelectorAll(".answer-btn").forEach((btn) => {
+          btn.classList.remove("selected");
+        });
+
+        clickedButton.classList.add("selected");
+
+        userSelection = answer;
+        document.getElementById("main-btn").disabled = false;
+      }
+
+      function checkAnswerAndProceed() {
+        if (userSelection === null || !quizInProgress) return;
+
+        quizInProgress = false;
+        document.getElementById("main-btn").disabled = true;
+
+        const q = questionsShuffled[currentQuestionIndex];
+        const isCorrect = userSelection === q.correct;
+        const feedbackArea = document.getElementById("feedback-area");
+        const optionsContainer = document.getElementById("options-container");
+        const card = document.getElementById("current-question-card");
+
+        feedbackArea.classList.remove("hidden");
+
+        optionsContainer.querySelectorAll(".answer-btn").forEach((btn) => {
+          const answer = btn.getAttribute("data-answer");
+          btn.classList.remove("selected");
+
+          if (answer === q.correct) {
+            btn.classList.add("correct");
+          } else if (answer === userSelection && !isCorrect) {
+            btn.classList.add("incorrect");
+          }
+        });
+
+        feedbackArea.classList.remove("feedback-correct", "feedback-incorrect");
+
+        if (isCorrect) {
+          score++;
+          feedbackArea.textContent =
+            "Bravo ! Réponse correcte. Prochaine question rapidement !";
+          feedbackArea.classList.add("feedback-correct");
+          card.classList.add("fast-exit");
+        } else {
+          feedbackArea.textContent = `Faux. La bonne réponse était : ${q.correct}. Prenez le temps de réfléchir.`;
+          feedbackArea.classList.add("feedback-incorrect");
+          card.classList.add("slow-exit");
+        }
+
+        // Déterminer la durée du délai de transition
+        const delayDuration = isCorrect ? 500 : 3000;
+
+        document.getElementById("main-btn").textContent = "Question Suivante";
+
+        setTimeout(() => {
+          currentQuestionIndex++;
+
+          if (currentQuestionIndex >= questionsShuffled.length) {
+            document.getElementById("main-btn").textContent =
+              "Voir les Résultats";
+            document.getElementById("main-btn").onclick = showResults;
+            document.getElementById("main-btn").disabled = false;
+          } else {
+            renderQuestion();
+            document.getElementById("main-btn").onclick = checkAnswerAndProceed;
+          }
+        }, delayDuration);
+      }
+
+      function showResults() {
+        document.getElementById("quiz-area").classList.add("hidden");
+        const resultsDiv = document.getElementById("results");
+        const totalQuestions = questionsShuffled.length;
+        const percentage = Math.round((score / totalQuestions) * 100);
+
+        document.getElementById("score-display").textContent =
+          `Votre score final est de ${score} / ${totalQuestions} (${percentage}%)`;
+
+        let feedbackMsg = "";
+        resultsDiv.classList.remove("high-score-glow");
+
+        if (percentage === 100) {
+          feedbackMsg =
+            "Félicitations ! Maîtrise parfaite de la génétique. Vous êtes prêt(e) !";
+          resultsDiv.classList.add("high-score-glow");
+        } else if (percentage >= 80) {
+          feedbackMsg =
+            "Excellent travail ! Vous avez une très bonne compréhension des notions.";
+          resultsDiv.classList.add("high-score-glow");
+        } else if (percentage >= 60) {
+          feedbackMsg =
+            "Bon effort ! Revoyez les thèmes où vous avez eu le plus d'erreurs.";
+        } else {
+          feedbackMsg =
+            "N'abandonnez pas. Reprenez les sections I, III et V de votre fiche pour consolider les bases.";
+        }
+        document.getElementById("feedback-message").textContent = feedbackMsg;
+        resultsDiv.classList.remove("hidden");
+
+        resultsDiv.classList.add("entering");
+
+        setTimeout(() => {
+          resultsDiv.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+
+      function restartQuiz() {
+        currentQuestionIndex = 0;
+        score = 0;
+        userSelection = null;
+        questionsShuffled = shuffle([...questions]);
+        document.getElementById("quiz-area").classList.remove("hidden");
+
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.classList.add("hidden");
+        resultsDiv.classList.remove("entering", "high-score-glow");
+
+        document.getElementById("main-btn").onclick = checkAnswerAndProceed;
+        renderQuestion();
+      }
+
+      window.onload = function () {
+        document.getElementById("total-q-number").textContent =
+          questions.length;
+        questionsShuffled = shuffle([...questions]);
+        renderQuestion();
+      };
+    </script>
+  </body>
+</html>

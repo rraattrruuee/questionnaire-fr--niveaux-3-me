@@ -1180,9 +1180,13 @@
         } else if (percentage >= 60) {
           feedbackMsg =
             "Bon effort ! Revoyez les thèmes où vous avez eu le plus d'erreurs.";
-        } else {
+        } else if (percentage >= 30) {
           feedbackMsg =
             "N'abandonnez pas. Reprenez les sections I, III et V de votre fiche pour consolider les bases.";
+        } else if (percentage >= 1) {
+          feedbackMsg = "révisez tout, vous allez y arriver";
+        } else {
+          feedbackMsg = "😭";
         }
         document.getElementById("feedback-message").textContent = feedbackMsg;
         resultsDiv.classList.remove("hidden");

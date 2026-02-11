@@ -28,7 +28,7 @@ jobs:
         run: chmod +x generate-assets.sh
 
       - name: Update Service Worker Assets
-        run: ./generate-assets.sh
+        run: ./generate-sw.sh
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

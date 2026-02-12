@@ -37,49 +37,77 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-v4";
+const CACHE_NAME = "quiz-cache-v5";
 
-// INSTALLATION : On force la mise en cache de TOUT
 self.addEventListener("install", (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches
       .open(CACHE_NAME)
       .then((cache) => {
         console.log("📦 Mise en cache intégrale démarrée...");
-        // addAll échoue si un seul fichier manque, c'est plus sûr pour toi
-        return cache.addAll(STATIC_ASSETS);
+
+        // On envoie un message au client pour indiquer que le téléchargement est en cours
+        self.clients.matchAll().then((clients) => {
+          clients.forEach((client) =>
+            client.postMessage({ type: "caching-start" }),
+          );
+        });
+
+        // On utilise Promise.allSettled pour ne pas bloquer si un fichier manque
+        return Promise.allSettled(
+          STATIC_ASSETS.map((url) =>
+            fetch(url, { cache: "no-cache" })
+              .then((response) => {
+                if (response.ok) return cache.put(url, response);
+                console.error(
+                  `Fichier non trouvé ou erreur (${response.status}) pour le cache : ${url}`,
+                );
+              })
+              .catch((error) => {
+                console.error(`Erreur de réseau ou CORS pour ${url}:`, error);
+              }),
+          ),
+        );
       })
-      .then(() => self.skipWaiting()), // Force l'activation
+      .then(() => {
+        // Une fois tous les téléchargements (réussis ou non) terminés
+        self.clients.matchAll().then((clients) => {
+          clients.forEach((client) =>
+            client.postMessage({ type: "caching-complete" }),
+          );
+        });
+        console.log("✅ Mise en cache terminée.");
+      }),
   );
 });
 
-// ACTIVATION : On nettoie et on prend le contrôle
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((keys) => {
-        return Promise.all(
+      .then((keys) =>
+        Promise.all(
           keys
             .filter((key) => key !== CACHE_NAME)
             .map((key) => caches.delete(key)),
-        );
-      })
+        ),
+      )
       .then(() => self.clients.claim()),
   );
 });
 
-// FETCH : On sert le cache en priorité (Ultra rapide et Offline)
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches
       .match(event.request)
-      .then((response) => {
-        return response || fetch(event.request);
+      .then((cachedResponse) => {
+        if (cachedResponse) return cachedResponse;
+        return fetch(event.request);
       })
       .catch(() => {
         if (event.request.mode === "navigate") {
-          return caches.match("/index.html");
+          return caches.match("./index.html") || caches.match("./offline.html"); // Fallback pour offline
         }
       }),
   );

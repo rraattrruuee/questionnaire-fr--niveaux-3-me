@@ -18,41 +18,38 @@ function filterElements(searchTerm = "", filterTarget = "all") {
   const currentSearchTerm = searchTerm.toLowerCase().trim();
 
   sections.forEach((section) => {
-    const sectionId = section.id;
     let sectionHasVisibleLink = false;
-
     section.classList.remove("is-animated");
 
     const isSectionTargetedByLabel =
-      filterTarget === "all" || sectionId === filterTarget;
+      filterTarget === "all" || section.id === filterTarget;
 
+    // On cherche tous les liens
     section.querySelectorAll(".bouton-lien").forEach((link) => {
       const linkText = link.textContent.toLowerCase();
       const matchesSearch =
         currentSearchTerm === "" || linkText.includes(currentSearchTerm);
 
-      // On cible le wrapper si il existe, sinon le lien lui-même
-      const elementToHandle = link.parentElement.classList.contains(
-        "quiz-wrapper",
-      )
-        ? link.parentElement
-        : link;
+      // TRÈS IMPORTANT : On identifie l'élément parent à cacher
+      // Si le bouton 📥 existe, on cache le 'quiz-wrapper', sinon juste le 'link'
+      const container = link.closest(".quiz-wrapper") || link;
 
       if (isSectionTargetedByLabel && matchesSearch) {
-        elementToHandle.classList.remove("hidden");
+        container.style.display = "flex"; // On force l'affichage
+        container.classList.remove("hidden");
         sectionHasVisibleLink = true;
       } else {
-        elementToHandle.classList.add("hidden");
+        container.style.display = "none"; // On force la disparition totale (plus de vide)
+        container.classList.add("hidden");
       }
     });
 
-    if (!isSectionTargetedByLabel || !sectionHasVisibleLink) {
-      section.classList.add("hidden");
+    // Affichage de la section entière
+    if (!sectionHasVisibleLink) {
+      section.style.display = "none";
     } else {
-      section.classList.remove("hidden");
-      setTimeout(() => {
-        section.classList.add("is-animated");
-      }, 0);
+      section.style.display = "block";
+      setTimeout(() => section.classList.add("is-animated"), 10);
     }
   });
 }
@@ -104,18 +101,20 @@ function isRunningAsPWA() {
  * Gère l'affichage des boutons de téléchargement
  */
 function manageDownloadButtons() {
+  const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
   // On vérifie si on est en mode PWA
   if (isRunningAsPWA()) {
     console.log(
-      "📱 Mode PWA détecté : masquage des boutons de téléchargement.",
+      "📱 Mode PWA détecté : masquage des boutons de téléchargement et du bouton 'Retour en haut'.",
     );
-    // Si on est en PWA, on ne fait rien (on sort de la fonction)
+    // Masquer le bouton de retour en haut aussi
+    if (scrollToTopBtn) scrollToTopBtn.style.display = "none";
     return;
   }
 
-  // Si on n'est PAS en PWA (navigateur classique), on crée les boutons
+  // Si on n'est PAS en PWA (navigateur classique), on crée les boutons de téléchargement
   document.querySelectorAll(".bouton-lien").forEach((link) => {
-    // Sécurité : éviter de créer le wrapper plusieurs fois si la fonction est rappelée
     if (link.parentNode.classList.contains("quiz-wrapper")) return;
 
     const wrapper = document.createElement("div");
@@ -132,6 +131,22 @@ function manageDownloadButtons() {
     wrapper.appendChild(link);
     wrapper.appendChild(dlBtn);
   });
+
+  // Afficher et gérer le bouton "Retour en haut" pour le mode navigateur
+  if (scrollToTopBtn) {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 200) {
+        // Affiche le bouton après 200px de défilement
+        scrollToTopBtn.style.display = "block";
+      } else {
+        scrollToTopBtn.style.display = "none";
+      }
+    });
+
+    scrollToTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" }); // Défilement doux
+    });
+  }
 }
 
 // Exécuter la vérification au chargement
@@ -144,5 +159,17 @@ if ("serviceWorker" in navigator) {
       .register("/service-worker.js")
       .then((reg) => console.log("Service Worker prêt :", reg.scope))
       .catch((err) => console.warn("Erreur SW :", err));
+  });
+}
+
+const cachingIndicator = document.getElementById("caching-indicator");
+
+if (cachingIndicator && "serviceWorker" in navigator) {
+  navigator.serviceWorker.addEventListener("message", (event) => {
+    if (event.data && event.data.type === "caching-start") {
+      cachingIndicator.style.display = "block";
+    } else if (event.data && event.data.type === "caching-complete") {
+      cachingIndicator.style.display = "none";
+    }
   });
 }

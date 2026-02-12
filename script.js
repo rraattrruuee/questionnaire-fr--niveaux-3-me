@@ -34,12 +34,12 @@ function filterElements(searchTerm = "", filterTarget = "all") {
     const isTargetedSection =
       filterTarget === "all" || section.id === filterTarget;
 
-    section.querySelectorAll(".bouton-lien").forEach((link) => {
+    const links = section.querySelectorAll(".bouton-lien");
+    links.forEach((link) => {
       const text = link.textContent.toLowerCase();
       const matchesSearch =
         currentSearchTerm === "" || text.includes(currentSearchTerm);
 
-      // On cible le wrapper (bouton DL + lien) s'il existe
       const container = link.closest(".quiz-wrapper") || link;
 
       if (isTargetedSection && matchesSearch) {
@@ -52,7 +52,11 @@ function filterElements(searchTerm = "", filterTarget = "all") {
       }
     });
 
-    section.style.display = hasVisibleContent ? "block" : "none";
+    if (isTargetedSection && hasVisibleContent) {
+      section.style.display = "block";
+    } else {
+      section.style.display = "none";
+    }
   });
 }
 
@@ -60,23 +64,21 @@ function filterElements(searchTerm = "", filterTarget = "all") {
 function initInterface() {
   const isPWA = isRunningAsPWA();
 
-  // Bouton Retour en Haut
+  // 1. Bouton Retour en Haut
   if (scrollToTopBtn) {
     if (isPWA) {
-      scrollToTopBtn.remove();
+      scrollToTopBtn.style.display = "none";
     } else {
       window.addEventListener("scroll", () => {
         scrollToTopBtn.style.display = window.scrollY > 300 ? "block" : "none";
       });
-      scrollToTopBtn.onclick = () =>
-        window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }
 
-  // Création des boutons de téléchargement (Navigateur uniquement)
+  // 2. Création des wrappers (SEULEMENT si pas déjà faits)
   if (!isPWA) {
     document.querySelectorAll(".bouton-lien").forEach((link) => {
-      if (link.closest(".quiz-wrapper")) return;
+      if (link.parentElement.classList.contains("quiz-wrapper")) return;
       const wrapper = document.createElement("div");
       wrapper.className = "quiz-wrapper";
       const dlBtn = document.createElement("a");
@@ -84,20 +86,28 @@ function initInterface() {
       dlBtn.download = "";
       dlBtn.className = "btn-dl";
       dlBtn.innerHTML = "📥";
-      dlBtn.title = "Télécharger pour révision hors-ligne";
       link.parentNode.insertBefore(wrapper, link);
       wrapper.appendChild(link);
       wrapper.appendChild(dlBtn);
     });
   }
 
-  // Restaurer le filtre depuis l'URL
+  // 3. APPLIQUER LE FILTRE INITIAL (C'est ici que ça débloque l'affichage)
   const urlParams = new URLSearchParams(window.location.search);
-  const initialFilter = urlParams.get("filtre") || "all";
-  const initialButton = document.querySelector(
-    `.label-button[data-target="${initialFilter}"]`,
-  );
-  if (initialButton) initialButton.click();
+  const filterFromURL = urlParams.get("filtre");
+
+  if (filterFromURL) {
+    const btn = document.querySelector(
+      `.label-button[data-target="${filterFromURL}"]`,
+    );
+    if (btn) btn.click();
+  } else {
+    const allBtn = document.querySelector('.label-button[data-target="all"]');
+    if (allBtn) {
+      allBtn.classList.add("active");
+      filterElements("", "all");
+    }
+  }
 }
 
 // EVENT LISTENERS

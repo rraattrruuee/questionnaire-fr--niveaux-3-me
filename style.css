@@ -386,12 +386,19 @@ h1 {
 
 .hidden {
   display: none !important;
-  visibility: hidden !important;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
 }
 
+.menu-section {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.quiz-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
 #caching-indicator {
   position: fixed;
   top: 0;

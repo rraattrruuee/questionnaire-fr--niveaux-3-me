@@ -37,13 +37,13 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-v5";
+const CACHE_NAME = "quiz-cache-v7"; // Incrémenté pour forcer la MAJ Android
 
 self.addEventListener("install", (event) => {
   self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      // Notifier le début
+      // Notifier les clients du début
       self.clients.matchAll().then((clients) => {
         clients.forEach((c) => c.postMessage({ type: "caching-start" }));
       });
@@ -55,6 +55,7 @@ self.addEventListener("install", (event) => {
           }),
         ),
       ).then(() => {
+        // Notifier de la fin
         self.clients.matchAll().then((clients) => {
           clients.forEach((c) => c.postMessage({ type: "caching-complete" }));
         });
@@ -63,9 +64,16 @@ self.addEventListener("install", (event) => {
   );
 });
 
-self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((res) => res || fetch(event.request)),
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)),
+        ),
+      )
+      .then(() => self.clients.claim()),
   );
 });
 
@@ -74,12 +82,13 @@ self.addEventListener("fetch", (event) => {
     caches
       .match(event.request)
       .then((cachedResponse) => {
-        if (cachedResponse) return cachedResponse;
-        return fetch(event.request);
+        // On sert le cache, sinon on va sur le réseau
+        return cachedResponse || fetch(event.request);
       })
       .catch(() => {
+        // Si offline et page HTML, renvoyer l'index ou offline.html
         if (event.request.mode === "navigate") {
-          return caches.match("./index.html") || caches.match("./offline.html"); // Fallback pour offline
+          return caches.match("./index.html") || caches.match("./offline.html");
         }
       }),
   );

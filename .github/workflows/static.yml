@@ -1,4 +1,4 @@
-name: Deploy static content to Pages
+name: Update Assets and Deploy
 
 on:
   push:
@@ -10,25 +10,33 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Make script executable
         run: chmod +x generate-sw.sh
 
-      - name: Update Service Worker Assets
+      - name: Update Service Worker
         run: ./generate-sw.sh
+
+      - name: Commit and Push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          # On vérifie s'il y a des changements avant de commit
+          if [ -n "$(git status --porcelain)" ]; then
+            git add service-worker.js
+            git commit -m "chore: auto-update service worker assets [skip ci]"
+            git push
+          else
+            echo "Aucun changement détecté."
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

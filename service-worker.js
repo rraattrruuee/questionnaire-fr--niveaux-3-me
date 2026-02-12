@@ -37,49 +37,58 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-v4";
+const CACHE_NAME = "quiz-cache-v7"; // Incrémenté pour forcer la MAJ Android
 
-// INSTALLATION : On force la mise en cache de TOUT
 self.addEventListener("install", (event) => {
+  self.skipWaiting();
   event.waitUntil(
-    caches
-      .open(CACHE_NAME)
-      .then((cache) => {
-        console.log("📦 Mise en cache intégrale démarrée...");
-        // addAll échoue si un seul fichier manque, c'est plus sûr pour toi
-        return cache.addAll(STATIC_ASSETS);
-      })
-      .then(() => self.skipWaiting()), // Force l'activation
+    caches.open(CACHE_NAME).then((cache) => {
+      // Notifier les clients du début
+      self.clients.matchAll().then((clients) => {
+        clients.forEach((c) => c.postMessage({ type: "caching-start" }));
+      });
+
+      return Promise.allSettled(
+        STATIC_ASSETS.map((url) =>
+          fetch(url, { cache: "no-cache" }).then((res) => {
+            if (res.ok) return cache.put(url, res);
+          }),
+        ),
+      ).then(() => {
+        // Notifier de la fin
+        self.clients.matchAll().then((clients) => {
+          clients.forEach((c) => c.postMessage({ type: "caching-complete" }));
+        });
+      });
+    }),
   );
 });
 
-// ACTIVATION : On nettoie et on prend le contrôle
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((keys) => {
-        return Promise.all(
-          keys
-            .filter((key) => key !== CACHE_NAME)
-            .map((key) => caches.delete(key)),
-        );
-      })
+      .then((keys) =>
+        Promise.all(
+          keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)),
+        ),
+      )
       .then(() => self.clients.claim()),
   );
 });
 
-// FETCH : On sert le cache en priorité (Ultra rapide et Offline)
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches
       .match(event.request)
-      .then((response) => {
-        return response || fetch(event.request);
+      .then((cachedResponse) => {
+        // On sert le cache, sinon on va sur le réseau
+        return cachedResponse || fetch(event.request);
       })
       .catch(() => {
+        // Si offline et page HTML, renvoyer l'index ou offline.html
         if (event.request.mode === "navigate") {
-          return caches.match("/index.html");
+          return caches.match("./index.html") || caches.match("./offline.html");
         }
       }),
   );

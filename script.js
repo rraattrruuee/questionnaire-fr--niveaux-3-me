@@ -1,62 +1,116 @@
 const searchInput = document.getElementById("searchInput");
 const sections = document.querySelectorAll(".menu-section");
 const labelButtons = document.querySelectorAll(".label-button");
+const cachingIndicator = document.getElementById("caching-indicator");
+const scrollToTopBtn = document.getElementById("scrollToTopBtn");
 
+// Détection du mode PWA
+function isRunningAsPWA() {
+  return (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.matchMedia("(display-mode: fullscreen)").matches ||
+    window.navigator.standalone === true ||
+    document.referrer.includes("android-app://")
+  );
+}
+
+// Mise à jour de l'URL pour les filtres
 function updateURLParameter(key, value) {
   const url = new URL(window.location);
-
   if (value === "all") {
     url.searchParams.delete(key);
   } else {
     url.searchParams.set(key, value);
   }
-
   window.history.pushState({ path: url.href }, "", url.href);
 }
 
+// FILTRAGE : Gère l'affichage sans laisser de "vides"
 function filterElements(searchTerm = "", filterTarget = "all") {
   const currentSearchTerm = searchTerm.toLowerCase().trim();
 
   sections.forEach((section) => {
-    const sectionId = section.id;
-    let sectionHasVisibleLink = false;
+    let hasVisibleContent = false;
+    const isTargetedSection =
+      filterTarget === "all" || section.id === filterTarget;
 
-    section.classList.remove("is-animated");
-
-    const isSectionTargetedByLabel =
-      filterTarget === "all" || sectionId === filterTarget;
-
-    section.querySelectorAll(".bouton-lien").forEach((link) => {
-      const linkText = link.textContent.toLowerCase();
+    const links = section.querySelectorAll(".bouton-lien");
+    links.forEach((link) => {
+      const text = link.textContent.toLowerCase();
       const matchesSearch =
-        currentSearchTerm === "" || linkText.includes(currentSearchTerm);
+        currentSearchTerm === "" || text.includes(currentSearchTerm);
 
-      // On cible le wrapper si il existe, sinon le lien lui-même
-      const elementToHandle = link.parentElement.classList.contains(
-        "quiz-wrapper",
-      )
-        ? link.parentElement
-        : link;
+      const container = link.closest(".quiz-wrapper") || link;
 
-      if (isSectionTargetedByLabel && matchesSearch) {
-        elementToHandle.classList.remove("hidden");
-        sectionHasVisibleLink = true;
+      if (isTargetedSection && matchesSearch) {
+        container.style.display = "flex";
+        container.classList.remove("hidden");
+        hasVisibleContent = true;
       } else {
-        elementToHandle.classList.add("hidden");
+        container.style.display = "none";
+        container.classList.add("hidden");
       }
     });
 
-    if (!isSectionTargetedByLabel || !sectionHasVisibleLink) {
-      section.classList.add("hidden");
+    if (isTargetedSection && hasVisibleContent) {
+      section.style.display = "block";
     } else {
-      section.classList.remove("hidden");
-      setTimeout(() => {
-        section.classList.add("is-animated");
-      }, 0);
+      section.style.display = "none";
     }
   });
 }
 
+// INITIALISATION : Interface & Boutons
+function initInterface() {
+  const isPWA = isRunningAsPWA();
+
+  // 1. Bouton Retour en Haut
+  if (scrollToTopBtn) {
+    if (isPWA) {
+      scrollToTopBtn.style.display = "none";
+    } else {
+      window.addEventListener("scroll", () => {
+        scrollToTopBtn.style.display = window.scrollY > 300 ? "block" : "none";
+      });
+    }
+  }
+
+  // 2. Création des wrappers (SEULEMENT si pas déjà faits)
+  if (!isPWA) {
+    document.querySelectorAll(".bouton-lien").forEach((link) => {
+      if (link.parentElement.classList.contains("quiz-wrapper")) return;
+      const wrapper = document.createElement("div");
+      wrapper.className = "quiz-wrapper";
+      const dlBtn = document.createElement("a");
+      dlBtn.href = link.href;
+      dlBtn.download = "";
+      dlBtn.className = "btn-dl";
+      dlBtn.innerHTML = "📥";
+      link.parentNode.insertBefore(wrapper, link);
+      wrapper.appendChild(link);
+      wrapper.appendChild(dlBtn);
+    });
+  }
+
+  // 3. APPLIQUER LE FILTRE INITIAL (C'est ici que ça débloque l'affichage)
+  const urlParams = new URLSearchParams(window.location.search);
+  const filterFromURL = urlParams.get("filtre");
+
+  if (filterFromURL) {
+    const btn = document.querySelector(
+      `.label-button[data-target="${filterFromURL}"]`,
+    );
+    if (btn) btn.click();
+  } else {
+    const allBtn = document.querySelector('.label-button[data-target="all"]');
+    if (allBtn) {
+      allBtn.classList.add("active");
+      filterElements("", "all");
+    }
+  }
+}
+
+// EVENT LISTENERS
 searchInput.addEventListener("keyup", function () {
   labelButtons.forEach((btn) => btn.classList.remove("active"));
   updateURLParameter("filtre", "all");
@@ -66,83 +120,41 @@ searchInput.addEventListener("keyup", function () {
 labelButtons.forEach((button) => {
   button.addEventListener("click", function () {
     const target = this.getAttribute("data-target");
-
     labelButtons.forEach((btn) => btn.classList.remove("active"));
     this.classList.add("active");
     searchInput.value = "";
-
     updateURLParameter("filtre", target);
-
     filterElements("", target);
   });
 });
 
-const urlParams = new URLSearchParams(window.location.search);
-const initialFilter = urlParams.get("filtre") || "all";
-
-const initialButton = document.querySelector(
-  `.label-button[data-target="${initialFilter}"]`,
-);
-
-if (initialButton) {
-  initialButton.click();
-} else {
-  document.querySelector('.label-button[data-target="all"]').click();
-}
-
-function isRunningAsPWA() {
-  return (
-    window.matchMedia("(display-mode: standalone)").matches ||
-    window.matchMedia("(display-mode: fullscreen)").matches ||
-    window.matchMedia("(display-mode: minimal-ui)").matches ||
-    window.navigator.standalone === true || // Spécifique iOS
-    document.referrer.includes("android-app://")
-  );
-}
-
-/**
- * Gère l'affichage des boutons de téléchargement
- */
-function manageDownloadButtons() {
-  // On vérifie si on est en mode PWA
-  if (isRunningAsPWA()) {
-    console.log(
-      "📱 Mode PWA détecté : masquage des boutons de téléchargement.",
-    );
-    // Si on est en PWA, on ne fait rien (on sort de la fonction)
-    return;
-  }
-
-  // Si on n'est PAS en PWA (navigateur classique), on crée les boutons
-  document.querySelectorAll(".bouton-lien").forEach((link) => {
-    // Sécurité : éviter de créer le wrapper plusieurs fois si la fonction est rappelée
-    if (link.parentNode.classList.contains("quiz-wrapper")) return;
-
-    const wrapper = document.createElement("div");
-    wrapper.className = "quiz-wrapper";
-
-    const dlBtn = document.createElement("a");
-    dlBtn.href = link.href;
-    dlBtn.download = "";
-    dlBtn.className = "btn-dl";
-    dlBtn.innerHTML = "📥";
-    dlBtn.title = "Télécharger pour révision hors-ligne";
-
-    link.parentNode.insertBefore(wrapper, link);
-    wrapper.appendChild(link);
-    wrapper.appendChild(dlBtn);
-  });
-}
-
-// Exécuter la vérification au chargement
-window.addEventListener("DOMContentLoaded", manageDownloadButtons);
-
-// --- Enregistrement du Service Worker ---
+// SERVICE WORKER : UN SEUL ENREGISTREMENT
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("/service-worker.js")
-      .then((reg) => console.log("Service Worker prêt :", reg.scope))
-      .catch((err) => console.warn("Erreur SW :", err));
+      .register("./service-worker.js") // Chemin relatif crucial
+      .then((reg) => {
+        console.log("✅ SW enregistré ! Scope:", reg.scope);
+      })
+      .catch((err) => console.error("❌ Erreur SW:", err));
   });
+
+  // Indicateur de téléchargement (PWA)
+  navigator.serviceWorker.addEventListener("message", (event) => {
+    if (!cachingIndicator) return;
+    if (event.data.type === "caching-start") {
+      cachingIndicator.style.display = "block";
+    } else if (event.data.type === "caching-complete") {
+      setTimeout(() => {
+        cachingIndicator.style.display = "none";
+      }, 2000);
+    }
+  });
+}
+
+// Lancement au chargement
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initInterface);
+} else {
+  initInterface();
 }

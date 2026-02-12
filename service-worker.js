@@ -42,58 +42,30 @@ const CACHE_NAME = "quiz-cache-v5";
 self.addEventListener("install", (event) => {
   self.skipWaiting();
   event.waitUntil(
-    caches
-      .open(CACHE_NAME)
-      .then((cache) => {
-        console.log("📦 Mise en cache intégrale démarrée...");
+    caches.open(CACHE_NAME).then((cache) => {
+      // Notifier le début
+      self.clients.matchAll().then((clients) => {
+        clients.forEach((c) => c.postMessage({ type: "caching-start" }));
+      });
 
-        // On envoie un message au client pour indiquer que le téléchargement est en cours
+      return Promise.allSettled(
+        STATIC_ASSETS.map((url) =>
+          fetch(url, { cache: "no-cache" }).then((res) => {
+            if (res.ok) return cache.put(url, res);
+          }),
+        ),
+      ).then(() => {
         self.clients.matchAll().then((clients) => {
-          clients.forEach((client) =>
-            client.postMessage({ type: "caching-start" }),
-          );
+          clients.forEach((c) => c.postMessage({ type: "caching-complete" }));
         });
-
-        // On utilise Promise.allSettled pour ne pas bloquer si un fichier manque
-        return Promise.allSettled(
-          STATIC_ASSETS.map((url) =>
-            fetch(url, { cache: "no-cache" })
-              .then((response) => {
-                if (response.ok) return cache.put(url, response);
-                console.error(
-                  `Fichier non trouvé ou erreur (${response.status}) pour le cache : ${url}`,
-                );
-              })
-              .catch((error) => {
-                console.error(`Erreur de réseau ou CORS pour ${url}:`, error);
-              }),
-          ),
-        );
-      })
-      .then(() => {
-        // Une fois tous les téléchargements (réussis ou non) terminés
-        self.clients.matchAll().then((clients) => {
-          clients.forEach((client) =>
-            client.postMessage({ type: "caching-complete" }),
-          );
-        });
-        console.log("✅ Mise en cache terminée.");
-      }),
+      });
+    }),
   );
 });
 
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches
-      .keys()
-      .then((keys) =>
-        Promise.all(
-          keys
-            .filter((key) => key !== CACHE_NAME)
-            .map((key) => caches.delete(key)),
-        ),
-      )
-      .then(() => self.clients.claim()),
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    caches.match(event.request).then((res) => res || fetch(event.request)),
   );
 });
 

@@ -91,10 +91,65 @@ function isRunningAsPWA() {
   return (
     window.matchMedia("(display-mode: standalone)").matches ||
     window.matchMedia("(display-mode: fullscreen)").matches ||
-    window.matchMedia("(display-mode: minimal-ui)").matches ||
-    window.navigator.standalone === true || // Spécifique iOS
+    window.navigator.standalone === true ||
     document.referrer.includes("android-app://")
   );
+}
+
+function initAll() {
+  const isPWA = isRunningAsPWA();
+  const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+  // GESTION DU BOUTON RETOUR EN HAUT
+  if (scrollToTopBtn) {
+    if (isPWA) {
+      scrollToTopBtn.remove(); // Supprime totalement en PWA
+    } else {
+      window.onscroll = () => {
+        scrollToTopBtn.style.display = window.scrollY > 300 ? "block" : "none";
+      };
+      scrollToTopBtn.onclick = () =>
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
+  // GESTION DES BOUTONS DE TÉLÉCHARGEMENT
+  if (!isPWA) {
+    document.querySelectorAll(".bouton-lien").forEach((link) => {
+      if (link.closest(".quiz-wrapper")) return;
+      const wrapper = document.createElement("div");
+      wrapper.className = "quiz-wrapper";
+      const dlBtn = document.createElement("a");
+      dlBtn.href = link.href;
+      dlBtn.download = "";
+      dlBtn.className = "btn-dl";
+      dlBtn.innerHTML = "📥";
+      link.parentNode.insertBefore(wrapper, link);
+      wrapper.appendChild(link);
+      wrapper.appendChild(dlBtn);
+    });
+  }
+}
+
+// On lance l'initialisation dès que possible
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initAll);
+} else {
+  initAll();
+}
+
+// ÉCOUTEUR POUR L'INDICATEUR DE TÉLÉCHARGEMENT
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.addEventListener("message", (event) => {
+    const indicator = document.getElementById("caching-indicator");
+    if (!indicator) return;
+    if (event.data.type === "caching-start") indicator.style.display = "block";
+    if (event.data.type === "caching-complete") {
+      setTimeout(() => {
+        indicator.style.display = "none";
+      }, 2000);
+    }
+  });
 }
 
 /**

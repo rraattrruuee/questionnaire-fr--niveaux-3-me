@@ -383,3 +383,24 @@ h1 {
     display: none !important;
   }
 }
+
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#caching-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  background: #28a745;
+  color: white;
+  z-index: 10000;
+  font-weight: bold;
+  padding: 5px;
+}

@@ -23,19 +23,26 @@ jobs:
         run: chmod +x generate-sw.sh
 
       - name: Update Service Worker
-        run: ./generate-sw.sh
+        run: |
+          ./generate-sw.sh
+          # Sécurité : on supprime le fichier temporaire s'il existe encore
+          rm -f service-worker.js.tmp
 
       - name: Commit and Push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          # On vérifie s'il y a des changements avant de commit
-          if [ -n "$(git status --porcelain)" ]; then
-            git add service-worker.js
-            git commit -m "chore: auto-update service worker assets [skip ci]"
-            git push
+
+          # On ajoute les modifs du script ET du service-worker
+          git add generate-sw.sh service-worker.js
+
+          # Vérification robuste des changements
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "✅ Aucun changement détecté dans les fichiers."
           else
-            echo "Aucun changement détecté."
+            echo "🚀 Changements détectés, commit en cours..."
+            git commit -m "chore: auto-update service worker assets [skip ci]"
+            git push origin main
           fi
 
       - name: Setup Pages

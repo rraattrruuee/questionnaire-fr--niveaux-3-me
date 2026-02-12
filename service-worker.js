@@ -1,4 +1,7 @@
+// BEGIN_ASSETS
 const STATIC_ASSETS = ["/", "/index.html"];
+// END_ASSETS
+
 const CACHE_NAME = "questionnaire-cache-v3";
 
 self.addEventListener("install", (event) => {
@@ -36,7 +39,6 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const { request } = event;
 
-  // 1. Pages HTML : Réseau d'abord, puis Cache (pour avoir tjs la version fraîche)
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)
@@ -50,13 +52,11 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // 2. Assets (JS, CSS, Images) : Cache d'abord, puis Réseau
   event.respondWith(
     caches.match(request).then((cached) => {
       if (cached) return cached;
 
       return fetch(request).then((response) => {
-        // On ne cache que les requêtes valides (pas les extensions chrome, etc)
         if (response && response.status === 200 && response.type === "basic") {
           const copy = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));

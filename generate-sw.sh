@@ -4,13 +4,13 @@
 FILES=$(find . -maxdepth 3 -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.svg" -o -name "*.png" -o -name "*.json" \) \
     ! -path "./.*" \
     ! -name "generate-sw.sh" \
-    | sed 's|^\.||' | sort | sed 's/^/  "/' | sed 's/$/"/' | paste -sd "," - | sed 's/,/,\n/g')
+    | sed 's|^\.||' | sort | sed 's/^/  "/' | sed 's/$/",/')
 
-# 2. Préparer le contenu
-LIST_CONTENT="const STATIC_ASSETS = [\n$FILES\n];"
+# 2. Préparer le bloc de remplacement
+# On utilise printf pour interpréter les \n (sauts de ligne)
+NEW_CONTENT=$(printf "// BEGIN_ASSETS\nconst STATIC_ASSETS = [\n$FILES\n];\n// END_ASSETS")
 
-# 3. Injecter dans le fichier
-# On utilise un fichier temporaire pour éviter les erreurs de lecture/écriture simultanées
-sed "/\/\/ BEGIN_ASSETS/,/\/\/ END_ASSETS/c\/\/ BEGIN_ASSETS\n$LIST_CONTENT\n\/\/ END_ASSETS" service-worker.js > service-worker.js.tmp && mv service-worker.js.tmp service-worker.js
+# 3. Remplacement complet via Perl (plus fiable que sed sur GitHub Actions)
+perl -i -0777 -pe "s/\/\/ BEGIN_ASSETS.*?\/\/ END_ASSETS/$NEW_CONTENT/s" service-worker.js
 
-echo "✅ service-worker.js mis à jour avec les nouveaux fichiers."
+echo "✅ service-worker.js a été mis à jour avec la liste des fichiers."

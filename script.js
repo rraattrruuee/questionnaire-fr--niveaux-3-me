@@ -18,39 +18,29 @@ function filterElements(searchTerm = "", filterTarget = "all") {
   const currentSearchTerm = searchTerm.toLowerCase().trim();
 
   sections.forEach((section) => {
-    let sectionHasVisibleLink = false;
-    section.classList.remove("is-animated");
+    let hasVisibleContent = false;
 
-    const isSectionTargetedByLabel =
-      filterTarget === "all" || section.id === filterTarget;
-
-    // On cherche tous les liens
     section.querySelectorAll(".bouton-lien").forEach((link) => {
-      const linkText = link.textContent.toLowerCase();
+      const text = link.textContent.toLowerCase();
       const matchesSearch =
-        currentSearchTerm === "" || linkText.includes(currentSearchTerm);
+        currentSearchTerm === "" || text.includes(currentSearchTerm);
+      const isTargeted = filterTarget === "all" || section.id === filterTarget;
 
-      // TRÈS IMPORTANT : On identifie l'élément parent à cacher
-      // Si le bouton 📥 existe, on cache le 'quiz-wrapper', sinon juste le 'link'
-      const container = link.closest(".quiz-wrapper") || link;
+      // On cible le wrapper (bouton + lien) s'il existe, sinon le lien
+      const visualBlock = link.closest(".quiz-wrapper") || link;
 
-      if (isSectionTargetedByLabel && matchesSearch) {
-        container.style.display = "flex"; // On force l'affichage
-        container.classList.remove("hidden");
-        sectionHasVisibleLink = true;
+      if (isTargeted && matchesSearch) {
+        visualBlock.style.display = "flex"; // On force l'affichage en flex
+        visualBlock.classList.remove("hidden");
+        hasVisibleContent = true;
       } else {
-        container.style.display = "none"; // On force la disparition totale (plus de vide)
-        container.classList.add("hidden");
+        visualBlock.style.display = "none"; // Disparition totale, pas de "trou"
+        visualBlock.classList.add("hidden");
       }
     });
 
-    // Affichage de la section entière
-    if (!sectionHasVisibleLink) {
-      section.style.display = "none";
-    } else {
-      section.style.display = "block";
-      setTimeout(() => section.classList.add("is-animated"), 10);
-    }
+    // Afficher/Cacher la section entière
+    section.style.display = hasVisibleContent ? "block" : "none";
   });
 }
 
@@ -141,14 +131,14 @@ if (document.readyState === "loading") {
 // ÉCOUTEUR POUR L'INDICATEUR DE TÉLÉCHARGEMENT
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    // On retire le "/" au début pour que le chemin soit relatif
+    // On utilise 'service-worker.js' SANS le / devant
     navigator.serviceWorker
       .register("service-worker.js")
       .then((reg) => {
-        console.log("✅ Service Worker enregistré !");
+        console.log("✅ SW enregistré avec succès ! Scope:", reg.scope);
       })
       .catch((err) => {
-        console.error("❌ Échec de l'enregistrement :", err);
+        console.error("❌ Échec de l'enregistrement SW (404 ou autre) :", err);
       });
   });
 }

@@ -1,15 +1,17 @@
 #!/bin/bash
 
-# 1. Lister les fichiers et créer une chaîne propre
+# 1. Lister les fichiers proprement (gestion des espaces et caractères spéciaux)
 FILES=$(find . -maxdepth 3 -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.svg" -o -name "*.png" -o -name "*.json" \) \
     ! -path "./.*" \
     ! -name "generate-sw.sh" \
     | sed 's|^\.||' | sort | sed 's/^/  "/' | sed 's/$/",/')
 
-# 2. Préparer le bloc de remplacement
-NEW_CONTENT=$(printf "// BEGIN_ASSETS\nconst STATIC_ASSETS = [\n$FILES\n];\n// END_ASSETS")
+# 2. Créer le nouveau contenu du service worker
+# On lit le fichier jusqu'à BEGIN, on ajoute les fichiers, puis on lit après END
+awk -v files="$FILES" '
+  /\/\/ BEGIN_ASSETS/ { print "// BEGIN_ASSETS"; print "const STATIC_ASSETS = ["; print files; print "];"; skip=1; next }
+  /\/\/ END_ASSETS/ { print "// END_ASSETS"; skip=0; next }
+  !skip { print }
+' service-worker.js > service-worker.js.tmp && mv service-worker.js.tmp service-worker.js
 
-# 3. Remplacement complet via Perl (plus fiable que sed sur GitHub Actions)
-perl -i -0777 -pe "s/\/\/ BEGIN_ASSETS.*?\/\/ END_ASSETS/$NEW_CONTENT/s" service-worker.js
-
-echo "✅ service-worker.js a été mis à jour avec la liste des fichiers."
+echo "✅ service-worker.js mis à jour."

@@ -33,10 +33,21 @@ function filterElements(searchTerm = "", filterTarget = "all") {
         currentSearchTerm === "" || linkText.includes(currentSearchTerm);
 
       if (isSectionTargetedByLabel && matchesSearch) {
-        link.classList.remove("hidden");
+        // Si on a un wrapper, on cache le wrapper entier, sinon juste le lien
+        const elementToHide = link.parentElement.classList.contains(
+          "quiz-wrapper",
+        )
+          ? link.parentElement
+          : link;
+        elementToHide.classList.remove("hidden");
         sectionHasVisibleLink = true;
       } else {
-        link.classList.add("hidden");
+        const elementToHide = link.parentElement.classList.contains(
+          "quiz-wrapper",
+        )
+          ? link.parentElement
+          : link;
+        elementToHide.classList.add("hidden");
       }
     });
 
@@ -87,46 +98,57 @@ if (initialButton) {
 
 function isRunningAsPWA() {
   return (
-    (window.matchMedia &&
-      (window.matchMedia("(display-mode: standalone)").matches ||
-        window.matchMedia("(display-mode: fullscreen)").matches ||
-        window.matchMedia("(display-mode: minimal-ui)").matches)) ||
-    // iOS
-    window.navigator.standalone === true ||
-    // Android webapp referrer
-    (document.referrer && document.referrer.startsWith("android-app://"))
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.matchMedia("(display-mode: fullscreen)").matches ||
+    window.matchMedia("(display-mode: minimal-ui)").matches ||
+    window.navigator.standalone === true || // Spécifique iOS
+    document.referrer.includes("android-app://")
   );
 }
 
-if (!isRunningAsPWA()) {
+/**
+ * Gère l'affichage des boutons de téléchargement
+ */
+function manageDownloadButtons() {
+  // On vérifie si on est en mode PWA
+  if (isRunningAsPWA()) {
+    console.log(
+      "📱 Mode PWA détecté : masquage des boutons de téléchargement.",
+    );
+    // Si on est en PWA, on ne fait rien (on sort de la fonction)
+    return;
+  }
+
+  // Si on n'est PAS en PWA (navigateur classique), on crée les boutons
   document.querySelectorAll(".bouton-lien").forEach((link) => {
-    // 1. Créer le conteneur (wrapper)
+    // Sécurité : éviter de créer le wrapper plusieurs fois si la fonction est rappelée
+    if (link.parentNode.classList.contains("quiz-wrapper")) return;
+
     const wrapper = document.createElement("div");
     wrapper.className = "quiz-wrapper";
-    // 2. Créer le bouton de téléchargement
+
     const dlBtn = document.createElement("a");
     dlBtn.href = link.href;
-    dlBtn.download = ""; // Force le téléchargement
+    dlBtn.download = "";
     dlBtn.className = "btn-dl";
     dlBtn.innerHTML = "📥";
-    dlBtn.title = "Télécharger le fichier";
-    // 3. Placer le wrapper là où était le lien
-    link.parentNode.insertBefore(wrapper, link);
+    dlBtn.title = "Télécharger pour révision hors-ligne";
 
-    // 4. Mettre le lien et le bouton de téléchargement dans le wrapper
+    link.parentNode.insertBefore(wrapper, link);
     wrapper.appendChild(link);
     wrapper.appendChild(dlBtn);
   });
 }
 
-// Enregistrement du Service Worker pour activer la PWA
+// Exécuter la vérification au chargement
+window.addEventListener("DOMContentLoaded", manageDownloadButtons);
+
+// --- Enregistrement du Service Worker ---
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
       .register("/service-worker.js")
-      .then((reg) => console.log("Service Worker enregistré:", reg.scope))
-      .catch((err) =>
-        console.warn("Erreur d'enregistrement du Service Worker:", err),
-      );
+      .then((reg) => console.log("Service Worker prêt :", reg.scope))
+      .catch((err) => console.warn("Erreur SW :", err));
   });
 }

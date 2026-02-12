@@ -26,20 +26,18 @@ function filterElements(searchTerm = "", filterTarget = "all") {
         currentSearchTerm === "" || text.includes(currentSearchTerm);
       const isTargeted = filterTarget === "all" || section.id === filterTarget;
 
-      // On cible le wrapper (bouton + lien) s'il existe, sinon le lien
-      const visualBlock = link.closest(".quiz-wrapper") || link;
+      const elementToToggle = link.closest(".quiz-wrapper") || link;
 
       if (isTargeted && matchesSearch) {
-        visualBlock.style.display = "flex"; // On force l'affichage en flex
-        visualBlock.classList.remove("hidden");
+        elementToToggle.style.display = "flex";
+        elementToToggle.classList.remove("hidden");
         hasVisibleContent = true;
       } else {
-        visualBlock.style.display = "none"; // Disparition totale, pas de "trou"
-        visualBlock.classList.add("hidden");
+        elementToToggle.style.display = "none";
+        elementToToggle.classList.add("hidden");
       }
     });
 
-    // Afficher/Cacher la section entière
     section.style.display = hasVisibleContent ? "block" : "none";
   });
 }
@@ -131,14 +129,13 @@ if (document.readyState === "loading") {
 // ÉCOUTEUR POUR L'INDICATEUR DE TÉLÉCHARGEMENT
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    // On utilise 'service-worker.js' SANS le / devant
     navigator.serviceWorker
-      .register("service-worker.js")
+      .register("./service-worker.js")
       .then((reg) => {
         console.log("✅ SW enregistré avec succès ! Scope:", reg.scope);
       })
       .catch((err) => {
-        console.error("❌ Échec de l'enregistrement SW (404 ou autre) :", err);
+        console.error("❌ Erreur SW :", err);
       });
   });
 }

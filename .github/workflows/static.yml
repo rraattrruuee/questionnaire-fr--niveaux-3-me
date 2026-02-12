@@ -38,7 +38,7 @@ jobs:
 
           # Vérification robuste des changements
           if git diff --quiet && git diff --staged --quiet; then
-            echo "✅ Aucun changement détecté dans les fichiers."
+            echo "✅ Aucun changement détecté dans les fichiers, pas de commit nécessaire."
           else
             echo "🚀 Changements détectés, commit en cours..."
             git commit -m "chore: auto-update service worker assets [skip ci]"

@@ -128,7 +128,7 @@ labelButtons.forEach((button) => {
   });
 });
 
-// SERVICE WORKER : UN SEUL ENREGISTREMENT
+// SERVICE WORKER : UN SEUL ENREGISTREMENT ET GESTION DU CACHE
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker

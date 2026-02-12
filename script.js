@@ -132,7 +132,7 @@ labelButtons.forEach((button) => {
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("./service-worker.js") // Chemin relatif crucial
+      .register("./service-worker.js")
       .then((reg) => {
         console.log("✅ SW enregistré ! Scope:", reg.scope);
       })

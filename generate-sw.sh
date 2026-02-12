@@ -7,7 +7,6 @@ FILES=$(find . -maxdepth 3 -type f \( -name "*.html" -o -name "*.css" -o -name "
     | sed 's|^\.||' | sort | sed 's/^/  "/' | sed 's/$/",/')
 
 # 2. Préparer le bloc de remplacement
-# On utilise printf pour interpréter les \n (sauts de ligne)
 NEW_CONTENT=$(printf "// BEGIN_ASSETS\nconst STATIC_ASSETS = [\n$FILES\n];\n// END_ASSETS")
 
 # 3. Remplacement complet via Perl (plus fiable que sed sur GitHub Actions)

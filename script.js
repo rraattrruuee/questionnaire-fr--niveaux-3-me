@@ -28,26 +28,21 @@ function filterElements(searchTerm = "", filterTarget = "all") {
 
     section.querySelectorAll(".bouton-lien").forEach((link) => {
       const linkText = link.textContent.toLowerCase();
-
       const matchesSearch =
         currentSearchTerm === "" || linkText.includes(currentSearchTerm);
 
+      // On cible le wrapper si il existe, sinon le lien lui-même
+      const elementToHandle = link.parentElement.classList.contains(
+        "quiz-wrapper",
+      )
+        ? link.parentElement
+        : link;
+
       if (isSectionTargetedByLabel && matchesSearch) {
-        // Si on a un wrapper, on cache le wrapper entier, sinon juste le lien
-        const elementToHide = link.parentElement.classList.contains(
-          "quiz-wrapper",
-        )
-          ? link.parentElement
-          : link;
-        elementToHide.classList.remove("hidden");
+        elementToHandle.classList.remove("hidden");
         sectionHasVisibleLink = true;
       } else {
-        const elementToHide = link.parentElement.classList.contains(
-          "quiz-wrapper",
-        )
-          ? link.parentElement
-          : link;
-        elementToHide.classList.add("hidden");
+        elementToHandle.classList.add("hidden");
       }
     });
 
@@ -55,7 +50,6 @@ function filterElements(searchTerm = "", filterTarget = "all") {
       section.classList.add("hidden");
     } else {
       section.classList.remove("hidden");
-
       setTimeout(() => {
         section.classList.add("is-animated");
       }, 0);

@@ -37,77 +37,49 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "questionnaire-cache-v4";
+const CACHE_NAME = "quiz-cache-v4";
 
+// INSTALLATION : On force la mise en cache de TOUT
 self.addEventListener("install", (event) => {
-  self.skipWaiting();
-
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log("🚀 Début du pré-chargement intégral...");
-
-      // On utilise Promise.allSettled pour que si UN fichier échoue,
-      // les autres soient quand même mis en cache.
-      return Promise.allSettled(
-        STATIC_ASSETS.map((url) => {
-          return fetch(url, { cache: "no-cache" }) // On force le réseau pour le remplissage initial
-            .then((res) => {
-              if (res.ok) {
-                return cache.put(url, res);
-              }
-              throw new Error(`Erreur HTTP: ${res.status}`);
-            })
-            .catch((err) => console.error(`❌ Échec pour : ${url}`, err));
-        }),
-      );
-    }),
+    caches
+      .open(CACHE_NAME)
+      .then((cache) => {
+        console.log("📦 Mise en cache intégrale démarrée...");
+        // addAll échoue si un seul fichier manque, c'est plus sûr pour toi
+        return cache.addAll(STATIC_ASSETS);
+      })
+      .then(() => self.skipWaiting()), // Force l'activation
   );
 });
 
-// ACTIVATION : Nettoyage et prise de contrôle
+// ACTIVATION : On nettoie et on prend le contrôle
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    Promise.all([
-      // Nettoie les anciens caches
-      caches.keys().then((keys) => {
+    caches
+      .keys()
+      .then((keys) => {
         return Promise.all(
           keys
             .filter((key) => key !== CACHE_NAME)
             .map((key) => caches.delete(key)),
         );
-      }),
-      // Prend le contrôle des pages ouvertes immédiatement
-      self.clients.claim(),
-    ]),
+      })
+      .then(() => self.clients.claim()),
   );
 });
 
-// FETCH : Cache d'abord (Offline First)
-// On privilégie le cache pour que l'app soit ultra rapide, même avec du réseau
+// FETCH : On sert le cache en priorité (Ultra rapide et Offline)
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches
       .match(event.request)
       .then((response) => {
-        // Retourne le fichier du cache s'il existe, sinon va sur le réseau
-        return (
-          response ||
-          fetch(event.request).then((networkResponse) => {
-            // Optionnel : on met en cache les nouvelles ressources découvertes
-            if (networkResponse.status === 200) {
-              const cacheCopy = networkResponse.clone();
-              caches
-                .open(CACHE_NAME)
-                .then((cache) => cache.put(event.request, cacheCopy));
-            }
-            return networkResponse;
-          })
-        );
+        return response || fetch(event.request);
       })
       .catch(() => {
-        // Si tout échoue (offline et pas en cache), on renvoie l'index ou offline.html
         if (event.request.mode === "navigate") {
-          return caches.match("/index.html") || caches.match("/offline.html");
+          return caches.match("/index.html");
         }
       }),
   );

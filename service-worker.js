@@ -37,67 +37,78 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "questionnaire-cache-v3";
+const CACHE_NAME = "questionnaire-cache-v4";
 
 self.addEventListener("install", (event) => {
   self.skipWaiting();
+
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return Promise.all(
-        STATIC_ASSETS.map((url) =>
-          fetch(url, { cache: "reload" })
+      console.log("🚀 Début du pré-chargement intégral...");
+
+      // On utilise Promise.allSettled pour que si UN fichier échoue,
+      // les autres soient quand même mis en cache.
+      return Promise.allSettled(
+        STATIC_ASSETS.map((url) => {
+          return fetch(url, { cache: "no-cache" }) // On force le réseau pour le remplissage initial
             .then((res) => {
-              if (res.ok) return cache.put(url, res);
+              if (res.ok) {
+                return cache.put(url, res);
+              }
+              throw new Error(`Erreur HTTP: ${res.status}`);
             })
-            .catch((err) => console.warn(`Échec du cache pour ${url}:`, err)),
-        ),
+            .catch((err) => console.error(`❌ Échec pour : ${url}`, err));
+        }),
       );
     }),
   );
 });
 
-// Activation : Nettoyage des vieux caches
+// ACTIVATION : Nettoyage et prise de contrôle
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) return caches.delete(key);
-        }),
-      ),
-    ),
+    Promise.all([
+      // Nettoie les anciens caches
+      caches.keys().then((keys) => {
+        return Promise.all(
+          keys
+            .filter((key) => key !== CACHE_NAME)
+            .map((key) => caches.delete(key)),
+        );
+      }),
+      // Prend le contrôle des pages ouvertes immédiatement
+      self.clients.claim(),
+    ]),
   );
-  self.clients.claim();
 });
 
-// Stratégie de Fetch
+// FETCH : Cache d'abord (Offline First)
+// On privilégie le cache pour que l'app soit ultra rapide, même avec du réseau
 self.addEventListener("fetch", (event) => {
-  const { request } = event;
-
-  if (request.mode === "navigate") {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-          return response;
-        })
-        .catch(() => caches.match(request) || caches.match("/index.html")),
-    );
-    return;
-  }
-
   event.respondWith(
-    caches.match(request).then((cached) => {
-      if (cached) return cached;
-
-      return fetch(request).then((response) => {
-        if (response && response.status === 200 && response.type === "basic") {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+    caches
+      .match(event.request)
+      .then((response) => {
+        // Retourne le fichier du cache s'il existe, sinon va sur le réseau
+        return (
+          response ||
+          fetch(event.request).then((networkResponse) => {
+            // Optionnel : on met en cache les nouvelles ressources découvertes
+            if (networkResponse.status === 200) {
+              const cacheCopy = networkResponse.clone();
+              caches
+                .open(CACHE_NAME)
+                .then((cache) => cache.put(event.request, cacheCopy));
+            }
+            return networkResponse;
+          })
+        );
+      })
+      .catch(() => {
+        // Si tout échoue (offline et pas en cache), on renvoie l'index ou offline.html
+        if (event.request.mode === "navigate") {
+          return caches.match("/index.html") || caches.match("/offline.html");
         }
-        return response;
-      });
-    }),
+      }),
   );
 });

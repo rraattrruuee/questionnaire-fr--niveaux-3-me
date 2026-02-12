@@ -140,15 +140,16 @@ if (document.readyState === "loading") {
 
 // ÉCOUTEUR POUR L'INDICATEUR DE TÉLÉCHARGEMENT
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.addEventListener("message", (event) => {
-    const indicator = document.getElementById("caching-indicator");
-    if (!indicator) return;
-    if (event.data.type === "caching-start") indicator.style.display = "block";
-    if (event.data.type === "caching-complete") {
-      setTimeout(() => {
-        indicator.style.display = "none";
-      }, 2000);
-    }
+  window.addEventListener("load", () => {
+    // On retire le "/" au début pour que le chemin soit relatif
+    navigator.serviceWorker
+      .register("service-worker.js")
+      .then((reg) => {
+        console.log("✅ Service Worker enregistré !");
+      })
+      .catch((err) => {
+        console.error("❌ Échec de l'enregistrement :", err);
+      });
   });
 }
 

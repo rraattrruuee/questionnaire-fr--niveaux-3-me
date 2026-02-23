@@ -2,7 +2,6 @@ const searchInput = document.getElementById("searchInput");
 const sections = document.querySelectorAll(".menu-section");
 const labelButtons = document.querySelectorAll(".label-button");
 const cachingIndicator = document.getElementById("caching-indicator");
-const scrollToTopBtn = document.getElementById("scrollToTopBtn");
 
 function isRunningAsPWA() {
   return (
@@ -35,8 +34,8 @@ function filterElements(searchTerm = "", filterTarget = "all") {
       const text = link.textContent.toLowerCase();
       const matchesSearch = (currentSearchTerm === "" || text.includes(currentSearchTerm));
       
-      // Gestion du conteneur (wrapper ou lien direct)
-      const container = link.closest(".quiz-wrapper") || link;
+      // Correction du ciblage : on cherche le wrapper ou le div parent direct
+      const container = link.closest(".quiz-wrapper") || link.parentElement;
 
       if (isTargetedSection && matchesSearch) {
         container.style.display = "flex";
@@ -48,7 +47,6 @@ function filterElements(searchTerm = "", filterTarget = "all") {
       }
     });
 
-    // Masque la section si elle est vide ou non ciblée
     section.style.display = (isTargetedSection && hasVisibleContent) ? "block" : "none";
   });
 }
@@ -56,10 +54,9 @@ function filterElements(searchTerm = "", filterTarget = "all") {
 function initInterface() {
   const isPWA = isRunningAsPWA();
 
-  // Création des boutons de téléchargement hors PWA
   if (!isPWA) {
     document.querySelectorAll(".bouton-lien").forEach((link) => {
-      if (link.parentElement.classList.contains("quiz-wrapper")) return;
+      if (link.closest(".quiz-wrapper")) return;
       const wrapper = document.createElement("div");
       wrapper.className = "quiz-wrapper";
       const dlBtn = document.createElement("a");
@@ -73,7 +70,6 @@ function initInterface() {
     });
   }
   
-  // Correction : Appel initial pour afficher les éléments au chargement
   filterElements("", "all");
 }
 
@@ -96,17 +92,7 @@ labelButtons.forEach((button) => {
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js")
-      .catch((err) => console.error("❌ Erreur SW:", err));
-  });
-
-  navigator.serviceWorker.addEventListener("message", (event) => {
-    if (!cachingIndicator) return;
-    if (event.data.type === "caching-start") {
-      cachingIndicator.style.display = "block";
-    } else if (event.data.type === "caching-complete") {
-      setTimeout(() => { cachingIndicator.style.display = "none"; }, 2000);
-    }
+    navigator.serviceWorker.register("./service-worker.js").catch(err => console.error(err));
   });
 }
 

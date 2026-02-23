@@ -64,18 +64,7 @@ function filterElements(searchTerm = "", filterTarget = "all") {
 function initInterface() {
   const isPWA = isRunningAsPWA();
 
-  // 1. Bouton Retour en Haut
-  if (scrollToTopBtn) {
-    if (isPWA) {
-      scrollToTopBtn.style.display = "none";
-    } else {
-      window.addEventListener("scroll", () => {
-        scrollToTopBtn.style.display = window.scrollY > 300 ? "block" : "none";
-      });
-    }
-  }
-
-  // 2. Création des wrappers (SEULEMENT si pas déjà faits)
+  // 1. Création des wrappers (SEULEMENT si pas déjà faits)
   if (!isPWA) {
     document.querySelectorAll(".bouton-lien").forEach((link) => {
       if (link.parentElement.classList.contains("quiz-wrapper")) return;
@@ -90,23 +79,6 @@ function initInterface() {
       wrapper.appendChild(link);
       wrapper.appendChild(dlBtn);
     });
-  }
-
-  // 3. APPLIQUER LE FILTRE INITIAL (C'est ici que ça débloque l'affichage)
-  const urlParams = new URLSearchParams(window.location.search);
-  const filterFromURL = urlParams.get("filtre");
-
-  if (filterFromURL) {
-    const btn = document.querySelector(
-      `.label-button[data-target="${filterFromURL}"]`,
-    );
-    if (btn) btn.click();
-  } else {
-    const allBtn = document.querySelector('.label-button[data-target="all"]');
-    if (allBtn) {
-      allBtn.classList.add("active");
-      filterElements("", "all");
-    }
   }
 }
 

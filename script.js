@@ -3,6 +3,7 @@ const sections = document.querySelectorAll(".menu-section");
 const labelButtons = document.querySelectorAll(".label-button");
 const cachingIndicator = document.getElementById("caching-indicator");
 
+// Vérifie si l'app est en mode PWA
 function isRunningAsPWA() {
   return (
     window.matchMedia("(display-mode: standalone)").matches ||
@@ -34,16 +35,14 @@ function filterElements(searchTerm = "", filterTarget = "all") {
       const text = link.textContent.toLowerCase();
       const matchesSearch = (currentSearchTerm === "" || text.includes(currentSearchTerm));
       
-      // Correction du ciblage : on cherche le wrapper ou le div parent direct
+      // On cible le parent direct pour gérer l'affichage
       const container = link.closest(".quiz-wrapper") || link.parentElement;
 
       if (isTargetedSection && matchesSearch) {
         container.style.display = "flex";
-        container.classList.remove("hidden");
         hasVisibleContent = true;
       } else {
         container.style.display = "none";
-        container.classList.add("hidden");
       }
     });
 
@@ -54,16 +53,20 @@ function filterElements(searchTerm = "", filterTarget = "all") {
 function initInterface() {
   const isPWA = isRunningAsPWA();
 
+  // Ajoute le bouton 📥 SEULEMENT si ce n'est PAS une PWA
   if (!isPWA) {
     document.querySelectorAll(".bouton-lien").forEach((link) => {
       if (link.closest(".quiz-wrapper")) return;
+      
       const wrapper = document.createElement("div");
       wrapper.className = "quiz-wrapper";
+      
       const dlBtn = document.createElement("a");
       dlBtn.href = link.href;
       dlBtn.download = "";
       dlBtn.className = "btn-dl";
       dlBtn.innerHTML = "📥";
+      
       link.parentNode.insertBefore(wrapper, link);
       wrapper.appendChild(link);
       wrapper.appendChild(dlBtn);
@@ -73,6 +76,7 @@ function initInterface() {
   filterElements("", "all");
 }
 
+// Écouteurs d'événements
 searchInput.addEventListener("keyup", function () {
   labelButtons.forEach((btn) => btn.classList.remove("active"));
   updateURLParameter("filtre", "all");
@@ -90,12 +94,14 @@ labelButtons.forEach((button) => {
   });
 });
 
+// Service Worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./service-worker.js").catch(err => console.error(err));
   });
 }
 
+// Initialisation
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initInterface);
 } else {

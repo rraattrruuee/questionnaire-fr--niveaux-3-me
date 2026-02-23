@@ -4,7 +4,6 @@ const labelButtons = document.querySelectorAll(".label-button");
 const cachingIndicator = document.getElementById("caching-indicator");
 const scrollToTopBtn = document.getElementById("scrollToTopBtn");
 
-// Détection du mode PWA
 function isRunningAsPWA() {
   return (
     window.matchMedia("(display-mode: standalone)").matches ||
@@ -14,7 +13,6 @@ function isRunningAsPWA() {
   );
 }
 
-// Mise à jour de l'URL pour les filtres
 function updateURLParameter(key, value) {
   const url = new URL(window.location);
   if (value === "all") {
@@ -25,21 +23,19 @@ function updateURLParameter(key, value) {
   window.history.pushState({ path: url.href }, "", url.href);
 }
 
-// FILTRAGE : Gère l'affichage sans laisser de "vides"
 function filterElements(searchTerm = "", filterTarget = "all") {
   const currentSearchTerm = searchTerm.toLowerCase().trim();
 
   sections.forEach((section) => {
     let hasVisibleContent = false;
-    const isTargetedSection =
-      filterTarget === "all" || section.id === filterTarget;
+    const isTargetedSection = (filterTarget === "all" || section.id === filterTarget);
 
     const links = section.querySelectorAll(".bouton-lien");
     links.forEach((link) => {
       const text = link.textContent.toLowerCase();
-      const matchesSearch =
-        currentSearchTerm === "" || text.includes(currentSearchTerm);
-
+      const matchesSearch = (currentSearchTerm === "" || text.includes(currentSearchTerm));
+      
+      // Gestion du conteneur (wrapper ou lien direct)
       const container = link.closest(".quiz-wrapper") || link;
 
       if (isTargetedSection && matchesSearch) {
@@ -52,19 +48,15 @@ function filterElements(searchTerm = "", filterTarget = "all") {
       }
     });
 
-    if (isTargetedSection && hasVisibleContent) {
-      section.style.display = "block";
-    } else {
-      section.style.display = "none";
-    }
+    // Masque la section si elle est vide ou non ciblée
+    section.style.display = (isTargetedSection && hasVisibleContent) ? "block" : "none";
   });
 }
 
-// INITIALISATION : Interface & Boutons
 function initInterface() {
   const isPWA = isRunningAsPWA();
 
-  // 1. Création des wrappers (SEULEMENT si pas déjà faits)
+  // Création des boutons de téléchargement hors PWA
   if (!isPWA) {
     document.querySelectorAll(".bouton-lien").forEach((link) => {
       if (link.parentElement.classList.contains("quiz-wrapper")) return;
@@ -80,9 +72,11 @@ function initInterface() {
       wrapper.appendChild(dlBtn);
     });
   }
+  
+  // Correction : Appel initial pour afficher les éléments au chargement
+  filterElements("", "all");
 }
 
-// EVENT LISTENERS
 searchInput.addEventListener("keyup", function () {
   labelButtons.forEach((btn) => btn.classList.remove("active"));
   updateURLParameter("filtre", "all");
@@ -100,31 +94,22 @@ labelButtons.forEach((button) => {
   });
 });
 
-// SERVICE WORKER : UN SEUL ENREGISTREMENT ET GESTION DU CACHE
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("./service-worker.js")
-      .then((reg) => {
-        console.log("✅ SW enregistré ! Scope:", reg.scope);
-      })
+    navigator.serviceWorker.register("./service-worker.js")
       .catch((err) => console.error("❌ Erreur SW:", err));
   });
 
-  // Indicateur de téléchargement (PWA)
   navigator.serviceWorker.addEventListener("message", (event) => {
     if (!cachingIndicator) return;
     if (event.data.type === "caching-start") {
       cachingIndicator.style.display = "block";
     } else if (event.data.type === "caching-complete") {
-      setTimeout(() => {
-        cachingIndicator.style.display = "none";
-      }, 2000);
+      setTimeout(() => { cachingIndicator.style.display = "none"; }, 2000);
     }
   });
 }
 
-// Lancement au chargement
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initInterface);
 } else {

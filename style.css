@@ -332,22 +332,36 @@ h1 {
   margin: 5px;
 }
 /* On ajuste ton bouton bleu actuel pour qu'il ne soit arrondi qu'à gauche */
+
 .bouton-lien {
+  flex: 1;
+  min-width: 0; 
   margin: 0 !important;
   border-radius: 8px 0 0 8px !important;
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
-}
-/* Style du bouton de téléchargement (arrondi à droite) */
-.btn-dl {
+  border-right: none !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #2ecc71; /* Vert pour le téléchargement */
+  text-align: center;
+  padding: 15px 10px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Style du bouton de téléchargement (arrondi à droite) */
+.btn-dl {
+  flex-shrink: 0; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2ecc71;
   color: white;
   text-decoration: none;
-  padding: 0 15px;
-  border-radius: 0 8px 8px 0;
-  font-size: 1.2rem;
+  padding: 0 20px;
+  border: 2px solid var(--couleur-primaire);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0 8px 8px 0; 
+  font-size: 1.3rem;
   transition: background 0.3s;
 }
 .btn-dl:hover {
@@ -395,10 +409,13 @@ h1 {
 
 .quiz-wrapper {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  align-items: stretch;
+  width: 100%; 
+  max-width: 100%;
+  margin-bottom: 12px;
+  box-sizing: border-box;
 }
+
 #caching-indicator {
   position: fixed;
   top: 0;
@@ -410,4 +427,30 @@ h1 {
   z-index: 10000;
   font-weight: bold;
   padding: 5px;
+}
+
+/* Ajustement spécifique pour mobile */
+@media (max-width: 600px) {
+  .boutons-flex {
+    flex-direction: column;
+    gap: 0; /* Les wrappers gèrent déjà l'espacement */
+  }
+
+  .quiz-wrapper {
+    margin-bottom: 15px;
+  }
+
+  .bouton-lien {
+    font-size: 0.95rem;
+    padding: 12px 15px;
+  }
+  
+  .btn-dl {
+    padding: 0 15px;
+  }
+}
+
+/* Utilitaires */
+.hidden {
+  display: none !important;
 }

@@ -11,6 +11,7 @@ const STATIC_ASSETS = [
   "/capture/4.png",
   "/français/Syllabus_:_Le_Maître_des_Subordonnées.html",
   "/histoire-geo/La_Seconde_Guerre_mondiale,_une_guerre _d_anéantissement_(1939-1945).html",
+  "/histoire-geo/Le monde depuis 1945 - La Guerre froide (1947-1991).html",
   "/histoire-geo/Les_espaces_productifs_français_et_leurs_évolutions.html",
   "/index.html",
   "/italien/Grammaire_(L'adjectif 'Bello')_et _ompréhension_de_Texte.html",

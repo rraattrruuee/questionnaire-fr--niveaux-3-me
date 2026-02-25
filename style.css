@@ -417,16 +417,16 @@ h1 {
 }
 
 #caching-indicator {
+  display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  background: #28a745;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
   color: white;
-  z-index: 10000;
-  font-weight: bold;
-  padding: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.8em;
+  z-index: 9999;
 }
 
 /* Ajustement spécifique pour mobile */

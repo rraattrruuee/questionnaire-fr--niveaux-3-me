@@ -38,7 +38,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-v8"; // Incrémenté pour forcer le téléchargement global
+const CACHE_NAME = "quiz-cache-1472ec5"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {
@@ -110,13 +110,18 @@ self.addEventListener("fetch", (event) => {
     caches
       .match(event.request)
       .then((cachedResponse) => {
-        // On sert le cache, sinon on va sur le réseau
-        return cachedResponse || fetch(event.request);
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        return fetch(event.request).then((networkResponse) => {
+          // Optionnel : mettre en cache les nouvelles ressources à la volée
+          return networkResponse;
+        });
       })
       .catch(() => {
-        // Si offline et page HTML, renvoyer l'index ou offline.html
+        // Fallback offline pour les documents
         if (event.request.mode === "navigate") {
-          return caches.match("./index.html") || caches.match("./offline.html");
+          return caches.match("/index.html") || caches.match("/offline.html");
         }
       }),
   );

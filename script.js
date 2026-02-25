@@ -113,23 +113,42 @@ if (initialButton) {
 
 // Service Worker
 if ("serviceWorker" in navigator) {
+  // listen for messages sent from SW (caching start/progress/complete)
+  navigator.serviceWorker.addEventListener("message", (event) => {
+    console.log("SW message", event.data);
+    if (!cachingIndicator) return;
+    const { type, completed, total } = event.data || {};
+    if (type === "caching-start") {
+      cachingIndicator.style.display = "block";
+      cachingIndicator.textContent = "Téléchargement... 0%";
+    } else if (type === "caching-progress") {
+      if (typeof completed === "number" && typeof total === "number") {
+        const pct = Math.floor((completed / total) * 100);
+        cachingIndicator.textContent = `Téléchargement... ${pct}%`;
+      }
+    } else if (type === "caching-complete") {
+      cachingIndicator.textContent = "Téléchargement terminé";
+      setTimeout(() => {
+        cachingIndicator.style.display = "none";
+      }, 2000);
+    }
+  });
+
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("/service-worker.js")
+      .register("service-worker.js", { scope: "./" })
       .then((reg) => {
-        // Function to request caching
+        // Function to request caching (always send regardless of PWA state)
         const requestCache = (sw) => {
-          if (isRunningAsPWA()) {
-            sw.postMessage({ type: "cache-assets" });
-          }
+          sw.postMessage({ type: "cache-assets" });
         };
 
-        // If SW is already active, request cache
+        // Immediately ask active worker to cache
         if (reg.active) {
           requestCache(reg.active);
         }
 
-        // Handle cases where SW is installing or becoming active
+        // Also handle new installing worker
         reg.addEventListener("updatefound", () => {
           const newWorker = reg.installing;
           newWorker.addEventListener("statechange", () => {
@@ -140,25 +159,5 @@ if ("serviceWorker" in navigator) {
         });
       })
       .catch((err) => console.warn("Erreur SW:", err));
-
-    // listen for messages sent from SW (caching start/progress/complete)
-    navigator.serviceWorker.addEventListener("message", (event) => {
-      if (!cachingIndicator) return;
-      const { type, completed, total } = event.data || {};
-      if (type === "caching-start") {
-        cachingIndicator.style.display = "block";
-        cachingIndicator.textContent = "Téléchargement... 0%";
-      } else if (type === "caching-progress") {
-        if (typeof completed === "number" && typeof total === "number") {
-          const pct = Math.floor((completed / total) * 100);
-          cachingIndicator.textContent = `Téléchargement... ${pct}%`;
-        }
-      } else if (type === "caching-complete") {
-        cachingIndicator.textContent = "Téléchargement terminé";
-        setTimeout(() => {
-          cachingIndicator.style.display = "none";
-        }, 2000);
-      }
-    });
   });
 }

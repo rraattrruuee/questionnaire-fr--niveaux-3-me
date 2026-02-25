@@ -38,7 +38,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-048fc67"; // version automatique
+const CACHE_NAME = "quiz-cache-840efab"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {
@@ -106,23 +106,22 @@ self.addEventListener("message", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
+  // Navigation requests: try network first, then cache fallback
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => networkResponse)
+        .catch(
+          () => caches.match("./index.html") || caches.match("./offline.html"),
+        ),
+    );
+    return;
+  }
+
+  // Other requests: serve from cache first, then network
   event.respondWith(
-    caches
-      .match(event.request)
-      .then((cachedResponse) => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        return fetch(event.request).then((networkResponse) => {
-          // Optionnel : mettre en cache les nouvelles ressources à la volée
-          return networkResponse;
-        });
-      })
-      .catch(() => {
-        // Fallback offline pour les documents
-        if (event.request.mode === "navigate") {
-          return caches.match("./index.html") || caches.match("./offline.html");
-        }
-      }),
+    caches.match(event.request).then((cachedResponse) => {
+      return cachedResponse || fetch(event.request);
+    }),
   );
 });

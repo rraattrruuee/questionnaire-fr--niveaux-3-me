@@ -4,7 +4,7 @@
 FILES=$(find . -maxdepth 3 -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.svg" -o -name "*.png" -o -name "*.json" \) \
     ! -path "./.*" \
     ! -name "generate-sw.sh" \
-    | sed 's|^\.||' | sort | sed 's/^/  "/' | sed 's/$/",/')
+    | sed 's|^\.||' | sort | sed 's/^/  ".\//' | sed 's/\/\//\//' | sed 's/$/",/')
 
 # 2. Créer le nouveau contenu du service worker
 # On lit le fichier jusqu'à BEGIN, on ajoute les fichiers, puis on lit après END

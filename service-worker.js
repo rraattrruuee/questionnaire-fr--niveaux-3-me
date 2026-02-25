@@ -39,29 +39,49 @@ const STATIC_ASSETS = [
 
 const CACHE_NAME = "quiz-cache-v7"; // Incrémenté pour forcer la MAJ Android
 
+// helper shared by install and message handler
+function cacheAllAssets() {
+  return caches.open(CACHE_NAME).then((cache) => {
+    const total = STATIC_ASSETS.length;
+    let completed = 0;
+
+    // notify start
+    self.clients.matchAll().then((clients) => {
+      clients.forEach((c) => c.postMessage({ type: "caching-start", total }));
+    });
+
+    // fetch each asset and report progress
+    return Promise.all(
+      STATIC_ASSETS.map((url) =>
+        fetch(url, { cache: "no-cache" })
+          .then((res) => {
+            if (res.ok) return cache.put(url, res);
+          })
+          .catch(() => {})
+          .finally(() => {
+            completed++;
+            self.clients.matchAll().then((clients) => {
+              clients.forEach((c) =>
+                c.postMessage({
+                  type: "caching-progress",
+                  completed,
+                  total,
+                }),
+              );
+            });
+          }),
+      ),
+    ).then(() => {
+      self.clients.matchAll().then((clients) => {
+        clients.forEach((c) => c.postMessage({ type: "caching-complete" }));
+      });
+    });
+  });
+}
+
 self.addEventListener("install", (event) => {
   self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      // Notifier les clients du début
-      self.clients.matchAll().then((clients) => {
-        clients.forEach((c) => c.postMessage({ type: "caching-start" }));
-      });
-
-      return Promise.allSettled(
-        STATIC_ASSETS.map((url) =>
-          fetch(url, { cache: "no-cache" }).then((res) => {
-            if (res.ok) return cache.put(url, res);
-          }),
-        ),
-      ).then(() => {
-        // Notifier de la fin
-        self.clients.matchAll().then((clients) => {
-          clients.forEach((c) => c.postMessage({ type: "caching-complete" }));
-        });
-      });
-    }),
-  );
+  event.waitUntil(cacheAllAssets());
 });
 
 self.addEventListener("activate", (event) => {
@@ -75,6 +95,13 @@ self.addEventListener("activate", (event) => {
       )
       .then(() => self.clients.claim()),
   );
+});
+
+// respond to messages from clients (e.g. page asking to recache assets)
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "cache-assets") {
+    cacheAllAssets();
+  }
 });
 
 self.addEventListener("fetch", (event) => {

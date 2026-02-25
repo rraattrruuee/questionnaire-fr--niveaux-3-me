@@ -1,6 +1,7 @@
 const searchInput = document.getElementById("searchInput");
 const sections = document.querySelectorAll(".menu-section");
 const labelButtons = document.querySelectorAll(".label-button");
+const cachingIndicator = document.getElementById("caching-indicator");
 
 function updateURLParameter(key, value) {
   const url = new URL(window.location);
@@ -20,11 +21,13 @@ function filterElements(searchTerm = "", filterTarget = "all") {
     let sectionHasVisibleLink = false;
 
     section.classList.remove("is-animated");
-    const isSectionTargetedByLabel = filterTarget === "all" || sectionId === filterTarget;
+    const isSectionTargetedByLabel =
+      filterTarget === "all" || sectionId === filterTarget;
 
     section.querySelectorAll(".bouton-lien").forEach((link) => {
       const linkText = link.textContent.toLowerCase();
-      const matchesSearch = currentSearchTerm === "" || linkText.includes(currentSearchTerm);
+      const matchesSearch =
+        currentSearchTerm === "" || linkText.includes(currentSearchTerm);
 
       // On cible le wrapper s'il existe, sinon le lien lui-même
       const elementToHide = link.closest(".quiz-wrapper") || link;
@@ -41,7 +44,9 @@ function filterElements(searchTerm = "", filterTarget = "all") {
       section.classList.add("hidden");
     } else {
       section.classList.remove("hidden");
-      setTimeout(() => { section.classList.add("is-animated"); }, 0);
+      setTimeout(() => {
+        section.classList.add("is-animated");
+      }, 0);
     }
   });
 }
@@ -60,7 +65,7 @@ if (!isRunningAsPWA()) {
   document.querySelectorAll(".bouton-lien").forEach((link) => {
     const wrapper = document.createElement("div");
     wrapper.className = "quiz-wrapper";
-    
+
     const dlBtn = document.createElement("a");
     dlBtn.href = link.href;
     dlBtn.download = "";
@@ -95,7 +100,9 @@ labelButtons.forEach((button) => {
 // Lancement au chargement via le filtre initial
 const urlParams = new URLSearchParams(window.location.search);
 const initialFilter = urlParams.get("filtre") || "all";
-const initialButton = document.querySelector(`.label-button[data-target="${initialFilter}"]`);
+const initialButton = document.querySelector(
+  `.label-button[data-target="${initialFilter}"]`,
+);
 
 if (initialButton) {
   initialButton.click();
@@ -107,7 +114,34 @@ if (initialButton) {
 // Service Worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/service-worker.js")
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then((reg) => {
+        // if running as PWA, ask SW to cache all assets and show indicator
+        if (isRunningAsPWA() && reg.active) {
+          reg.active.postMessage({ type: "cache-assets" });
+        }
+      })
       .catch((err) => console.warn("Erreur SW:", err));
+
+    // listen for messages sent from SW (caching start/progress/complete)
+    navigator.serviceWorker.addEventListener("message", (event) => {
+      if (!cachingIndicator) return;
+      const { type, completed, total } = event.data || {};
+      if (type === "caching-start") {
+        cachingIndicator.style.display = "block";
+        cachingIndicator.textContent = "Téléchargement... 0%";
+      } else if (type === "caching-progress") {
+        if (typeof completed === "number" && typeof total === "number") {
+          const pct = Math.floor((completed / total) * 100);
+          cachingIndicator.textContent = `Téléchargement... ${pct}%`;
+        }
+      } else if (type === "caching-complete") {
+        cachingIndicator.textContent = "Téléchargement terminé";
+        setTimeout(() => {
+          cachingIndicator.style.display = "none";
+        }, 2000);
+      }
+    });
   });
 }

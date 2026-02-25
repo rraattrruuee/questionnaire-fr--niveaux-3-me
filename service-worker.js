@@ -38,7 +38,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-v7"; // Incrémenté pour forcer la MAJ Android
+const CACHE_NAME = "quiz-cache-v8"; // Incrémenté pour forcer le téléchargement global
 
 // helper shared by install and message handler
 function cacheAllAssets() {

@@ -117,10 +117,27 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker
       .register("/service-worker.js")
       .then((reg) => {
-        // if running as PWA, ask SW to cache all assets and show indicator
-        if (isRunningAsPWA() && reg.active) {
-          reg.active.postMessage({ type: "cache-assets" });
+        // Function to request caching
+        const requestCache = (sw) => {
+          if (isRunningAsPWA()) {
+            sw.postMessage({ type: "cache-assets" });
+          }
+        };
+
+        // If SW is already active, request cache
+        if (reg.active) {
+          requestCache(reg.active);
         }
+
+        // Handle cases where SW is installing or becoming active
+        reg.addEventListener("updatefound", () => {
+          const newWorker = reg.installing;
+          newWorker.addEventListener("statechange", () => {
+            if (newWorker.state === "activated") {
+              requestCache(newWorker);
+            }
+          });
+        });
       })
       .catch((err) => console.warn("Erreur SW:", err));
 

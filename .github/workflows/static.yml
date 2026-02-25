@@ -3,6 +3,14 @@ name: Update Assets and Deploy
 on:
   push:
     branches: ["main"]
+    paths:
+      - "**/*.html"
+      - "**/*.css"
+      - "**/*.js"
+      - "**/*.png"
+      - "**/*.svg"
+      - "**/*.json"
+      - "generate-sw.sh"
   workflow_dispatch:
 
 permissions:
@@ -19,12 +27,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node (optional environment)
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
       - name: Update Service Worker
         run: |
           chmod +x generate-sw.sh
-          # On lance le script et on vérifie s'il a réussi
           ./generate-sw.sh
-          # Nettoyage
           rm -f service-worker.js.tmp
 
       - name: Commit and Push changes

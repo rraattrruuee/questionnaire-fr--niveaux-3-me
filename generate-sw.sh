@@ -15,3 +15,10 @@ awk -v files="$FILES" '
 ' service-worker.js > service-worker.js.tmp && mv service-worker.js.tmp service-worker.js
 
 echo "✅ service-worker.js mis à jour."
+# 3. Mise à jour de la version du cache pour forcer le rafraîchissement
+# Utilise le hash du dernier commit Git ou un timestamp comme fallback
+VERSION=$(git rev-parse --short HEAD 2>/dev/null || date +%s)
+# On remplace la ligne contenant CACHE_NAME
+sed -i "s/^const CACHE_NAME = .*$/const CACHE_NAME = \"quiz-cache-${VERSION}\"; \/\/ version automatique/" service-worker.js
+
+echo "✅ version du cache mise à $VERSION."

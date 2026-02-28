@@ -38,7 +38,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-840efab"; // version automatique
+const CACHE_NAME = "quiz-cache-9ffbebb"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {

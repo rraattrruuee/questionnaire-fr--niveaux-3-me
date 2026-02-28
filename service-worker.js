@@ -5,6 +5,7 @@ const STATIC_ASSETS = [
   "./QuizMaster_Dynamique_:_Générateur_&_Importateur_de_Questionnaires.html",
   "./angalais/Maître_de_l'Anglais_-_Verbes_Irréguliers.html",
   "./angalais/Revision_HarrietTubman_CivilWar_Grammaire_Connecteurs.html",
+  "./angalais/Vocabulary_Quiz_–_Unit_16:_The_World_of_Work_&_Teen Jobs.html",
   "./capture/1.png",
   "./capture/2.png",
   "./capture/3.png",
@@ -38,7 +39,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-9ffbebb"; // version automatique
+const CACHE_NAME = "quiz-cache-948eafe"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {

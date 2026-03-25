@@ -1,0 +1,948 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../quiz_icon.svg" type="image/x-icon" />
+    <title>Mathématiques : fonctions affines et linéaires</title>
+    <style>
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        to {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes headerDrop {
+        from {
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+
+        40% {
+          transform: translateY(-5px);
+        }
+
+        60% {
+          transform: translateY(-3px);
+        }
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+
+        20%,
+        60% {
+          transform: translateX(-5px);
+        }
+
+        40%,
+        80% {
+          transform: translateX(5px);
+        }
+      }
+
+      @keyframes zoomFeedback {
+        0% {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes couleur-qui-change {
+        0%,
+        10% {
+          color: white;
+        }
+
+        30% {
+          color: #00ff00;
+        }
+
+        38% {
+          color: #ffff00;
+        }
+
+        46% {
+          color: #ff00ff;
+        }
+
+        54% {
+          color: #00ffff;
+        }
+
+        60% {
+          color: #ffa500;
+        }
+
+        68% {
+          color: #7cfc00;
+        }
+
+        76% {
+          color: #ff69b4;
+        }
+
+        84% {
+          color: #8a2be2;
+        }
+
+        92% {
+          color: #ff4500;
+        }
+
+        100% {
+          color: deeppink;
+        }
+      }
+
+      @keyframes wipe-in {
+        from {
+          clip-path: inset(0 100% 0 0);
+        }
+
+        to {
+          clip-path: inset(0 0 0 0);
+        }
+      }
+
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background-color: #f0f4f8;
+        padding: 1rem;
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      .quiz-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a202c;
+        animation: headerDrop 0.8s ease-out;
+      }
+
+      .progress-bar-container {
+        width: 100%;
+        height: 8px;
+        background-color: #edf2f7;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+
+      .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #4c51bf, #667eea);
+        width: 0%;
+        transition: width 0.4s ease-out;
+      }
+
+      .nav-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        animation: slideIn 0.6s ease-out;
+      }
+
+      .nav-btn {
+        display: block;
+        width: 100%;
+        padding: 1.5rem;
+        text-align: center;
+        border-radius: 15px;
+        transition: all 0.2s;
+        font-weight: 700;
+        border: 2px solid #c3dafe;
+        color: #2b6cb0;
+        background-color: #ebf4ff;
+        cursor: pointer;
+        box-sizing: border-box;
+      }
+
+      .nav-btn:hover {
+        background-color: #cee0f2;
+        transform: translateY(-3px);
+        border-color: #4c51bf;
+      }
+
+      .question-card {
+        min-height: 200px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        border-radius: 15px;
+        background-color: #f7faff;
+        border: 2px solid #e2e8f0;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      .question-card.entering {
+        animation: slideIn 0.5s ease-out forwards;
+      }
+
+      .question-card.fast-exit {
+        animation: slideOut 0.3s ease-in forwards;
+      }
+
+      .question-text {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3748;
+      }
+
+      .img-container {
+        text-align: center;
+        margin: 15px 0;
+      }
+
+      .img-container img {
+        max-width: 100%;
+        border-radius: 8px;
+      }
+
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .option-item {
+        position: relative;
+      }
+
+      .option-item input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        height: 0;
+        width: 0;
+      }
+
+      .answer-btn {
+        display: block;
+        width: 100%;
+        padding: 1rem 1.25rem;
+        text-align: left;
+        border-radius: 10px;
+        transition: all 0.2s;
+        font-weight: 600;
+        border: 1px solid #c3dafe;
+        color: #2b6cb0;
+        background-color: #ebf4ff;
+        cursor: pointer;
+        box-sizing: border-box;
+      }
+
+      .answer-btn:hover {
+        background-color: #cee0f2;
+        transform: translateY(-1px);
+      }
+
+      .option-item input:checked + .answer-btn {
+        background-color: #3182ce;
+        border-color: #2c5282;
+        color: white;
+      }
+
+      .answer-btn.correct {
+        background-color: #48bb78 !important;
+        border-color: #2f855a !important;
+        color: white !important;
+        animation: bounce 0.6s ease-out;
+      }
+
+      .answer-btn.incorrect {
+        background-color: #f56565 !important;
+        border-color: #c53030 !important;
+        color: white !important;
+        animation: shake 0.5s ease-in-out;
+      }
+
+      .text-input-styled {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        font-size: 1.1rem;
+        border: 2px solid #c3dafe;
+        border-radius: 10px;
+        box-sizing: border-box;
+      }
+
+      .text-input-styled.correct {
+        border-color: #48bb78;
+        background-color: #f0fff4;
+        color: #2f855a;
+        animation: bounce 0.6s ease-out;
+      }
+
+      .text-input-styled.incorrect {
+        border-color: #f56565;
+        background-color: #fff5f5;
+        color: #c53030;
+        animation: shake 0.5s ease-in-out;
+      }
+
+      #feedback-area {
+        margin-top: 1rem;
+        padding: 1.5rem;
+        border-radius: 10px;
+        font-weight: 500;
+        display: none;
+        opacity: 0;
+      }
+
+      #feedback-area.visible {
+        display: block;
+        animation: zoomFeedback 0.4s forwards;
+      }
+
+      .feedback-correct {
+        background-color: #e6fffa;
+        color: #276749;
+        border: 1px solid #48bb78;
+      }
+
+      .feedback-incorrect {
+        background-color: #fff5f5;
+        color: #c53030;
+        border: 1px solid #f56565;
+      }
+
+      .main-btn-container {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      #main-btn {
+        background-color: #4c51bf;
+        color: white;
+        padding: 1rem 2.5rem;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        width: 100%;
+        border: none;
+        cursor: pointer;
+      }
+
+      #main-btn:disabled {
+        background-color: #a0aec0;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .math-frac {
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 0.9em;
+      }
+
+      .math-num {
+        border-bottom: 1px solid;
+        display: block;
+        padding: 0 2px;
+      }
+
+      .math-den {
+        display: block;
+        padding: 0 2px;
+      }
+
+      .couleur-qui-change {
+        animation: couleur-qui-change 14s infinite alternate;
+        font-weight: bold;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="quiz-container">
+      <div class="header">
+        <h1>fonctions affines et linéaires</h1>
+        <p class="anim-wipe-in">Troisième - QCM Aléatoire</p>
+      </div>
+      <div id="nav-container" class="nav-grid"></div>
+
+      <div id="quiz-ui" class="hidden">
+        <div class="progress-bar-container">
+          <div id="progress-fill" class="progress-bar-fill"></div>
+        </div>
+
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            color: #a0aec0;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            font-weight: 600;
+          "
+        >
+          <span id="cat-label">CATÉGORIE</span>
+          <span id="counter-label">1/10</span>
+        </div>
+
+        <div id="question-card-container" class="question-card entering">
+          <div id="question-text" class="question-text"></div>
+          <div id="image-area" class="img-container hidden"></div>
+
+          <div id="input-area"></div>
+        </div>
+
+        <div id="feedback-area"></div>
+
+        <div class="main-btn-container">
+          <button id="main-btn" onclick="app.checkAnswer()">
+            Valider la réponse
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const db = [
+        {
+          category: "Evaluation fonctions affines et linéaires",
+          questions: [
+            {
+              text: "Quelle est la proportion représentée par 25% d'une classe de 32 élèves ?",
+              type: "text",
+              accepted: ["8"],
+              solution:
+                "Pour calculer 25% de 32, on effectue : <div class='math-frac'><span class='math-num'>25</span><span class='math-den'>100</span></div> × 32 = 0.25 × 32 = 8.",
+            },
+            {
+              text: "Quel pourcentage représentent 7 élèves parmi un total de 28 ?",
+              type: "mcq",
+              options: ["20%", "25%", "30%", "15%"],
+              correct: 1,
+              solution:
+                "On calcule le rapport <div class='math-frac'><span class='math-num'>7</span><span class='math-den'>28</span></div> = 0.25. En multipliant par 100, on obtient 25%.",
+            },
+            {
+              text: "Une fonction linéaire f est de la forme :",
+              type: "mcq",
+              options: [
+                "f(x) = ax + b",
+                "f(x) = ax<sup>2</sup>",
+                "f(x) = ax",
+                "f(x) = a + x",
+              ],
+              correct: 2,
+              solution:
+                "Par définition, une fonction linéaire traduit une situation de proportionnalité et s'écrit f(x) = ax.",
+            },
+            {
+              text: "Soit f(x) = 5x. Quelle est l'image de -3 par f ?",
+              type: "text",
+              accepted: ["-15"],
+              solution: "On remplace x par -3 : f(-3) = 5 × (-3) = -15.",
+            },
+            {
+              text: "Soit f(x) = -2x. Quel est l'antécédent de 10 par f ?",
+              type: "text",
+              accepted: ["-5"],
+              solution:
+                "On résout l'équation -2x = 10, d'où x = <div class='math-frac'><span class='math-num'>10</span><span class='math-den'>-2</span></div> = -5.",
+            },
+            {
+              text: "La représentation graphique d'une fonction linéaire est une droite qui :",
+              type: "mcq",
+              options: [
+                "Est parallèle à l'axe des abscisses",
+                "Passe par l'origine du repère",
+                "Passe par le point (0, 1)",
+                "Est toujours verticale",
+              ],
+              correct: 1,
+              solution:
+                "Une fonction linéaire traduit la proportionnalité, sa droite passe donc toujours par l'origine O(0,0).",
+            },
+            {
+              text: "Déterminer le coefficient 'a' d'une fonction linéaire f telle que f(5) = -3.",
+              type: "mcq",
+              options: ["-1.6", "-0.6", "1.6", "0.6"],
+              correct: 1,
+              solution:
+                "On sait que f(x) = ax. Donc 5a = -3, d'où a = <div class='math-frac'><span class='math-num'>-3</span><span class='math-den'>5</span></div> = -0.6.",
+            },
+            {
+              text: "Augmenter un prix de 17% revient à multiplier par :",
+              type: "text",
+              accepted: ["1.17"],
+              solution:
+                "Augmenter de 17% revient à calculer 1 + <div class='math-frac'><span class='math-num'>17</span><span class='math-den'>100</span></div> = 1.17.",
+            },
+            {
+              text: "Une réduction de 20% sur un prix x est modélisée par la fonction linéaire :",
+              type: "mcq",
+              options: [
+                "f(x) = 0.2x",
+                "f(x) = 0.8x",
+                "f(x) = 1.2x",
+                "f(x) = x - 20",
+              ],
+              correct: 1,
+              solution:
+                "Réduire de 20% revient à multiplier par 1 - 0.20 = 0.80. Donc f(x) = 0.8x.",
+            },
+            {
+              text: "Soit f(x) = 3x - 11. Calculer l'image de -5.",
+              type: "text",
+              accepted: ["-26"],
+              solution: "f(-5) = 3 × (-5) - 11 = -15 - 11 = -26.",
+            },
+            {
+              text: "Trouver l'antécédent de 14 par la fonction f(x) = 3x - 11.",
+              type: "mcq",
+              options: [
+                "x = 5",
+                "x = <div class='math-frac'><span class='math-num'>25</span><span class='math-den'>3</span></div>",
+                "x = 1",
+                "x = 8.33",
+              ],
+              correct: 1,
+              solution:
+                "On résout 3x - 11 = 14 => 3x = 14 + 11 => 3x = 25 => x = <div class='math-frac'><span class='math-num'>25</span><span class='math-den'>3</span></div>.",
+            },
+            {
+              text: "Dans f(x) = ax + b, comment appelle-t-on le nombre 'b' ?",
+              type: "mcq",
+              options: [
+                "Le coefficient directeur",
+                "L'antécédent",
+                "L'ordonnée à l'origine",
+                "La pente",
+              ],
+              correct: 2,
+              solution:
+                "Le nombre 'b' est l'ordonnée à l'origine, c'est la valeur de f(0).",
+            },
+            {
+              text: "Soit la fonction affine f(x) = -3x + 7. Quel point appartient à sa droite ?",
+              type: "mcq",
+              options: ["(0, 0)", "(1, 10)", "(2, 1)", "(7, 0)"],
+              correct: 2,
+              solution:
+                "Calculons f(2) = -3 × 2 + 7 = -6 + 7 = 1. Le point (2, 1) appartient donc à la droite.",
+            },
+            {
+              text: "Calculer le coefficient directeur 'a' de la fonction affine passant par f(3) = -13 et f(-4) = 22.",
+              type: "text",
+              accepted: ["-5"],
+              solution:
+                "a = <div class='math-frac'><span class='math-num'>f(3) - f(-4)</span><span class='math-den'>3 - (-4)</span></div> = <div class='math-frac'><span class='math-num'>-13 - 22</span><span class='math-den'>7</span></div> = <div class='math-frac'><span class='math-num'>-35</span><span class='math-den'>7</span></div> = -5.",
+            },
+            {
+              text: "Si f(x) = -5x + b et f(3) = -13, quelle est la valeur de b ?",
+              type: "text",
+              accepted: ["2", "+2"],
+              solution:
+                "f(3) = -5 × 3 + b = -13 => -15 + b = -13 => b = -13 + 15 = 2.",
+            },
+            {
+              text: "Un tarif de ski propose un forfait de 435€ pour la saison illimitée. De quel type de fonction s'agit-il ?",
+              type: "mcq",
+              options: ["Linéaire", "Affine", "Constante", "Carrée"],
+              correct: 2,
+              solution:
+                "Le prix ne dépend pas de x (nombre de jours), c'est une fonction constante f(x) = 435.",
+            },
+            {
+              text: "Un abonnement de téléphone coûte 10€ par mois plus 0.05€ par SMS. L'expression du prix est :",
+              type: "text",
+              accepted: ["0.05x+10", "10+0.05x"],
+              solution:
+                "Le coût fixe est b = 10 et le coût variable est a = 0.05. Donc f(x) = 0.05x + 10.",
+            },
+            {
+              text: "La droite représentant une fonction affine coupe l'axe des ordonnées au point de coordonnées :",
+              type: "mcq",
+              options: ["(a, 0)", "(0, b)", "(b, 0)", "(0, a)"],
+              correct: 1,
+              solution:
+                "L'ordonnée à l'origine est la valeur de y quand x = 0. f(0) = a×0 + b = b. Le point est (0, b).",
+            },
+            {
+              text: "Soit g(x) = <div class='math-frac'><span class='math-num'>2</span><span class='math-den'>3</span></div>x - <div class='math-frac'><span class='math-num'>7</span><span class='math-den'>5</span></div>. Cette fonction est :",
+              type: "mcq",
+              options: ["Linéaire", "Affine", "Constante", "Aucune des trois"],
+              correct: 1,
+              solution:
+                "Elle est de la forme ax + b avec a = 2/3 et b = -7/5. C'est une fonction affine.",
+            },
+            {
+              text: "Une fonction linéaire f est telle que f(2) = 4. Quelle est son expression ?",
+              type: "text",
+              accepted: ["f(x)=2x", "2x"],
+              solution: "f(x) = ax. Donc 2a = 4, a = 2. f(x) = 2x.",
+            },
+            {
+              text: "Regardez l'image. La droite passe par l'origine et le point (3, 5). Quelle est l'expression de la fonction ?",
+              type: "mcq",
+              options: [
+                "f(x) = <div class='math-frac'><span class='math-num'>3</span><span class='math-den'>5</span></div>x",
+                "f(x) = <div class='math-frac'><span class='math-num'>5</span><span class='math-den'>3</span></div>x",
+                "f(x) = 3x + 5",
+                "f(x) = 5x + 3",
+              ],
+              correct: 1,
+              solution:
+                "La droite passe par (0,0) donc f(x)=ax. Elle passe par (3, 5), donc f(3)=5, 3a=5, a = 5/3.",
+              image:
+                "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NTAgNDAwIiB3aWR0aD0iNDUwIiBoZWlnaHQ9IjQwMCI+CiAgPHJlY3Qgd2lkdGg9IjQ1MCIgaGVpZ2h0PSI0MDAiIGZpbGw9IndoaXRlIi8+CiAgCiAgPCEtLSBHcmlkIC0tPgogIDxnIHN0cm9rZT0iI2UwZTBlMCIgc3Ryb2tlLXdpZHRoPSIxIj4KICAgIDxsaW5lIHgxPSI4MCIgeTE9IjUwIiB4Mj0iODAiIHkyPSIzNTAiLz4KICAgIDxsaW5lIHgxPSIxMTAiIHkxPSI1MCIgeDI9IjExMCIgeTI9IjM1MCIvPgogICAgPGxpbmUgeDE9IjE0MCIgeTE9IjUwIiB4Mj0iMTQwIiB5Mj0iMzUwIi8+CiAgICA8bGluZSB4MT0iMTcwIiB5MT0iNTAiIHgyPSIxNzAiIHkyPSIzNTAiLz4KICAgIDxsaW5lIHgxPSIyMDAiIHkxPSI1MCIgeDI9IjIwMCIgeTI9IjM1MCIvPgogICAgPGxpbmUgeDE9IjIzMCIgeTE9IjUwIiB4Mj0iMjMwIiB5Mj0iMzUwIi8+CiAgICA8bGluZSB4MT0iMjYwIiB5MT0iNTAiIHgyPSIyNjAiIHkyPSIzNTAiLz4KICAgIDxsaW5lIHgxPSIyOTAiIHkxPSI1MCIgeDI9IjI5MCIgeTI9IjM1MCIvPgogICAgPGxpbmUgeDE9IjMyMCIgeTE9IjUwIiB4Mj0iMzIwIiB5Mj0iMzUwIi8+CiAgICA8bGluZSB4MT0iMzUwIiB5MT0iNTAiIHgyPSIzNTAiIHkyPSIzNTAiLz4KICAgIDxsaW5lIHgxPSI1MCIgeTE9IjM1MCIgeDI9IjQwMCIgeTI9IjM1MCIvPgogICAgPGxpbmUgeDE9IjUwIiB5MT0iMzIwIiB4Mj0iNDAwIiB5Mj0iMzIwIi8+CiAgICA8bGluZSB4MT0iNTAiIHkxPSIyOTAiIHgyPSI0MDAiIHkyPSIyOTAiLz4KICAgIDxsaW5lIHgxPSI1MCIgeTE9IjI2MCIgeDI9IjQwMCIgeTI9IjI2MCIvPgogICAgPGxpbmUgeDE9IjUwIiB5MT0iMjMwIiB4Mj0iNDAwIiB5Mj0iMjMwIi8+CiAgICA8bGluZSB4MT0iNTAiIHkxPSIyMDAiIHgyPSI0MDAiIHkyPSIyMDAiLz4KICAgIDxsaW5lIHgxPSI1MCIgeTE9IjE3MCIgeDI9IjQwMCIgeTI9IjE3MCIvPgogICAgPGxpbmUgeDE9IjUwIiB5MT0iMTQwIiB4Mj0iNDAwIiB5Mj0iMTQwIi8+CiAgICA8bGluZSB4MT0iNTAiIHkxPSIxMTAiIHgyPSI0MDAiIHkyPSIxMTAiLz4KICAgIDxsaW5lIHgxPSI1MCIgeTE9IjgwIiB4Mj0iNDAwIiB5Mj0iODAiLz4KICAgIDxsaW5lIHgxPSI1MCIgeTE9IjUwIiB4Mj0iNDAwIiB5Mj0iNTAiLz4KICA8L2c+CiAgCiAgPCEtLSBBeGVzIC0tPgogIDxnIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMi41Ij4KICAgIDxsaW5lIHgxPSI4MCIgeTE9IjM1MCIgeDI9IjgwIiB5Mj0iNTAiLz4KICAgIDxsaW5lIHgxPSI4MCIgeTE9IjM1MCIgeDI9IjQwMCIgeTI9IjM1MCIvPgogIDwvZz4KICAKICA8IS0tIEFycm93cyAtLT4KICA8cG9seWdvbiBwb2ludHM9IjgwLDQ1IDc1LDYwIDg1LDYwIiBmaWxsPSJibGFjayIvPgogIDxwb2x5Z29uIHBvaW50cz0iNDA1LDM1MCAzOTAsMzQ1IDM5MCwzNTUiIGZpbGw9ImJsYWNrIi8+CiAgCiAgPCEtLSBBeGlzIGxhYmVscyAtLT4KICA8dGV4dCB4PSI4NSIgeT0iNDUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiPnk8L3RleHQ+CiAgPHRleHQgeD0iNDEwIiB5PSIzNTUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiPng8L3RleHQ+CiAgPHRleHQgeD0iNjUiIHk9IjM1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCI+TzwvdGV4dD4KICAKICA8IS0tIFggYXhpcyBudW1iZXJzIC0tPgogIDx0ZXh0IHg9IjgwIiB5PSIzNzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+MDwvdGV4dD4KICA8dGV4dCB4PSIxMTAiIHk9IjM3NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4xPC90ZXh0PgogIDx0ZXh0IHg9IjE0MCIgeT0iMzc1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPjI8L3RleHQ+CiAgPHRleHQgeD0iMTcwIiB5PSIzNzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+MzwvdGV4dD4KICA8dGV4dCB4PSIyMDAiIHk9IjM3NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj40PC90ZXh0PgogIDx0ZXh0IHg9IjIzMCIgeT0iMzc1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPjU8L3RleHQ+CiAgPHRleHQgeD0iMjYwIiB5PSIzNzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+NjwvdGV4dD4KICA8dGV4dCB4PSIyOTAiIHk9IjM3NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj43PC90ZXh0PgogIDx0ZXh0IHg9IjMyMCIgeT0iMzc1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPjg8L3RleHQ+CiAgPHRleHQgeD0iMzUwIiB5PSIzNzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+OTwvdGV4dD4KICA8dGV4dCB4PSIzODAiIHk9IjM3NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4xMDwvdGV4dD4KICAKICA8IS0tIFkgYXhpcyBudW1iZXJzIC0tPgogIDx0ZXh0IHg9IjcwIiB5PSIzNTUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9ImVuZCI+MDwvdGV4dD4KICA8dGV4dCB4PSI3MCIgeT0iMzI1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJlbmQiPjE8L3RleHQ+CiAgPHRleHQgeD0iNzAiIHk9IjI5NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0iZW5kIj4yPC90ZXh0PgogIDx0ZXh0IHg9IjcwIiB5PSIyNjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9ImVuZCI+MzwvdGV4dD4KICA8dGV4dCB4PSI3MCIgeT0iMjM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJlbmQiPjQ8L3RleHQ+CiAgPHRleHQgeD0iNzAiIHk9IjIwNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0iZW5kIj41PC90ZXh0PgogIDx0ZXh0IHg9IjcwIiB5PSIxNzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9ImVuZCI+NjwvdGV4dD4KICA8dGV4dCB4PSI3MCIgeT0iMTQ1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJlbmQiPjc8L3RleHQ+CiAgPHRleHQgeD0iNzAiIHk9IjExNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0iZW5kIj44PC90ZXh0PgogIDx0ZXh0IHg9IjcwIiB5PSI4NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0iZW5kIj45PC90ZXh0PgogIDx0ZXh0IHg9IjcwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0iZW5kIj4xMDwvdGV4dD4KICAKICA8IS0tIExpZ25lIGRyb2l0ZSBwYXNzYW50IHBhciAoMCwwKSBldCAoMyw1KSAtLT4KICA8IS0tIFNsb3BlIDUvMywgZG9uYyBwb3VyIHg9NiwgeT0xMCAtLT4KICA8bGluZSB4MT0iODAiIHkxPSIzNTAiIHgyPSIyNjAiIHkyPSI1MCIgc3Ryb2tlPSIjMmU3NGJkIiBzdHJva2Utd2lkdGg9IjMiLz4KICAKICA8IS0tIFBvaW50ICgwLDApIC0tPgogIDxjaXJjbGUgY3g9IjgwIiBjeT0iMzUwIiByPSI1IiBmaWxsPSIjMmU3NGJkIi8+CiAgCiAgPCEtLSBQb2ludCAoMyw1KSAtLT4KICA8IS0tIHggPSA4MCArIDMqMzAgPSAxNzAsIHkgPSAzNTAgLSA1KjMwID0gMjAwIC0tPgogIDxjaXJjbGUgY3g9IjE3MCIgY3k9IjIwMCIgcj0iNyIgZmlsbD0iI2U3NDMzYyIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgCiAgPCEtLSBMaWduZXMgcG9pbnRpbGzDqWVzIHZlcnMgYXhlcyAtLT4KICA8ZyBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWRhc2hhcnJheT0iNSw1Ij4KICAgIDxsaW5lIHgxPSIxNzAiIHkxPSIyMDAiIHgyPSIxNzAiIHkyPSIzNTAiLz4KICAgIDxsaW5lIHgxPSI4MCIgeTE9IjIwMCIgeDI9IjE3MCIgeTI9IjIwMCIvPgogIDwvZz4KICAKICA8IS0tIExhYmVsIHBvaW50ICgzLDUpIC0tPgogIDx0ZXh0IHg9IjE4MCIgeT0iMTkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjZTc0MzNjIj4oMywgNSk8L3RleHQ+CiAgCiAgPCEtLSBGb25jdGlvbiBleHByZXNzaW9uIC0tPgogIDx0ZXh0IHg9IjI2MCIgeT0iODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyZTc0YmQiPmYoeCkgPSBheDwvdGV4dD4KICA8dGV4dCB4PSIyNjAiIHk9IjEwNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNjY2Ij5BIHRyb3V2ZXI8L3RleHQ+Cjwvc3ZnPg==",
+            },
+            {
+              text: "Sur le graphique joint, déterminez graphiquement l'ordonnée à l'origine 'b'.",
+              type: "text",
+              accepted: ["5"],
+              solution:
+                "On lit la valeur de y à l'intersection de la droite avec l'axe vertical (OY). Ici, b = 5.",
+              image:
+                "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgNDAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCI+CiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ3aGl0ZSIvPgogIAogIDwhLS0gR3JpZCBsaW5lcyAtLT4KICA8ZyBzdHJva2U9IiNlMGUwZTAiIHN0cm9rZS13aWR0aD0iMSI+CiAgICA8bGluZSB4MT0iNTAiIHkxPSI1MCIgeDI9IjUwIiB5Mj0iMzUwIi8+CiAgICA8bGluZSB4MT0iNTAiIHkxPSIzNTAiIHgyPSIzNTAiIHkyPSIzNTAiLz4KICA8L2c+CiAgCiAgPCEtLSBHcmlkIG1hcmtzIGZvciBZIGF4aXMgKDAgdG8gMTApIC0tPgogIDxnIHN0cm9rZT0iI2NjYyIgc3Ryb2tlLXdpZHRoPSIxIj4KICAgIDxsaW5lIHgxPSI0NSIgeTE9IjM1MCIgeDI9IjU1IiB5Mj0iMzUwIi8+CiAgICA8bGluZSB4MT0iNDUiIHkxPSIzMjAiIHgyPSI1NSIgeTI9IjMyMCIvPgogICAgPGxpbmUgeDE9IjQ1IiB5MT0iMjkwIiB4Mj0iNTUiIHkyPSIyOTAiLz4KICAgIDxsaW5lIHgxPSI0NSIgeTE9IjI2MCIgeDI9IjU1IiB5Mj0iMjYwIi8+CiAgICA8bGluZSB4MT0iNDUiIHkxPSIyMzAiIHgyPSI1NSIgeTI9IjIzMCIvPgogICAgPGxpbmUgeDE9IjQ1IiB5MT0iMjAwIiB4Mj0iNTUiIHkyPSIyMDAiLz4KICAgIDxsaW5lIHgxPSI0NSIgeTE9IjE3MCIgeDI9IjU1IiB5Mj0iMTcwIi8+CiAgICA8bGluZSB4MT0iNDUiIHkxPSIxNDAiIHgyPSI1NSIgeTI9IjE0MCIvPgogICAgPGxpbmUgeDE9IjQ1IiB5MT0iMTEwIiB4Mj0iNTUiIHkyPSIxMTAiLz4KICAgIDxsaW5lIHgxPSI0NSIgeTE9IjgwIiB4Mj0iNTUiIHkyPSI4MCIvPgogICAgPGxpbmUgeDE9IjQ1IiB5MT0iNTAiIHgyPSI1NSIgeTI9IjUwIi8+CiAgPC9nPgogIAogIDwhLS0gR3JpZCBtYXJrcyBmb3IgWCBheGlzIC0tPgogIDxnIHN0cm9rZT0iI2NjYyIgc3Ryb2tlLXdpZHRoPSIxIj4KICAgIDxsaW5lIHgxPSI1MCIgeTE9IjM0NSIgeDI9IjUwIiB5Mj0iMzU1Ii8+CiAgICA8bGluZSB4MT0iODAiIHkxPSIzNDUiIHgyPSI4MCIgeTI9IjM1NSIvPgogICAgPGxpbmUgeDE9IjExMCIgeTE9IjM0NSIgeDI9IjExMCIgeTI9IjM1NSIvPgogICAgPGxpbmUgeDE9IjE0MCIgeTE9IjM0NSIgeDI9IjE0MCIgeTI9IjM1NSIvPgogICAgPGxpbmUgeDE9IjE3MCIgeTE9IjM0NSIgeDI9IjE3MCIgeTI9IjM1NSIvPgogICAgPGxpbmUgeDE9IjIwMCIgeTE9IjM0NSIgeDI9IjIwMCIgeTI9IjM1NSIvPgogICAgPGxpbmUgeDE9IjIzMCIgeTE9IjM0NSIgeDI9IjIzMCIgeTI9IjM1NSIvPgogICAgPGxpbmUgeDE9IjI2MCIgeTE9IjM0NSIgeDI9IjI2MCIgeTI9IjM1NSIvPgogICAgPGxpbmUgeDE9IjI5MCIgeTE9IjM0NSIgeDI9IjI5MCIgeTI9IjM1NSIvPgogICAgPGxpbmUgeDE9IjMyMCIgeTE9IjM0NSIgeDI9IjMyMCIgeTI9IjM1NSIvPgogICAgPGxpbmUgeDE9IjM1MCIgeTE9IjM0NSIgeDI9IjM1MCIgeTI9IjM1NSIvPgogIDwvZz4KICAKICA8IS0tIEF4ZXMgLS0+CiAgPGcgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIj4KICAgIDxsaW5lIHgxPSI1MCIgeTE9IjUwIiB4Mj0iNTAiIHkyPSIzNTAiLz4KICAgIDxsaW5lIHgxPSI1MCIgeTE9IjM1MCIgeDI9IjM1MCIgeTI9IjM1MCIvPgogIDwvZz4KICAKICA8IS0tIEFycm93IGhlYWRzIC0tPgogIDxwb2x5Z29uIHBvaW50cz0iNTAsNDAgNDUsNTUgNTUsNTUiIGZpbGw9ImJsYWNrIi8+CiAgPHBvbHlnb24gcG9pbnRzPSIzNjAsMzUwIDM0NSwzNDUgMzQ1LDM1NSIgZmlsbD0iYmxhY2siLz4KICAKICA8IS0tIEF4aXMgbGFiZWxzIC0tPgogIDx0ZXh0IHg9IjU1IiB5PSIzNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0Ij55PC90ZXh0PgogIDx0ZXh0IHg9IjM1NSIgeT0iMzU1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiPng8L3RleHQ+CiAgPHRleHQgeD0iMzAiIHk9IjM1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIj4wPC90ZXh0PgogIAogIDwhLS0gWSBheGlzIG51bWJlcnMgLS0+CiAgPHRleHQgeD0iMjUiIHk9IjM1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0iZW5kIj4wPC90ZXh0PgogIDx0ZXh0IHg9IjI1IiB5PSIzMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9ImVuZCI+MTwvdGV4dD4KICA8dGV4dCB4PSIyNSIgeT0iMjk1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJlbmQiPjI8L3RleHQ+CiAgPHRleHQgeD0iMjUiIHk9IjI2NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0iZW5kIj4zPC90ZXh0PgogIDx0ZXh0IHg9IjI1IiB5PSIyMzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9ImVuZCI+NDwvdGV4dD4KICA8dGV4dCB4PSIyNSIgeT0iMjA1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJlbmQiPjU8L3RleHQ+CiAgPHRleHQgeD0iMjUiIHk9IjE3NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0iZW5kIj42PC90ZXh0PgogIDx0ZXh0IHg9IjI1IiB5PSIxNDUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9ImVuZCI+NzwvdGV4dD4KICA8dGV4dCB4PSIyNSIgeT0iMTE1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJlbmQiPjg8L3RleHQ+CiAgPHRleHQgeD0iMjUiIHk9Ijg1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJlbmQiPjk8L3RleHQ+CiAgPHRleHQgeD0iMjUiIHk9IjU1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJlbmQiPjEwPC90ZXh0PgogIAogIDwhLS0gVGhlIGxpbmUgd2l0aCB5LWludGVyY2VwdCBhdCA1IChzbG9wZSA9IC0xKSAtLT4KICA8bGluZSB4MT0iNTAiIHkxPSIyMDAiIHgyPSIyMDAiIHkyPSIzNTAiIHN0cm9rZT0iYmx1ZSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgCiAgPCEtLSBIaWdobGlnaHQgdGhlIHktaW50ZXJjZXB0IHBvaW50IC0tPgogIDxjaXJjbGUgY3g9IjUwIiBjeT0iMjAwIiByPSI1IiBmaWxsPSJyZWQiLz4KICAKICA8IS0tIExhYmVsIGZvciB5LWludGVyY2VwdCAtLT4KICA8dGV4dCB4PSI2MCIgeT0iMTk1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9InJlZCI+YiA9IDU8L3RleHQ+CiAgPHRleHQgeD0iMTUiIHk9IjIwNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSJibHVlIj4oMDsgNSk8L3RleHQ+Cjwvc3ZnPg==",
+            },
+            {
+              text: "Sur ce graphique, quelle est l'image de 2 par la fonction f ?",
+              type: "text",
+              accepted: ["1"],
+              solution:
+                "On se place à x = 2 sur l'axe horizontal, on rejoint la droite et on lit la valeur correspondante sur l'axe vertical.",
+              image:
+                "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PG1hcmtlciBpZD0iYXJyb3ciIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iNSIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjYiIG1hcmtlckhlaWdodD0iNiIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0gMCAwIEwgMTAgNSBMIDAgMTAgeiIgLz48L21hcmtlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9IndoaXRlIiAvPjxwYXRoIGQ9Ik01MCA1MCBoMzAwIHYzMDBoLTMwMHoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2YwZjBmMCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTEwMCA1MCB2MzAwIE0xNTAgNTAgdjMwMCBNMjAwIDUwIHYzMDAgTTI1MCA1MCB2MzAwIE0zMDAgNTAgdjMwMCBNNTAgMTAwIGgzMDAgTTUwIDE1MCBoMzAwIE01MCAyMDAgaDMwMCBNNTAgMjUwIGgzMDAgTTUwIDMwMCBoMzAwIiBzdHJva2U9IiNlZWUiIHN0cm9rZS13aWR0aD0iMSIvPjxsaW5lIHgxPSI1MCIgeTE9IjM1MCIgeDI9IjM3MCIgeTI9IjM1MCIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIgLz48bGluZSB4MT0iMTAwIiB5MT0iMzkwIiB4Mj0iMTAwIiB5Mj0iMzAiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiIC8+PHRleHQgeD0iMzcwIiB5PSIzNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCI+eDwvdGV4dD48dGV4dCB4PSI4MCIgeT0iMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCI+eTwvdGV4dD48dGV4dCB4PSIyMDAiIHk9IjM3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4yPC90ZXh0Pjx0ZXh0IHg9Ijc1IiB5PSIzMDUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9ImVuZCI+MTwvdGV4dD48bGluZSB4MT0iMTAwIiB5MT0iMzUwIiB4Mj0iMzUwIiB5Mj0iMjI1IiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iNCIgLz48cGF0aCBkPSJNMjAwIDM1MCBWMzAwIEgxMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmNjYwMCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtZGFzaGFycmF5PSI0LDQiIC8+PGNpcmNsZSBjeD0iMjAwIiBjeT0iMzAwIiByPSI0IiBmaWxsPSIjMjU2M2ViIiAvPjwvc3ZnPg==",
+            },
+            {
+              text: "D'après le graphique, quel est l'antécédent de 3 ?",
+              type: "text",
+              accepted: ["1"],
+              solution:
+                "On se place à y = 3 sur l'axe vertical, on rejoint la droite et on lit la valeur de x sur l'axe horizontal.",
+              image:
+                "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PG1hcmtlciBpZD0iYXJyb3ciIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iNSIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjYiIG1hcmtlckhlaWdodD0iNiIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0gMCAwIEwgMTAgNSBMIDAgMTAgeiIgLz48L21hcmtlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9IndoaXRlIiAvPjxwYXRoIGQ9Ik01MCA1MCBoMzAwIHYzMDBoLTMwMHoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2YwZjBmMCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTEwMCA1MCB2MzAwIE0xNTAgNTAgdjMwMCBNMjAwIDUwIHYzMDAgTTI1MCA1MCB2MzAwIE0zMDAgNTAgdjMwMCBNNTAgMTAwIGgzMDAgTTUwIDE1MCBoMzAwIE01MCAyMDAgaDMwMCBNNTAgMjUwIGgzMDAgTTUwIDMwMCBoMzAwIiBzdHJva2U9IiNlZWUiIHN0cm9rZS13aWR0aD0iMSIvPjxsaW5lIHgxPSI1MCIgeTE9IjM1MCIgeDI9IjM3MCIgeTI9IjM1MCIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIgLz48bGluZSB4MT0iMTAwIiB5MT0iMzkwIiB4Mj0iMTAwIiB5Mj0iMzAiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiIC8+PHRleHQgeD0iMzcwIiB5PSIzNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCI+eDwvdGV4dD48dGV4dCB4PSI4MCIgeT0iMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCI+eTwvdGV4dD48dGV4dCB4PSIxNTAiIHk9IjM3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4xPC90ZXh0Pjx0ZXh0IHg9IjgwIiB5PSIzMDQiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiI+MDwvdGV4dD48dGV4dCB4PSI4MCIgeT0iMjA0IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiPjM8L3RleHQ+PHBhdGggZD0iTTEwMCAyMDAgSDE1MCBWMzUwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWRhc2hhcnJheT0iNCw0IiAvPjxsaW5lIHgxPSIxMDAiIHkxPSIzNTAiIHgyPSIxNjYuNiIgeTI9IjE1MCIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjQiIC8+PGNpcmNsZSBjeD0iMTUwIiBjeT0iMjAwIiByPSI0IiBmaWxsPSIjMjU2M2ViIiAvPjwvc3ZnPg==",
+            },
+            {
+              text: "À l'aide du graphique, déterminez si la pente 'a' est positive ou négative.",
+              type: "mcq",
+              options: ["Positive", "Négative"],
+              correct: 1,
+              solution:
+                "La droite 'descend' de la gauche vers la droite, donc le coefficient directeur 'a' est négatif.",
+              image:
+                "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PG1hcmtlciBpZD0iYXJyb3ciIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iNSIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjYiIG1hcmtlckhlaWdodD0iNiIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0gMCAwIEwgMTAgNSBMIDAgMTAgeiIgLz48L21hcmtlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9IndoaXRlIiAvPjxwYXRoIGQ9Ik04MCA0MCB2MzIwIE0xMjAgNDAgdjMyMCBNMTYwIDQwIHYzMjAgTTI0MCA0MCB2MzIwIE0yODAgNDAgdjMyMCBNMzIwIDQwIHYzMjAgTTQwIDgwIGgzMjAgTTQwIDEyMCBoMzIwIE00MCAxNjAgaDMyMCBNNDAgMjQwIGgzMjAgTTQwIDI4MCBoMzIwIE00MCAzMjAgaDMyMCIgc3Ryb2tlPSIjZWVlIiBzdHJva2Utd2lkdGg9IjEiIC8+PGxpbmUgeDE9IjQwIiB5MT0iMjAwIiB4Mj0iMzcwIiB5Mj0iMjAwIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIiAvPjxsaW5lIHgxPSIyMDAiIHkxPSIzNjAiIHgyPSIyMDAiIHkyPSI0MCIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIgLz48dGV4dCB4PSIzNzAiIHk9IjIxNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0Ij54PC90ZXh0Pjx0ZXh0IHg9IjE4MCIgeT0iNDUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCI+eDwvdGV4dD48bGluZSB4MT0iODAiIHkxPSI4MCIgeDI9IjMyMCIgeTI9IjMyMCIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjQiIC8+PC9zdmc+",
+            },
+            {
+              text: "Calculer l'image de 0 pour la fonction f(x) = -3x + 7.",
+              type: "text",
+              accepted: ["7"],
+              solution: "f(0) = -3 × 0 + 7 = 7. C'est l'ordonnée à l'origine.",
+            },
+            {
+              text: "Quelle fonction correspond à un tarif de 17€ par journée de ski ?",
+              type: "mcq",
+              options: [
+                "f(x) = 17 + x",
+                "f(x) = 17x",
+                "f(x) = <div class='math-frac'><span class='math-num'>x</span><span class='math-den'>17</span></div>",
+                "f(x) = 17",
+              ],
+              correct: 1,
+              solution: "C'est une situation de proportionnalité : f(x) = 17x.",
+            },
+            {
+              text: "Le tarif 'Futé' est : carte à 100€ puis 9€ par jour. Quelle est l'expression ?",
+              type: "text",
+              accepted: ["9x+100", "100+9x"],
+              solution:
+                "Il y a un coût fixe (100) et un coût variable par jour (9x). f(x) = 9x + 100.",
+            },
+            {
+              text: "Si f(x) = ax + 5 et que f(1) = 3, déterminez a.",
+              type: "text",
+              accepted: ["-2"],
+              solution: "a × 1 + 5 = 3 => a + 5 = 3 => a = 3 - 5 = -2.",
+            },
+            {
+              text: "D'après le graphique d'une fonction linéaire, si on avance de 1 unité en x et qu'on monte de 3 unités en y, le coefficient a est :",
+              type: "text",
+              accepted: ["3"],
+              solution:
+                "Le coefficient directeur a correspond au déplacement vertical divisé par le déplacement horizontal : 3 / 1 = 3.",
+              image:
+                "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PG1hcmtlciBpZD0iYXJyb3ciIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iNSIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjYiIG1hcmtlckhlaWdodD0iNiIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0gMCAwIEwgMTAgNSBMIDAgMTAgeiIgLz48L21hcmtlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9IndoaXRlIiAvPjxwYXRoIGQ9Ik00MCA0MCBoMzIwIHYzMjBoLTMyMHoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2YwZjBmMCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTgwIDQwIHYzMjAgTTEyMCA0MCB2MzIwIE0xNjAgNDAgdjMyMCBNMjAwIDQwIHYzMjAgTTI0MCA0MCB2MzIwIE0yODAgNDAgdjMyMCBNMzIwIDQwIHYzMjAgTTQwIDgwIGgzMjAgTTQwIDEyMCBoMzIwIE00MCAxNjAgaDMyMCBNNDAgMjAwIGgzMjAgTTQwIDI0MCBoMzIwIE00MCAyODAgaDMyMCBNNDAgMzIwIGgzMjAiIHN0cm9rZT0iI2VlZSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjQwIiB5MT0iMzIwIiB4Mj0iMzcwIiB5Mj0iMzIwIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIiAvPjxsaW5lIHgxPSI4MCIgeTE9IjM2MCIgeDI9IjgwIiB5Mj0iMzAiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiIC8+PHRleHQgeD0iMzcwIiB5PSIzNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCI+eDwvdGV4dD48dGV4dCB4PSI2MCIgeT0iMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCI+eTwvdGV4dD48cGF0aCBkPSJNODAgMzIwIEwxMjAgMzIwIEwxMjAgMjAwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlMTFlMjIiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWRhc2hhcnJheT0iNCw0IiAvPjx0ZXh0IHg9IjEwMCIgeT0iMzQwIiBmaWxsPSIjZTExZTIyIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4rMTwvdGV4dD48dGV4dCB4PSIxMzAiIHk9IjI2NSIgZmlsbD0iI2UxMWUyMiIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmb250LXdlaWdodD0iYm9sZCI+KzM8L3RleHQ+PGxpbmUgeDE9IjY2LjYiIHkxPSIzNjAiIHgyPSIxNDYuNiIgeTI9IjEyMCIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjQiIC8+PGNpcmNsZSBjeD0iODAiIGN5PSIzMjAiIHI9IjQiIGZpbGw9IiMyNTYzZWIiIC8+PGNpcmNsZSBjeD0iMTIwIiBjeT0iMjAwIiByPSI0IiBmaWxsPSIjMjU2M2ViIiAvPjwvc3ZnPg==",
+            },
+          ],
+        },
+      ];
+
+      const app = {
+        state: {
+          catIdx: 0,
+          qIdx: 0,
+        },
+
+        init: function () {
+          this.renderMenu();
+        },
+
+        renderMenu: function () {
+          const nav = document.getElementById("nav-container");
+          nav.innerHTML = "";
+          document.getElementById("quiz-ui").classList.add("hidden");
+          document.getElementById("nav-container").classList.remove("hidden");
+
+          db.forEach((cat, idx) => {
+            const btn = document.createElement("div");
+            btn.className = "nav-btn";
+            btn.textContent = cat.category;
+            btn.onclick = () => this.startCategory(idx);
+            nav.appendChild(btn);
+          });
+        },
+
+        startCategory: function (idx) {
+          this.state.catIdx = idx;
+          this.state.qIdx = 0;
+
+          document.getElementById("nav-container").classList.add("hidden");
+          document.getElementById("quiz-ui").classList.remove("hidden");
+          this.renderQuestion();
+        },
+
+        renderQuestion: function () {
+          const q = db[this.state.catIdx].questions[this.state.qIdx];
+          const card = document.getElementById("question-card-container");
+          const feedback = document.getElementById("feedback-area");
+          const btn = document.getElementById("main-btn");
+
+          card.classList.remove("fast-exit", "entering");
+          void card.offsetWidth;
+          card.classList.add("entering");
+
+          feedback.className = "";
+          feedback.classList.remove("visible");
+          feedback.style.display = "none";
+
+          btn.textContent = "Valider la réponse";
+          btn.disabled = false;
+          btn.style.backgroundColor = "#4c51bf";
+
+          document.getElementById("cat-label").textContent =
+            db[this.state.catIdx].category;
+          document.getElementById("counter-label").textContent =
+            `${this.state.qIdx + 1} / ${db[this.state.catIdx].questions.length}`;
+          document.getElementById("question-text").innerHTML = q.text;
+
+          const imgArea = document.getElementById("image-area");
+          if (q.image) {
+            imgArea.innerHTML = `<img src="${q.image}">`;
+            imgArea.classList.remove("hidden");
+          } else {
+            imgArea.classList.add("hidden");
+          }
+
+          const pct =
+            (this.state.qIdx / db[this.state.catIdx].questions.length) * 100;
+          document.getElementById("progress-fill").style.width = pct + "%";
+
+          const inputArea = document.getElementById("input-area");
+          inputArea.innerHTML = "";
+
+          if (q.type === "mcq") {
+            const container = document.createElement("div");
+            container.className = "options-container";
+
+            let mixedOptions = q.options.map((optText, originalIndex) => {
+              return { text: optText, val: originalIndex };
+            });
+
+            mixedOptions.sort(() => Math.random() - 0.5);
+
+            mixedOptions.forEach((optObj, i) => {
+              const item = document.createElement("div");
+              item.className = "option-item";
+              item.innerHTML = `
+                        <input type="radio" name="quiz-opt" id="opt-${i}" value="${optObj.val}">
+                        <label class="answer-btn" for="opt-${i}">${optObj.text}</label>
+                    `;
+              container.appendChild(item);
+            });
+            inputArea.appendChild(container);
+          } else {
+            inputArea.innerHTML = `<input type="text" id="text-answer" class="text-input-styled" placeholder="Ta réponse..." autocomplete="off">`;
+            document
+              .getElementById("text-answer")
+              .addEventListener("keypress", (e) => {
+                if (e.key === "Enter") this.checkAnswer();
+              });
+            setTimeout(
+              () => document.getElementById("text-answer").focus(),
+              100,
+            );
+          }
+        },
+
+        checkAnswer: function () {
+          const q = db[this.state.catIdx].questions[this.state.qIdx];
+          const feedback = document.getElementById("feedback-area");
+          feedback.style.display = "block";
+          const btn = document.getElementById("main-btn");
+          let isCorrect = false;
+          let userElement = null;
+
+          if (q.type === "mcq") {
+            const selected = document.querySelector(
+              'input[name="quiz-opt"]:checked',
+            );
+            if (!selected) return alert("Choisis une réponse !");
+
+            const label = document.querySelector(`label[for="${selected.id}"]`);
+            userElement = label;
+
+            if (parseInt(selected.value) === q.correct) {
+              isCorrect = true;
+            }
+          } else {
+            const input = document.getElementById("text-answer");
+            if (!input.value.trim()) return alert("Écris une réponse !");
+            userElement = input;
+
+            const val = input.value
+              .toLowerCase()
+              .replace(/\s/g, "")
+              .replace(",", ".");
+            const accepted = q.accepted.map((a) =>
+              a.toLowerCase().replace(/\s/g, "").replace(",", "."),
+            );
+            if (accepted.includes(val)) isCorrect = true;
+          }
+
+          btn.disabled = true;
+
+          if (isCorrect) {
+            userElement.classList.add("correct");
+            feedback.className = "feedback-correct visible";
+            feedback.innerHTML = `
+                    <div style="font-size: 1.2em; margin-bottom: 5px;">✅ <span class="couleur-qui-change">Excellent !</span></div>
+                    <div>${q.solution}</div>
+                `;
+            btn.style.backgroundColor = "#48bb78";
+            btn.textContent = "Bravo !";
+          } else {
+            userElement.classList.add("incorrect");
+
+            if (q.type === "mcq") {
+              const correctInput = document.querySelector(
+                `input[name="quiz-opt"][value="${q.correct}"]`,
+              );
+              if (correctInput) {
+                const correctLabel = document.querySelector(
+                  `label[for="${correctInput.id}"]`,
+                );
+                correctLabel.classList.add("correct");
+              }
+            }
+
+            feedback.className = "feedback-incorrect visible";
+            feedback.innerHTML = `
+                    <div style="font-size: 1.2em; margin-bottom: 5px;">❌ Aïe... Regarde la correction :</div>
+                    <div><strong>${q.solution}</strong></div>
+                `;
+            btn.style.backgroundColor = "#c53030";
+            btn.textContent = "Lecture correction...";
+          }
+
+          const pct =
+            ((this.state.qIdx + 1) / db[this.state.catIdx].questions.length) *
+            100;
+          document.getElementById("progress-fill").style.width = pct + "%";
+
+          const delayDuration = isCorrect ? 1200 : 4000;
+
+          setTimeout(() => {
+            this.handleTransition();
+          }, delayDuration);
+        },
+
+        handleTransition: function () {
+          if (this.state.qIdx >= db[this.state.catIdx].questions.length - 1) {
+            alert("Série terminée ! Retour au menu.");
+            this.renderMenu();
+            return;
+          }
+
+          const card = document.getElementById("question-card-container");
+          card.classList.remove("entering");
+          card.classList.add("fast-exit");
+
+          setTimeout(() => {
+            this.state.qIdx++;
+            this.renderQuestion();
+          }, 300);
+        },
+      };
+
+      window.onload = () => app.init();
+    </script>
+  </body>
+</html>

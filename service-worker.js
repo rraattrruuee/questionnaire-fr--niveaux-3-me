@@ -11,6 +11,7 @@ const STATIC_ASSETS = [
   "./capture/3.png",
   "./capture/4.png",
   "./français/Syllabus_:_Le_Maître_des_Subordonnées.html",
+  "./histoire-geo/Décolonisation, Guerre froide et construction de nouveaux États (1945-1991).html",
   "./histoire-geo/La_Seconde_Guerre_mondiale,_une_guerre _d_anéantissement_(1939-1945).html",
   "./histoire-geo/Le monde depuis 1945 - La Guerre froide (1947-1991).html",
   "./histoire-geo/Les_espaces_productifs_français_et_leurs_évolutions.html",
@@ -41,7 +42,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-23f2b7c"; // version automatique
+const CACHE_NAME = "quiz-cache-01ec325"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {

@@ -16,8 +16,10 @@ const STATIC_ASSETS = [
   "./histoire-geo/Les_espaces_productifs_français_et_leurs_évolutions.html",
   "./index.html",
   "./italien/Grammaire_(L'adjectif 'Bello')_et _ompréhension_de_Texte.html",
+  "./italien/Quiz sur les Maîtres de la Haute Couture Italienne : Ferré, Armani, Cucinelli, Prada et Valentino.html",
   "./latin/Maître_du_Latin_-_Les_verbes.html",
   "./manifest.json",
+  "./math/Mathématiques : fonctions affines et linéaires.html",
   "./math/Mathématiques_:_Probabilités_–_Vocabulaire_et_Calculs.html",
   "./math/Quiz-Mathématique-calcul-littéral-en-3ème.html",
   "./math/quiz-pythagore-thales-calcul.html",
@@ -39,7 +41,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-948eafe"; // version automatique
+const CACHE_NAME = "quiz-cache-23f2b7c"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {

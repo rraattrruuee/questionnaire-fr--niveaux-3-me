@@ -33,6 +33,7 @@ const STATIC_ASSETS = [
   "./questionaire-de-svt.html",
   "./quiz_icon.png",
   "./quiz_icon.svg",
+  "./science/Sciences 3ème : Génétique, Évolution, Microbiote et Systèmes Automatisés.html",
   "./script.js",
   "./service-worker.js",
   "./style.css",
@@ -42,7 +43,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-01ec325"; // version automatique
+const CACHE_NAME = "quiz-cache-d98b847"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {

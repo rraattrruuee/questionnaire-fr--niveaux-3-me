@@ -23,6 +23,7 @@ const STATIC_ASSETS = [
   "./math/Mathématiques : fonctions affines et linéaires.html",
   "./math/Mathématiques_:_Probabilités_–_Vocabulaire_et_Calculs.html",
   "./math/Quiz-Mathématique-calcul-littéral-en-3ème.html",
+  "./math/Révisions Mathématiques 3ème : Calculs, Algèbre et Géométrie.html",
   "./math/quiz-pythagore-thales-calcul.html",
   "./offline.html",
   "./questionaire-d-anglais-Vocabulaire-lié-a-l-esclavage-et-la-traite-transatlantique.html",
@@ -43,7 +44,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-d98b847"; // version automatique
+const CACHE_NAME = "quiz-cache-60f8687"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {

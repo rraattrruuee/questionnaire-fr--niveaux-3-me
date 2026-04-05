@@ -1,0 +1,1936 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../quiz_icon.svg" type="image/x-icon" />
+    <title>
+      Sciences 3ème : Génétique, Évolution, Microbiote et Systèmes Automatisés
+    </title>
+    <style>
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        to {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes headerDrop {
+        from {
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+
+        40% {
+          transform: translateY(-5px);
+        }
+
+        60% {
+          transform: translateY(-3px);
+        }
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+
+        20%,
+        60% {
+          transform: translateX(-5px);
+        }
+
+        40%,
+        80% {
+          transform: translateX(5px);
+        }
+      }
+
+      @keyframes zoomFeedback {
+        0% {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes couleur-qui-change {
+        0%,
+        10% {
+          color: white;
+        }
+
+        30% {
+          color: #00ff00;
+        }
+
+        38% {
+          color: #ffff00;
+        }
+
+        46% {
+          color: #ff00ff;
+        }
+
+        54% {
+          color: #00ffff;
+        }
+
+        60% {
+          color: #ffa500;
+        }
+
+        68% {
+          color: #7cfc00;
+        }
+
+        76% {
+          color: #ff69b4;
+        }
+
+        84% {
+          color: #8a2be2;
+        }
+
+        92% {
+          color: #ff4500;
+        }
+
+        100% {
+          color: deeppink;
+        }
+      }
+
+      @keyframes wipe-in {
+        from {
+          clip-path: inset(0 100% 0 0);
+        }
+
+        to {
+          clip-path: inset(0 0 0 0);
+        }
+      }
+
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background-color: #f0f4f8;
+        padding: 1rem;
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      .quiz-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a202c;
+        animation: headerDrop 0.8s ease-out;
+      }
+
+      .progress-bar-container {
+        width: 100%;
+        height: 8px;
+        background-color: #edf2f7;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+
+      .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #4c51bf, #667eea);
+        width: 0%;
+        transition: width 0.4s ease-out;
+      }
+
+      .nav-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        animation: slideIn 0.6s ease-out;
+      }
+
+      .nav-btn {
+        display: block;
+        width: 100%;
+        padding: 1.5rem;
+        text-align: center;
+        border-radius: 15px;
+        transition: all 0.2s;
+        font-weight: 700;
+        border: 2px solid #c3dafe;
+        color: #2b6cb0;
+        background-color: #ebf4ff;
+        cursor: pointer;
+        box-sizing: border-box;
+      }
+
+      .nav-btn:hover {
+        background-color: #cee0f2;
+        transform: translateY(-3px);
+        border-color: #4c51bf;
+      }
+
+      .question-card {
+        min-height: 200px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        border-radius: 15px;
+        background-color: #f7faff;
+        border: 2px solid #e2e8f0;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      .question-card.entering {
+        animation: slideIn 0.5s ease-out forwards;
+      }
+
+      .question-card.fast-exit {
+        animation: slideOut 0.3s ease-in forwards;
+      }
+
+      .question-text {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3748;
+      }
+
+      .img-container {
+        text-align: center;
+        margin: 15px 0;
+      }
+
+      .img-container img {
+        max-width: 100%;
+        border-radius: 8px;
+      }
+
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .option-item {
+        position: relative;
+      }
+
+      .option-item input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        height: 0;
+        width: 0;
+      }
+
+      .answer-btn {
+        display: block;
+        width: 100%;
+        padding: 1rem 1.25rem;
+        text-align: left;
+        border-radius: 10px;
+        transition: all 0.2s;
+        font-weight: 600;
+        border: 1px solid #c3dafe;
+        color: #2b6cb0;
+        background-color: #ebf4ff;
+        cursor: pointer;
+        box-sizing: border-box;
+      }
+
+      .answer-btn:hover {
+        background-color: #cee0f2;
+        transform: translateY(-1px);
+      }
+
+      .option-item input:checked + .answer-btn {
+        background-color: #3182ce;
+        border-color: #2c5282;
+        color: white;
+      }
+
+      .answer-btn.correct {
+        background-color: #48bb78 !important;
+        border-color: #2f855a !important;
+        color: white !important;
+        animation: bounce 0.6s ease-out;
+      }
+
+      .answer-btn.incorrect {
+        background-color: #f56565 !important;
+        border-color: #c53030 !important;
+        color: white !important;
+        animation: shake 0.5s ease-in-out;
+      }
+
+      .text-input-styled {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        font-size: 1.1rem;
+        border: 2px solid #c3dafe;
+        border-radius: 10px;
+        box-sizing: border-box;
+      }
+
+      .text-input-styled.correct {
+        border-color: #48bb78;
+        background-color: #f0fff4;
+        color: #2f855a;
+        animation: bounce 0.6s ease-out;
+      }
+
+      .text-input-styled.incorrect {
+        border-color: #f56565;
+        background-color: #fff5f5;
+        color: #c53030;
+        animation: shake 0.5s ease-in-out;
+      }
+
+      #feedback-area {
+        margin-top: 1rem;
+        padding: 1.5rem;
+        border-radius: 10px;
+        font-weight: 500;
+        display: none;
+        opacity: 0;
+      }
+
+      #feedback-area.visible {
+        display: block;
+        animation: zoomFeedback 0.4s forwards;
+      }
+
+      .feedback-correct {
+        background-color: #e6fffa;
+        color: #276749;
+        border: 1px solid #48bb78;
+      }
+
+      .feedback-incorrect {
+        background-color: #fff5f5;
+        color: #c53030;
+        border: 1px solid #f56565;
+      }
+
+      .main-btn-container {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      #main-btn {
+        background-color: #4c51bf;
+        color: white;
+        padding: 1rem 2.5rem;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        width: 100%;
+        border: none;
+        cursor: pointer;
+      }
+
+      #main-btn:disabled {
+        background-color: #a0aec0;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .math-frac {
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 0.9em;
+      }
+
+      .math-num {
+        border-bottom: 1px solid;
+        display: block;
+        padding: 0 2px;
+      }
+
+      .math-den {
+        display: block;
+        padding: 0 2px;
+      }
+
+      .couleur-qui-change {
+        animation: couleur-qui-change 14s infinite alternate;
+        font-weight: bold;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="quiz-container">
+      <div class="header">
+        <h1>
+          Sciences 3ème : Génétique, Évolution, Microbiote et Systèmes
+          Automatisés
+        </h1>
+        <p class="anim-wipe-in">Troisième - QCM Aléatoire</p>
+      </div>
+      <div id="nav-container" class="nav-grid"></div>
+
+      <div id="quiz-ui" class="hidden">
+        <div class="progress-bar-container">
+          <div id="progress-fill" class="progress-bar-fill"></div>
+        </div>
+
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            color: #a0aec0;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            font-weight: 600;
+          "
+        >
+          <span id="cat-label">CATÉGORIE</span>
+          <span id="counter-label">1/10</span>
+        </div>
+
+        <div id="question-card-container" class="question-card entering">
+          <div id="question-text" class="question-text"></div>
+          <div id="image-area" class="img-container hidden"></div>
+
+          <div id="input-area"></div>
+        </div>
+
+        <div id="feedback-area"></div>
+
+        <div class="main-btn-container">
+          <button id="main-btn" onclick="app.checkAnswer()">
+            Valider la réponse
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const db = [
+        {
+          category: "Diversité et stabilité génétique",
+          questions: [
+            {
+              text: "Où est localisée l'information génétique dans une cellule eucaryote ?",
+              type: "mcq",
+              options: [
+                "Dans le cytoplasme",
+                "Dans le noyau",
+                "Dans la membrane plasmique",
+                "Dans les mitochondries",
+              ],
+              correct: 1,
+              solution:
+                "L'information génétique est contenue dans le noyau de la cellule, plus précisément dans les chromosomes composés d'ADN.",
+            },
+            {
+              text: "Quand une cellule n'est pas en division, sous quelle forme se trouve l'ADN ?",
+              type: "mcq",
+              options: [
+                "En chromosomes visibles",
+                "En bâtonnets condensés",
+                "Déroulé et non visible",
+                "Sous forme de protéines",
+              ],
+              correct: 2,
+              solution:
+                "Lorsqu'une cellule n'est pas en division, l'ADN est déroulé dans le noyau et les chromosomes ne sont pas visibles au microscope.",
+            },
+            {
+              text: "Combien de paires de chromosomes possède l'espèce humaine ?",
+              type: "mcq",
+              options: ["22 paires", "23 paires", "24 paires", "46 paires"],
+              correct: 1,
+              solution:
+                "L'espèce humaine possède 23 paires de chromosomes, soit 46 chromosomes au total.",
+            },
+            {
+              text: "Quel est le caryotype sexuel d'une fille humaine ?",
+              type: "mcq",
+              options: ["XY", "XX", "YY", "XO"],
+              correct: 1,
+              solution:
+                "Les filles humaines possèdent deux chromosomes sexuels X, notés XX.",
+            },
+            {
+              text: "Quel est le caryotype sexuel d'un garçon humain ?",
+              type: "mcq",
+              options: ["XX", "XY", "YY", "XO"],
+              correct: 1,
+              solution:
+                "Les garçons humains possèdent un chromosome X et un chromosome Y, notés XY.",
+            },
+            {
+              text: "Quel syndrome est provoqué par la présence d'un chromosome supplémentaire sur la paire 21 ?",
+              type: "mcq",
+              options: [
+                "Syndrome de Turner",
+                "Syndrome de Down",
+                "Syndrome de Klinefelter",
+                "Syndrome de Williams",
+              ],
+              correct: 1,
+              solution:
+                "Le syndrome de Down (ou trisomie 21) est causé par la présence d'un troisième chromosome sur la paire 21.",
+            },
+            {
+              text: "Combien de paires de chromosomes possède la drosophile ?",
+              type: "mcq",
+              options: ["2 paires", "4 paires", "8 paires", "23 paires"],
+              correct: 1,
+              solution:
+                "La drosophile, mouche utilisée en génétique, possède 4 paires de chromosomes.",
+            },
+            {
+              text: "Qu'est-ce qu'un caryotype ?",
+              type: "mcq",
+              options: [
+                "L'ensemble des protéines d'une cellule",
+                "L'ensemble des chromosomes d'une cellule classés par paire",
+                "La forme d'une cellule",
+                "Le nombre de gènes d'un individu",
+              ],
+              correct: 1,
+              solution:
+                "Un caryotype est la représentation organisée de l'ensemble des chromosomes d'une cellule, classés par paire selon leur taille et leur forme.",
+            },
+            {
+              text: "Deux individus appartiennent à la même espèce si :",
+              type: "mcq",
+              options: [
+                "Ils ont le même nombre de chromosomes",
+                "Ils peuvent se reproduire et engendrer une descendance fertile",
+                "Ils vivent dans le même milieu",
+                "Ils ont la même apparence",
+              ],
+              correct: 1,
+              solution:
+                "La définition biologique d'une espèce repose sur la capacité des individus à se reproduire entre eux et à produire une descendance fertile.",
+            },
+            {
+              text: "Quelle est la définition de l'ADN ?",
+              type: "mcq",
+              options: [
+                "Une protéine structurale",
+                "Une longue molécule portant l'information génétique",
+                "Un type de chromosome",
+                "Une enzyme de digestion",
+              ],
+              correct: 1,
+              solution:
+                "L'ADN (acide désoxyribonucléique) est une longue molécule qui porte l'information génétique et qui, en se condensant, forme les chromosomes.",
+            },
+          ],
+        },
+        {
+          category: "Chromosomes et division cellulaire",
+          questions: [
+            {
+              text: "Que deviennent les chromosomes lors de la division cellulaire ?",
+              type: "mcq",
+              options: [
+                "Ils disparaissent",
+                "Ils se condensent et deviennent visibles",
+                "Ils se transforment en ARN",
+                "Ils migrent hors du noyau",
+              ],
+              correct: 1,
+              solution:
+                "Lors de la division cellulaire, l'ADN se condense pour former des chromosomes en forme de bâtonnets, visibles au microscope.",
+            },
+            {
+              text: "Avant de se diviser, que fait une cellule avec son ADN ?",
+              type: "mcq",
+              options: [
+                "Elle le détruit",
+                "Elle le copie",
+                "Elle le transforme en protéines",
+                "Elle l'exporte hors du noyau",
+              ],
+              correct: 1,
+              solution:
+                "Avant la division, la cellule réalise une copie exacte de ses molécules d'ADN pour que chaque cellule fille reçoive un jeu complet de chromosomes.",
+            },
+            {
+              text: "Lors de la mitose, comment se répartissent les chromosomes ?",
+              type: "mcq",
+              options: [
+                "Au hasard entre les cellules filles",
+                "Les deux chromatides de chaque chromosome se séparent vers chaque cellule fille",
+                "Tous vont dans une seule cellule",
+                "Ils disparaissent",
+              ],
+              correct: 1,
+              solution:
+                "Lors de la mitose, les deux chromatides de chaque chromosome dupliqué se séparent et migrent vers chacune des deux cellules filles, assurant ainsi l'identité du caryotype.",
+            },
+            {
+              text: "Combien de cellules filles produit une mitose ?",
+              type: "mcq",
+              options: ["1", "2", "4", "8"],
+              correct: 1,
+              solution:
+                "La mitose est une division cellulaire qui produit deux cellules filles génétiquement identiques à la cellule mère.",
+            },
+            {
+              text: "Quelle est la fonction principale de la mitose ?",
+              type: "mcq",
+              options: [
+                "Produire des gamètes",
+                "Assurer la croissance et le renouvellement des cellules",
+                "Créer de la diversité génétique",
+                "Réduire le nombre de chromosomes",
+              ],
+              correct: 1,
+              solution:
+                "La mitose permet la croissance de l'organisme et le renouvellement des cellules usées, en produisant des cellules identiques.",
+            },
+            {
+              text: "Qu'est-ce qu'une chromatide ?",
+              type: "mcq",
+              options: [
+                "Un chromosome entier",
+                "Une des deux copies identiques d'un chromosome dupliqué",
+                "Un type d'ADN",
+                "Une protéine du noyau",
+              ],
+              correct: 1,
+              solution:
+                "Après duplication de l'ADN, chaque chromosome est constitué de deux chromatides identiques reliées par un centromère.",
+            },
+            {
+              text: "Si une cellule possède 46 chromosomes avant la mitose, combien en aura chaque cellule fille après ?",
+              type: "mcq",
+              options: ["23", "46", "92", "Variable"],
+              correct: 1,
+              solution:
+                "La mitose conserve le nombre de chromosomes : chaque cellule fille reçoit 46 chromosomes, identiques à ceux de la cellule mère.",
+            },
+            {
+              text: "Quelle phase précède toujours la mitose dans le cycle cellulaire ?",
+              type: "mcq",
+              options: [
+                "La méiose",
+                "L'interphase avec duplication de l'ADN",
+                "La fécondation",
+                "La différenciation",
+              ],
+              correct: 1,
+              solution:
+                "Avant la mitose, la cellule passe par l'interphase, période durant laquelle l'ADN est dupliqué pour préparer la division.",
+            },
+            {
+              text: "Que se passe-t-il si la duplication de l'ADN est incomplète avant la mitose ?",
+              type: "mcq",
+              options: [
+                "Rien, la mitose compense",
+                "Les cellules filles auront un caryotype anormal",
+                "La cellule meurt immédiatement",
+                "Les chromosomes se réparent automatiquement",
+              ],
+              correct: 1,
+              solution:
+                "Une duplication incomplète de l'ADN peut entraîner des anomalies chromosomiques dans les cellules filles, potentiellement graves pour l'organisme.",
+            },
+            {
+              text: "La stabilité du caryotype au cours des divisions cellulaires est assurée par :",
+              type: "mcq",
+              options: [
+                "La duplication de l'ADN suivie d'une répartition équitable",
+                "Le hasard",
+                "La destruction des vieux chromosomes",
+                "L'apport externe d'ADN",
+              ],
+              correct: 0,
+              solution:
+                "La duplication préalable de l'ADN et la séparation précise des chromatides lors de la mitose garantissent que chaque cellule fille reçoit un caryotype complet et identique.",
+            },
+          ],
+        },
+        {
+          category: "Gènes, allèles et hérédité",
+          questions: [
+            {
+              text: "Qu'est-ce qu'un gène ?",
+              type: "mcq",
+              options: [
+                "Une protéine du noyau",
+                "Un fragment d'ADN à l'origine d'un ou plusieurs caractères",
+                "Un chromosome entier",
+                "Un type de cellule",
+              ],
+              correct: 1,
+              solution:
+                "Un gène est un fragment d'ADN qui contient l'information nécessaire à l'expression d'un ou plusieurs caractères héréditaires.",
+            },
+            {
+              text: "Qu'est-ce qu'un allèle ?",
+              type: "mcq",
+              options: [
+                "Un chromosome sexuel",
+                "Une version différente d'un même gène",
+                "Une maladie génétique",
+                "Un type de division cellulaire",
+              ],
+              correct: 1,
+              solution:
+                "Un allèle est une version particulière d'un gène. Par exemple, pour le gène de la couleur des yeux, il existe un allèle 'marron' et un allèle 'bleu'.",
+            },
+            {
+              text: "Combien d'allèles d'un même gène possède un individu pour un chromosome autosomique ?",
+              type: "mcq",
+              options: ["1", "2", "23", "46"],
+              correct: 1,
+              solution:
+                "Comme les chromosomes existent en paires, un individu possède deux allèles pour chaque gène situé sur un chromosome autosomique (un hérité de chaque parent).",
+            },
+            {
+              text: "Qu'est-ce qu'un allèle dominant ?",
+              type: "mcq",
+              options: [
+                "Un allèle qui s'exprime même s'il n'est présent qu'en un seul exemplaire",
+                "Un allèle qui ne s'exprime jamais",
+                "Un allèle présent uniquement chez les mâles",
+                "Un allèle qui provoque une maladie",
+              ],
+              correct: 0,
+              solution:
+                "Un allèle dominant s'exprime et détermine le caractère observable même lorsqu'il n'est présent qu'en un seul exemplaire (associé à un allèle récessif).",
+            },
+            {
+              text: "Qu'est-ce qu'un allèle récessif ?",
+              type: "mcq",
+              options: [
+                "Un allèle qui s'exprime toujours",
+                "Un allèle qui ne s'exprime que s'il est présent en deux exemplaires",
+                "Un allèle présent uniquement chez les femelles",
+                "Un allèle qui disparaît avec l'âge",
+              ],
+              correct: 1,
+              solution:
+                "Un allèle récessif ne s'exprime phénotypiquement que lorsqu'il est présent en deux exemplaires (homozygotie récessive).",
+            },
+            {
+              text: "Pour le gène de la couleur des yeux, si l'allèle marron est dominant sur l'allèle bleu, quel sera le phénotype d'un individu avec un allèle marron et un allèle bleu ?",
+              type: "mcq",
+              options: [
+                "Yeux bleus",
+                "Yeux marrons",
+                "Yeux verts",
+                "Un œil de chaque couleur",
+              ],
+              correct: 1,
+              solution:
+                "L'allèle marron étant dominant, il s'exprime même en présence d'un allèle bleu. L'individu aura donc les yeux marrons.",
+            },
+            {
+              text: "Qu'est-ce que le génotype d'un individu ?",
+              type: "mcq",
+              options: [
+                "L'ensemble de ses caractères visibles",
+                "L'ensemble de ses allèles",
+                "Son caryotype uniquement",
+                "Son groupe sanguin",
+              ],
+              correct: 1,
+              solution:
+                "Le génotype est l'ensemble des allèles possédés par un individu pour l'ensemble de ses gènes.",
+            },
+            {
+              text: "Qu'est-ce que le phénotype d'un individu ?",
+              type: "mcq",
+              options: [
+                "L'ensemble de ses gènes",
+                "L'ensemble de ses caractères observables",
+                "Son caryotype",
+                "Son environnement",
+              ],
+              correct: 1,
+              solution:
+                "Le phénotype correspond à l'ensemble des caractères observables d'un individu, résultant de l'expression de son génotype et de l'influence de l'environnement.",
+            },
+            {
+              text: "Pour le gène des groupes sanguins ABO, combien existe-t-il d'allèles principaux ?",
+              type: "mcq",
+              options: ["2", "3", "4", "6"],
+              correct: 1,
+              solution:
+                "Il existe trois allèles principaux pour le gène ABO : A, B et O. Chaque individu en possède deux.",
+            },
+            {
+              text: "Si un individu a reçu un allèle A d'un parent et un allèle O de l'autre, quel sera son groupe sanguin ?",
+              type: "mcq",
+              options: ["Groupe A", "Groupe B", "Groupe AB", "Groupe O"],
+              correct: 0,
+              solution:
+                "L'allèle A est dominant sur l'allèle O. Un individu avec le génotype [A,O] aura donc le phénotype groupe sanguin A.",
+            },
+          ],
+        },
+        {
+          category: "Méiose et fécondation",
+          questions: [
+            {
+              text: "Qu'est-ce que la méiose ?",
+              type: "mcq",
+              options: [
+                "Une division produisant deux cellules identiques",
+                "Une division produisant quatre gamètes avec moitié moins de chromosomes",
+                "La fusion de deux gamètes",
+                "La duplication de l'ADN",
+              ],
+              correct: 1,
+              solution:
+                "La méiose est une division cellulaire spécifique qui produit quatre gamètes (cellules reproductrices) contenant chacun la moitié du nombre de chromosomes de la cellule initiale.",
+            },
+            {
+              text: "Combien de chromosomes possède un gamète humain (spermatozoïde ou ovule) ?",
+              type: "mcq",
+              options: [
+                "23 chromosomes",
+                "46 chromosomes",
+                "92 chromosomes",
+                "Variable",
+              ],
+              correct: 0,
+              solution:
+                "Les gamètes humains sont haploïdes : ils contiennent 23 chromosomes, soit un chromosome de chaque paire.",
+            },
+            {
+              text: "Quel est le rôle de la fécondation ?",
+              type: "mcq",
+              options: [
+                "Réduire le nombre de chromosomes",
+                "Fusionner deux gamètes pour rétablir le nombre diploïde de chromosomes",
+                "Produire des cellules identiques",
+                "Détruire les chromosomes excédentaires",
+              ],
+              correct: 1,
+              solution:
+                "La fécondation est la fusion d'un spermatozoïde et d'un ovule, rétablissant ainsi le nombre diploïde de chromosomes (46 chez l'humain) dans la cellule-œuf.",
+            },
+            {
+              text: "Pourquoi la méiose et la fécondation assurent-elles la stabilité du caryotype d'une espèce ?",
+              type: "mcq",
+              options: [
+                "Parce qu'elles annihilent leurs effets respectifs sur le nombre de chromosomes",
+                "Parce qu'elles créent toujours des clones",
+                "Parce qu'elles éliminent les mutations",
+                "Parce qu'elles fixent le nombre de gènes",
+              ],
+              correct: 0,
+              solution:
+                "La méiose divise par deux le nombre de chromosomes dans les gamètes, et la fécondation le multiplie par deux lors de la fusion. Ces deux processus se compensent, maintenant ainsi un caryotype constant d'une génération à l'autre.",
+            },
+            {
+              text: "Combien de types de gamètes différents un individu humain peut-il théoriquement produire par méiose (sans tenir compte du crossing-over) ?",
+              type: "mcq",
+              options: ["2<sup>23</sup> ≈ 8 millions", "23", "46", "1"],
+              correct: 0,
+              solution:
+                "Chaque paire de chromosomes se sépare indépendamment lors de la méiose. Avec 23 paires, le nombre de combinaisons possibles est de 2<sup>23</sup>, soit environ 8 millions de gamètes génétiquement différents.",
+            },
+            {
+              text: "Quelle est la probabilité qu'un enfant soit un garçon (en supposant une répartition égale des chromosomes sexuels) ?",
+              type: "mcq",
+              options: [
+                "<div class='math-frac'><span class='math-num'>1</span><span class='math-den'>4</span></div>",
+                "<div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div>",
+                "<div class='math-frac'><span class='math-num'>3</span><span class='math-den'>4</span></div>",
+                "1",
+              ],
+              correct: 1,
+              solution:
+                "Le père produit autant de spermatozoïdes portant un chromosome X que de spermatozoïdes portant un chromosome Y. La probabilité d'avoir un garçon (XY) est donc de <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div>.",
+            },
+            {
+              text: "Si la probabilité d'avoir un enfant de groupe sanguin A est de <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div> et celle d'avoir un garçon est de <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div>, quelle est la probabilité d'avoir un garçon de groupe A ?",
+              type: "mcq",
+              options: [
+                "<div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div>",
+                "<div class='math-frac'><span class='math-num'>1</span><span class='math-den'>4</span></div>",
+                "<div class='math-frac'><span class='math-num'>1</span><span class='math-den'>8</span></div>",
+                "<div class='math-frac'><span class='math-num'>3</span><span class='math-den'>4</span></div>",
+              ],
+              correct: 1,
+              solution:
+                "Les deux événements étant indépendants, on multiplie les probabilités : <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div> × <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div> = <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>4</span></div>.",
+            },
+            {
+              text: "Qu'est-ce qu'un échiquier de croisement ?",
+              type: "mcq",
+              options: [
+                "Un outil pour prédire les combinaisons génétiques possibles chez la descendance",
+                "Un type de chromosome",
+                "Une méthode de division cellulaire",
+                "Un appareil de mesure génétique",
+              ],
+              correct: 0,
+              solution:
+                "Un échiquier de croisement (ou tableau de Punnett) est un schéma permettant de visualiser toutes les combinaisons alléliques possibles lors de la fécondation entre deux parents.",
+            },
+            {
+              text: "Pourquoi la reproduction sexuée produit-elle des individus uniques (sauf vrais jumeaux) ?",
+              type: "mcq",
+              options: [
+                "Parce que les parents sont toujours différents",
+                "Parce que la méiose crée des gamètes variés et la fécondation assemble au hasard deux gamètes",
+                "Parce que l'environnement modifie les gènes",
+                "Parce que les mutations sont systématiques",
+              ],
+              correct: 1,
+              solution:
+                "La diversité vient de deux 'loteries' : la méiose produit des millions de gamètes différents par individu, et la fécondation assemble au hasard deux de ces gamètes, créant une combinaison génétique unique.",
+            },
+            {
+              text: "Si un lapin a 44 chromosomes dans ses cellules somatiques, combien en aura un de ses gamètes ?",
+              type: "mcq",
+              options: ["22", "44", "88", "11"],
+              correct: 0,
+              solution:
+                "Les gamètes sont produits par méiose et contiennent la moitié du nombre de chromosomes des cellules somatiques. 44 ÷ 2 = 22 chromosomes.",
+            },
+          ],
+        },
+        {
+          category: "Mutations et diversité génétique",
+          questions: [
+            {
+              text: "Qu'est-ce qu'une mutation ?",
+              type: "mcq",
+              options: [
+                "Une division cellulaire anormale",
+                "Une modification aléatoire de la séquence d'ADN",
+                "Un type de chromosome",
+                "Une maladie héréditaire",
+              ],
+              correct: 1,
+              solution:
+                "Une mutation est une modification aléatoire et permanente de la séquence nucléotidique de l'ADN, pouvant créer un nouvel allèle.",
+            },
+            {
+              text: "Les mutations peuvent-elles être transmises à la descendance ?",
+              type: "mcq",
+              options: [
+                "Jamais",
+                "Uniquement si elles touchent les cellules reproductrices (gamètes)",
+                "Uniquement si elles sont bénéfiques",
+                "Toujours",
+              ],
+              correct: 1,
+              solution:
+                "Seules les mutations survenant dans les cellules de la lignée germinale (à l'origine des gamètes) peuvent être transmises à la génération suivante.",
+            },
+            {
+              text: "Quelle est l'origine principale de la diversité des allèles au sein d'une espèce ?",
+              type: "mcq",
+              options: [
+                "La reproduction asexuée",
+                "Les mutations aléatoires de l'ADN",
+                "L'environnement uniquement",
+                "La mitose",
+              ],
+              correct: 1,
+              solution:
+                "Les mutations, modifications aléatoires de l'ADN, sont à l'origine de nouveaux allèles, source première de la diversité génétique au sein d'une espèce.",
+            },
+            {
+              text: "Une mutation dans une cellule de peau peut-elle être transmise aux enfants ?",
+              type: "mcq",
+              options: [
+                "Oui, toujours",
+                "Non, car les cellules de peau ne produisent pas de gamètes",
+                "Oui, si la mutation est bénéfique",
+                "Non, car les mutations sont toujours réparées",
+              ],
+              correct: 1,
+              solution:
+                "Les mutations survenant dans les cellules somatiques (comme les cellules de peau) ne concernent pas la lignée germinale et ne sont donc pas transmises à la descendance.",
+            },
+            {
+              text: "Le syndrome de Williams est dû à :",
+              type: "mcq",
+              options: [
+                "Une mutation ponctuelle sur un gène",
+                "La délétion d'une région du chromosome 7",
+                "Un chromosome supplémentaire",
+                "Une infection virale",
+              ],
+              correct: 1,
+              solution:
+                "Le syndrome de Williams est causé par la délétion (perte) d'une petite région du chromosome 7, incluant notamment le gène de l'élastine.",
+            },
+            {
+              text: "Quel facteur environnemental peut augmenter la fréquence des mutations ?",
+              type: "mcq",
+              options: [
+                "La température ambiante",
+                "Les rayons UV",
+                "L'alimentation équilibrée",
+                "Le sommeil",
+              ],
+              correct: 1,
+              solution:
+                "Les rayons ultraviolets (UV) sont des agents mutagènes qui peuvent endommager l'ADN et augmenter la probabilité de mutations.",
+            },
+            {
+              text: "Si un nouveau phénotype apparaît dans une population, quelle en est l'origine la plus probable au niveau moléculaire ?",
+              type: "mcq",
+              options: [
+                "Un changement d'environnement",
+                "Une mutation ayant créé un nouvel allèle",
+                "Une erreur de mitose",
+                "Une modification du microbiote",
+              ],
+              correct: 1,
+              solution:
+                "L'apparition d'un nouveau caractère héréditaire trouve généralement son origine dans une mutation de l'ADN, créant un nouvel allèle qui s'exprime dans le phénotype.",
+            },
+            {
+              text: "Pourquoi tous les individus d'une même espèce n'ont-ils pas les mêmes caractères ?",
+              type: "mcq",
+              options: [
+                "Parce qu'ils n'ont pas les mêmes gènes",
+                "Parce qu'ils possèdent les mêmes gènes mais pas forcément les mêmes allèles",
+                "Parce qu'ils vivent dans des milieux différents",
+                "Parce qu'ils ont des âges différents",
+              ],
+              correct: 1,
+              solution:
+                "Tous les individus d'une espèce partagent les mêmes gènes, mais la diversité des allèles (versions de ces gènes) et leur combinaison unique expliquent la variété des caractères observés.",
+            },
+            {
+              text: "Une mutation est-elle toujours néfaste pour l'organisme ?",
+              type: "mcq",
+              options: [
+                "Oui, toujours",
+                "Non, elle peut être neutre, néfaste ou avantageuse selon le contexte",
+                "Oui, car elle modifie l'ADN",
+                "Non, elle est toujours avantageuse",
+              ],
+              correct: 1,
+              solution:
+                "L'effet d'une mutation dépend du contexte : elle peut être délétère, neutre (sans effet visible) ou avantageuse (conférant un bénéfice dans un environnement donné).",
+            },
+            {
+              text: "Comment une mutation avantageuse peut-elle se répandre dans une population ?",
+              type: "mcq",
+              options: [
+                "Par hasard uniquement",
+                "Par sélection naturelle : les porteurs survivent et se reproduisent mieux",
+                "Par transmission directe entre individus",
+                "Par modification de l'environnement",
+              ],
+              correct: 1,
+              solution:
+                "Si une mutation confère un avantage dans un milieu donné, les individus qui la portent ont une meilleure survie et/ou reproduction, transmettant ainsi plus fréquemment cet allèle avantageux à leur descendance (sélection naturelle).",
+            },
+          ],
+        },
+        {
+          category: "Évolution et sélection naturelle",
+          questions: [
+            {
+              text: "Qu'est-ce que la sélection naturelle selon Darwin ?",
+              type: "mcq",
+              options: [
+                "La disparition aléatoire d'espèces",
+                "La survie et reproduction différentielle des individus porteurs de caractères avantageux dans un milieu donné",
+                "L'apparition soudaine de nouvelles espèces",
+                "La transformation des individus au cours de leur vie",
+              ],
+              correct: 1,
+              solution:
+                "La sélection naturelle est le mécanisme par lequel les individus possédant des caractères avantageux dans leur environnement ont une meilleure survie et reproduction, transmettant ainsi ces caractères à leur descendance.",
+            },
+            {
+              text: "L'environnement 'crée-t-il' les caractères adaptatifs ?",
+              type: "mcq",
+              options: [
+                "Oui, il force les organismes à changer",
+                "Non, il sélectionne les caractères déjà existants issus de mutations aléatoires",
+                "Oui, par l'effort des individus",
+                "Non, les caractères sont fixes",
+              ],
+              correct: 1,
+              solution:
+                "L'environnement ne crée pas les caractères. Il exerce une pression de sélection sur la diversité préexistante (issue de mutations aléatoires), favorisant la propagation des allèles avantageux.",
+            },
+            {
+              text: "Dans l'exemple des punaises, pourquoi la population sur le pois de cœur a-t-elle un rostre plus long en moyenne ?",
+              type: "mcq",
+              options: [
+                "Parce que les punaises ont allongé leur rostre par effort",
+                "Parce que les individus à rostre long, mieux adaptés pour atteindre les graines, ont survécu et se sont reproduits davantage",
+                "Parce que le pois de cœur modifie génétiquement les punaises",
+                "Par hasard",
+              ],
+              correct: 1,
+              solution:
+                "La profondeur des graines du pois de cœur (8,54 mm) a exercé une pression de sélection : seuls les individus au rostre suffisamment long pouvaient se nourrir efficacement, survivre et transmettre ce caractère.",
+            },
+            {
+              text: "Qu'est-ce qu'un caractère ancestral ?",
+              type: "mcq",
+              options: [
+                "Un caractère apparu récemment",
+                "Un caractère présent chez un ancêtre commun et conservé chez ses descendants",
+                "Un caractère propre à une seule espèce",
+                "Un caractère acquis par l'effort",
+              ],
+              correct: 1,
+              solution:
+                "Un caractère ancestral est un trait présent chez un ancêtre commun et conservé (parfois modifié) chez les espèces qui en descendent.",
+            },
+            {
+              text: "Qu'est-ce qu'un caractère dérivé ?",
+              type: "mcq",
+              options: [
+                "Un caractère présent chez tous les êtres vivants",
+                "Un caractère nouveau apparu chez une espèce par rapport à son ancêtre",
+                "Un caractère récessif",
+                "Un caractère environnemental",
+              ],
+              correct: 1,
+              solution:
+                "Un caractère dérivé est une innovation évolutive, un trait nouveau apparu chez une espèce ou un groupe et absent chez son ancêtre commun.",
+            },
+            {
+              text: "Que nous apprend la comparaison des caryotypes ou des séquences d'ADN entre espèces ?",
+              type: "mcq",
+              options: [
+                "Rien, chaque espèce est unique",
+                "Le degré de parenté évolutive : plus les similitudes sont grandes, plus la parenté est proche",
+                "Uniquement le nombre de chromosomes",
+                "L'âge exact des espèces",
+              ],
+              correct: 1,
+              solution:
+                "Les similitudes génétiques (séquences d'ADN, organisation des gènes, caryotypes) permettent d'établir des relations de parenté : plus deux espèces partagent de caractères communs, plus leur ancêtre commun est récent.",
+            },
+            {
+              text: "Pourquoi dit-on que l'espèce humaine partage un ancêtre commun avec les chimpanzés ?",
+              type: "mcq",
+              options: [
+                "Parce qu'ils se ressemblent physiquement",
+                "Parce qu'ils partagent environ 99% de leurs gènes et de nombreux caractères anatomiques",
+                "Parce qu'ils vivent dans les mêmes milieux",
+                "Parce qu'ils peuvent se reproduire ensemble",
+              ],
+              correct: 1,
+              solution:
+                "Les humains et les chimpanzés partagent un très haut pourcentage de séquences d'ADN identiques et de nombreux caractères anatomiques, indiquant qu'ils descendent d'un ancêtre commun relativement récent à l'échelle évolutive.",
+            },
+            {
+              text: "Qu'est-ce qu'une crise de la biodiversité ?",
+              type: "mcq",
+              options: [
+                "Une période de forte diversification",
+                "Une période où de nombreuses espèces disparaissent brutalement à l'échelle géologique",
+                "Une maladie affectant une espèce",
+                "Une modification climatique mineure",
+              ],
+              correct: 1,
+              solution:
+                "Une crise de la biodiversité (ou extinction de masse) est une période géologique courte durant laquelle un pourcentage très élevé d'espèces disparaît à l'échelle mondiale.",
+            },
+            {
+              text: "Comment les crises de biodiversité sont-elles utilisées en géologie ?",
+              type: "mcq",
+              options: [
+                "Elles n'ont pas d'utilité",
+                "Elles servent de repères pour découper les temps géologiques en ères",
+                "Elles permettent de dater précisément chaque fossile",
+                "Elles indiquent l'avenir de l'évolution",
+              ],
+              correct: 1,
+              solution:
+                "Les extinctions massives marquent des ruptures majeures dans l'histoire de la vie et sont utilisées comme limites pour définir les grandes divisions des temps géologiques (ères, périodes).",
+            },
+            {
+              text: "Quelle est l'origine de la vie sur Terre selon les connaissances actuelles ?",
+              type: "mcq",
+              options: [
+                "Sur la terre ferme, il y a 1 million d'années",
+                "Dans les océans, il y a environ 3,8 milliards d'années, sous forme d'organismes unicellulaires",
+                "Sur une autre planète",
+                "Il y a 10 000 ans",
+              ],
+              correct: 1,
+              solution:
+                "Les premières traces de vie sur Terre datent d'environ 3,8 milliards d'années et correspondent à des organismes unicellulaires simples, vraisemblablement apparus dans les océans.",
+            },
+          ],
+        },
+        {
+          category: "Microbiote et santé",
+          questions: [
+            {
+              text: "Qu'est-ce que le microbiote intestinal ?",
+              type: "mcq",
+              options: [
+                "Un organe digestif",
+                "L'ensemble des micro-organismes (bactéries, champignons, virus) vivant dans l'intestin",
+                "Un type de cellule immunitaire",
+                "Une enzyme digestive",
+              ],
+              correct: 1,
+              solution:
+                "Le microbiote intestinal est l'ensemble complexe et dynamique des micro-organismes qui colonisent le tube digestif, en symbiose avec l'hôte.",
+            },
+            {
+              text: "Quel est l'ordre de grandeur du nombre de bactéries dans le microbiote intestinal humain ?",
+              type: "mcq",
+              options: [
+                "1 million",
+                "1 milliard",
+                "100 000 milliards",
+                "10<sup>20</sup>",
+              ],
+              correct: 2,
+              solution:
+                "Le microbiote intestinal humain contient environ 100 000 milliards (10<sup>14</sup>) de bactéries, soit plus que le nombre total de cellules du corps humain.",
+            },
+            {
+              text: "Qu'est-ce qu'une symbiose ?",
+              type: "mcq",
+              options: [
+                "Une compétition entre espèces",
+                "Une association à bénéfices réciproques entre deux organismes",
+                "Une relation parasite-hôte",
+                "Une maladie infectieuse",
+              ],
+              correct: 1,
+              solution:
+                "Une symbiose est une interaction durable et mutuellement bénéfique entre deux organismes d'espèces différentes.",
+            },
+            {
+              text: "Dans la relation entre l'humain et son microbiote intestinal, quel est le bénéfice pour l'humain ?",
+              type: "mcq",
+              options: [
+                "Aucun",
+                "Une meilleure digestion, la production de vitamines, une protection contre les pathogènes",
+                "La fabrication de globules rouges",
+                "La régulation de la température corporelle",
+              ],
+              correct: 1,
+              solution:
+                "Le microbiote intestinal aide à digérer certains aliments, produit des vitamines (comme la K), renforce la barrière intestinale et participe à l'éducation du système immunitaire.",
+            },
+            {
+              text: "Dans la relation entre l'humain et son microbiote intestinal, quel est le bénéfice pour les bactéries ?",
+              type: "mcq",
+              options: [
+                "Aucun",
+                "Un habitat stable et des nutriments fournis par l'hôte",
+                "La capacité de se reproduire plus vite",
+                "La protection contre les antibiotiques",
+              ],
+              correct: 1,
+              solution:
+                "Les bactéries du microbiote bénéficient d'un milieu riche en nutriments, à température constante et protégé, offert par l'intestin de leur hôte.",
+            },
+            {
+              text: "Que montre l'expérience avec des souris axéniques (sans microbiote) ?",
+              type: "mcq",
+              options: [
+                "Qu'elles grossissent plus vite",
+                "Qu'elles ont besoin de plus de nourriture pour atteindre le même poids, prouvant le rôle du microbiote dans l'assimilation",
+                "Qu'elles vivent plus longtemps",
+                "Qu'elles développent des maladies automatiquement",
+              ],
+              correct: 1,
+              solution:
+                "Les souris axéniques doivent consommer environ 30% de nourriture en plus pour atteindre le même poids que des souris avec microbiote, démontrant que les bactéries intestinales améliorent l'efficacité de l'assimilation des nutriments.",
+            },
+            {
+              text: "Que suggère le transfert de microbiote d'une jumelle obèse à des souris minces ?",
+              type: "mcq",
+              options: [
+                "Rien de particulier",
+                "Que la composition du microbiote peut influencer le métabolisme et le poids de l'hôte",
+                "Que l'obésité est toujours génétique",
+                "Que les souris ne peuvent pas maigrir",
+              ],
+              correct: 1,
+              solution:
+                "Cette expérience montre que le microbiote intestinal joue un rôle causal dans la régulation du poids : un microbiote 'obésogène' peut favoriser la prise de poids même avec une alimentation contrôlée.",
+            },
+            {
+              text: "Quel micro-organisme aide la vache à digérer l'herbe ?",
+              type: "mcq",
+              options: [
+                "Escherichia coli",
+                "Ruminococcus albus",
+                "Cubitermes speciosus",
+                "Rhizobium",
+              ],
+              correct: 1,
+              solution:
+                "Ruminococcus albus, présent dans le rumen de la vache, produit des enzymes (cellulases) capables de dégrader la cellulose de l'herbe, que la vache ne peut digérer seule.",
+            },
+            {
+              text: "Quel est le rôle de la bactérie Escherichia coli dans l'intestin humain ?",
+              type: "mcq",
+              options: [
+                "Provoquer des infections systématiques",
+                "Aider à la digestion et produire de la vitamine K",
+                "Détruire les autres bactéries",
+                "Remplacer les cellules intestinales",
+              ],
+              correct: 1,
+              solution:
+                "Certaines souches commensales d'Escherichia coli participent à la digestion et synthétisent de la vitamine K, essentielle à la coagulation sanguine.",
+            },
+            {
+              text: "Pourquoi un usage excessif de gel hydro-alcoolique peut-il être problématique pour la santé ?",
+              type: "mcq",
+              options: [
+                "Il n'y a aucun problème",
+                "Il peut détruire les bactéries bénéfiques de la peau et affaiblir les défenses naturelles",
+                "Il rend la peau plus résistante",
+                "Il augmente la diversité du microbiote",
+              ],
+              correct: 1,
+              solution:
+                "Les désinfectants à large spectre éliminent indistinctement les pathogènes et les micro-organismes commensaux bénéfiques, pouvant perturber l'équilibre du microbiote cutané et affaiblir la barrière protectrice naturelle.",
+            },
+          ],
+        },
+        {
+          category: "Symbioses végétales et nutrition",
+          questions: [
+            {
+              text: "Qu'est-ce qu'une nodosité sur les racines de légumineuses ?",
+              type: "mcq",
+              options: [
+                "Une maladie",
+                "Un renflement contenant des bactéries Rhizobium fixatrices d'azote",
+                "Un type de fleur",
+                "Une réserve d'eau",
+              ],
+              correct: 1,
+              solution:
+                "Les nodosités sont des structures racinaires spécialisées hébergeant des bactéries du genre Rhizobium, capables de convertir l'azote atmosphérique en formes assimilables par la plante.",
+            },
+            {
+              text: "Quel est le bénéfice pour la plante dans la symbiose avec Rhizobium ?",
+              type: "mcq",
+              options: [
+                "Une meilleure photosynthèse",
+                "Un apport en azote minéral assimilable",
+                "Une protection contre les herbivores",
+                "Une croissance plus rapide des fleurs",
+              ],
+              correct: 1,
+              solution:
+                "Rhizobium transforme l'azote atmosphérique (N<sub>2</sub>) en ammonium ou nitrates, formes minérales que la plante peut absorber pour synthétiser ses protéines et acides nucléiques.",
+            },
+            {
+              text: "Quel est le bénéfice pour la bactérie Rhizobium dans cette symbiose ?",
+              type: "mcq",
+              options: [
+                "Un apport en azote",
+                "Des glucides (sucres) issus de la photosynthèse de la plante",
+                "Une protection contre les virus",
+                "La capacité de se déplacer",
+              ],
+              correct: 1,
+              solution:
+                "En échange de l'azote fixé, la plante fournit à Rhizobium des sucres (glucides) produits par photosynthèse, source d'énergie et de carbone pour la bactérie.",
+            },
+            {
+              text: "Qu'est-ce qu'une mycorhize ?",
+              type: "mcq",
+              options: [
+                "Une maladie fongique",
+                "Une association symbiotique entre les racines d'une plante et un champignon",
+                "Un type de graine",
+                "Une hormone végétale",
+              ],
+              correct: 1,
+              solution:
+                "Une mycorhize est une symbiose entre les racines d'une plante et un champignon, améliorant l'absorption d'eau et de sels minéraux par la plante.",
+            },
+            {
+              text: "Quel est le bénéfice pour la plante dans une mycorhize ?",
+              type: "mcq",
+              options: [
+                "Une meilleure production de fleurs",
+                "Un accès accru à l'eau et aux sels minéraux grâce au réseau fongique",
+                "Une résistance aux herbicides",
+                "Une croissance aérienne plus rapide",
+              ],
+              correct: 1,
+              solution:
+                "Le champignon, par son mycélium étendu, explore un volume de sol bien plus grand que les racines seules, apportant à la plante de l'eau et des ions minéraux (phosphore, azote) en plus grande quantité.",
+            },
+            {
+              text: "Quel est le bénéfice pour le champignon dans une mycorhize ?",
+              type: "mcq",
+              options: [
+                "De l'azote atmosphérique",
+                "Des glucides produits par la photosynthèse de la plante",
+                "Une protection contre la sécheresse",
+                "La capacité de faire de la photosynthèse",
+              ],
+              correct: 1,
+              solution:
+                "Le champignon, hétérotrophe, reçoit de la plante des sucres (glucose, saccharose) issus de la photosynthèse, essentiels à sa croissance et à son métabolisme.",
+            },
+            {
+              text: "D'après l'expérience sur les lupins, quel facteur améliore le plus le rendement en graines ?",
+              type: "mcq",
+              options: [
+                "L'engrais azoté seul",
+                "L'inoculation par Rhizobium seul",
+                "L'engrais et Rhizobium ensemble",
+                "Aucun facteur",
+              ],
+              correct: 1,
+              solution:
+                "Dans l'expérience, la parcelle avec Rhizobium seul (1,6 kg/ha) donne un meilleur rendement que celle avec engrais seul (1,42 kg/ha), montrant l'efficacité de la symbiose pour l'apport en azote.",
+            },
+            {
+              text: "Pourquoi les légumineuses sont-elles souvent utilisées en rotation culturale ?",
+              type: "mcq",
+              options: [
+                "Parce qu'elles poussent très vite",
+                "Parce qu'elles enrichissent le sol en azote grâce à leur symbiose avec Rhizobium",
+                "Parce qu'elles repoussent tous les insectes",
+                "Parce qu'elles ne nécessitent pas d'eau",
+              ],
+              correct: 1,
+              solution:
+                "Après leur culture, les légumineuses laissent dans le sol des résidus riches en azote (fixé par Rhizobium), fertilisant naturellement le sol pour la culture suivante.",
+            },
+            {
+              text: "Que montre le graphique comparant la croissance de pins avec et sans mycorhizes ?",
+              type: "mcq",
+              options: [
+                "Aucune différence",
+                "Une croissance bien supérieure des pins avec mycorhizes (environ 50 cm contre 15 cm après 3 ans)",
+                "Une croissance inférieure avec mycorhizes",
+                "Une mortalité accrue avec mycorhizes",
+              ],
+              correct: 1,
+              solution:
+                "Le graphique illustre l'avantage majeur de la mycorhization : après 3 ans en forêt, les pins mycorhizés atteignent une hauteur bien supérieure, grâce à un meilleur accès aux ressources minérales et hydriques.",
+            },
+            {
+              text: "En quoi les symbioses micro-organismes/plantes illustrent-elles l'interdépendance des êtres vivants ?",
+              type: "mcq",
+              options: [
+                "Elles montrent que chaque espèce vit isolément",
+                "Elles montrent que des organismes différents coopèrent pour optimiser l'accès aux ressources, améliorant la survie de chacun",
+                "Elles montrent que les plantes n'ont pas besoin du sol",
+                "Elles montrent que les micro-organismes sont toujours pathogènes",
+              ],
+              correct: 1,
+              solution:
+                "Les symbioses comme les mycorhizes ou la fixation d'azote démontrent que la coopération entre espèces (plantes et micro-organismes) permet une exploitation plus efficace des ressources du milieu, bénéfique aux deux partenaires.",
+            },
+          ],
+        },
+        {
+          category: "Systèmes automatisés et binaire",
+          questions: [
+            {
+              text: "Qu'est-ce qu'un système automatisé ?",
+              type: "mcq",
+              options: [
+                "Un système nécessitant une intervention humaine constante",
+                "Un système effectuant des actions de manière autonome selon un programme",
+                "Un système purement mécanique",
+                "Un système de communication",
+              ],
+              correct: 1,
+              solution:
+                "Un système automatisé est un ensemble technologique capable d'exécuter des tâches prédéfinies sans intervention humaine directe, grâce à une partie commande qui pilote une partie opérative.",
+            },
+            {
+              text: "Quelles sont les deux parties principales d'un système automatisé ?",
+              type: "mcq",
+              options: [
+                "L'entrée et la sortie",
+                "La partie commande (PC) et la partie opérative (PO)",
+                "Le matériel et le logiciel",
+                "L'alimentation et la communication",
+              ],
+              correct: 1,
+              solution:
+                "Un système automatisé se décompose en : la Partie Commande (qui acquiert, traite l'information et transmet des ordres) et la Partie Opérative (qui exécute les actions sur le milieu).",
+            },
+            {
+              text: "Quel est le rôle de la chaîne d'information ?",
+              type: "mcq",
+              options: [
+                "Fournir l'énergie au système",
+                "Acquérir, traiter et communiquer les informations pour piloter le système",
+                "Exécuter les mouvements",
+                "Stocker les données",
+              ],
+              correct: 1,
+              solution:
+                "La chaîne d'information (associée à la Partie Commande) gère le flux d'informations : acquisition via des capteurs, traitement par un contrôleur, et communication des ordres vers la partie opérative.",
+            },
+            {
+              text: "Quel est le rôle de la chaîne d'énergie ?",
+              type: "mcq",
+              options: [
+                "Traiter les informations",
+                "Alimenter, stocker, distribuer, convertir et transmettre l'énergie pour réaliser les actions",
+                "Communiquer avec l'utilisateur",
+                "Mesurer les grandeurs physiques",
+              ],
+              correct: 1,
+              solution:
+                "La chaîne d'énergie (associée à la Partie Opérative) gère le flux d'énergie : elle l'achemine depuis la source, la convertit (ex: électrique → mécanique) et la transmet pour produire l'effet utile.",
+            },
+            {
+              text: "Dans la chaîne d'énergie, quelle est la fonction 'convertir' ?",
+              type: "mcq",
+              options: [
+                "Changer la forme de l'énergie (ex: électrique en mécanique)",
+                "Stocker l'énergie",
+                "Mesurer l'énergie",
+                "Couper l'alimentation",
+              ],
+              correct: 0,
+              solution:
+                "Convertir consiste à transformer une forme d'énergie en une autre, par exemple un moteur électrique convertit l'énergie électrique en énergie mécanique de rotation.",
+            },
+            {
+              text: "Qu'est-ce que le langage binaire ?",
+              type: "mcq",
+              options: [
+                "Un langage parlé par deux personnes",
+                "Un système de numération en base 2 utilisant uniquement les chiffres 0 et 1",
+                "Un code secret",
+                "Un type de circuit électronique",
+              ],
+              correct: 1,
+              solution:
+                "Le binaire est un système de numération en base 2, fondamental en informatique et en automatisme, où toute information est codée à l'aide de deux états : 0 et 1.",
+            },
+            {
+              text: "En automatisme, que représente généralement l'état '1' ?",
+              type: "mcq",
+              options: [
+                "Arrêt / Faux / Bas",
+                "Marche / Vrai / Haut / Présence d'un signal",
+                "Une erreur",
+                "Une attente",
+              ],
+              correct: 1,
+              solution:
+                "En logique binaire appliquée aux automatismes, l'état '1' code généralement l'activation, la vérité logique, un niveau haut de tension ou la présence d'un événement.",
+            },
+            {
+              text: "En informatique, comment appelle-t-on un chiffre binaire (0 ou 1) ?",
+              type: "mcq",
+              options: ["Un octet", "Un bit", "Un pixel", "Un hertz"],
+              correct: 1,
+              solution:
+                "Un bit (binary digit) est l'unité d'information élémentaire en informatique, pouvant prendre la valeur 0 ou 1.",
+            },
+            {
+              text: "Combien de bits compose un octet ?",
+              type: "mcq",
+              options: ["4", "8", "10", "16"],
+              correct: 1,
+              solution:
+                "Un octet (byte en anglais) est un groupe de 8 bits, unité de base couramment utilisée pour quantifier la mémoire ou les données en informatique.",
+            },
+            {
+              text: "Quel est l'équivalent binaire du nombre décimal 5 ?",
+              type: "mcq",
+              options: ["0000 0101", "0000 0110", "0000 1001", "0000 1010"],
+              correct: 0,
+              solution:
+                "5 en décimal s'écrit 101 en binaire (4 + 1). Sur 8 bits, on complète avec des zéros non significatifs : 0000 0101.",
+            },
+          ],
+        },
+        {
+          category: "Questions de synthèse et applications",
+          questions: [
+            {
+              text: "Expliquez en une phrase pourquoi le noyau est essentiel à l'hérédité.",
+              type: "text",
+              accepted: [
+                "le noyau contient les chromosomes qui portent l'adn et donc l'information génétique",
+                "l'information génétique est dans le noyau sous forme d'adn",
+                "le noyau renferme l'adn support des caractères héréditaires",
+                "c'est dans le noyau que se trouvent les gènes",
+              ],
+              solution:
+                "Le noyau est le siège de l'hérédité car il contient les chromosomes, constitués d'ADN, sur lesquels sont localisés les gènes, supports de l'information génétique transmise de génération en génération.",
+            },
+            {
+              text: "Calculez le nombre théorique de combinaisons génétiques possibles pour un gamète humain (sans crossing-over). Donnez le résultat sous forme de puissance de 2.",
+              type: "text",
+              accepted: ["2^23", "2<sup>23</sup>", "8 millions", "8388608"],
+              solution:
+                "Avec 23 paires de chromosomes, chaque paire se sépare indépendamment lors de la méiose. Le nombre de combinaisons possibles est donc 2<sup>23</sup> = 8 388 608, soit environ 8 millions de gamètes génétiquement différents par individu.",
+            },
+            {
+              text: "Si la probabilité d'hériter d'un allèle A est de <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div> et celle d'être une fille est de <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div>, quelle est la probabilité conjointe ? Exprimez sous forme de fraction.",
+              type: "text",
+              accepted: [
+                "1/4",
+                "<div class='math-frac'><span class='math-num'>1</span><span class='math-den'>4</span></div>",
+                "0.25",
+                "25%",
+              ],
+              solution:
+                "Les événements étant indépendants, on multiplie les probabilités : <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div> × <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>2</span></div> = <div class='math-frac'><span class='math-num'>1</span><span class='math-den'>4</span></div>.",
+            },
+            {
+              text: "Citez deux différences fondamentales entre la mitose et la méiose.",
+              type: "text",
+              accepted: [
+                "la mitose produit 2 cellules identiques, la méiose 4 gamètes différents; la mitose conserve le nombre de chromosomes, la méiose le divise par deux",
+                "mitose: croissance, méiose: reproduction; mitose: caryotype stable, méiose: diversité génétique",
+                "la mitose a lieu dans toutes les cellules, la méiose uniquement dans les gonades; la mitose n'a qu'une division, la méiose en a deux",
+              ],
+              solution:
+                "1) La mitose produit deux cellules filles génétiquement identiques à la cellule mère et conserve le nombre diploïde de chromosomes, tandis que la méiose produit quatre gamètes génétiquement différents avec un nombre haploïde de chromosomes. 2) La mitose assure la croissance et le renouvellement cellulaire, la méiose est dédiée à la reproduction sexuée et génère de la diversité génétique.",
+            },
+            {
+              text: "Pourquoi dit-on que la reproduction sexuée est une 'double loterie génétique' ?",
+              type: "text",
+              accepted: [
+                "car la méiose crée des gamètes variés et la fécondation assemble deux gamètes au hasard",
+                "première loterie: diversité des gamètes par méiose; deuxième loterie: rencontre aléatoire des gamètes à la fécondation",
+                "à cause du brassage des allèles lors de la méiose et du hasard de la fécondation",
+              ],
+              solution:
+                "La première 'loterie' est la méiose : chaque individu produit des millions de gamètes génétiquement différents grâce au brassage des chromosomes. La seconde 'loterie' est la fécondation : la rencontre entre un spermatozoïde et un ovule parmi ces millions de possibilités est aléatoire, créant une combinaison génétique unique pour chaque individu (sauf vrais jumeaux).",
+            },
+            {
+              text: "Convertissez le nombre binaire 01001101 en décimal.",
+              type: "text",
+              accepted: ["77", "soixante-dix-sept"],
+              solution:
+                "01001101 en binaire correspond à : 0×2<sup>7</sup> + 1×2<sup>6</sup> + 0×2<sup>5</sup> + 0×2<sup>4</sup> + 1×2<sup>3</sup> + 1×2<sup>2</sup> + 0×2<sup>1</sup> + 1×2<sup>0</sup> = 64 + 8 + 4 + 1 = 77 en décimal.",
+            },
+            {
+              text: "Expliquez comment une mutation peut conduire à l'apparition d'un nouveau caractère dans une population.",
+              type: "text",
+              accepted: [
+                "une mutation modifie l'adn, créant un nouvel allèle qui peut s'exprimer dans le phénotype; si cet allèle est transmis et sélectionné, le caractère se répand",
+                "mutation → nouvel allèle → nouveau phénotype; si avantageux, sélection naturelle favorise sa propagation",
+                "changement aléatoire de l'adn → nouvelle version d'un gène → caractère différent; transmission et sélection possible",
+              ],
+              solution:
+                "Une mutation est une modification aléatoire de la séquence d'ADN. Si elle affecte un gène, elle peut créer un nouvel allèle. Si cet allèle s'exprime, il peut modifier un caractère observable (phénotype). Si ce nouveau caractère confère un avantage dans un environnement donné, les individus qui le portent auront une meilleure survie/reproduction (sélection naturelle), et l'allèle se répandra dans la population au fil des générations.",
+            },
+            {
+              text: "Décrivez le parcours de l'information dans un système automatisé simple (ex: porte de garage), en citant les étapes de la chaîne d'information et de la chaîne d'énergie.",
+              type: "text",
+              accepted: [
+                "capteur détecte commande → traitement par boîtier → ordre envoyé → relais distribue énergie → moteur convertit en mouvement → transmission ouvre la porte",
+                "acquisition (télécommande) → traitement (carte électronique) → communication (ordre) → distribution (relais) → conversion (moteur) → transmission (poulie) → action",
+              ],
+              solution:
+                "Chaîne d'information : 1) Acquisition : un capteur (récepteur IR) reçoit le signal de la télécommande. 2) Traitement : le boîtier de commande analyse le signal et décide d'ouvrir. 3) Communication : il envoie un ordre électrique à la partie opérative. Chaîne d'énergie : 1) Distribution : un relais ferme le circuit d'alimentation. 2) Conversion : un moteur électrique transforme l'énergie électrique en rotation. 3) Transmission : un système poulie-courroie transmet le mouvement à la porte pour l'ouvrir.",
+            },
+            {
+              text: "Pourquoi l'usage d'antibiotiques peut-il perturber le microbiote intestinal et quelles en sont les conséquences possibles ?",
+              type: "text",
+              accepted: [
+                "les antibiotiques tuent aussi les bactéries bénéfiques, déséquilibrant le microbiote; cela peut entraîner des troubles digestifs, une moins bonne assimilation, ou une prolifération de pathogènes",
+                "destruction des bactéries commensales → déséquilibre du microbiote → risques de diarrhées, infections opportunistes, moins bonne digestion",
+                "les antibiotiques ne sont pas sélectifs; ils affectent le microbiote, pouvant causer des désordres digestifs et immunitaires",
+              ],
+              solution:
+                "Les antibiotiques, bien que ciblant des bactéries pathogènes, agissent souvent de manière large et éliminent aussi des bactéries commensales bénéfiques du microbiote intestinal. Ce déséquilibre (dysbiose) peut entraîner des troubles digestifs (diarrhées), une moins bonne assimilation des nutriments, une diminution de la production de vitamines, et une vulnérabilité accrue aux infections opportunistes, car la barrière protectrice du microbiote est affaiblie.",
+            },
+            {
+              text: "En vous appuyant sur l'exemple des punaises, expliquez comment l'environnement exerce une sélection naturelle sans 'créer' les caractères adaptatifs.",
+              type: "text",
+              accepted: [
+                "l'environnement (type de fruit) sélectionne les individus déjà porteurs d'un rostre adapté (long ou court) issus de mutations aléatoires; il ne provoque pas la mutation mais favorise sa propagation si elle est avantageuse",
+                "sélection naturelle : variation aléatoire (rostre) → pression environnementale (profondeur graine) → survie différentielle → transmission des allèles avantageux; l'environnement trie, ne crée pas",
+                "les mutations aléatoires produisent une diversité de longueurs de rostre; le milieu (fruit) favorise la reproduction des individus dont le rostre correspond à la profondeur des graines, augmentant la fréquence de cet allèle dans la population",
+              ],
+              solution:
+                "La sélection naturelle agit sur la diversité préexistante. Dans la population de punaises, des mutations aléatoires ont créé une variabilité de la longueur du rostre. L'environnement (type de fruit avec graines à profondeur fixe) exerce une pression : seuls les individus dont le rostre est assez long pour atteindre les graines se nourrissent efficacement, survivent et se reproduisent davantage. Ainsi, l'allèle 'rostre long' (déjà présent par mutation) voit sa fréquence augmenter dans la population. L'environnement ne crée pas le caractère 'rostre long', il sélectionne les individus qui le possèdent déjà.",
+            },
+          ],
+        },
+      ];
+
+      const app = {
+        state: {
+          catIdx: 0,
+          qIdx: 0,
+        },
+
+        init: function () {
+          this.renderMenu();
+        },
+
+        renderMenu: function () {
+          const nav = document.getElementById("nav-container");
+          nav.innerHTML = "";
+          document.getElementById("quiz-ui").classList.add("hidden");
+          document.getElementById("nav-container").classList.remove("hidden");
+
+          db.forEach((cat, idx) => {
+            const btn = document.createElement("div");
+            btn.className = "nav-btn";
+            btn.textContent = cat.category;
+            btn.onclick = () => this.startCategory(idx);
+            nav.appendChild(btn);
+          });
+        },
+
+        startCategory: function (idx) {
+          this.state.catIdx = idx;
+          this.state.qIdx = 0;
+
+          document.getElementById("nav-container").classList.add("hidden");
+          document.getElementById("quiz-ui").classList.remove("hidden");
+          this.renderQuestion();
+        },
+
+        renderQuestion: function () {
+          const q = db[this.state.catIdx].questions[this.state.qIdx];
+          const card = document.getElementById("question-card-container");
+          const feedback = document.getElementById("feedback-area");
+          const btn = document.getElementById("main-btn");
+
+          card.classList.remove("fast-exit", "entering");
+          void card.offsetWidth;
+          card.classList.add("entering");
+
+          feedback.className = "";
+          feedback.classList.remove("visible");
+          feedback.style.display = "none";
+
+          btn.textContent = "Valider la réponse";
+          btn.disabled = false;
+          btn.style.backgroundColor = "#4c51bf";
+
+          document.getElementById("cat-label").textContent =
+            db[this.state.catIdx].category;
+          document.getElementById("counter-label").textContent =
+            `${this.state.qIdx + 1} / ${db[this.state.catIdx].questions.length}`;
+          document.getElementById("question-text").innerHTML = q.text;
+
+          const imgArea = document.getElementById("image-area");
+          if (q.image) {
+            imgArea.innerHTML = `<img src="${q.image}">`;
+            imgArea.classList.remove("hidden");
+          } else {
+            imgArea.classList.add("hidden");
+          }
+
+          const pct =
+            (this.state.qIdx / db[this.state.catIdx].questions.length) * 100;
+          document.getElementById("progress-fill").style.width = pct + "%";
+
+          const inputArea = document.getElementById("input-area");
+          inputArea.innerHTML = "";
+
+          if (q.type === "mcq") {
+            const container = document.createElement("div");
+            container.className = "options-container";
+
+            let mixedOptions = q.options.map((optText, originalIndex) => {
+              return { text: optText, val: originalIndex };
+            });
+
+            mixedOptions.sort(() => Math.random() - 0.5);
+
+            mixedOptions.forEach((optObj, i) => {
+              const item = document.createElement("div");
+              item.className = "option-item";
+              item.innerHTML = `
+                              <input type="radio" name="quiz-opt" id="opt-${i}" value="${optObj.val}">
+                              <label class="answer-btn" for="opt-${i}">${optObj.text}</label>
+                          `;
+              container.appendChild(item);
+            });
+            inputArea.appendChild(container);
+          } else {
+            inputArea.innerHTML = `<input type="text" id="text-answer" class="text-input-styled" placeholder="Ta réponse..." autocomplete="off">`;
+            document
+              .getElementById("text-answer")
+              .addEventListener("keypress", (e) => {
+                if (e.key === "Enter") this.checkAnswer();
+              });
+            setTimeout(
+              () => document.getElementById("text-answer").focus(),
+              100,
+            );
+          }
+        },
+
+        checkAnswer: function () {
+          const q = db[this.state.catIdx].questions[this.state.qIdx];
+          const feedback = document.getElementById("feedback-area");
+          feedback.style.display = "block";
+          const btn = document.getElementById("main-btn");
+          let isCorrect = false;
+          let userElement = null;
+
+          if (q.type === "mcq") {
+            const selected = document.querySelector(
+              'input[name="quiz-opt"]:checked',
+            );
+            if (!selected) return alert("Choisis une réponse !");
+
+            const label = document.querySelector(`label[for="${selected.id}"]`);
+            userElement = label;
+
+            if (parseInt(selected.value) === q.correct) {
+              isCorrect = true;
+            }
+          } else {
+            const input = document.getElementById("text-answer");
+            if (!input.value.trim()) return alert("Écris une réponse !");
+            userElement = input;
+
+            const val = input.value
+              .toLowerCase()
+              .replace(/\s/g, "")
+              .replace(",", ".");
+            const accepted = q.accepted.map((a) =>
+              a.toLowerCase().replace(/\s/g, "").replace(",", "."),
+            );
+            if (accepted.includes(val)) isCorrect = true;
+          }
+
+          btn.disabled = true;
+
+          if (isCorrect) {
+            userElement.classList.add("correct");
+            feedback.className = "feedback-correct visible";
+            feedback.innerHTML = `
+                          <div style="font-size: 1.2em; margin-bottom: 5px;">✅ <span class="couleur-qui-change">Excellent !</span></div>
+                          <div>${q.solution}</div>
+                      `;
+            btn.style.backgroundColor = "#48bb78";
+            btn.textContent = "Bravo !";
+          } else {
+            userElement.classList.add("incorrect");
+
+            if (q.type === "mcq") {
+              const correctInput = document.querySelector(
+                `input[name="quiz-opt"][value="${q.correct}"]`,
+              );
+              if (correctInput) {
+                const correctLabel = document.querySelector(
+                  `label[for="${correctInput.id}"]`,
+                );
+                correctLabel.classList.add("correct");
+              }
+            }
+
+            feedback.className = "feedback-incorrect visible";
+            feedback.innerHTML = `
+                          <div style="font-size: 1.2em; margin-bottom: 5px;">❌ Aïe... Regarde la correction :</div>
+                          <div><strong>${q.solution}</strong></div>
+                      `;
+            btn.style.backgroundColor = "#c53030";
+            btn.textContent = "Lecture correction...";
+          }
+
+          const pct =
+            ((this.state.qIdx + 1) / db[this.state.catIdx].questions.length) *
+            100;
+          document.getElementById("progress-fill").style.width = pct + "%";
+
+          const delayDuration = isCorrect ? 1200 : 4000;
+
+          setTimeout(() => {
+            this.handleTransition();
+          }, delayDuration);
+        },
+
+        handleTransition: function () {
+          if (this.state.qIdx >= db[this.state.catIdx].questions.length - 1) {
+            alert("Série terminée ! Retour au menu.");
+            this.renderMenu();
+            return;
+          }
+
+          const card = document.getElementById("question-card-container");
+          card.classList.remove("entering");
+          card.classList.add("fast-exit");
+
+          setTimeout(() => {
+            this.state.qIdx++;
+            this.renderQuestion();
+          }, 300);
+        },
+      };
+
+      window.onload = () => app.init();
+    </script>
+  </body>
+</html>

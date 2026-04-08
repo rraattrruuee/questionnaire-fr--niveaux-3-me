@@ -135,28 +135,19 @@ if ("serviceWorker" in navigator) {
   });
 
   window.addEventListener("load", () => {
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (!refreshing) {
+        window.location.reload();
+        refreshing = true;
+      }
+    });
+
     navigator.serviceWorker
       .register("service-worker.js", { scope: "./" })
       .then((reg) => {
-        // Function to request caching (always send regardless of PWA state)
-        const requestCache = (sw) => {
-          sw.postMessage({ type: "cache-assets" });
-        };
-
-        // Immediately ask active worker to cache
-        if (reg.active) {
-          requestCache(reg.active);
-        }
-
-        // Also handle new installing worker
-        reg.addEventListener("updatefound", () => {
-          const newWorker = reg.installing;
-          newWorker.addEventListener("statechange", () => {
-            if (newWorker.state === "activated") {
-              requestCache(newWorker);
-            }
-          });
-        });
+        // Le cache est maintenant géré automatiquement (et uniquement) lors de l'installation et la mise à jour
+        // du Service Worker grâce à cacheAllAssets() défini dans events "install"
       })
       .catch((err) => console.warn("Erreur SW:", err));
   });

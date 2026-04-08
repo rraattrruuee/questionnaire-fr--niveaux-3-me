@@ -979,5 +979,59 @@
 
       window.onload = () => setDifficulty("easy", 0);
     </script>
-  </body>
+  
+    
+
+    <!-- BOUTON RETOUR PWA -->
+    <script>
+      (function() {
+        const checkAndAddButton = () => {
+          const isPWA = window.matchMedia('(display-mode: standalone)').matches || 
+                        window.matchMedia('(display-mode: fullscreen)').matches || 
+                        navigator.standalone;
+          
+          if (isPWA && !window.location.pathname.endsWith('index.html')) {
+            const btn = document.createElement('button');
+            btn.innerHTML = '← Retour';
+            btn.style.position = 'fixed';
+            btn.style.top = '15px';
+            btn.style.left = '15px';
+            btn.style.zIndex = '9999';
+            btn.style.background = '#4CAF50';
+            btn.style.color = 'white';
+            btn.style.border = 'none';
+            btn.style.padding = '10px 20px';
+            btn.style.borderRadius = '8px';
+            btn.style.cursor = 'pointer';
+            btn.style.boxShadow = '0 4px 10px rgba(0,0,0,0.5)';
+            btn.style.fontWeight = 'bold';
+            btn.style.fontFamily = 'Arial, sans-serif';
+            btn.style.fontSize = '16px';
+            btn.style.transition = 'background 0.3s, transform 0.3s';
+            
+            btn.onmouseover = () => {
+                btn.style.background = '#45a049';
+                btn.style.transform = 'scale(1.05)';
+            };
+            btn.onmouseout = () => {
+                btn.style.background = '#4CAF50';
+                btn.style.transform = 'scale(1)';
+            };
+            
+            btn.onclick = () => {
+               window.location.href = '../index.html';
+            };
+            
+            document.body.appendChild(btn);
+          }
+        };
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', checkAndAddButton);
+        } else {
+          checkAndAddButton();
+        }
+      })();
+    </script>
+</body>
 </html>

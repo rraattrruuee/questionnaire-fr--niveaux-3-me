@@ -53,7 +53,7 @@ function cacheAllAssets() {
     let completed = 0;
 
     // notify start
-    self.clients.matchAll().then((clients) => {
+    self.clients.matchAll({ includeUncontrolled: true }).then((clients) => {
       clients.forEach((c) => c.postMessage({ type: "caching-start", total }));
     });
 
@@ -67,19 +67,21 @@ function cacheAllAssets() {
           .catch(() => {})
           .finally(() => {
             completed++;
-            self.clients.matchAll().then((clients) => {
-              clients.forEach((c) =>
-                c.postMessage({
-                  type: "caching-progress",
-                  completed,
-                  total,
-                }),
-              );
-            });
+            self.clients
+              .matchAll({ includeUncontrolled: true })
+              .then((clients) => {
+                clients.forEach((c) =>
+                  c.postMessage({
+                    type: "caching-progress",
+                    completed,
+                    total,
+                  }),
+                );
+              });
           }),
       ),
     ).then(() => {
-      self.clients.matchAll().then((clients) => {
+      self.clients.matchAll({ includeUncontrolled: true }).then((clients) => {
         clients.forEach((c) => c.postMessage({ type: "caching-complete" }));
       });
     });
@@ -115,11 +117,15 @@ self.addEventListener("fetch", (event) => {
   // Navigation requests: try network first, then cache fallback
   if (event.request.mode === "navigate") {
     event.respondWith(
-      fetch(event.request)
-        .then((networkResponse) => networkResponse)
-        .catch(
-          () => caches.match("./index.html") || caches.match("./offline.html"),
-        ),
+      fetch(event.request).catch(() => {
+        return caches.match(event.request).then((cachedResponse) => {
+          return (
+            cachedResponse ||
+            caches.match("./index.html") ||
+            caches.match("./offline.html")
+          );
+        });
+      }),
     );
     return;
   }

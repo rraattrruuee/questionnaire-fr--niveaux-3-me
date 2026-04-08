@@ -1,0 +1,2555 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../quiz_icon.svg" type="image/x-icon" />
+    <title>
+      Histoire (Guerres mondiales, Guerre froide), Géographie (Espaces
+      productifs, Faibles densités, Aménagement) et EMC (Laïcité, Valeurs)
+    </title>
+    <style>
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        to {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes headerDrop {
+        from {
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+
+        40% {
+          transform: translateY(-5px);
+        }
+
+        60% {
+          transform: translateY(-3px);
+        }
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+
+        20%,
+        60% {
+          transform: translateX(-5px);
+        }
+
+        40%,
+        80% {
+          transform: translateX(5px);
+        }
+      }
+
+      @keyframes zoomFeedback {
+        0% {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes couleur-qui-change {
+        0%,
+        10% {
+          color: white;
+        }
+
+        30% {
+          color: #00ff00;
+        }
+
+        38% {
+          color: #ffff00;
+        }
+
+        46% {
+          color: #ff00ff;
+        }
+
+        54% {
+          color: #00ffff;
+        }
+
+        60% {
+          color: #ffa500;
+        }
+
+        68% {
+          color: #7cfc00;
+        }
+
+        76% {
+          color: #ff69b4;
+        }
+
+        84% {
+          color: #8a2be2;
+        }
+
+        92% {
+          color: #ff4500;
+        }
+
+        100% {
+          color: deeppink;
+        }
+      }
+
+      @keyframes wipe-in {
+        from {
+          clip-path: inset(0 100% 0 0);
+        }
+
+        to {
+          clip-path: inset(0 0 0 0);
+        }
+      }
+
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background-color: #f0f4f8;
+        padding: 1rem;
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      .quiz-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a202c;
+        animation: headerDrop 0.8s ease-out;
+      }
+
+      .progress-bar-container {
+        width: 100%;
+        height: 8px;
+        background-color: #edf2f7;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+
+      .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #4c51bf, #667eea);
+        width: 0%;
+        transition: width 0.4s ease-out;
+      }
+
+      .nav-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        animation: slideIn 0.6s ease-out;
+      }
+
+      .nav-btn {
+        display: block;
+        width: 100%;
+        padding: 1.5rem;
+        text-align: center;
+        border-radius: 15px;
+        transition: all 0.2s;
+        font-weight: 700;
+        border: 2px solid #c3dafe;
+        color: #2b6cb0;
+        background-color: #ebf4ff;
+        cursor: pointer;
+        box-sizing: border-box;
+      }
+
+      .nav-btn:hover {
+        background-color: #cee0f2;
+        transform: translateY(-3px);
+        border-color: #4c51bf;
+      }
+
+      .question-card {
+        min-height: 200px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        border-radius: 15px;
+        background-color: #f7faff;
+        border: 2px solid #e2e8f0;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      .question-card.entering {
+        animation: slideIn 0.5s ease-out forwards;
+      }
+
+      .question-card.fast-exit {
+        animation: slideOut 0.3s ease-in forwards;
+      }
+
+      .question-text {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3748;
+      }
+
+      .img-container {
+        text-align: center;
+        margin: 15px 0;
+      }
+
+      .img-container img {
+        max-width: 100%;
+        border-radius: 8px;
+      }
+
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .option-item {
+        position: relative;
+      }
+
+      .option-item input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        height: 0;
+        width: 0;
+      }
+
+      .answer-btn {
+        display: block;
+        width: 100%;
+        padding: 1rem 1.25rem;
+        text-align: left;
+        border-radius: 10px;
+        transition: all 0.2s;
+        font-weight: 600;
+        border: 1px solid #c3dafe;
+        color: #2b6cb0;
+        background-color: #ebf4ff;
+        cursor: pointer;
+        box-sizing: border-box;
+      }
+
+      .answer-btn:hover {
+        background-color: #cee0f2;
+        transform: translateY(-1px);
+      }
+
+      .option-item input:checked + .answer-btn {
+        background-color: #3182ce;
+        border-color: #2c5282;
+        color: white;
+      }
+
+      .answer-btn.correct {
+        background-color: #48bb78 !important;
+        border-color: #2f855a !important;
+        color: white !important;
+        animation: bounce 0.6s ease-out;
+      }
+
+      .answer-btn.incorrect {
+        background-color: #f56565 !important;
+        border-color: #c53030 !important;
+        color: white !important;
+        animation: shake 0.5s ease-in-out;
+      }
+
+      .text-input-styled {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        font-size: 1.1rem;
+        border: 2px solid #c3dafe;
+        border-radius: 10px;
+        box-sizing: border-box;
+      }
+
+      .text-input-styled.correct {
+        border-color: #48bb78;
+        background-color: #f0fff4;
+        color: #2f855a;
+        animation: bounce 0.6s ease-out;
+      }
+
+      .text-input-styled.incorrect {
+        border-color: #f56565;
+        background-color: #fff5f5;
+        color: #c53030;
+        animation: shake 0.5s ease-in-out;
+      }
+
+      #feedback-area {
+        margin-top: 1rem;
+        padding: 1.5rem;
+        border-radius: 10px;
+        font-weight: 500;
+        display: none;
+        opacity: 0;
+      }
+
+      #feedback-area.visible {
+        display: block;
+        animation: zoomFeedback 0.4s forwards;
+      }
+
+      .feedback-correct {
+        background-color: #e6fffa;
+        color: #276749;
+        border: 1px solid #48bb78;
+      }
+
+      .feedback-incorrect {
+        background-color: #fff5f5;
+        color: #c53030;
+        border: 1px solid #f56565;
+      }
+
+      .main-btn-container {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      #main-btn {
+        background-color: #4c51bf;
+        color: white;
+        padding: 1rem 2.5rem;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        width: 100%;
+        border: none;
+        cursor: pointer;
+      }
+
+      #main-btn:disabled {
+        background-color: #a0aec0;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .math-frac {
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 0.9em;
+      }
+
+      .math-num {
+        border-bottom: 1px solid;
+        display: block;
+        padding: 0 2px;
+      }
+
+      .math-den {
+        display: block;
+        padding: 0 2px;
+      }
+
+      .couleur-qui-change {
+        animation: couleur-qui-change 14s infinite alternate;
+        font-weight: bold;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="quiz-container">
+      <div class="header">
+        <h1>
+          Histoire (Guerres mondiales, Guerre froide), Géographie (Espaces
+          productifs, Faibles densités, Aménagement) et EMC (Laïcité, Valeurs)
+        </h1>
+        <p class="anim-wipe-in">Troisième - QCM Aléatoire</p>
+      </div>
+      <div id="nav-container" class="nav-grid"></div>
+
+      <div id="quiz-ui" class="hidden">
+        <div class="progress-bar-container">
+          <div id="progress-fill" class="progress-bar-fill"></div>
+        </div>
+
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            color: #a0aec0;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            font-weight: 600;
+          "
+        >
+          <span id="cat-label">CATÉGORIE</span>
+          <span id="counter-label">1/10</span>
+        </div>
+
+        <div id="question-card-container" class="question-card entering">
+          <div id="question-text" class="question-text"></div>
+          <div id="image-area" class="img-container hidden"></div>
+
+          <div id="input-area"></div>
+        </div>
+
+        <div id="feedback-area"></div>
+
+        <div class="main-btn-container">
+          <button id="main-btn" onclick="app.checkAnswer()">
+            Valider la réponse
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const db = [
+        {
+          category: "La Guerre froide : origines et division du monde",
+          questions: [
+            {
+              text: "En quelle année l'Organisation des Nations Unies (ONU) a-t-elle été créée ?",
+              type: "mcq",
+              options: ["1944", "1945", "1946", "1950"],
+              correct: 1,
+              solution:
+                "L'ONU a été créée en 1945 après la Seconde Guerre mondiale pour maintenir la paix et la sécurité internationales.",
+            },
+            {
+              text: "Quel est l'objectif principal de l'ONU ?",
+              type: "mcq",
+              options: [
+                "Développer le commerce mondial",
+                "Maintenir la paix et la sécurité internationales",
+                "Créer une monnaie unique",
+                "Organiser les Jeux olympiques",
+              ],
+              correct: 1,
+              solution:
+                "L'objectif principal de l'ONU est de maintenir la paix et la sécurité internationales et de favoriser la coopération entre les États.",
+            },
+            {
+              text: "Combien de membres permanents composent le Conseil de sécurité de l'ONU ?",
+              type: "mcq",
+              options: ["3", "5", "7", "10"],
+              correct: 1,
+              solution:
+                "Le Conseil de sécurité compte 5 membres permanents : États-Unis, Russie, Chine, France et Royaume-Uni, disposant d'un droit de veto.",
+            },
+            {
+              text: "Quelle doctrine américaine de 1947 vise à contenir l'expansion du communisme ?",
+              type: "mcq",
+              options: [
+                "Doctrine Monroe",
+                "Doctrine Truman",
+                "Doctrine Eisenhower",
+                "Doctrine Kennedy",
+              ],
+              correct: 1,
+              solution:
+                "La doctrine Truman, proclamée en 1947, vise à contenir l'expansion du communisme par une aide économique et militaire aux pays menacés.",
+            },
+            {
+              text: "Quel est le nom du plan américain de reconstruction de l'Europe lancé en 1947 ?",
+              type: "mcq",
+              options: [
+                "Plan Marshall",
+                "Plan Morgenthau",
+                "Plan Schuman",
+                "Plan Monnet",
+              ],
+              correct: 0,
+              solution:
+                "Le Plan Marshall est un vaste programme d'aide économique lancé par les États-Unis en 1947 pour reconstruire l'Europe et stabiliser l'Europe de l'Ouest.",
+            },
+            {
+              text: "Pourquoi l'URSS a-t-elle refusé le Plan Marshall ?",
+              type: "mcq",
+              options: [
+                "Par manque de besoins",
+                "Par crainte d'une ingérence américaine",
+                "Par solidarité avec la Chine",
+                "Par opposition à toute aide étrangère",
+              ],
+              correct: 1,
+              solution:
+                "L'URSS a refusé le Plan Marshall car elle y voyait une tentative d'ingérence américaine dans ses zones d'influence.",
+            },
+            {
+              text: "Quels sont les deux blocs qui s'opposent pendant la Guerre froide ?",
+              type: "mcq",
+              options: [
+                "Bloc capitaliste et bloc socialiste",
+                "Bloc démocratique et bloc autoritaire",
+                "Bloc occidental et bloc communiste",
+                "Toutes ces réponses sont correctes",
+              ],
+              correct: 3,
+              solution:
+                "Les deux blocs antagonistes sont le bloc occidental (démocratique, capitaliste) dirigé par les États-Unis et le bloc communiste (autoritaire) dirigé par l'URSS.",
+            },
+            {
+              text: "Qui a popularisé l'expression « Rideau de fer » en 1946 ?",
+              type: "mcq",
+              options: [
+                "Harry Truman",
+                "Winston Churchill",
+                "Joseph Staline",
+                "Charles de Gaulle",
+              ],
+              correct: 1,
+              solution:
+                "Winston Churchill a popularisé l'expression « Rideau de fer » dans un discours en 1946 pour décrire la division de l'Europe.",
+            },
+            {
+              text: "En quelle année l'OTAN a-t-elle été créée ?",
+              type: "mcq",
+              options: ["1945", "1947", "1949", "1955"],
+              correct: 2,
+              solution:
+                "L'OTAN (Organisation du Traité de l'Atlantique Nord) a été créée en 1949 pour assurer la défense collective du bloc occidental.",
+            },
+            {
+              text: "En quelle année le Pacte de Varsovie a-t-il été fondé ?",
+              type: "mcq",
+              options: ["1949", "1952", "1955", "1961"],
+              correct: 2,
+              solution:
+                "Le Pacte de Varsovie, alliance militaire du bloc communiste, a été fondé en 1955 sous l'égide de l'URSS.",
+            },
+            {
+              text: "Qu'est-ce que la dissuasion nucléaire ?",
+              type: "mcq",
+              options: [
+                "L'utilisation préventive de l'arme nucléaire",
+                "L'idée que l'usage du nucléaire serait suicidaire pour les deux camps",
+                "La destruction des arsenaux ennemis",
+                "La coopération nucléaire entre États",
+              ],
+              correct: 1,
+              solution:
+                "La dissuasion nucléaire repose sur l'idée qu'une attaque nucléaire entraînerait une riposte massive, provoquant la destruction des deux camps.",
+            },
+            {
+              text: "Citez un exemple de guerre par procuration pendant la Guerre froide.",
+              type: "text",
+              accepted: [
+                "guerre de Corée",
+                "Corée",
+                "guerre du Vietnam",
+                "Vietnam",
+                "conflit en Afghanistan",
+                "Afghanistan",
+              ],
+              solution:
+                "Les guerres par procuration sont des conflits indirects où les deux superpuissances soutiennent des camps opposés sans s'affronter directement, comme la guerre de Corée (1950-1953) ou la guerre du Vietnam (1955-1975).",
+            },
+            {
+              text: "Pourquoi la Guerre froide est-elle qualifiée de « froide » ?",
+              type: "mcq",
+              options: [
+                "Parce qu'elle se déroule dans des régions froides",
+                "Parce qu'il n'y a pas d'affrontement militaire direct entre les deux superpuissances",
+                "Parce qu'elle a eu lieu en hiver",
+                "Parce qu'elle concerne uniquement l'économie",
+              ],
+              correct: 1,
+              solution:
+                "La Guerre froide est dite « froide » car les États-Unis et l'URSS ne s'affrontent jamais directement militairement, évitant une guerre nucléaire dévastatrice.",
+            },
+            {
+              text: "En combien de zones l'Allemagne a-t-elle été divisée après 1945 ?",
+              type: "mcq",
+              options: ["2", "3", "4", "5"],
+              correct: 2,
+              solution:
+                "L'Allemagne a été divisée en quatre zones d'occupation : américaine, britannique, française et soviétique, suite aux conférences de Yalta et Potsdam.",
+            },
+            {
+              text: "Quelle est la particularité géographique de Berlin après 1945 ?",
+              type: "mcq",
+              options: [
+                "Elle est entièrement en zone soviétique",
+                "Elle est divisée en quatre secteurs mais située en zone soviétique",
+                "Elle est neutre",
+                "Elle appartient à la France",
+              ],
+              correct: 1,
+              solution:
+                "Berlin, bien que située au cœur de la zone soviétique, était elle-même divisée en quatre secteurs, ce qui en faisait un point de friction permanent.",
+            },
+            {
+              text: "En quelle année la RFA et la RDA ont-elles été créées ?",
+              type: "mcq",
+              options: ["1945", "1948", "1949", "1955"],
+              correct: 2,
+              solution:
+                "En 1949, la création de la RFA (République fédérale d'Allemagne) à l'Ouest et de la RDA (République démocratique allemande) à l'Est officialise la division allemande.",
+            },
+            {
+              text: "Quelle crise de Berlin a eu lieu entre 1948 et 1949 ?",
+              type: "mcq",
+              options: [
+                "Crise du mur",
+                "Crise du blocus",
+                "Crise de l'aéroport",
+                "Crise de l'unification",
+              ],
+              correct: 1,
+              solution:
+                "La première crise de Berlin (1948-1949) est le blocus imposé par l'URSS sur les accès terrestres à Berlin-Ouest.",
+            },
+            {
+              text: "Comment les Occidentaux ont-ils ravitaillé Berlin-Ouest pendant le blocus de 1948-1949 ?",
+              type: "mcq",
+              options: [
+                "Par un pont aérien",
+                "Par un tunnel souterrain",
+                "Par des convois militaires terrestres",
+                "Par la mer Baltique",
+              ],
+              correct: 0,
+              solution:
+                "Les Occidentaux ont organisé un pont aérien massif, avec des milliers d'avions apportant nourriture et charbon pour approvisionner Berlin-Ouest.",
+            },
+            {
+              text: "En quelle année le mur de Berlin a-t-il été construit ?",
+              type: "mcq",
+              options: ["1958", "1961", "1963", "1969"],
+              correct: 1,
+              solution:
+                "Le mur de Berlin a été construit dans la nuit du 12 au 13 août 1961 pour stopper l'exode des Allemands de l'Est vers l'Ouest.",
+            },
+            {
+              text: "Pourquoi le mur de Berlin a-t-il été construit ?",
+              type: "mcq",
+              options: [
+                "Pour protéger Berlin-Ouest",
+                "Pour empêcher la fuite des habitants de la RDA vers l'Ouest",
+                "Pour faciliter les échanges commerciaux",
+                "Pour célébrer l'unité allemande",
+              ],
+              correct: 1,
+              solution:
+                "Le mur a été construit pour stopper l'exode massif des Allemands de l'Est vers Berlin-Ouest, qui affaiblissait économiquement et politiquement la RDA.",
+            },
+            {
+              text: "Comment les Occidentaux qualifiaient-ils le mur de Berlin ?",
+              type: "mcq",
+              options: [
+                "Mur de la liberté",
+                "Mur de la honte",
+                "Mur de protection",
+                "Mur de l'espoir",
+              ],
+              correct: 1,
+              solution:
+                "Les pays occidentaux qualifiaient le mur de Berlin de « mur de la honte », symbole de l'oppression du régime communiste.",
+            },
+            {
+              text: "Quelle célèbre déclaration John F. Kennedy a-t-il prononcée à Berlin en 1963 ?",
+              type: "mcq",
+              options: [
+                "« Freedom for Berlin »",
+                "« Ich bin ein Berliner »",
+                "« Berlin will be free »",
+                "« Nous sommes tous Berlinois »",
+              ],
+              correct: 1,
+              solution:
+                "En 1963, JFK a prononcé « Ich bin ein Berliner » (« Je suis un Berlinois ») pour affirmer la solidarité américaine avec les habitants de Berlin-Ouest.",
+            },
+            {
+              text: "En quelle année a eu lieu la crise de Cuba ?",
+              type: "mcq",
+              options: ["1960", "1961", "1962", "1963"],
+              correct: 2,
+              solution:
+                "La crise de Cuba, moment le plus dangereux de la Guerre froide, a eu lieu en octobre 1962.",
+            },
+            {
+              text: "Qu'a découvert un avion espion américain à Cuba en octobre 1962 ?",
+              type: "mcq",
+              options: [
+                "Des sous-marins soviétiques",
+                "Des missiles nucléaires soviétiques",
+                "Une base aérienne américaine",
+                "Des documents secrets",
+              ],
+              correct: 1,
+              solution:
+                "Les avions espions américains ont découvert l'installation de missiles nucléaires soviétiques à Cuba, capables de frapper les États-Unis.",
+            },
+            {
+              text: "Quelle mesure Kennedy a-t-il prise face à la crise de Cuba ?",
+              type: "mcq",
+              options: [
+                "Une attaque aérienne immédiate",
+                "Un blocus naval (« quarantaine »)",
+                "Une négociation directe avec Castro",
+                "Un retrait des troupes américaines",
+              ],
+              correct: 1,
+              solution:
+                "Kennedy a mis en place un blocus naval autour de Cuba pour empêcher l'arrivée de nouveaux missiles soviétiques, tout en exigeant le retrait des installations existantes.",
+            },
+            {
+              text: "Quel compromis a mis fin à la crise de Cuba ?",
+              type: "mcq",
+              options: [
+                "Retrait des missiles soviétiques de Cuba contre la promesse américaine de ne pas envahir l'île",
+                "Retrait des missiles américains de Turquie uniquement",
+                "Désarmement nucléaire total",
+                "Création d'une zone démilitarisée à Cuba",
+              ],
+              correct: 0,
+              solution:
+                "L'URSS a accepté de retirer ses missiles de Cuba, tandis que les États-Unis se sont engagés à ne pas envahir l'île et à retirer discrètement leurs missiles de Turquie.",
+            },
+            {
+              text: "Qu'est-ce que le « téléphone rouge » mis en place après la crise de Cuba ?",
+              type: "mcq",
+              options: [
+                "Un système de propagande",
+                "Une ligne de communication directe entre Washington et Moscou",
+                "Un code secret nucléaire",
+                "Un réseau d'espionnage",
+              ],
+              correct: 1,
+              solution:
+                "Le téléphone rouge est une ligne de communication directe entre Washington et Moscou, créée pour éviter toute escalade incontrôlée en cas de crise.",
+            },
+            {
+              text: "Quelle période de la Guerre froide suit la crise de Cuba ?",
+              type: "mcq",
+              options: [
+                "La guerre ouverte",
+                "La détente",
+                "La confrontation totale",
+                "La neutralité",
+              ],
+              correct: 1,
+              solution:
+                "Après la crise de Cuba, une phase de détente s'installe à partir du milieu des années 1960, avec des accords sur la limitation des armements nucléaires.",
+            },
+            {
+              text: "En quelle date le mur de Berlin est-il tombé ?",
+              type: "mcq",
+              options: [
+                "9 novembre 1987",
+                "9 novembre 1989",
+                "9 novembre 1991",
+                "3 octobre 1990",
+              ],
+              correct: 1,
+              solution:
+                "Le mur de Berlin est tombé le 9 novembre 1989, symbolisant l'effondrement du bloc communiste en Europe.",
+            },
+            {
+              text: "En quelle année l'URSS s'est-elle disloquée ?",
+              type: "mcq",
+              options: ["1989", "1990", "1991", "1992"],
+              correct: 2,
+              solution:
+                "L'Union soviétique s'est disloquée en 1991, mettant officiellement fin à la Guerre froide.",
+            },
+            {
+              text: "Comment la Guerre froide s'est-elle exprimée dans le domaine culturel et symbolique ?",
+              type: "text",
+              accepted: [
+                "course à l'espace",
+                "Jeux olympiques",
+                "cinéma",
+                "échecs",
+                "Spoutnik",
+                "Apollo 11",
+              ],
+              solution:
+                "La Guerre froide s'est aussi jouée sur des terrains symboliques : la course à l'espace (Spoutnik en 1957, Apollo 11 en 1969), les Jeux olympiques, les échecs ou le cinéma étaient des vecteurs d'affrontement idéologique.",
+            },
+            {
+              text: "Quel événement spatial de 1957 a marqué un avantage pour l'URSS ?",
+              type: "mcq",
+              options: ["Apollo 11", "Spoutnik", "Vostok 1", "Explorer 1"],
+              correct: 1,
+              solution:
+                "Le lancement du satellite Spoutnik par l'URSS en 1957 a marqué un avantage technologique et symbolique dans la course à l'espace.",
+            },
+            {
+              text: "Quelle mission spatiale américaine de 1969 a permis le premier pas sur la Lune ?",
+              type: "mcq",
+              options: ["Vostok 1", "Apollo 11", "Gemini 4", "Mercury 6"],
+              correct: 1,
+              solution:
+                "Apollo 11, en juillet 1969, a permis à Neil Armstrong de devenir le premier homme à marcher sur la Lune, marquant un succès américain dans la course spatiale.",
+            },
+            {
+              text: "Qu'est-ce qu'un système bipolaire ?",
+              type: "mcq",
+              options: [
+                "Un monde divisé en deux blocs antagonistes",
+                "Un système économique à deux monnaies",
+                "Une alliance entre deux pays",
+                "Un traité de paix bilatéral",
+              ],
+              correct: 0,
+              solution:
+                "Un système bipolaire désigne un monde structuré autour de deux puissances dominantes et opposées, ici les États-Unis et l'URSS pendant la Guerre froide.",
+            },
+            {
+              text: "Quel est le rôle de l'Assemblée générale de l'ONU ?",
+              type: "mcq",
+              options: [
+                "Prendre des décisions militaires contraignantes",
+                "Réunir tous les États membres pour débattre des enjeux mondiaux",
+                "Gérer le budget de l'OTAN",
+                "Organiser les élections dans les États membres",
+              ],
+              correct: 1,
+              solution:
+                "L'Assemblée générale réunit tous les États membres de l'ONU et constitue un espace de débat sur les grands enjeux mondiaux, sans pouvoir de décision contraignant.",
+            },
+            {
+              text: "Quel droit particulier possèdent les 5 membres permanents du Conseil de sécurité ?",
+              type: "mcq",
+              options: [
+                "Droit de veto",
+                "Droit de vote double",
+                "Droit d'initiative exclusive",
+                "Droit de nomination du Secrétaire général",
+              ],
+              correct: 0,
+              solution:
+                "Les 5 membres permanents du Conseil de sécurité disposent d'un droit de veto, leur permettant de bloquer toute résolution, reflétant l'équilibre des puissances de 1945.",
+            },
+            {
+              text: "Citez deux conférences qui ont organisé l'après-Seconde Guerre mondiale.",
+              type: "text",
+              accepted: [
+                "Yalta et Potsdam",
+                "Yalta, Potsdam",
+                "conférence de Yalta",
+                "conférence de Potsdam",
+              ],
+              solution:
+                "Les conférences de Yalta (février 1945) et de Potsdam (été 1945) ont organisé le démembrement de l'Allemagne et les nouvelles frontières européennes.",
+            },
+            {
+              text: "Quelle était la situation de Berlin-Ouest après 1949 ?",
+              type: "mcq",
+              options: [
+                "Une ville entièrement soviétique",
+                "Une enclave occidentale en territoire communiste",
+                "Une zone neutre",
+                "Une capitale européenne",
+              ],
+              correct: 1,
+              solution:
+                "Berlin-Ouest était une enclave occidentale en plein territoire de la RDA communiste, symbole de liberté mais aussi de vulnérabilité stratégique.",
+            },
+            {
+              text: "Quel était l'objectif du Plan Marshall pour les États-Unis ?",
+              type: "mcq",
+              options: [
+                "Conquérir militairement l'Europe",
+                "Relancer les économies européennes et contenir le communisme",
+                "Créer une union politique européenne",
+                "Développer le tourisme en Europe",
+              ],
+              correct: 1,
+              solution:
+                "Le Plan Marshall visait à reconstruire l'Europe économiquement pour stabiliser politiquement l'Ouest et contenir l'expansion du communisme.",
+            },
+            {
+              text: "Qu'est-ce que l'endiguement (containment) ?",
+              type: "mcq",
+              options: [
+                "Une stratégie militaire d'attaque",
+                "Une politique visant à contenir l'expansion du communisme",
+                "Un accord commercial",
+                "Une alliance culturelle",
+              ],
+              correct: 1,
+              solution:
+                "L'endiguement est la stratégie américaine visant à contenir l'expansion du communisme sans confrontation directe, par l'aide économique et militaire.",
+            },
+            {
+              text: "Pourquoi la Guerre froide est-elle qualifiée de conflit « global » ?",
+              type: "text",
+              accepted: [
+                "car elle concerne le monde entier",
+                "car elle dépasse l'Europe",
+                "car elle implique des conflits sur tous les continents",
+                "mondiale",
+              ],
+              solution:
+                "La Guerre froide est globale car elle dépasse le cadre européen : elle implique des conflits en Asie (Corée, Vietnam), en Afrique, en Amérique latine, et une compétition technologique et culturelle mondiale.",
+            },
+            {
+              text: "Quel traité a mis fin officiellement à la Première Guerre mondiale ?",
+              type: "mcq",
+              options: [
+                "Traité de Paris",
+                "Traité de Versailles",
+                "Traité de Francfort",
+                "Traité de Trianon",
+              ],
+              correct: 1,
+              solution:
+                "Le traité de Versailles, signé le 28 juin 1919, a officiellement mis fin à la Première Guerre mondiale et imposé de lourdes sanctions à l'Allemagne.",
+            },
+            {
+              text: "Quelle organisation internationale a été créée après la Première Guerre mondiale pour maintenir la paix ?",
+              type: "mcq",
+              options: ["ONU", "SDN", "OTAN", "Union européenne"],
+              correct: 1,
+              solution:
+                "La Société des Nations (SDN) a été créée après la Première Guerre mondiale pour maintenir la paix, mais elle s'est révélée inefficace face aux agressions des années 1930.",
+            },
+            {
+              text: "Quel empire a été démantelé après la Première Guerre mondiale, conduisant à la création de nouveaux États comme la Tchécoslovaquie ?",
+              type: "mcq",
+              options: [
+                "Empire britannique",
+                "Empire austro-hongrois",
+                "Empire ottoman",
+                "Empire russe",
+              ],
+              correct: 1,
+              solution:
+                "L'Empire austro-hongrois a été démantelé après 1918, permettant la création de nouveaux États comme la Tchécoslovaquie, la Yougoslavie ou l'Autriche.",
+            },
+            {
+              text: "Quel génocide a eu lieu dans l'Empire ottoman pendant la Première Guerre mondiale ?",
+              type: "mcq",
+              options: [
+                "Génocide des Tutsi",
+                "Génocide arménien",
+                "Génocide des Juifs",
+                "Génocide des Rohingyas",
+              ],
+              correct: 1,
+              solution:
+                "Le génocide arménien (1915-1916) a vu l'extermination d'environ 1,2 million d'Arméniens par les autorités ottomanes, l'un des premiers génocides du XX<sup>e</sup> siècle.",
+            },
+            {
+              text: "Qu'est-ce qu'une « guerre totale » ?",
+              type: "mcq",
+              options: [
+                "Une guerre limitée à un front",
+                "Un conflit mobilisant toute la société : économie, civils, propagande",
+                "Une guerre nucléaire",
+                "Une guerre sans civils",
+              ],
+              correct: 1,
+              solution:
+                "Une guerre totale mobilise non seulement les armées mais aussi l'ensemble des ressources économiques, humaines et sociales d'un pays, comme pendant la Première Guerre mondiale.",
+            },
+            {
+              text: "Quel rôle jouaient les civils pendant la Première Guerre mondiale ?",
+              type: "text",
+              accepted: [
+                "production dans les usines d'armement",
+                "travail dans les usines",
+                "fabrication de munitions",
+                "effort de guerre à l'arrière",
+              ],
+              solution:
+                "Les civils jouaient un rôle essentiel dans l'effort de guerre : travail dans les usines d'armement (y compris les femmes), production agricole, soutien logistique, et subissaient aussi les pénuries et les bombardements.",
+            },
+            {
+              text: "Qu'est-ce que la propagande pendant la Première Guerre mondiale ?",
+              type: "mcq",
+              options: [
+                "Une information neutre",
+                "Un outil pour contrôler l'opinion et maintenir le moral",
+                "Une censure totale",
+                "Un journal officiel",
+              ],
+              correct: 1,
+              solution:
+                "La propagande était utilisée par les États pour contrôler l'opinion publique, justifier les sacrifices et maintenir le moral des populations et des soldats.",
+            },
+            {
+              text: "Qu'appelle-t-on les « gueules cassées » ?",
+              type: "mcq",
+              options: [
+                "Les soldats déserteurs",
+                "Les soldats blessés gravement au visage",
+                "Les civils réfugiés",
+                "Les prisonniers de guerre",
+              ],
+              correct: 1,
+              solution:
+                "Les « gueules cassées » désignent les soldats gravement mutilés au visage par les éclats d'obus, marquant profondément la société d'après-guerre.",
+            },
+            {
+              text: "Quelle bataille de 1916 est emblématique de la violence de la guerre de tranchées ?",
+              type: "mcq",
+              options: [
+                "Bataille de la Marne",
+                "Bataille de Verdun",
+                "Bataille de la Somme",
+                "Bataille de Passchendaele",
+              ],
+              correct: 1,
+              solution:
+                "La bataille de Verdun (1916) est l'une des plus longues et violentes de la Première Guerre mondiale, symbolisant l'horreur de la guerre de tranchées.",
+            },
+            {
+              text: "Quelles étaient les conditions de vie dans les tranchées ?",
+              type: "text",
+              accepted: [
+                "boue",
+                "froid",
+                "rats",
+                "poux",
+                "maladies",
+                "bombardements",
+                "manque d'hygiène",
+              ],
+              solution:
+                "La vie dans les tranchées était marquée par la boue, le froid, l'insalubrité, la présence de rats et de poux, les maladies comme la dysenterie, et les bombardements constants.",
+            },
+            {
+              text: "Quelle arme nouvelle et terrifiante a été utilisée pendant la Première Guerre mondiale ?",
+              type: "mcq",
+              options: [
+                "Le char d'assaut",
+                "Les gaz toxiques",
+                "L'avion de chasse",
+                "Le sous-marin",
+              ],
+              correct: 1,
+              solution:
+                "Les gaz toxiques (chlore, gaz moutarde) ont été utilisés massivement, provoquant des brûlures graves et des morts atroces, ajoutant à l'horreur de la guerre.",
+            },
+            {
+              text: "Qu'est-ce que le « shell shock » ?",
+              type: "mcq",
+              options: [
+                "Une nouvelle arme",
+                "Un traumatisme psychologique des soldats",
+                "Une maladie infectieuse",
+                "Une tactique militaire",
+              ],
+              correct: 1,
+              solution:
+                "Le « shell shock » (ou commotion des obus) désigne les traumatismes psychologiques subis par les soldats face à l'horreur des combats et aux bombardements constants.",
+            },
+            {
+              text: "En quelle année ont eu lieu les mutineries dans l'armée française ?",
+              type: "mcq",
+              options: ["1914", "1916", "1917", "1918"],
+              correct: 2,
+              solution:
+                "En 1917, des mutineries ont éclaté dans l'armée française : des soldats refusaient de monter à l'assaut, exprimant leur lassitude face à une guerre d'usure sans fin.",
+            },
+            {
+              text: "Quel événement a déclenché la Révolution russe de 1917 ?",
+              type: "mcq",
+              options: [
+                "La victoire militaire",
+                "Les difficultés de la guerre et les tensions sociales",
+                "Une invasion étrangère",
+                "Une réforme agraire",
+              ],
+              correct: 1,
+              solution:
+                "La Révolution russe de 1917 a été déclenchée par l'exaspération face aux pertes de la guerre, aux pénuries alimentaires et aux inégalités sociales sous le régime tsariste.",
+            },
+            {
+              text: "Qui a dirigé la Révolution d'Octobre 1917 en Russie ?",
+              type: "mcq",
+              options: ["Staline", "Lénine", "Trotsky", "Kerenski"],
+              correct: 1,
+              solution:
+                "Lénine a dirigé les Bolcheviks lors de la Révolution d'Octobre 1917, instaurant un régime communiste en Russie.",
+            },
+            {
+              text: "Quel traité a mis fin à la participation russe à la Première Guerre mondiale ?",
+              type: "mcq",
+              options: [
+                "Traité de Versailles",
+                "Traité de Brest-Litovsk",
+                "Traité de Trianon",
+                "Traité de Sèvres",
+              ],
+              correct: 1,
+              solution:
+                "Le traité de Brest-Litovsk (1918), signé entre l'Allemagne et la Russie bolchevique, a mis fin à la participation russe au conflit.",
+            },
+            {
+              text: "Quelles sanctions le traité de Versailles a-t-il imposées à l'Allemagne ?",
+              type: "text",
+              accepted: [
+                "perte de territoires",
+                "réparations financières",
+                "réduction de l'armée",
+                "clause de culpabilité",
+              ],
+              solution:
+                "Le traité de Versailles a imposé à l'Allemagne : la perte de territoires (comme l'Alsace-Lorraine), le paiement de réparations financières, la réduction de son armée, et la clause de culpabilité pour la guerre.",
+            },
+            {
+              text: "Pourquoi le traité de Versailles est-il considéré comme une cause indirecte de la Seconde Guerre mondiale ?",
+              type: "mcq",
+              options: [
+                "Parce qu'il a unifié l'Europe",
+                "Parce qu'il a humilié l'Allemagne et nourri le ressentiment",
+                "Parce qu'il a renforcé la SDN",
+                "Parce qu'il a désarmé tous les pays",
+              ],
+              correct: 1,
+              solution:
+                "Les conditions humiliantes du traité de Versailles ont nourri un fort ressentiment en Allemagne, contribuant à l'instabilité politique et à la montée du nazisme dans les années 1930.",
+            },
+          ],
+        },
+        {
+          category: "Espaces de faible densité : caractéristiques et défis",
+          questions: [
+            {
+              text: "Qu'est-ce qu'un espace de faible densité ?",
+              type: "mcq",
+              options: [
+                "Une zone avec plus de 100 habitants/km²",
+                "Un territoire avec moins de 30 habitants/km²",
+                "Une métropole",
+                "Une zone industrielle",
+              ],
+              correct: 1,
+              solution:
+                "Un espace de faible densité est un territoire où la concentration de population est généralement inférieure à 30 habitants par km².",
+            },
+            {
+              text: "Quelle part du territoire français est constituée d'espaces de faible densité ?",
+              type: "mcq",
+              options: ["10 %", "25 %", "40 %", "60 %"],
+              correct: 2,
+              solution:
+                "En France, les espaces de faible densité couvrent plus de 40 % du territoire, mais n'abritent que 6,5 % de la population.",
+            },
+            {
+              text: "Quels types de territoires sont souvent des espaces de faible densité en France ?",
+              type: "text",
+              accepted: [
+                "zones montagneuses",
+                "montagnes",
+                "régions éloignées",
+                "campagnes isolées",
+                "Massif central",
+                "Alpes",
+                "Pyrénées",
+              ],
+              solution:
+                "Les espaces de faible densité sont souvent des zones montagneuses (Alpes, Pyrénées, Massif central, Vosges, Ardennes) ou des régions rurales éloignées des littoraux et des métropoles.",
+            },
+            {
+              text: "Quel phénomène démographique majeur touche les espaces de faible densité ?",
+              type: "mcq",
+              options: [
+                "La croissance rapide de la population",
+                "Le vieillissement et la baisse de la population",
+                "L'immigration massive",
+                "La natalité élevée",
+              ],
+              correct: 1,
+              solution:
+                "Les espaces de faible densité connaissent souvent un vieillissement accéléré et une baisse démographique, avec l'émigration des jeunes vers les villes.",
+            },
+            {
+              text: "Dans le village de Saint-Martin-de-Lansuscle, quelle part de la population a plus de 60 ans ?",
+              type: "mcq",
+              options: ["30 %", "50 %", "70 %", "90 %"],
+              correct: 2,
+              solution:
+                "À Saint-Martin-de-Lansuscle, 70 % de la population a plus de 60 ans, illustrant le vieillissement accéléré dans certains espaces ruraux.",
+            },
+            {
+              text: "Qu'est-ce qu'un « désert médical » ?",
+              type: "mcq",
+              options: [
+                "Une région sans hôpital",
+                "Une zone où l'accès aux soins de santé est insuffisant",
+                "Un lieu de vacances pour médecins",
+                "Une clinique privée",
+              ],
+              correct: 1,
+              solution:
+                "Un désert médical est une zone géographique où l'accès aux soins de santé est insuffisant, avec un manque de médecins et de structures de soins.",
+            },
+            {
+              text: "Qu'appelle-t-on une « zone blanche » ?",
+              type: "mcq",
+              options: [
+                "Une zone enneigée",
+                "Un territoire sans couverture téléphonique ou Internet",
+                "Une région touristique",
+                "Un espace protégé",
+              ],
+              correct: 1,
+              solution:
+                "Une zone blanche est un territoire où la couverture téléphonique et Internet est inexistante ou très limitée, compliquant l'accès aux services numériques.",
+            },
+            {
+              text: "Pourquoi la mobilité est-elle un défi dans les espaces de faible densité ?",
+              type: "text",
+              accepted: [
+                "dépendance à la voiture",
+                "longues distances",
+                "manque de transports en commun",
+                "isolement géographique",
+              ],
+              solution:
+                "La mobilité est difficile car les habitants doivent parcourir de longues distances pour accéder aux services, avec une forte dépendance à la voiture et un manque de transports en commun.",
+            },
+            {
+              text: "Quel type d'économie domine souvent dans les espaces de faible densité ?",
+              type: "mcq",
+              options: [
+                "Industrie de pointe",
+                "Agriculture traditionnelle et exploitation forestière",
+                "Finance internationale",
+                "Technologies numériques",
+              ],
+              correct: 1,
+              solution:
+                "Ces espaces sont souvent dominés par des économies peu diversifiées : agriculture traditionnelle, exploitation forestière, ou tourisme saisonnier.",
+            },
+            {
+              text: "Qu'est-ce que la périurbanisation ?",
+              type: "mcq",
+              options: [
+                "La concentration en centre-ville",
+                "L'extension de l'habitat urbain dans des zones rurales proches",
+                "La désertification rurale",
+                "La construction de gratte-ciel",
+              ],
+              correct: 1,
+              solution:
+                "La périurbanisation est l'extension de l'habitat urbain dans des zones auparavant rurales, souvent sous forme de lotissements pavillonnaires.",
+            },
+            {
+              text: "Qu'est-ce que l'étalement urbain ?",
+              type: "mcq",
+              options: [
+                "La rénovation des centres-villes",
+                "L'expansion géographique des villes au détriment des espaces naturels",
+                "La construction de parkings souterrains",
+                "La création de parcs urbains",
+              ],
+              correct: 1,
+              solution:
+                "L'étalement urbain désigne l'extension géographique des aires urbaines, consommant des terres agricoles et naturelles, avec des impacts environnementaux.",
+            },
+            {
+              text: "Qu'est-ce que l'artificialisation des sols ?",
+              type: "mcq",
+              options: [
+                "La plantation d'arbres",
+                "La transformation d'espaces naturels en zones construites",
+                "La création de jardins partagés",
+                "La protection des parcs",
+              ],
+              correct: 1,
+              solution:
+                "L'artificialisation des sols est la transformation d'espaces naturels ou agricoles en zones construites, contribuant à la perte de biodiversité.",
+            },
+            {
+              text: "Quelles sont les conséquences environnementales de l'étalement urbain ?",
+              type: "text",
+              accepted: [
+                "perte de biodiversité",
+                "destruction d'habitats",
+                "pollution",
+                "augmentation des trajets en voiture",
+              ],
+              solution:
+                "L'étalement urbain entraîne la destruction d'habitats naturels, la diminution de la biodiversité, l'augmentation de la pollution liée aux déplacements motorisés, et la fragilisation des écosystèmes.",
+            },
+            {
+              text: "Qu'appelle-t-on les « néoruraux » ?",
+              type: "mcq",
+              options: [
+                "Des agriculteurs traditionnels",
+                "Des citadins qui s'installent en milieu rural",
+                "Des touristes saisonniers",
+                "Des fonctionnaires en mutation",
+              ],
+              correct: 1,
+              solution:
+                "Les néoruraux sont des individus, souvent issus des grandes villes, qui choisissent de s'installer en milieu rural pour un cadre de vie plus calme et une meilleure qualité de vie.",
+            },
+            {
+              text: "Pourquoi les néoruraux s'installent-ils dans les espaces de faible densité ?",
+              type: "text",
+              accepted: [
+                "fuir la pollution",
+                "fuir le stress urbain",
+                "coût de la vie",
+                "qualité de vie",
+                "proximité avec la nature",
+              ],
+              solution:
+                "Les néoruraux cherchent à fuir la pollution, le stress urbain et la hausse du coût de la vie, pour s'installer dans un cadre plus naturel avec une meilleure qualité de vie.",
+            },
+            {
+              text: "Comment les néoruraux contribuent-ils à revitaliser les espaces ruraux ?",
+              type: "text",
+              accepted: [
+                "télétravail",
+                "tourisme",
+                "agriculture diversifiée",
+                "création d'emplois",
+                "activités culturelles",
+              ],
+              solution:
+                "Les néoruraux apportent leurs compétences (télétravail, tourisme, agriculture diversifiée), participent à la création d'emplois, rouvrent des classes d'école et développent des activités culturelles et sociales.",
+            },
+            {
+              text: "Quel est un atout touristique des espaces de faible densité ?",
+              type: "mcq",
+              options: [
+                "Les centres commerciaux",
+                "Les paysages naturels et le tourisme vert",
+                "Les usines",
+                "Les autoroutes",
+              ],
+              correct: 1,
+              solution:
+                "Les paysages naturels préservés sont un atout majeur pour le tourisme vert : randonnées, sports de nature, observation de la faune et de la flore.",
+            },
+            {
+              text: "Qu'est-ce que le tourisme vert ?",
+              type: "mcq",
+              options: [
+                "Un tourisme urbain",
+                "Un tourisme basé sur la nature et les activités de plein air",
+                "Un tourisme de luxe",
+                "Un tourisme industriel",
+              ],
+              correct: 1,
+              solution:
+                "Le tourisme vert désigne un tourisme durable centré sur la découverte de la nature : randonnées, sports de nature, observation de la biodiversité.",
+            },
+            {
+              text: "Comment l'agriculture de qualité peut-elle valoriser les espaces de faible densité ?",
+              type: "text",
+              accepted: [
+                "circuits courts",
+                "produits du terroir",
+                "AOP",
+                "IGP",
+                "agriculture biologique",
+                "vente directe",
+              ],
+              solution:
+                "L'agriculture de qualité (biologique, circuits courts, AOP/IGP, vente directe) permet de valoriser les produits du terroir, de soutenir l'économie locale et de maintenir une activité dans ces territoires.",
+            },
+            {
+              text: "Qu'est-ce qu'une AOP ?",
+              type: "mcq",
+              options: [
+                "Association des Ouvriers de Provence",
+                "Appellation d'Origine Protégée",
+                "Aide aux Organismes Publics",
+                "Agence de l'Organisation du Patrimoine",
+              ],
+              correct: 1,
+              solution:
+                "L'AOP (Appellation d'Origine Protégée) est un label européen garantissant que le produit est fabriqué dans une zone géographique précise selon un savoir-faire traditionnel.",
+            },
+            {
+              text: "Quel rôle jouent les parcs naturels dans les espaces de faible densité ?",
+              type: "mcq",
+              options: [
+                "Ils interdisent toute activité humaine",
+                "Ils préservent l'environnement et favorisent l'écotourisme",
+                "Ils développent l'industrie lourde",
+                "Ils construisent des autoroutes",
+              ],
+              correct: 1,
+              solution:
+                "Les parcs naturels préservent les environnements remarquables et favorisent l'écotourisme, tout en soutenant des initiatives de développement durable et d'innovation.",
+            },
+            {
+              text: "Qu'est-ce que la littoralisation ?",
+              type: "mcq",
+              options: [
+                "La désertification des côtes",
+                "La concentration de la population et des activités sur les littoraux",
+                "La protection des plages",
+                "La pêche industrielle",
+              ],
+              correct: 1,
+              solution:
+                "La littoralisation est le processus par lequel une grande partie de la population et des activités économiques se concentrent sur les littoraux.",
+            },
+            {
+              text: "Qu'est-ce que l'héliotropisme ?",
+              type: "mcq",
+              options: [
+                "L'attraction vers les régions froides",
+                "L'attraction des populations vers les régions ensoleillées du sud",
+                "La culture du tournesol",
+                "L'énergie solaire",
+              ],
+              correct: 1,
+              solution:
+                "L'héliotropisme désigne l'attraction des populations vers les régions ensoleillées du sud de la France (PACA, Occitanie), pour le climat et les opportunités économiques.",
+            },
+            {
+              text: "Quelles régions françaises sont particulièrement touchées par l'héliotropisme ?",
+              type: "text",
+              accepted: [
+                "PACA",
+                "Provence-Alpes-Côte d'Azur",
+                "Occitanie",
+                "Côte d'Azur",
+                "sud de la France",
+              ],
+              solution:
+                "Les régions PACA (Provence-Alpes-Côte d'Azur) et Occitanie sont particulièrement attractives grâce au climat méditerranéen, au tourisme et au dynamisme économique.",
+            },
+            {
+              text: "Quel défi pose la dépendance à la voiture dans les espaces périurbains ?",
+              type: "text",
+              accepted: [
+                "pollution",
+                "embouteillages",
+                "coût pour les ménages",
+                "inégalités d'accès",
+              ],
+              solution:
+                "La dépendance à la voiture entraîne pollution atmosphérique, embouteillages, coût financier pour les ménages, et inégalités d'accès pour ceux qui ne peuvent pas conduire.",
+            },
+            {
+              text: "Qu'est-ce qu'une mobilité durable ?",
+              type: "mcq",
+              options: [
+                "L'usage exclusif de la voiture",
+                "Des moyens de transport respectueux de l'environnement",
+                "Les avions privés",
+                "Les camions de marchandises",
+              ],
+              correct: 1,
+              solution:
+                "Les mobilités durables désignent les moyens de transport respectueux de l'environnement : transports en commun, vélo, covoiturage, marche.",
+            },
+            {
+              text: "Quelles mesures peuvent favoriser les mobilités durables ?",
+              type: "text",
+              accepted: [
+                "transports en commun",
+                "pistes cyclables",
+                "covoiturage",
+                "zones piétonnes",
+                "tramway",
+                "métro",
+              ],
+              solution:
+                "Pour favoriser les mobilités durables : développer les transports en commun (tramway, bus, train), créer des pistes cyclables, promouvoir le covoiturage et les zones piétonnes.",
+            },
+            {
+              text: "Qu'est-ce qu'une ZFE ?",
+              type: "mcq",
+              options: [
+                "Zone de Friction Économique",
+                "Zone à Faibles Émissions",
+                "Zone Forestière Européenne",
+                "Zone de Financement Écologique",
+              ],
+              correct: 1,
+              solution:
+                "Une ZFE (Zone à Faibles Émissions) limite l'accès aux véhicules polluants dans certaines zones urbaines pour améliorer la qualité de l'air.",
+            },
+            {
+              text: "Pourquoi l'aire urbaine de Lyon illustre-t-elle les défis de l'étalement urbain ?",
+              type: "text",
+              accepted: [
+                "allongement des trajets",
+                "embouteillages",
+                "pollution",
+                "consommation de terres agricoles",
+              ],
+              solution:
+                "Lyon montre les conséquences de la périurbanisation : allongement des trajets domicile-travail, embouteillages sur les axes routiers, pollution atmosphérique, et artificialisation des terres agricoles de la plaine de l'Est lyonnais.",
+            },
+            {
+              text: "Quelles solutions la métropole de Lyon met-elle en place face à l'étalement urbain ?",
+              type: "text",
+              accepted: [
+                "extension du tramway",
+                "développement du métro",
+                "pistes cyclables",
+                "ZFE",
+              ],
+              solution:
+                "Lyon investit dans les transports collectifs (extension du tramway, métro), développe les pistes cyclables et met en place une Zone à Faibles Émissions (ZFE) pour limiter les véhicules polluants.",
+            },
+            {
+              text: "Qu'est-ce que la métropolisation ?",
+              type: "mcq",
+              options: [
+                "La création de nouvelles métropoles",
+                "La concentration des populations, activités et pouvoirs dans les grandes métropoles",
+                "La ruralisation des villes",
+                "La décentralisation",
+              ],
+              correct: 1,
+              solution:
+                "La métropolisation est le processus de concentration des populations, des activités économiques et des pouvoirs de décision dans les grandes métropoles.",
+            },
+            {
+              text: "Quelles métropoles françaises sont citées comme exemples de concentration ?",
+              type: "text",
+              accepted: ["Paris", "Lyon", "Marseille", "Lille", "Bordeaux"],
+              solution:
+                "Les grandes métropoles comme Paris, Lyon, Marseille, Lille ou Bordeaux concentrent les emplois qualifiés, les services de haut niveau et les connexions internationales.",
+            },
+            {
+              text: "Qu'est-ce qu'une aire urbaine ?",
+              type: "mcq",
+              options: [
+                "Une zone industrielle",
+                "Un espace regroupant une ville-centre, des banlieues et une couronne périurbaine",
+                "Un parc naturel",
+                "Une zone touristique",
+              ],
+              correct: 1,
+              solution:
+                "Une aire urbaine est un espace structuré autour d'une ville-centre, entourée de banlieues et d'une couronne périurbaine, avec des flux quotidiens de population.",
+            },
+            {
+              text: "Qu'est-ce qu'une ville-centre ?",
+              type: "mcq",
+              options: [
+                "La plus petite commune de l'aire urbaine",
+                "Le cœur de l'aire urbaine concentrant les fonctions de commandement",
+                "Une banlieue résidentielle",
+                "Une zone agricole",
+              ],
+              correct: 1,
+              solution:
+                "La ville-centre est le cœur de l'aire urbaine, concentrant les fonctions de commandement (sièges sociaux, administrations, équipements culturels) et attirant les actifs quotidiennement.",
+            },
+            {
+              text: "Qu'est-ce que la banlieue dans une aire urbaine ?",
+              type: "mcq",
+              options: [
+                "Le centre historique",
+                "Des zones résidentielles et économiques entourant la ville-centre",
+                "La couronne rurale",
+                "La zone industrielle isolée",
+              ],
+              correct: 1,
+              solution:
+                "La banlieue est constituée de zones résidentielles et de pôles économiques (centres commerciaux, zones d'activités) entourant la ville-centre, reliées par les transports en commun.",
+            },
+            {
+              text: "Qu'est-ce que la couronne périurbaine ?",
+              type: "mcq",
+              options: [
+                "Le centre-ville",
+                "L'espace au-delà des banlieues, avec habitat pavillonnaire en zone rurale",
+                "Une zone industrielle",
+                "Un parc naturel",
+              ],
+              correct: 1,
+              solution:
+                "La couronne périurbaine est l'espace situé au-delà des banlieues, caractérisé par de l'habitat pavillonnaire en zone rurale, avec une forte dépendance à la voiture.",
+            },
+            {
+              text: "Quelles sont les causes de la périurbanisation depuis les années 1970 ?",
+              type: "text",
+              accepted: [
+                "hausse des prix immobiliers",
+                "amélioration des transports",
+                "recherche d'un cadre de vie vert",
+                "voiture individuelle",
+              ],
+              solution:
+                "La périurbanisation s'explique par la hausse des prix immobiliers en centre-ville, l'amélioration des infrastructures de transport, la généralisation de la voiture, et la recherche d'un cadre de vie plus vert avec des logements plus grands.",
+            },
+            {
+              text: "Quel est l'impact de la périurbanisation sur les déplacements ?",
+              type: "mcq",
+              options: [
+                "Réduction des trajets",
+                "Allongement des trajets domicile-travail et dépendance à la voiture",
+                "Développement du vélo",
+                "Suppression des transports en commun",
+              ],
+              correct: 1,
+              solution:
+                "La périurbanisation allonge les trajets domicile-travail, augmente l'usage de la voiture, et génère embouteillages et pollution.",
+            },
+            {
+              text: "Qu'est-ce qu'un quartier d'affaires ?",
+              type: "mcq",
+              options: [
+                "Une zone résidentielle",
+                "Une zone urbaine concentrant des entreprises et services financiers",
+                "Un marché local",
+                "Un parc technologique",
+              ],
+              correct: 1,
+              solution:
+                "Un quartier d'affaires est une zone urbaine où se concentrent des entreprises, souvent internationales, spécialisées dans les services financiers, commerciaux ou industriels (ex : La Défense).",
+            },
+            {
+              text: "Quel est le plus grand quartier d'affaires d'Europe ?",
+              type: "mcq",
+              options: [
+                "Canary Wharf à Londres",
+                "La Défense à Paris",
+                "Frankfurt Bankenviertel",
+                "Milan Porta Nuova",
+              ],
+              correct: 1,
+              solution:
+                "La Défense, en région parisienne, est le plus grand quartier d'affaires d'Europe, accueillant de nombreuses multinationales et institutions financières.",
+            },
+          ],
+        },
+        {
+          category: "Espaces productifs et mondialisation",
+          questions: [
+            {
+              text: "Qu'est-ce qu'un espace productif ?",
+              type: "mcq",
+              options: [
+                "Une zone de loisirs",
+                "Une zone géographique concentrant des activités économiques pour produire des biens et services",
+                "Un espace naturel protégé",
+                "Une zone résidentielle",
+              ],
+              correct: 1,
+              solution:
+                "Un espace productif est une zone géographique où se concentrent des activités économiques visant à produire des biens et des services (agriculture, industrie, services).",
+            },
+            {
+              text: "Comment la mondialisation a-t-elle modifié les espaces productifs français ?",
+              type: "text",
+              accepted: [
+                "concurrence mondiale",
+                "adaptation",
+                "modernisation",
+                "diversification",
+                "exportation",
+              ],
+              solution:
+                "La mondialisation a accru la concurrence internationale, obligeant les espaces productifs français à se moderniser, se diversifier et s'adapter aux dynamiques locales et globales.",
+            },
+            {
+              text: "Quelle part du PIB français représente l'agriculture ?",
+              type: "mcq",
+              options: ["0,5 %", "2 %", "10 %", "25 %"],
+              correct: 1,
+              solution:
+                "L'agriculture représente environ 2 % du PIB français, mais la France reste le premier producteur de produits agricoles en Europe.",
+            },
+            {
+              text: "Quelle part de la population active travaille dans l'agriculture en France ?",
+              type: "mcq",
+              options: ["0,5 %", "1,5 %", "5 %", "10 %"],
+              correct: 1,
+              solution:
+                "Seulement 1,5 % de la population active française travaille dans l'agriculture, reflétant la mécanisation et la baisse de la main-d'œuvre agricole.",
+            },
+            {
+              text: "Où se situent principalement les zones de grandes cultures en France ?",
+              type: "mcq",
+              options: [
+                "Dans les Alpes",
+                "Dans les plaines de l'intérieur (Bassin parisien, Beauce, Champagne)",
+                "Sur le littoral méditerranéen",
+                "En Corse",
+              ],
+              correct: 1,
+              solution:
+                "Les grandes cultures (blé, maïs, colza) sont concentrées dans les plaines de l'intérieur : Bassin parisien, Beauce, Champagne.",
+            },
+            {
+              text: "Où se situent principalement les zones d'élevage en France ?",
+              type: "mcq",
+              options: [
+                "Dans l'Est",
+                "Dans l'Ouest et le Sud-Ouest",
+                "En Île-de-France",
+                "Dans les Alpes",
+              ],
+              correct: 1,
+              solution:
+                "Les zones d'élevage sont principalement situées dans l'Ouest et le Sud-Ouest de la France.",
+            },
+            {
+              text: "Où se situent les zones fruitières et légumières en France ?",
+              type: "mcq",
+              options: [
+                "Dans le Nord",
+                "Dans le Sud-Est (PACA) et le Roussillon",
+                "En Bretagne",
+                "En Normandie",
+              ],
+              correct: 1,
+              solution:
+                "Les zones fruitières et légumières se concentrent dans le Sud-Est (Provence-Alpes-Côte d'Azur) et le Roussillon, bénéficiant d'un climat favorable.",
+            },
+            {
+              text: "Qu'est-ce qu'une AOC ?",
+              type: "mcq",
+              options: [
+                "Association des Ouvriers de Champagne",
+                "Appellation d'Origine Contrôlée",
+                "Agence de l'Organisation du Commerce",
+                "Aide aux Organismes de Culture",
+              ],
+              correct: 1,
+              solution:
+                "L'AOC (Appellation d'Origine Contrôlée) est un label garantissant que le produit est fabriqué dans une région spécifique selon un savoir-faire traditionnel.",
+            },
+            {
+              text: "Comment l'agriculture française s'adapte-t-elle à la mondialisation ?",
+              type: "text",
+              accepted: [
+                "mécanisation",
+                "produits phytosanitaires",
+                "agriculture biologique",
+                "modernisation",
+                "qualité",
+              ],
+              solution:
+                "L'agriculture française s'adapte par la mécanisation, l'usage de produits phytosanitaires pour la productivité, et le développement de l'agriculture biologique pour répondre à la demande de produits durables.",
+            },
+            {
+              text: "Quelle région est emblématique de la viticulture française de qualité ?",
+              type: "mcq",
+              options: ["Bretagne", "Champagne", "Alsace", "Normandie"],
+              correct: 1,
+              solution:
+                "La Champagne est une région viticole mondialement reconnue pour son vin effervescent, bénéficiant d'une AOC.",
+            },
+            {
+              text: "Quel est le chiffre d'affaires annuel approximatif de la production de Champagne ?",
+              type: "mcq",
+              options: [
+                "1 milliard d'euros",
+                "3 milliards d'euros",
+                "6 milliards d'euros",
+                "10 milliards d'euros",
+              ],
+              correct: 2,
+              solution:
+                "La production de Champagne génère un chiffre d'affaires annuel avoisinant les 6 milliards d'euros.",
+            },
+            {
+              text: "Quelle part de la production de Champagne est exportée ?",
+              type: "mcq",
+              options: ["20 %", "40 %", "60 %", "80 %"],
+              correct: 2,
+              solution:
+                "Environ 60 % de la production de Champagne est exportée, avec des marchés clés en Europe, Asie et Amérique du Nord.",
+            },
+            {
+              text: "Qu'est-ce que l'œnotourisme ?",
+              type: "mcq",
+              options: [
+                "La production de vin",
+                "Une forme de tourisme liée à la découverte du vin",
+                "L'exportation de vin",
+                "La culture de la vigne",
+              ],
+              correct: 1,
+              solution:
+                "L'œnotourisme est une forme de tourisme liée à la découverte du vin : visites de vignobles, de caves, dégustations.",
+            },
+            {
+              text: "Combien de visiteurs annuels attire l'œnotourisme dans la région Grand-Est ?",
+              type: "mcq",
+              options: [
+                "2 millions",
+                "5 millions",
+                "8 millions",
+                "12 millions",
+              ],
+              correct: 2,
+              solution:
+                "Près de 8 millions de visiteurs annuels viennent dans la région Grand-Est pour l'œnotourisme, faisant de la Champagne la 2<sup>e</sup> région œnotouristique de France.",
+            },
+            {
+              text: "Comment l'industrie française a-t-elle évolué avec la mondialisation ?",
+              type: "text",
+              accepted: [
+                "délocalisation",
+                "haute technologie",
+                "reconversion",
+                "pôles d'innovation",
+                "valeur ajoutée",
+              ],
+              solution:
+                "L'industrie française a connu des délocalisations dans les secteurs traditionnels, mais s'est repositionnée vers des secteurs à forte valeur ajoutée : haute technologie, pharmacie, aéronautique, avec des pôles d'innovation comme les technopoles.",
+            },
+            {
+              text: "Qu'est-ce qu'une technopole ?",
+              type: "mcq",
+              options: [
+                "Une ville touristique",
+                "Un pôle concentrant des entreprises et centres de recherche en haute technologie",
+                "Une zone agricole",
+                "Un quartier d'affaires",
+              ],
+              correct: 1,
+              solution:
+                "Une technopole est un pôle de compétitivité regroupant entreprises, laboratoires de recherche et institutions académiques autour d'un domaine technologique pour favoriser l'innovation.",
+            },
+            {
+              text: "Quelle ville française est un exemple de technopole spécialisée en microélectronique ?",
+              type: "mcq",
+              options: ["Lille", "Grenoble", "Bordeaux", "Nantes"],
+              correct: 1,
+              solution:
+                "Grenoble est un exemple emblématique de technopole, spécialisée en microélectronique, nanotechnologie et intelligence artificielle.",
+            },
+            {
+              text: "Qu'est-ce que Minatec ?",
+              type: "mcq",
+              options: [
+                "Une entreprise de transport",
+                "Un pôle de compétitivité à Grenoble en microélectronique",
+                "Un parc naturel",
+                "Une marque de vin",
+              ],
+              correct: 1,
+              solution:
+                "Minatec est un pôle de compétitivité situé à Grenoble, regroupant laboratoires, entreprises et start-ups en microélectronique et nanotechnologie.",
+            },
+            {
+              text: "Quels atouts géographiques attirent les talents à Grenoble ?",
+              type: "text",
+              accepted: [
+                "proximité des Alpes",
+                "stations de ski",
+                "parcs naturels",
+                "cadre de vie",
+              ],
+              solution:
+                "Grenoble attire par sa proximité avec les Alpes, des stations de ski (Chamrousse, 7 Laux) et des parcs naturels (Vercors, Chartreuse), offrant un cadre de vie unique alliant opportunités professionnelles et activités de plein air.",
+            },
+            {
+              text: "Quel secteur tertiaire est particulièrement développé en France ?",
+              type: "mcq",
+              options: [
+                "L'agriculture",
+                "Le tourisme",
+                "L'extraction minière",
+                "La pêche",
+              ],
+              correct: 1,
+              solution:
+                "Le tourisme est un secteur tertiaire majeur en France, 1<sup>re</sup> destination touristique mondiale.",
+            },
+            {
+              text: "Quel site touristique français, classé à l'UNESCO, attire 3,5 millions de visiteurs par an ?",
+              type: "mcq",
+              options: [
+                "La Tour Eiffel",
+                "Le Mont-Saint-Michel",
+                "Le château de Versailles",
+                "Lascaux",
+              ],
+              correct: 1,
+              solution:
+                "Le Mont-Saint-Michel, classé au patrimoine mondial de l'UNESCO, attire chaque année 3,5 millions de visiteurs du monde entier.",
+            },
+            {
+              text: "Quel aménagement a été réalisé en 2014 au Mont-Saint-Michel pour préserver le site ?",
+              type: "mcq",
+              options: [
+                "Un parking aérien",
+                "Une passerelle piétonne",
+                "Un tunnel sous-marin",
+                "Un téléphérique",
+              ],
+              correct: 1,
+              solution:
+                "Une passerelle piétonne a été inaugurée en 2014 pour restaurer l'isolement naturel du Mont, supprimer les routes goudronnées et limiter l'impact environnemental.",
+            },
+            {
+              text: "Quel est l'objectif écologique des aménagements du Mont-Saint-Michel ?",
+              type: "mcq",
+              options: [
+                "Augmenter le nombre de voitures",
+                "Lutter contre l'envasement de la baie",
+                "Construire plus d'hôtels",
+                "Développer l'industrie",
+              ],
+              correct: 1,
+              solution:
+                "Les aménagements visent à lutter contre l'envasement de la baie en permettant à l'eau de circuler librement autour du Mont, tout en facilitant l'accès des visiteurs.",
+            },
+            {
+              text: "Qu'est-ce qu'un pôle de compétitivité ?",
+              type: "mcq",
+              options: [
+                "Une zone de chômage",
+                "Un regroupement d'entreprises, laboratoires et formations autour d'un domaine pour favoriser l'innovation",
+                "Un quartier résidentiel",
+                "Une zone agricole",
+              ],
+              correct: 1,
+              solution:
+                "Un pôle de compétitivité regroupe entreprises, laboratoires de recherche et organismes de formation autour d'un domaine technologique pour favoriser l'innovation et la compétitivité.",
+            },
+            {
+              text: "Quelles régions françaises sont historiquement associées à l'industrie minière et sidérurgique ?",
+              type: "text",
+              accepted: ["Nord-Pas-de-Calais", "Lorraine"],
+              solution:
+                "Le Nord-Pas-de-Calais et la Lorraine étaient des bastions historiques de l'industrie minière, sidérurgique et textile, avant leur reconversion.",
+            },
+            {
+              text: "Quelle région est un pôle majeur pour l'industrie chimique et pharmaceutique ?",
+              type: "mcq",
+              options: [
+                "Bretagne",
+                "Vallée du Rhône",
+                "Massif central",
+                "Corse",
+              ],
+              correct: 1,
+              solution:
+                "La vallée du Rhône est un pôle majeur pour l'industrie chimique et pharmaceutique en France.",
+            },
+            {
+              text: "Quelle région concentre l'industrie du luxe et de la mode ?",
+              type: "mcq",
+              options: [
+                "Occitanie",
+                "Île-de-France",
+                "Nouvelle-Aquitaine",
+                "Bourgogne",
+              ],
+              correct: 1,
+              solution:
+                "L'Île-de-France, autour de Paris, reste un pôle majeur pour l'industrie du luxe, de la mode et des technologies de pointe.",
+            },
+            {
+              text: "Comment la mondialisation a-t-elle affecté les secteurs industriels traditionnels en France ?",
+              type: "mcq",
+              options: [
+                "Elle les a renforcés",
+                "Elle a entraîné des délocalisations vers des pays à bas coûts",
+                "Elle a supprimé toute concurrence",
+                "Elle a augmenté les salaires",
+              ],
+              correct: 1,
+              solution:
+                "La mondialisation a conduit à des délocalisations de productions traditionnelles (textile, sidérurgie, automobile) vers des pays à bas coûts de main-d'œuvre.",
+            },
+            {
+              text: "Dans quels secteurs la France s'est-elle repositionnée pour rester compétitive ?",
+              type: "text",
+              accepted: [
+                "microélectronique",
+                "pharmacie",
+                "aéronautique",
+                "robotique",
+                "haute technologie",
+              ],
+              solution:
+                "La France s'est repositionnée vers des secteurs à forte valeur ajoutée : microélectronique, pharmacie, aéronautique, robotique, grâce à des pôles d'innovation comme les technopoles.",
+            },
+            {
+              text: "Quel rôle joue l'ouverture des marchés internationaux pour les entreprises françaises ?",
+              type: "mcq",
+              options: [
+                "Elle limite leurs exportations",
+                "Elle renforce les échanges et partenariats pour se développer à l'étranger",
+                "Elle interdit les investissements étrangers",
+                "Elle réduit la concurrence",
+              ],
+              correct: 1,
+              solution:
+                "L'ouverture des marchés internationaux permet aux entreprises françaises de renforcer leurs échanges et partenariats, et de se développer à l'étranger.",
+            },
+          ],
+        },
+        {
+          category: "Laïcité et valeurs de la République",
+          questions: [
+            {
+              text: "Quelles sont les trois valeurs fondamentales de la République française issues de 1789 ?",
+              type: "text",
+              accepted: [
+                "liberté, égalité, fraternité",
+                "Liberté, Égalité, Fraternité",
+              ],
+              solution:
+                "Les trois valeurs fondamentales de la République française sont la liberté, l'égalité et la fraternité, issues de la Déclaration des droits de l'homme et du citoyen de 1789.",
+            },
+            {
+              text: "Quels sont les principes de la République française inscrits dans la Constitution ?",
+              type: "mcq",
+              options: [
+                "Capitaliste, libérale, fédérale",
+                "Indivisible, laïque, démocratique et sociale",
+                "Monarchique, religieuse, centralisée",
+                "Communautaire, autoritaire, traditionnelle",
+              ],
+              correct: 1,
+              solution:
+                "La France est une République indivisible, laïque, démocratique et sociale, selon sa Constitution.",
+            },
+            {
+              text: "Qu'est-ce que la laïcité ?",
+              type: "mcq",
+              options: [
+                "L'interdiction de toutes les religions",
+                "La neutralité de l'État à l'égard des croyances et la garantie de la liberté de croire ou de ne pas croire",
+                "L'imposition d'une religion d'État",
+                "La séparation de l'Église et de l'école uniquement",
+              ],
+              correct: 1,
+              solution:
+                "La laïcité est le principe de neutralité de l'État à l'égard des croyances, garantissant à chacun la liberté de croire ou de ne pas croire, dans le respect de l'ordre public.",
+            },
+            {
+              text: "En quelle année a été votée la loi de séparation des Églises et de l'État ?",
+              type: "mcq",
+              options: ["1789", "1882", "1905", "1945"],
+              correct: 2,
+              solution:
+                "La loi de séparation des Églises et de l'État, fondement de la laïcité en France, a été votée en 1905.",
+            },
+            {
+              text: "Que garantit la laïcité dans la sphère publique ?",
+              type: "mcq",
+              options: [
+                "L'interdiction de toute pratique religieuse",
+                "La liberté de pratiquer sa religion dans la limite du respect de l'ordre public",
+                "L'obligation de pratiquer une religion",
+                "La priorité à une religion",
+              ],
+              correct: 1,
+              solution:
+                "Dans la sphère publique, chacun est libre de pratiquer sa religion dans la limite du respect de l'ordre public, grâce au principe de laïcité.",
+            },
+            {
+              text: "Depuis quand l'école est-elle laïque en France ?",
+              type: "mcq",
+              options: ["1789", "1882", "1905", "2004"],
+              correct: 1,
+              solution:
+                "L'école est laïque depuis les lois de Jules Ferry en 1882, instaurant la gratuité, l'obligation et la laïcité de l'enseignement public.",
+            },
+            {
+              text: "Quelle affaire a relancé le débat sur la laïcité à l'école en 1989 ?",
+              type: "mcq",
+              options: [
+                "L'affaire Dreyfus",
+                "L'affaire des foulards de Creil",
+                "L'affaire du voile à l'Assemblée",
+                "L'affaire Baby Loup",
+              ],
+              correct: 1,
+              solution:
+                "L'affaire des foulards de Creil en 1989, où deux élèves musulmanes ont été exclues pour refus d'enlever leur voile, a relancé le débat sur la laïcité à l'école.",
+            },
+            {
+              text: "Depuis quelle année les signes religieux ostentatoires sont-ils interdits à l'école ?",
+              type: "mcq",
+              options: ["1989", "1995", "2004", "2010"],
+              correct: 2,
+              solution:
+                "Depuis la loi de 2004, les signes religieux ostentatoires sont interdits à l'école pour empêcher le prosélytisme et garantir un environnement neutre.",
+            },
+            {
+              text: "Qu'est-ce que la charte de la laïcité affichée dans les écoles ?",
+              type: "mcq",
+              options: [
+                "Un règlement intérieur",
+                "Un document de 15 articles rappelant les principes de la laïcité à destination de tous",
+                "Un manuel d'histoire",
+                "Un contrat avec les familles",
+              ],
+              correct: 1,
+              solution:
+                "La charte de la laïcité, affichée depuis 2013, est constituée de 15 articles rappelant les principes de la laïcité à destination de tous les personnels et élèves.",
+            },
+            {
+              text: "Quel débat concerne le port du voile par les accompagnatrices lors de sorties scolaires ?",
+              type: "mcq",
+              options: [
+                "Il est toujours autorisé",
+                "Il est toujours interdit",
+                "Il fait débat entre sphère privée et sphère publique",
+                "Il ne concerne que les professeurs",
+              ],
+              correct: 2,
+              solution:
+                "Le port du voile par les accompagnatrices lors de sorties scolaires fait débat : certains établissements l'interdisent au nom de la laïcité, d'autres l'autorisent, posant la question de la limite entre sphère privée et publique.",
+            },
+            {
+              text: "Qu'est-ce que l'affaire Baby Loup a mis en lumière ?",
+              type: "mcq",
+              options: [
+                "La laïcité dans le secteur public uniquement",
+                "Les limites de la laïcité dans le secteur privé et les services publics délégués",
+                "L'interdiction du voile partout",
+                "La liberté totale de culte en entreprise",
+              ],
+              correct: 1,
+              solution:
+                "L'affaire Baby Loup (2014) a soulevé des questions sur les limites de la laïcité dans le secteur privé et les services publics délégués, concernant le licenciement d'une salariée voilée.",
+            },
+            {
+              text: "Quel principe la laïcité garantit-elle face à la loi ?",
+              type: "mcq",
+              options: [
+                "La supériorité d'une religion",
+                "L'égalité de tous devant la loi",
+                "La priorité aux croyants",
+                "L'exemption pour motifs religieux",
+              ],
+              correct: 1,
+              solution:
+                "La laïcité garantit l'égalité de tous devant la loi, sans distinction de croyance ou d'appartenance religieuse.",
+            },
+            {
+              text: "Qu'est-ce que le prosélytisme ?",
+              type: "mcq",
+              options: [
+                "La pratique discrète d'une religion",
+                "La volonté active de convertir autrui à sa croyance",
+                "L'interdiction de parler de religion",
+                "La neutralité absolue",
+              ],
+              correct: 1,
+              solution:
+                "Le prosélytisme est la volonté active de convertir autrui à sa croyance. Il est encadré dans l'espace public pour garantir la neutralité et le respect de tous.",
+            },
+            {
+              text: "Pourquoi les repas à l'école peuvent-ils susciter des débats sur la laïcité ?",
+              type: "text",
+              accepted: [
+                "menus spécifiques",
+                "absence de porc",
+                "convictions religieuses",
+                "neutralité de l'école",
+              ],
+              solution:
+                "Les débats sur les repas scolaires concernent l'équilibre entre le respect des convictions religieuses (menus sans porc par exemple) et le principe de neutralité de l'école, garantissant l'égalité entre les élèves.",
+            },
+            {
+              text: "Quel principe permet de concilier liberté religieuse et laïcité à l'école ?",
+              type: "mcq",
+              options: [
+                "L'interdiction totale de toute religion",
+                "La neutralité de l'institution et la liberté de conscience des individus",
+                "L'imposition d'une religion majoritaire",
+                "La ségrégation par croyance",
+              ],
+              correct: 1,
+              solution:
+                "La laïcité concilie liberté religieuse et neutralité : l'institution scolaire est neutre, mais chaque élève conserve sa liberté de conscience et de croyance dans le respect des règles communes.",
+            },
+            {
+              text: "Qu'est-ce que la liberté de conscience ?",
+              type: "mcq",
+              options: [
+                "L'obligation de croire",
+                "La liberté de choisir sa religion ou de n'en avoir aucune",
+                "L'interdiction de changer de religion",
+                "La priorité à la religion d'État",
+              ],
+              correct: 1,
+              solution:
+                "La liberté de conscience est la liberté de choisir sa religion, d'en changer ou de n'en avoir aucune, garantie par la laïcité.",
+            },
+            {
+              text: "Comment la laïcité contribue-t-elle au vivre-ensemble ?",
+              type: "text",
+              accepted: [
+                "neutralité",
+                "égalité",
+                "respect",
+                "liberté",
+                "cohésion sociale",
+              ],
+              solution:
+                "La laïcité favorise le vivre-ensemble en garantissant la neutralité de l'État, l'égalité de tous devant la loi, et le respect des convictions de chacun, dans un cadre commun de liberté.",
+            },
+            {
+              text: "Quel est le rôle de l'école laïque dans la formation du citoyen ?",
+              type: "mcq",
+              options: [
+                "Endoctriner les élèves",
+                "Former des citoyens libres, égaux et fraternels, capables de penser par eux-mêmes",
+                "Imposer une religion",
+                "Séparer les élèves par croyance",
+              ],
+              correct: 1,
+              solution:
+                "L'école laïque forme des citoyens libres, égaux et fraternels, capables de penser par eux-mêmes, dans un environnement neutre favorisant l'esprit critique et le respect d'autrui.",
+            },
+            {
+              text: "Qu'est-ce que la neutralité de l'État ?",
+              type: "mcq",
+              options: [
+                "L'État ne prend parti pour aucune religion",
+                "L'État impose une religion",
+                "L'État interdit toutes les religions",
+                "L'État favorise une religion",
+              ],
+              correct: 0,
+              solution:
+                "La neutralité de l'État signifie qu'il ne prend parti pour aucune religion, ne finance aucun culte, et traite tous les citoyens de manière égale, quelle que soit leur croyance.",
+            },
+            {
+              text: "Pourquoi la laïcité est-elle un principe fondamental de la République ?",
+              type: "text",
+              accepted: [
+                "garantit la liberté",
+                "assure l'égalité",
+                "favorise la fraternité",
+                "protège la démocratie",
+              ],
+              solution:
+                "La laïcité est fondamentale car elle garantit la liberté de conscience, assure l'égalité de tous devant la loi, favorise la fraternité en respectant les différences, et protège la démocratie contre les pressions religieuses.",
+            },
+          ],
+        },
+      ];
+
+      const app = {
+        state: {
+          catIdx: 0,
+          qIdx: 0,
+        },
+
+        init: function () {
+          this.renderMenu();
+        },
+
+        renderMenu: function () {
+          const nav = document.getElementById("nav-container");
+          nav.innerHTML = "";
+          document.getElementById("quiz-ui").classList.add("hidden");
+          document.getElementById("nav-container").classList.remove("hidden");
+
+          db.forEach((cat, idx) => {
+            const btn = document.createElement("div");
+            btn.className = "nav-btn";
+            btn.textContent = cat.category;
+            btn.onclick = () => this.startCategory(idx);
+            nav.appendChild(btn);
+          });
+        },
+
+        startCategory: function (idx) {
+          this.state.catIdx = idx;
+          this.state.qIdx = 0;
+
+          document.getElementById("nav-container").classList.add("hidden");
+          document.getElementById("quiz-ui").classList.remove("hidden");
+          this.renderQuestion();
+        },
+
+        renderQuestion: function () {
+          const q = db[this.state.catIdx].questions[this.state.qIdx];
+          const card = document.getElementById("question-card-container");
+          const feedback = document.getElementById("feedback-area");
+          const btn = document.getElementById("main-btn");
+
+          card.classList.remove("fast-exit", "entering");
+          void card.offsetWidth;
+          card.classList.add("entering");
+
+          feedback.className = "";
+          feedback.classList.remove("visible");
+          feedback.style.display = "none";
+
+          btn.textContent = "Valider la réponse";
+          btn.disabled = false;
+          btn.style.backgroundColor = "#4c51bf";
+
+          document.getElementById("cat-label").textContent =
+            db[this.state.catIdx].category;
+          document.getElementById("counter-label").textContent =
+            `${this.state.qIdx + 1} / ${db[this.state.catIdx].questions.length}`;
+          document.getElementById("question-text").innerHTML = q.text;
+
+          const imgArea = document.getElementById("image-area");
+          if (q.image) {
+            imgArea.innerHTML = `<img src="${q.image}">`;
+            imgArea.classList.remove("hidden");
+          } else {
+            imgArea.classList.add("hidden");
+          }
+
+          const pct =
+            (this.state.qIdx / db[this.state.catIdx].questions.length) * 100;
+          document.getElementById("progress-fill").style.width = pct + "%";
+
+          const inputArea = document.getElementById("input-area");
+          inputArea.innerHTML = "";
+
+          if (q.type === "mcq") {
+            const container = document.createElement("div");
+            container.className = "options-container";
+
+            let mixedOptions = q.options.map((optText, originalIndex) => {
+              return { text: optText, val: originalIndex };
+            });
+
+            mixedOptions.sort(() => Math.random() - 0.5);
+
+            mixedOptions.forEach((optObj, i) => {
+              const item = document.createElement("div");
+              item.className = "option-item";
+              item.innerHTML = `
+                              <input type="radio" name="quiz-opt" id="opt-${i}" value="${optObj.val}">
+                              <label class="answer-btn" for="opt-${i}">${optObj.text}</label>
+                          `;
+              container.appendChild(item);
+            });
+            inputArea.appendChild(container);
+          } else {
+            inputArea.innerHTML = `<input type="text" id="text-answer" class="text-input-styled" placeholder="Ta réponse..." autocomplete="off">`;
+            document
+              .getElementById("text-answer")
+              .addEventListener("keypress", (e) => {
+                if (e.key === "Enter") this.checkAnswer();
+              });
+            setTimeout(
+              () => document.getElementById("text-answer").focus(),
+              100,
+            );
+          }
+        },
+
+        checkAnswer: function () {
+          const q = db[this.state.catIdx].questions[this.state.qIdx];
+          const feedback = document.getElementById("feedback-area");
+          feedback.style.display = "block";
+          const btn = document.getElementById("main-btn");
+          let isCorrect = false;
+          let userElement = null;
+
+          if (q.type === "mcq") {
+            const selected = document.querySelector(
+              'input[name="quiz-opt"]:checked',
+            );
+            if (!selected) return alert("Choisis une réponse !");
+
+            const label = document.querySelector(`label[for="${selected.id}"]`);
+            userElement = label;
+
+            if (parseInt(selected.value) === q.correct) {
+              isCorrect = true;
+            }
+          } else {
+            const input = document.getElementById("text-answer");
+            if (!input.value.trim()) return alert("Écris une réponse !");
+            userElement = input;
+
+            const val = input.value
+              .toLowerCase()
+              .replace(/\s/g, "")
+              .replace(",", ".");
+            const accepted = q.accepted.map((a) =>
+              a.toLowerCase().replace(/\s/g, "").replace(",", "."),
+            );
+            if (accepted.includes(val)) isCorrect = true;
+          }
+
+          btn.disabled = true;
+
+          if (isCorrect) {
+            userElement.classList.add("correct");
+            feedback.className = "feedback-correct visible";
+            feedback.innerHTML = `
+                          <div style="font-size: 1.2em; margin-bottom: 5px;">✅ <span class="couleur-qui-change">Excellent !</span></div>
+                          <div>${q.solution}</div>
+                      `;
+            btn.style.backgroundColor = "#48bb78";
+            btn.textContent = "Bravo !";
+          } else {
+            userElement.classList.add("incorrect");
+
+            if (q.type === "mcq") {
+              const correctInput = document.querySelector(
+                `input[name="quiz-opt"][value="${q.correct}"]`,
+              );
+              if (correctInput) {
+                const correctLabel = document.querySelector(
+                  `label[for="${correctInput.id}"]`,
+                );
+                correctLabel.classList.add("correct");
+              }
+            }
+
+            feedback.className = "feedback-incorrect visible";
+            feedback.innerHTML = `
+                          <div style="font-size: 1.2em; margin-bottom: 5px;">❌ Aïe... Regarde la correction :</div>
+                          <div><strong>${q.solution}</strong></div>
+                      `;
+            btn.style.backgroundColor = "#c53030";
+            btn.textContent = "Lecture correction...";
+          }
+
+          const pct =
+            ((this.state.qIdx + 1) / db[this.state.catIdx].questions.length) *
+            100;
+          document.getElementById("progress-fill").style.width = pct + "%";
+
+          const delayDuration = isCorrect ? 1200 : 4000;
+
+          setTimeout(() => {
+            this.handleTransition();
+          }, delayDuration);
+        },
+
+        handleTransition: function () {
+          if (this.state.qIdx >= db[this.state.catIdx].questions.length - 1) {
+            alert("Série terminée ! Retour au menu.");
+            this.renderMenu();
+            return;
+          }
+
+          const card = document.getElementById("question-card-container");
+          card.classList.remove("entering");
+          card.classList.add("fast-exit");
+
+          setTimeout(() => {
+            this.state.qIdx++;
+            this.renderQuestion();
+          }, 300);
+        },
+      };
+
+      window.onload = () => app.init();
+    </script>
+  
+    
+
+    <!-- BOUTON RETOUR PWA -->
+    <script>
+      (function() {
+        const checkAndAddButton = () => {
+          const isPWA = window.matchMedia('(display-mode: standalone)').matches || 
+                        window.matchMedia('(display-mode: fullscreen)').matches || 
+                        navigator.standalone;
+          
+          if (isPWA && !window.location.pathname.endsWith('index.html')) {
+            const btn = document.createElement('button');
+            btn.innerHTML = '← Retour';
+            btn.style.position = 'fixed';
+            btn.style.top = '15px';
+            btn.style.left = '15px';
+            btn.style.zIndex = '9999';
+            btn.style.background = '#4CAF50';
+            btn.style.color = 'white';
+            btn.style.border = 'none';
+            btn.style.padding = '10px 20px';
+            btn.style.borderRadius = '8px';
+            btn.style.cursor = 'pointer';
+            btn.style.boxShadow = '0 4px 10px rgba(0,0,0,0.5)';
+            btn.style.fontWeight = 'bold';
+            btn.style.fontFamily = 'Arial, sans-serif';
+            btn.style.fontSize = '16px';
+            btn.style.transition = 'background 0.3s, transform 0.3s';
+            
+            btn.onmouseover = () => {
+                btn.style.background = '#45a049';
+                btn.style.transform = 'scale(1.05)';
+            };
+            btn.onmouseout = () => {
+                btn.style.background = '#4CAF50';
+                btn.style.transform = 'scale(1)';
+            };
+            
+            btn.onclick = () => {
+               window.location.href = '../index.html';
+            };
+            
+            document.body.appendChild(btn);
+          }
+        };
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', checkAndAddButton);
+        } else {
+          checkAndAddButton();
+        }
+      })();
+    </script>
+</body>
+</html>

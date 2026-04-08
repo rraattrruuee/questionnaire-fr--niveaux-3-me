@@ -10,12 +10,15 @@ const STATIC_ASSETS = [
   "./capture/2.png",
   "./capture/3.png",
   "./capture/4.png",
+  "./fix-back-btn.js",
   "./français/Syllabus_:_Le_Maître_des_Subordonnées.html",
   "./histoire-geo/Décolonisation, Guerre froide et construction de nouveaux États (1945-1991).html",
+  "./histoire-geo/Histoire (Guerres mondiales, Guerre froide), Géographie (Espaces productifs, Faibles densités, Aménagement) et EMC (Laïcité, Valeurs).html",
   "./histoire-geo/La_Seconde_Guerre_mondiale,_une_guerre _d_anéantissement_(1939-1945).html",
   "./histoire-geo/Le monde depuis 1945 - La Guerre froide (1947-1991).html",
   "./histoire-geo/Les_espaces_productifs_français_et_leurs_évolutions.html",
   "./index.html",
+  "./inject-back-btn.js",
   "./italien/Grammaire_(L'adjectif 'Bello')_et _ompréhension_de_Texte.html",
   "./italien/Quiz sur les Maîtres de la Haute Couture Italienne : Ferré, Armani, Cucinelli, Prada et Valentino.html",
   "./latin/Maître_du_Latin_-_Les_verbes.html",
@@ -44,7 +47,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-9a093ad"; // version automatique
+const CACHE_NAME = "quiz-cache-3b36d46"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {

@@ -16,6 +16,7 @@ const STATIC_ASSETS = [
   "./histoire-geo/Histoire (Guerres mondiales, Guerre froide), Géographie (Espaces productifs, Faibles densités, Aménagement) et EMC (Laïcité, Valeurs).html",
   "./histoire-geo/La_Seconde_Guerre_mondiale,_une_guerre _d_anéantissement_(1939-1945).html",
   "./histoire-geo/Le monde depuis 1945 - La Guerre froide (1947-1991).html",
+  "./histoire-geo/Les Territoires Ultramarins Français – Enjeux, Atouts et Aménagements.html",
   "./histoire-geo/Les_espaces_productifs_français_et_leurs_évolutions.html",
   "./index.html",
   "./inject-back-btn.js",
@@ -47,7 +48,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-a101545"; // version automatique
+const CACHE_NAME = "quiz-cache-1ef6c82"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {

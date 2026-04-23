@@ -1,0 +1,1296 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../quiz_icon.svg" type="image/x-icon" />
+    <title>
+      Les Territoires Ultramarins Français – Enjeux, Atouts et Aménagements
+    </title>
+    <style>
+      /* ----------------------------------------------------
+           ANIMATIONS (KEYFRAMES)
+           ---------------------------------------------------- */
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes headerDrop {
+        from {
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+        }
+        50% {
+          transform: scale(1.02);
+          box-shadow: 0 8px 20px rgba(76, 81, 191, 0.5);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes resultsEntry {
+        from {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-5px);
+        }
+        60% {
+          transform: translateY(-3px);
+        }
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20%,
+        60% {
+          transform: translateX(-5px);
+        }
+        40%,
+        80% {
+          transform: translateX(5px);
+        }
+      }
+
+      @keyframes glowCorrect {
+        0% {
+          box-shadow: 0 0 5px #68d391;
+        }
+        50% {
+          box-shadow: 0 0 20px #48bb78;
+        }
+        100% {
+          box-shadow: 0 0 5px #68d391;
+        }
+      }
+
+      @keyframes zoomFeedback {
+        0% {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes couleur-qui-change {
+        0%,
+        10% {
+          color: white;
+        }
+        30% {
+          color: #00ff00;
+        }
+        38% {
+          color: #ffff00;
+        }
+        46% {
+          color: #ff00ff;
+        }
+        54% {
+          color: #00ffff;
+        }
+        60% {
+          color: #ffa500;
+        }
+        68% {
+          color: #7cfc00;
+        }
+        76% {
+          color: #ff69b4;
+        }
+        84% {
+          color: #8a2be2;
+        }
+        92% {
+          color: #ff4500;
+        }
+        100% {
+          color: deeppink;
+        }
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes flicker {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        5%,
+        25%,
+        45%,
+        65%,
+        85% {
+          opacity: 0.85;
+        }
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+          opacity: 1;
+        }
+      }
+
+      @keyframes wipe-in {
+        from {
+          clip-path: inset(0 100% 0 0);
+        }
+        to {
+          clip-path: inset(0 0 0 0);
+        }
+      }
+
+      @keyframes border-fade {
+        0% {
+          border-color: #3182ce;
+        }
+        33% {
+          border-color: #48bb78;
+        }
+        66% {
+          border-color: #f6ad55;
+        }
+        100% {
+          border-color: #3182ce;
+        }
+      }
+
+      @keyframes clignotement-leger {
+        0%,
+        100% {
+          color: red;
+          opacity: 1;
+        }
+        50% {
+          color: orange;
+          opacity: 0.7;
+        }
+      }
+
+      /* ----------------------------------------------------
+           STYLE GÉNÉRAL
+           ---------------------------------------------------- */
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #f0f4f8;
+        padding: 1rem;
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      @media (min-width: 768px) {
+        body {
+          padding: 2rem;
+        }
+      }
+
+      .quiz-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 0.5rem;
+        animation: headerDrop 0.8s ease-out;
+      }
+
+      .header p {
+        color: #4a5568;
+        font-size: 1.125rem;
+        font-weight: 500;
+      }
+
+      .question-card {
+        min-height: 250px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-radius: 15px;
+        background-color: #f7faff;
+        border: 2px solid #e2e8f0;
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      .question-card.entering {
+        animation: slideIn 0.5s ease-out forwards;
+      }
+
+      .question-card.fast-exit {
+        animation: slideOut 0.25s ease-in forwards; /* Rapide pour le succès */
+      }
+      .question-card.slow-exit {
+        animation: slideOut 0.8s ease-in forwards; /* Lent pour l'échec */
+      }
+
+      .question-text {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3748;
+      }
+
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .answer-btn {
+        display: block;
+        width: 100%;
+        padding: 1rem 1.25rem;
+        text-align: left;
+        border-radius: 10px;
+        transition: all 0.2s ease-out;
+        font-weight: 600;
+        border: 1px solid #c3dafe;
+        color: #2b6cb0;
+        background-color: #ebf4ff;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .answer-btn:hover:not(.selected):not(.correct):not(.incorrect) {
+        background-color: #cee0f2;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .selected {
+        background-color: #3182ce;
+        border-color: #2c5282;
+        color: white;
+        transform: scale(1.01);
+        box-shadow: 0 5px 15px rgba(49, 130, 206, 0.4);
+      }
+
+      .correct {
+        background-color: #48bb78 !important;
+        border-color: #2f855a !important;
+        color: white !important;
+        box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
+        pointer-events: none;
+        animation: bounce 0.6s ease-out;
+      }
+
+      .incorrect {
+        background-color: #f56565 !important;
+        border-color: #c53030 !important;
+        color: white !important;
+        box-shadow: 0 5px 15px rgba(245, 101, 101, 0.4);
+        pointer-events: none;
+        animation: shake 0.5s ease-in-out;
+      }
+
+      #feedback-area {
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: 10px;
+        font-weight: 600;
+        text-align: center;
+        animation: zoomFeedback 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      }
+
+      .feedback-correct {
+        background-color: #e6fffa;
+        color: #38a169;
+        border: 1px solid #48bb78;
+      }
+
+      .feedback-incorrect {
+        background-color: #fff5f5;
+        color: #e53e3e;
+        border: 1px solid #f56565;
+      }
+      .main-btn-container {
+        margin-top: 2.5rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      #main-btn {
+        background-color: #4c51bf;
+        color: white;
+        padding: 1rem 2.5rem;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1.1rem;
+        transition:
+          background-color 0.3s,
+          transform 0.2s,
+          box-shadow 0.3s;
+        width: 100%;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+      }
+
+      @media (min-width: 768px) {
+        #main-btn {
+          width: auto;
+        }
+      }
+
+      #main-btn:hover:not(:disabled) {
+        background-color: #3a4294;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(76, 81, 191, 0.4);
+      }
+
+      #main-btn:active:not(:disabled) {
+        animation: pulse 0.3s ease;
+      }
+
+      #main-btn:disabled {
+        background-color: #a0aec0;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      #results {
+        margin-top: 2.5rem;
+        padding: 2rem;
+        background-color: #f0fff4;
+        border: 2px solid #68d391;
+        border-radius: 15px;
+        text-align: center;
+      }
+
+      #results.entering {
+        animation: resultsEntry 0.6s ease-out forwards;
+      }
+
+      .high-score-glow {
+        animation: glowCorrect 2s infinite alternate;
+      }
+
+      #results h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #2f855a;
+        margin-bottom: 1rem;
+      }
+
+      #score-display {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: #38a169;
+      }
+
+      #feedback-message {
+        font-size: 1.1rem;
+        color: #4c51bf;
+      }
+
+      #results button {
+        margin-top: 1.5rem;
+        padding: 0.75rem 2rem;
+        background-color: #48bb78;
+        color: white;
+        border-radius: 10px;
+        font-weight: 700;
+        transition: background-color 0.2s;
+        border: none;
+        cursor: pointer;
+      }
+
+      #results button:hover {
+        background-color: #38a169;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .couleur-qui-change {
+        animation: couleur-qui-change 14s infinite alternate;
+        font-weight: bold;
+      }
+
+      .anim-rotate {
+        animation: rotate 5s linear infinite;
+      }
+
+      .anim-flicker {
+        animation: flicker 0.15s linear infinite alternate;
+      }
+
+      .anim-wipe-in {
+        animation: wipe-in 1s ease-out forwards;
+      }
+
+      .anim-border-fade {
+        border: 3px solid transparent;
+        animation: border-fade 3s ease-in-out infinite;
+      }
+
+      .clignotant {
+        animation: clignotement-leger 1.5s infinite ease-in-out;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="quiz-container anim-border-fade">
+      <header class="header">
+        <h1>
+          Les Territoires Ultramarins Français
+          <span class="couleur-qui-change">– </span>Enjeux
+          <span class="clignotant">, </span>
+          Atouts <span class="clignotant">et </span>Aménagements
+        </h1>
+        <p>
+          Question <span id="current-q-number">1</span> /
+          <span id="total-q-number">60</span>
+        </p>
+      </header>
+
+      <div id="quiz-area" class="anim-wipe-in">
+        <div id="current-question-card" class="question-card"></div>
+
+        <div id="feedback-area" class="hidden"></div>
+
+        <div class="main-btn-container">
+          <button id="main-btn" onclick="checkAnswerAndProceed()">
+            Valider la Réponse
+          </button>
+        </div>
+      </div>
+
+      <div id="results" class="hidden">
+        <h2 class="anim-flicker">Quiz Terminé !</h2>
+        <p id="score-display"></p>
+        <p id="feedback-message"></p>
+        <button onclick="restartQuiz()">Recommencer le Quiz</button>
+      </div>
+    </div>
+
+    <script>
+      // --- DATA: ---
+      const questions = [
+        {
+          q: "Où se situe l'île de La Réunion ?",
+          answers: [
+            "Dans l'océan Atlantique",
+            "Dans l'océan Indien",
+            "Dans l'océan Pacifique",
+          ],
+          correct: "Dans l'océan Indien",
+        },
+        {
+          q: "Quelle est la distance approximative entre La Réunion et la France métropolitaine ?",
+          answers: ["3 000 km", "6 500 km", "9 300 km"],
+          correct: "9 300 km",
+        },
+        {
+          q: "Quel type de climat caractérise les territoires ultramarins français tropicaux ?",
+          answers: [
+            "Climat polaire",
+            "Climat tropical",
+            "Climat méditerranéen",
+          ],
+          correct: "Climat tropical",
+        },
+        {
+          q: "Quel risque naturel majeur affecte régulièrement les territoires ultramarins français ?",
+          answers: [
+            "Les blizzards",
+            "Les cyclones",
+            "Les sécheresses prolongées",
+          ],
+          correct: "Les cyclones",
+        },
+        {
+          q: "Quelle ressource naturelle est exploitée en Guyane française ?",
+          answers: ["Le pétrole", "L'or", "Le charbon"],
+          correct: "L'or",
+        },
+        {
+          q: "Quelle ressource naturelle est exploitée en Nouvelle-Calédonie ?",
+          answers: ["Le nickel", "Le diamant", "L'uranium"],
+          correct: "Le nickel",
+        },
+        {
+          q: "Quel est un atout économique majeur des territoires ultramarins français ?",
+          answers: [
+            "L'industrie lourde",
+            "Le tourisme",
+            "L'agriculture céréalière",
+          ],
+          correct: "Le tourisme",
+        },
+        {
+          q: "Que signifie ZEE dans le contexte des territoires ultramarins ?",
+          answers: [
+            "Zone d'Échange Économique",
+            "Zone Économique Exclusive",
+            "Zone d'Expansion Européenne",
+          ],
+          correct: "Zone Économique Exclusive",
+        },
+        {
+          q: "Pourquoi les territoires ultramarins ont-ils une importance géostratégique ?",
+          answers: [
+            "Grâce à leur position géographique dans différents océans",
+            "Grâce à leur population nombreuse",
+            "Grâce à leur industrie militaire",
+          ],
+          correct: "Grâce à leur position géographique dans différents océans",
+        },
+        {
+          q: "Quelle est une conséquence de l'éloignement des territoires ultramarins avec la métropole ?",
+          answers: [
+            "Une offre de santé limitée",
+            "Une surabondance de médecins",
+            "Un accès gratuit aux soins",
+          ],
+          correct: "Une offre de santé limitée",
+        },
+        {
+          q: "Quelle contrainte naturelle explique la concentration de la population sur le littoral à La Réunion ?",
+          answers: [
+            "Les sols fertiles",
+            "Le relief montagneux et l'instabilité des sols",
+            "La présence de volcans éteints",
+          ],
+          correct: "Le relief montagneux et l'instabilité des sols",
+        },
+        {
+          q: "Quel problème social est particulièrement accentué dans les territoires ultramarins ?",
+          answers: [
+            "Le vieillissement de la population",
+            "L'habitat informel et précaire",
+            "La surpopulation urbaine",
+          ],
+          correct: "L'habitat informel et précaire",
+        },
+        {
+          q: "Comment se compare le taux de pauvreté à Mayotte par rapport à la France métropolitaine ?",
+          answers: [
+            "Il est équivalent",
+            "Il est 2 fois supérieur",
+            "Il est 5 fois supérieur",
+          ],
+          correct: "Il est 5 fois supérieur",
+        },
+        {
+          q: "Qu'est-ce que la 'fracture numérique' dans les territoires ultramarins ?",
+          answers: [
+            "Un manque d'accès au haut débit",
+            "Une surconnexion à internet",
+            "Un excès d'infrastructures numériques",
+          ],
+          correct: "Un manque d'accès au haut débit",
+        },
+        {
+          q: "Quelle est une conséquence du décalage horaire entre les outre-mer et la métropole ?",
+          answers: [
+            "Facilite les échanges commerciaux",
+            "Complique la coordination administrative et économique",
+            "N'a aucun impact",
+          ],
+          correct: "Complique la coordination administrative et économique",
+        },
+        {
+          q: "Pourquoi les territoires ultramarins sont-ils fortement dépendants de la métropole ?",
+          answers: [
+            "Pour les importations de biens et services",
+            "Pour l'exportation de leurs ressources uniquement",
+            "Pour la gestion de leur politique étrangère",
+          ],
+          correct: "Pour les importations de biens et services",
+        },
+        {
+          q: "Quel est un défi lié au caractère insulaire de nombreux territoires ultramarins ?",
+          answers: [
+            "La tension sur le foncier",
+            "L'excès de terres agricoles",
+            "La surabondance de logements",
+          ],
+          correct: "La tension sur le foncier",
+        },
+        {
+          q: "Quel risque naturel supplémentaire menace certains territoires ultramarins outre les cyclones ?",
+          answers: [
+            "Les éruptions volcaniques",
+            "Les avalanches",
+            "Les tornades",
+          ],
+          correct: "Les éruptions volcaniques",
+        },
+        {
+          q: "Quelle est une faiblesse des territoires ultramarins concernant leurs connexions régionales ?",
+          answers: [
+            "Une forte intégration économique régionale",
+            "Une faible connexion avec leur ensemble régional",
+            "Une domination commerciale régionale",
+          ],
+          correct: "Une faible connexion avec leur ensemble régional",
+        },
+        {
+          q: "Quel est un atout démographique potentiel des territoires ultramarins ?",
+          answers: [
+            "Une population jeune",
+            "Une population majoritairement retraitée",
+            "Une stabilité démographique",
+          ],
+          correct: "Une population jeune",
+        },
+        {
+          q: "Quand a été inaugurée la Route des Tamarins à La Réunion ?",
+          answers: ["23 juin 2009", "15 mars 2010", "1er janvier 2008"],
+          correct: "23 juin 2009",
+        },
+        {
+          q: "Combien de temps ont duré les travaux de la Route des Tamarins ?",
+          answers: ["3 ans", "6 ans", "10 ans"],
+          correct: "6 ans",
+        },
+        {
+          q: "Quel était le coût final de la Route des Tamarins ?",
+          answers: [
+            "700 000 euros",
+            "100 millions d'euros",
+            "Plus d'un milliard d'euros",
+          ],
+          correct: "Plus d'un milliard d'euros",
+        },
+        {
+          q: "Combien de véhicules empruntent quotidiennement la Route des Tamarins dix ans après son ouverture ?",
+          answers: ["20 000", "45 000", "70 000"],
+          correct: "70 000",
+        },
+        {
+          q: "Combien d'ouvrages d'art composent la Route des Tamarins ?",
+          answers: ["45", "89", "123"],
+          correct: "123",
+        },
+        {
+          q: "Quelle ancienne route la Route des Tamarins permet-elle de délester ?",
+          answers: [
+            "La route du Littoral et l'ancienne nationale 1",
+            "La route de la Montagne",
+            "La route de Cilaos",
+          ],
+          correct: "La route du Littoral et l'ancienne nationale 1",
+        },
+        {
+          q: "Comment le document 2 qualifie-t-il le chantier de la Route des Tamarins ?",
+          answers: ["Projet modeste", "Chantier colossal", "Travaux mineurs"],
+          correct: "Chantier colossal",
+        },
+        {
+          q: "Quel projet de transport a été abandonné après la Route des Tamarins à La Réunion ?",
+          answers: [
+            "Le métro automatique",
+            "Le tram-train",
+            "Le téléphérique urbain",
+          ],
+          correct: "Le tram-train",
+        },
+        {
+          q: "Quels acteurs ont financé la Route des Tamarins ?",
+          answers: [
+            "L'État français, la région et l'UE (FEDER)",
+            "Uniquement des investisseurs privés",
+            "La Banque mondiale",
+          ],
+          correct: "L'État français, la région et l'UE (FEDER)",
+        },
+        {
+          q: "Quel bénéfice principal apporte la Route des Tamarins aux Réunionnais ?",
+          answers: [
+            "Une réduction des temps de trajet et une fluidification du trafic",
+            "Une augmentation des péages",
+            "Une restriction d'accès aux Hauts",
+          ],
+          correct:
+            "Une réduction des temps de trajet et une fluidification du trafic",
+        },
+        {
+          q: "Que signifie 'Natitua' en polynésien ?",
+          answers: ["Océan profond", "Lien en haute mer", "Île paradisiaque"],
+          correct: "Lien en haute mer",
+        },
+        {
+          q: "Quel est l'objectif du câble sous-marin Natitua en Polynésie ?",
+          answers: [
+            "Transporter du pétrole",
+            "Permettre un accès au haut débit",
+            "Relier les îles par ferry",
+          ],
+          correct: "Permettre un accès au haut débit",
+        },
+        {
+          q: "Quelles îles le câble Natitua relie-t-il à Tahiti ?",
+          answers: [
+            "Les îles de la Société uniquement",
+            "Les îles Marquises et Tuamotu",
+            "Les îles Australes et Gambier",
+          ],
+          correct: "Les îles Marquises et Tuamotu",
+        },
+        {
+          q: "Quel est l'objectif du Plan logement outre-mer 2019-2022 ?",
+          answers: [
+            "Détruire l'habitat ancien",
+            "Répondre aux besoins spécifiques dont l'habitat informel",
+            "Augmenter les loyers",
+          ],
+          correct: "Répondre aux besoins spécifiques dont l'habitat informel",
+        },
+        {
+          q: "Quel projet d'infrastructure est prévu à Mayotte pour 2027 ?",
+          answers: [
+            "Un port en eau profonde",
+            "Un nouvel aéroport à Bouyouni",
+            "Une ligne de TGV",
+          ],
+          correct: "Un nouvel aéroport à Bouyouni",
+        },
+        {
+          q: "Quel est l'objectif principal du projet d'aéroport de Mayotte ?",
+          answers: [
+            "Désenclaver l'île",
+            "Augmenter les taxes aéroportuaires",
+            "Réduire le trafic maritime",
+          ],
+          correct: "Désenclaver l'île",
+        },
+        {
+          q: "À quelle distance Mayotte se trouve-telle de la France métropolitaine ?",
+          answers: ["3 000 km", "5 500 km", "8 000 km"],
+          correct: "8 000 km",
+        },
+        {
+          q: "Qu'est-ce que le programme Interreg Caraïbes ?",
+          answers: [
+            "Un programme de coopération régionale",
+            "Une taxe sur les importations",
+            "Un accord militaire",
+          ],
+          correct: "Un programme de coopération régionale",
+        },
+        {
+          q: "Combien de pays et territoires sont concernés par Interreg Caraïbes ?",
+          answers: ["Plus de 10", "Plus de 25", "Plus de 40"],
+          correct: "Plus de 40",
+        },
+        {
+          q: "Quels domaines de coopération couvre Interreg Caraïbes ?",
+          answers: [
+            "Uniquement le tourisme",
+            "Économie, environnement, santé, énergies renouvelables",
+            "Uniquement la défense",
+          ],
+          correct: "Économie, environnement, santé, énergies renouvelables",
+        },
+        {
+          q: "Comment la coopération régionale renforce-t-elle l'intégration des territoires ultramarins ?",
+          answers: [
+            "En isolant davantage les territoires",
+            "En encourageant les partenariats avec les États voisins",
+            "En supprimant les frontières maritimes",
+          ],
+          correct: "En encourageant les partenariats avec les États voisins",
+        },
+        {
+          q: "Quel fonds européen finance souvent les aménagements dans les outre-mer ?",
+          answers: ["FEDER", "FMI", "OCDE"],
+          correct: "FEDER",
+        },
+        {
+          q: "Pourquoi les aménagements d'infrastructure cherchent-ils à réduire les inégalités ?",
+          answers: [
+            "Pour augmenter les impôts locaux",
+            "Pour gommer les écarts de développement avec la métropole",
+            "Pour favoriser l'émigration",
+          ],
+          correct: "Pour gommer les écarts de développement avec la métropole",
+        },
+        {
+          q: "Quel secteur économique peut bénéficier du désenclavement de Mayotte ?",
+          answers: [
+            "Le tourisme",
+            "L'extraction minière",
+            "La construction navale",
+          ],
+          correct: "Le tourisme",
+        },
+        {
+          q: "Quelle contrainte technique a rendu la construction de la Route des Tamarins complexe ?",
+          answers: [
+            "Le climat froid",
+            "Le relief montagneux de l'île",
+            "L'absence de matériaux",
+          ],
+          correct: "Le relief montagneux de l'île",
+        },
+        {
+          q: "Quel type d'ouvrage exceptionnel figure sur la Route des Tamarins ?",
+          answers: [
+            "Des écluses",
+            "Des tunnels et viaducs",
+            "Des ponts suspendus uniquement",
+          ],
+          correct: "Des tunnels et viaducs",
+        },
+        {
+          q: "Quelle commune de La Réunion est citée comme bénéficiaire de la Route des Tamarins ?",
+          answers: ["Saint-Denis", "Saint-Leu", "Les deux"],
+          correct: "Les deux",
+        },
+        {
+          q: "Quel problème de circulation la Route des Tamarins a-t-elle résolu ?",
+          answers: [
+            "Les embouteillages sur la côte ouest",
+            "Le manque de places de parking",
+            "L'absence de transports en commun",
+          ],
+          correct: "Les embouteillages sur la côte ouest",
+        },
+        {
+          q: "En plus de la mobilité, quel autre bénéfice apporte la Route des Tamarins ?",
+          answers: [
+            "Soutien à l'économie locale et au tourisme",
+            "Réduction de la population",
+            "Augmentation des impôts",
+          ],
+          correct: "Soutien à l'économie locale et au tourisme",
+        },
+        {
+          q: "Quel type de réseau est cité comme déficient dans certains outre-mer (Doc 2) ?",
+          answers: [
+            "Réseaux d'adduction en eau, électrique, télécommunication",
+            "Réseaux ferroviaires uniquement",
+            "Réseaux aériens",
+          ],
+          correct: "Réseaux d'adduction en eau, électrique, télécommunication",
+        },
+        {
+          q: "Pourquoi l'habitat informel est-il un enjeu crucial dans les outre-mer ?",
+          answers: [
+            "Car il est esthétique",
+            "Car ces territoires sont exposés aux risques naturels",
+            "Car il augmente la valeur immobilière",
+          ],
+          correct: "Car ces territoires sont exposés aux risques naturels",
+        },
+        {
+          q: "Quel indicateur social est particulièrement préoccupant chez les jeunes des outre-mer ?",
+          answers: [
+            "Le taux de diplômés",
+            "Le chômage des jeunes",
+            "Le taux de mariage",
+          ],
+          correct: "Le chômage des jeunes",
+        },
+        {
+          q: "Comment le câble Natitua contribue-t-il à réduire les inégalités ?",
+          answers: [
+            "En offrant un accès équitable au numérique",
+            "En augmentant le coût d'internet",
+            "En limitant l'accès aux îles principales",
+          ],
+          correct: "En offrant un accès équitable au numérique",
+        },
+        {
+          q: "Quel avantage procure une liaison aérienne directe Paris-Mayotte ?",
+          answers: [
+            "Réduire les escales et améliorer la fiabilité des liaisons",
+            "Augmenter la durée des vols",
+            "Supprimer le trafic maritime",
+          ],
+          correct: "Réduire les escales et améliorer la fiabilité des liaisons",
+        },
+        {
+          q: "Quelle ville est citée comme escale fréquente pour les vols vers Mayotte ?",
+          answers: ["Dubai", "Nairobi", "Johannesburg"],
+          correct: "Nairobi",
+        },
+        {
+          q: "Quel est un objectif environnemental d'Interreg Caraïbes ?",
+          answers: [
+            "Augmenter la pollution",
+            "Gestion des risques naturels et de l'environnement",
+            "Déforestation",
+          ],
+          correct: "Gestion des risques naturels et de l'environnement",
+        },
+        {
+          q: "Comment les ZEE des outre-mer français se comparent-elles à celles de la métropole ?",
+          answers: [
+            "Elles sont plus petites",
+            "Elles sont équivalentes",
+            "Elles sont beaucoup plus vastes",
+          ],
+          correct: "Elles sont beaucoup plus vastes",
+        },
+        {
+          q: "Quel type de relief caractérise principalement La Réunion ?",
+          answers: [
+            "Plaine extensive",
+            "Relief montagneux avec volcan actif",
+            "Désert aride",
+          ],
+          correct: "Relief montagneux avec volcan actif",
+        },
+        {
+          q: "Quelle côte de La Réunion concentre le plus d'agglomérations ?",
+          answers: ["La côte est", "La côte ouest", "La côte sud uniquement"],
+          correct: "La côte ouest",
+        },
+        {
+          q: "Quel est le rôle de l'Union européenne dans les aménagements ultramarins ?",
+          answers: [
+            "Aucun rôle",
+            "Financement via des fonds structurels comme le FEDER",
+            "Interdiction des grands projets",
+          ],
+          correct: "Financement via des fonds structurels comme le FEDER",
+        },
+      ];
+
+      let currentQuestionIndex = 0;
+      let score = 0;
+      let userSelection = null;
+      let questionsShuffled = [];
+      let quizInProgress = false;
+
+      // Fonction pour mélanger un tableau (Algorithme de Fisher-Yates)
+      function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
+
+      // Affiche la question actuelle
+      function renderQuestion() {
+        if (currentQuestionIndex >= questionsShuffled.length) {
+          showResults();
+          return;
+        }
+
+        const q = questionsShuffled[currentQuestionIndex];
+        const card = document.getElementById("current-question-card");
+        const questionNumber = currentQuestionIndex + 1;
+
+        card.classList.remove("slow-exit", "fast-exit");
+        card.classList.add("entering");
+
+        document.getElementById("current-q-number").textContent =
+          questionNumber;
+        document.getElementById("total-q-number").textContent =
+          questionsShuffled.length;
+        document.getElementById("main-btn").textContent = "Valider la Réponse";
+        document.getElementById("main-btn").disabled = true;
+
+        card.innerHTML = `
+                      <p class="question-text">${q.q}</p>
+                      <div id="options-container" class="options-container">
+                          <!-- Options de réponse -->
+                      </div>
+                  `;
+
+        document.getElementById("feedback-area").classList.add("hidden");
+        document
+          .getElementById("feedback-area")
+          .classList.remove("feedback-correct", "feedback-incorrect");
+        userSelection = null;
+        quizInProgress = true;
+
+        const optionsContainer = card.querySelector("#options-container");
+        const shuffledAnswers = shuffle([...q.answers]);
+
+        shuffledAnswers.forEach((answer) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "answer-btn";
+          button.setAttribute("data-answer", answer);
+          button.textContent = answer;
+          button.onclick = function () {
+            selectAnswer(answer, button);
+          };
+          optionsContainer.appendChild(button);
+        });
+
+        setTimeout(() => {
+          card.classList.remove("entering");
+        }, 500);
+      }
+
+      function selectAnswer(answer, clickedButton) {
+        if (!quizInProgress) return;
+
+        const optionsContainer = document.getElementById("options-container");
+        optionsContainer.querySelectorAll(".answer-btn").forEach((btn) => {
+          btn.classList.remove("selected");
+        });
+
+        clickedButton.classList.add("selected");
+
+        userSelection = answer;
+        document.getElementById("main-btn").disabled = false;
+      }
+
+      function checkAnswerAndProceed() {
+        if (userSelection === null || !quizInProgress) return;
+
+        quizInProgress = false;
+        document.getElementById("main-btn").disabled = true;
+
+        const q = questionsShuffled[currentQuestionIndex];
+        const isCorrect = userSelection === q.correct;
+        const feedbackArea = document.getElementById("feedback-area");
+        const optionsContainer = document.getElementById("options-container");
+        const card = document.getElementById("current-question-card");
+
+        feedbackArea.classList.remove("hidden");
+
+        optionsContainer.querySelectorAll(".answer-btn").forEach((btn) => {
+          const answer = btn.getAttribute("data-answer");
+          btn.classList.remove("selected");
+
+          if (answer === q.correct) {
+            btn.classList.add("correct");
+          } else if (answer === userSelection && !isCorrect) {
+            btn.classList.add("incorrect");
+          }
+        });
+
+        feedbackArea.classList.remove("feedback-correct", "feedback-incorrect");
+
+        if (isCorrect) {
+          score++;
+          feedbackArea.textContent =
+            "Bravo ! Réponse correcte. Prochaine question rapidement !";
+          feedbackArea.classList.add("feedback-correct");
+          card.classList.add("fast-exit");
+        } else {
+          feedbackArea.textContent = `Faux. La bonne réponse était : ${q.correct}. Prenez le temps de réfléchir.`;
+          feedbackArea.classList.add("feedback-incorrect");
+          card.classList.add("slow-exit");
+        }
+
+        // Déterminer la durée du délai de transition
+        const delayDuration = isCorrect ? 500 : 3000;
+
+        document.getElementById("main-btn").textContent = "Question Suivante";
+
+        setTimeout(() => {
+          currentQuestionIndex++;
+
+          if (currentQuestionIndex >= questionsShuffled.length) {
+            document.getElementById("main-btn").textContent =
+              "Voir les Résultats";
+            document.getElementById("main-btn").onclick = showResults;
+            document.getElementById("main-btn").disabled = false;
+          } else {
+            renderQuestion();
+            document.getElementById("main-btn").onclick = checkAnswerAndProceed;
+          }
+        }, delayDuration);
+      }
+
+      function showResults() {
+        document.getElementById("quiz-area").classList.add("hidden");
+        const resultsDiv = document.getElementById("results");
+        const totalQuestions = questionsShuffled.length;
+        const percentage = Math.round((score / totalQuestions) * 100);
+
+        document.getElementById("score-display").textContent =
+          `Votre score final est de ${score} / ${totalQuestions} (${percentage}%)`;
+
+        let feedbackMsg = "";
+        resultsDiv.classList.remove("high-score-glow");
+
+        if (percentage === 100) {
+          feedbackMsg =
+            "Félicitations ! Maîtrise parfaite de la génétique. Vous êtes prêt(e) !";
+          resultsDiv.classList.add("high-score-glow");
+        } else if (percentage >= 80) {
+          feedbackMsg =
+            "Excellent travail ! Vous avez une très bonne compréhension des notions.";
+          resultsDiv.classList.add("high-score-glow");
+        } else if (percentage >= 60) {
+          feedbackMsg =
+            "Bon effort ! Revoyez les thèmes où vous avez eu le plus d'erreurs.";
+        } else if (percentage >= 30) {
+          feedbackMsg =
+            "N'abandonnez pas. Reprenez les sections I, III et V de votre fiche pour consolider les bases.";
+        } else if (percentage >= 1) {
+          feedbackMsg = "révisez tout, vous allez y arriver";
+        } else {
+          feedbackMsg = "😭";
+        }
+        document.getElementById("feedback-message").textContent = feedbackMsg;
+        resultsDiv.classList.remove("hidden");
+
+        resultsDiv.classList.add("entering");
+
+        setTimeout(() => {
+          resultsDiv.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+
+      function restartQuiz() {
+        currentQuestionIndex = 0;
+        score = 0;
+        userSelection = null;
+        questionsShuffled = shuffle([...questions]);
+        document.getElementById("quiz-area").classList.remove("hidden");
+
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.classList.add("hidden");
+        resultsDiv.classList.remove("entering", "high-score-glow");
+
+        document.getElementById("main-btn").onclick = checkAnswerAndProceed;
+        renderQuestion();
+      }
+
+      window.onload = function () {
+        document.getElementById("total-q-number").textContent =
+          questions.length;
+        questionsShuffled = shuffle([...questions]);
+        renderQuestion();
+      };
+    </script>
+
+    <!-- BOUTON RETOUR PWA -->
+    <script>
+      (function () {
+        const checkAndAddButton = () => {
+          const isPWA =
+            window.matchMedia("(display-mode: standalone)").matches ||
+            window.matchMedia("(display-mode: fullscreen)").matches ||
+            navigator.standalone;
+
+          if (isPWA && !window.location.pathname.endsWith("index.html")) {
+            const btn = document.createElement("button");
+            btn.innerHTML = "← Retour";
+            btn.style.position = "fixed";
+            btn.style.top = "15px";
+            btn.style.left = "15px";
+            btn.style.zIndex = "9999";
+            btn.style.background = "#4CAF50";
+            btn.style.color = "white";
+            btn.style.border = "none";
+            btn.style.padding = "10px 20px";
+            btn.style.borderRadius = "8px";
+            btn.style.cursor = "pointer";
+            btn.style.boxShadow = "0 4px 10px rgba(0,0,0,0.5)";
+            btn.style.fontWeight = "bold";
+            btn.style.fontFamily = "Arial, sans-serif";
+            btn.style.fontSize = "16px";
+            btn.style.transition = "background 0.3s, transform 0.3s";
+
+            btn.onmouseover = () => {
+              btn.style.background = "#45a049";
+              btn.style.transform = "scale(1.05)";
+            };
+            btn.onmouseout = () => {
+              btn.style.background = "#4CAF50";
+              btn.style.transform = "scale(1)";
+            };
+
+            btn.onclick = () => {
+              window.location.href = "../index.html";
+            };
+
+            document.body.appendChild(btn);
+          }
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", checkAndAddButton);
+        } else {
+          checkAndAddButton();
+        }
+      })();
+    </script>
+  </body>
+</html>

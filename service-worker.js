@@ -22,6 +22,7 @@ const STATIC_ASSETS = [
   "./inject-back-btn.js",
   "./italien/Grammaire_(L'adjectif 'Bello')_et _ompréhension_de_Texte.html",
   "./italien/Quiz sur les Maîtres de la Haute Couture Italienne : Ferré, Armani, Cucinelli, Prada et Valentino.html",
+  "./italien/les verbes réguliers au futur en Italien.html",
   "./latin/Maître_du_Latin_-_Les_verbes.html",
   "./manifest.json",
   "./math/Mathématiques : fonctions affines et linéaires.html",
@@ -48,7 +49,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-1ef6c82"; // version automatique
+const CACHE_NAME = "quiz-cache-9a2af89"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {

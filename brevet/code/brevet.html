@@ -1,0 +1,530 @@
+<body
+    class="bg-slate-950 text-slate-100 min-h-screen pb-16 font-sans selection:bg-indigo-500 selection:text-white"
+>
+    <!-- TOP BAR: Minister Header -->
+    <header
+        class="bg-slate-900 border-b border-slate-800 py-5 px-6 top-0 z-40 shadow-md lg:sticky"
+    >
+        <div
+            class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4"
+        >
+            <!-- Left Banner -->
+            <div class="flex items-center gap-3">
+                <div
+                    class="p-2.5 bg-indigo-600/20 text-indigo-400 rounded-xl border border-indigo-500/30"
+                >
+                    <i data-lucide="award" class="w-6 h-6 anim-rotate"></i>
+                </div>
+                <div>
+                    <h1
+                        class="text-lg font-black tracking-widest text-slate-100 flex items-center gap-1.5"
+                    >
+                        DIPLÔME NATIONAL DU BREVET
+                        <span
+                            class="text-xs font-bold text-indigo-400 px-2 py-0.5 rounded bg-indigo-950 border border-indigo-800"
+                            >COPIE INTERACTIVE</span
+                        >
+                    </h1>
+                    <p
+                        class="text-[10px] text-slate-400 font-mono uppercase tracking-wider"
+                    >
+                        Académie de la République Française • Évaluation IA
+                    </p>
+                </div>
+            </div>
+
+            <div
+                class="text-xs text-slate-400 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 font-mono"
+            >
+                Session Officielle 2026
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN EXAM CONSOLE -->
+    <main
+        class="max-w-7xl mx-auto px-4 mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8"
+    >
+        <!-- LEFT CONTAINER: Véritable Copie de l'élève (All questions of the selected subject) -->
+        <section class="lg:col-span-8 flex flex-col gap-6">
+            <!-- COPIE OFFICIELLE CARD -->
+            <div
+                id="exam-card-container"
+                class="exam-card bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden"
+            >
+                <!-- Background watermark -->
+                <div
+                    class="absolute top-1/3 right-10 opacity-[0.02] pointer-events-none transform rotate-12"
+                >
+                    <i data-lucide="graduation-cap" class="w-96 h-96"></i>
+                </div>
+
+                <!-- Official Copy Header -->
+                <div class="border-b-4 border-slate-800 pb-6 mb-8">
+                    <div
+                        class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+                    >
+                        <div>
+                            <span
+                                id="copy-subject"
+                                class="text-xs font-bold uppercase tracking-wider text-indigo-400 px-3 py-1 bg-indigo-950/50 border border-indigo-800/30 rounded-full"
+                            >
+                                Épreuve
+                            </span>
+                            <h2
+                                id="copy-title"
+                                class="text-2xl font-black mt-2 text-white"
+                            >
+                                Sujet de Brevet
+                            </h2>
+                        </div>
+                        <div
+                            class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-center md:min-w-[120px]"
+                        >
+                            <span
+                                class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider block"
+                                >Note Max</span
+                            >
+                            <p
+                                id="copy-total-points"
+                                class="text-2xl font-black text-emerald-400 tracking-tight"
+                            >
+                                20 / 20 Pts
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        id="copy-description"
+                        class="text-xs text-slate-400 mt-4 leading-relaxed"
+                    >
+                        Consignes : Saisissez vos réponses ci-dessous. Dès
+                        l'analyse importée de l'IA, vos fautes d'orthographe ou
+                        de calculs seront directement surlignées en rouge ondulé
+                        sur votre copie pour pouvoir visualiser et corriger vos
+                        lacunes !
+                    </div>
+                </div>
+
+                <!-- ALL EXERCISES & QUESTIONS -->
+                <div id="copy-questions-sheet" class="flex flex-col gap-8">
+                    <!-- Questions dynamically rendered here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- RIGHT CONTAINER: Interactive evaluation dashboard -->
+        <section class="lg:col-span-4 flex flex-col gap-6">
+            <!-- PROMPT & ACTION HUB -->
+            <div
+                class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl sticky top-24 flex flex-col gap-5 anim-border-fade"
+            >
+                <div>
+                    <h3
+                        class="font-bold text-white text-md flex items-center gap-2"
+                    >
+                        <i
+                            data-lucide="zap"
+                            class="w-5 h-5 text-indigo-400"
+                        ></i>
+                        Correction & Évaluation
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-1">
+                        Copiez votre copie dans l'IA pour obtenir une relecture
+                        dynamique directement dans vos encadrés de rédaction.
+                    </p>
+                </div>
+
+                <!-- Quick statistics of current sheet -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div
+                        class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-center shadow-inner"
+                    >
+                        <span
+                            class="text-[9px] text-slate-500 font-bold block uppercase"
+                            >Questions</span
+                        >
+                        <p
+                            id="stats-questions"
+                            class="text-lg font-black text-white"
+                        >
+                            0
+                        </p>
+                    </div>
+                    <div
+                        class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-center shadow-inner"
+                    >
+                        <span
+                            class="text-[9px] text-slate-500 font-bold block uppercase"
+                            >Avancement</span
+                        >
+                        <p
+                            id="stats-progress"
+                            class="text-lg font-black text-amber-400"
+                        >
+                            0%
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Action buttons and Inputs -->
+                <div class="flex flex-col gap-4">
+                    <!-- STEP 1: Main interactive trigger to generate and show the prompt -->
+                    <div class="flex flex-col gap-1.5">
+                        <span
+                            class="text-[10px] uppercase font-bold text-indigo-400 tracking-wider flex items-center gap-1"
+                        >
+                            <span
+                                class="w-4 h-4 rounded-full bg-indigo-950 text-indigo-400 flex items-center justify-center font-mono"
+                                >1</span
+                            >
+                            Étape 1 : Obtenir le Prompt de l'IA
+                        </span>
+                        <button
+                            onclick="openPromptModal()"
+                            class="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs rounded-xl transition-all shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2"
+                        >
+                            <i
+                                data-lucide="message-square"
+                                class="w-4 h-4 text-indigo-100"
+                            ></i>
+                            <span>Générer et copier mon Prompt</span>
+                        </button>
+                    </div>
+
+                    <!-- STEP 2: Paste the Response Zone -->
+                    <div
+                        class="flex flex-col gap-1.5 border-t border-slate-800 pt-3"
+                    >
+                        <span
+                            class="text-[10px] uppercase font-bold text-emerald-400 tracking-wider flex items-center gap-1"
+                        >
+                            <span
+                                class="w-4 h-4 rounded-full bg-emerald-950 text-emerald-400 flex items-center justify-center font-mono"
+                                >2</span
+                            >
+                            Étape 2 : Coller le Retour de l'IA
+                        </span>
+                        <p class="text-[10px] text-slate-400 leading-snug">
+                            Collez le retour textuel de votre IA externe dans la
+                            zone d'analyse ci-dessous :
+                        </p>
+
+                        <textarea
+                            id="ai-response-paste"
+                            class="w-full h-32 bg-slate-950 font-serif text-xs p-3 rounded-xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-slate-300 placeholder:text-slate-700 transition-colors leading-relaxed"
+                            placeholder="Collez l'intégralité de la correction de l'IA contenant les balises <error> ici..."
+                        ></textarea>
+
+                        <button
+                            onclick="parseAndDisplayPastedCorrection()"
+                            class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs rounded-xl transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2"
+                        >
+                            <i
+                                data-lucide="check-circle"
+                                class="w-4 h-4 text-emerald-100"
+                            ></i>
+                            <span>Valider et Analyser ma Copie</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Secret Drawer for Questionnaire Customizer (JSON) -->
+                <div class="border-t border-slate-800/80 pt-4">
+                    <button
+                        onclick="toggleAdvancedSettings()"
+                        class="w-full flex items-center justify-between text-xs text-slate-400 hover:text-slate-100 bg-slate-950 hover:bg-slate-800 transition-colors px-3 py-2 rounded-lg border border-slate-800"
+                    >
+                        <span class="flex items-center gap-1.5 font-bold">
+                            <i data-lucide="settings" class="w-3.5 h-3.5"></i>
+                            Paramètres du Questionnaire (JSON)
+                        </span>
+                        <i
+                            id="settings-arrow"
+                            data-lucide="chevron-down"
+                            class="w-4 h-4 transition-transform"
+                        ></i>
+                    </button>
+
+                    <!-- Hidden JSON Customization Zone -->
+                    <div
+                        id="advanced-settings-drawer"
+                        class="hidden flex flex-col gap-3 mt-4"
+                    >
+                        <p class="text-[10px] text-slate-400">
+                            Vous pouvez modifier directement la structure JSON
+                            du sujet d'examen actif ci-dessous pour que la copie
+                            se mette à jour instantanément.
+                        </p>
+                        <textarea
+                            id="json-editor"
+                            class="w-full h-48 bg-slate-950 font-mono text-[10px] p-3 rounded-lg border border-slate-800 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-emerald-400 leading-relaxed"
+                            placeholder="{ JSON Subject Data }"
+                        ></textarea>
+                        <div class="flex gap-2">
+                            <button
+                                onclick="applyEditedJSON()"
+                                class="flex-1 py-1.5 px-3 bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-[10px] rounded-lg transition-colors flex items-center justify-center gap-1"
+                            >
+                                <i data-lucide="save" class="w-3.5 h-3.5"></i>
+                                Enregistrer
+                            </button>
+                            <button
+                                onclick="triggerJSONFileDownload()"
+                                class="py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-[10px] rounded-lg transition-colors"
+                                title="Exporter le sujet"
+                            >
+                                <i
+                                    data-lucide="download"
+                                    class="w-3.5 h-3.5"
+                                ></i>
+                            </button>
+                            <label
+                                class="py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-[10px] rounded-lg cursor-pointer transition-colors flex items-center gap-1"
+                            >
+                                <input
+                                    type="file"
+                                    id="json-file-input"
+                                    class="hidden"
+                                    accept=".json"
+                                    onchange="handleFileSelected(event)"
+                                />
+                                <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                                Charger
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- IN-APP GEMINI CORRECTION DISPLAY -->
+    <section
+        id="correction-display-panel"
+        class="max-w-7xl mx-auto px-4 mt-8 hidden"
+    >
+        <div
+            class="bg-slate-900 border-2 border-indigo-500/30 rounded-3xl p-6 shadow-2xl relative overflow-hidden anim-border-fade"
+        >
+            <!-- Header -->
+            <div
+                class="flex items-center justify-between mb-6 border-b border-slate-800 pb-4"
+            >
+                <div class="flex items-center gap-3">
+                    <div
+                        class="p-2.5 bg-indigo-600/20 text-indigo-400 rounded-xl"
+                    >
+                        <i
+                            data-lucide="file-check"
+                            class="w-6 h-6 animate-pulse"
+                        ></i>
+                    </div>
+                    <div>
+                        <h3
+                            class="font-bold text-lg text-white flex items-center gap-2"
+                        >
+                            Copie Corrigée & Rapport de l'Examinateur IA
+                        </h3>
+                        <p class="text-xs text-slate-400">
+                            Analyse détaillée du jury
+                        </p>
+                    </div>
+                </div>
+                <button
+                    onclick="closeCorrectionPanel()"
+                    class="text-slate-400 hover:text-white flex items-center gap-1.5 text-xs bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700"
+                >
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    Réinitialiser la correction
+                </button>
+            </div>
+
+            <!-- Results panel -->
+            <div id="correction-results" class="flex flex-col gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                    <!-- Final Grade card -->
+                    <div
+                        class="md:col-span-4 bg-slate-950 border border-slate-800 rounded-2xl p-6 text-center flex flex-col justify-center items-center shadow-inner relative overflow-hidden"
+                    >
+                        <span
+                            class="text-xs text-slate-500 uppercase tracking-widest font-black block"
+                            >Note de l'Épreuve</span
+                        >
+                        <div
+                            id="grade-badge"
+                            class="trois-couleur text-5xl font-extrabold mt-3 my-2 tracking-tighter"
+                        >
+                            14 / 20
+                        </div>
+                        <div
+                            id="grade-appreciation"
+                            class="text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-500/20 px-3 py-1.5 rounded-full mt-2 font-bold animate-pulse"
+                        >
+                            Excellent Travail !
+                        </div>
+                    </div>
+
+                    <!-- Diagnostics Summary -->
+                    <div
+                        class="md:col-span-8 bg-slate-950 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between"
+                    >
+                        <div>
+                            <h4
+                                class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2"
+                            >
+                                Synthèse globale du jury
+                            </h4>
+                            <p
+                                id="correction-summary-text"
+                                class="text-sm text-slate-300 leading-relaxed font-serif"
+                            >
+                                Analyse globale en cours...
+                            </p>
+                        </div>
+                        <div
+                            class="flex flex-wrap gap-4 border-t border-slate-800 pt-3 mt-4"
+                        >
+                            <div
+                                class="flex items-center gap-1.5 text-xs text-slate-400"
+                            >
+                                <i
+                                    data-lucide="check"
+                                    class="w-4 h-4 text-emerald-400"
+                                ></i>
+                                <span>Barème officiel validé</span>
+                            </div>
+                            <div
+                                class="flex items-center gap-1.5 text-xs text-slate-400"
+                            >
+                                <i
+                                    data-lucide="shield-alert"
+                                    class="w-4 h-4 text-amber-400"
+                                ></i>
+                                <span
+                                    >Erreurs surlignées en rouge sur la
+                                    copie</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question-by-question response comparison -->
+                <div
+                    class="bg-slate-950 border border-slate-800 rounded-2xl p-6"
+                >
+                    <h4
+                        class="font-bold text-slate-200 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider"
+                    >
+                        <i
+                            data-lucide="list-checks"
+                            class="w-5 h-5 text-indigo-400"
+                        ></i>
+                        Rapport de correction détaillé
+                    </h4>
+                    <div
+                        id="markdown-correction-output"
+                        class="max-w-none text-slate-300 text-sm leading-relaxed space-y-4"
+                    >
+                        <!-- Dynamically structured review content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROMPT DIALOG MODAL -->
+    <div
+        id="prompt-modal"
+        class="fixed inset-0 bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden"
+    >
+        <div
+            class="bg-slate-900 border border-slate-800 w-full max-w-4xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh]"
+        >
+            <!-- Modal Head -->
+            <div
+                class="p-6 border-b border-slate-800 flex justify-between items-center"
+            >
+                <div class="flex items-center gap-3">
+                    <span
+                        class="p-2 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-indigo-400"
+                    >
+                        <i data-lucide="terminal" class="w-5 h-5"></i>
+                    </span>
+                    <div>
+                        <h4 class="font-bold text-lg text-white">
+                            Super-Prompt de Correction de Copie
+                        </h4>
+                        <p class="text-xs text-slate-400">
+                            Copiez ce prompt contenant les consignes
+                            interactives d'orthographe et vos réponses rédigées.
+                        </p>
+                    </div>
+                </div>
+                <button
+                    onclick="closePromptModal()"
+                    class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800"
+                >
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto flex-1 flex flex-col gap-4">
+                <div
+                    class="bg-indigo-950/20 border border-indigo-800/30 rounded-xl p-4 flex items-start gap-3"
+                >
+                    <i
+                        data-lucide="info"
+                        class="w-5 h-5 text-indigo-400 flex-shrink-0 mt-0.5"
+                    ></i>
+                    <div class="text-xs text-indigo-200 leading-relaxed">
+                        <strong>Consigne essentielle incluse :</strong> Le
+                        prompt ordonne spécifiquement à l'IA d'encadrer les
+                        fautes d'accord, de grammaire ou de calcul trouvées dans
+                        votre texte avec une balise spéciale de type
+                        <code class="text-pink-400 font-mono"
+                            >&lt;error correct="votre correction"&gt;mot
+                            erroné&lt;/error&gt;</code
+                        >. Cela permettra d'activer le soulignement rouge
+                        interactif sur votre copie.
+                    </div>
+                </div>
+
+                <textarea
+                    id="prompt-textarea"
+                    class="w-full h-96 bg-slate-950 font-mono text-xs p-4 rounded-xl border border-slate-800 text-emerald-400 leading-relaxed focus:outline-none"
+                    readonly
+                ></textarea>
+            </div>
+
+            <!-- Modal Foot -->
+            <div
+                class="p-6 border-t border-slate-800 bg-slate-900/50 flex flex-col sm:flex-row gap-3 justify-end items-center"
+            >
+                <div
+                    id="modal-toast"
+                    class="text-xs font-semibold text-emerald-400 flex items-center gap-1.5 opacity-0 transition-opacity"
+                >
+                    <i data-lucide="check-circle" class="w-4 h-4"></i> Copié
+                    avec succès !
+                </div>
+                <div class="flex gap-3 w-full sm:w-auto">
+                    <button
+                        onclick="copyGeneratedPrompt()"
+                        class="flex-1 sm:flex-initial py-2.5 px-6 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2"
+                    >
+                        <i data-lucide="copy" class="w-4.5 h-4.5"></i>
+                        Copier le Prompt
+                    </button>
+                    <button
+                        onclick="closePromptModal()"
+                        class="flex-1 sm:flex-initial py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm rounded-xl transition-colors border border-slate-700"
+                    >
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

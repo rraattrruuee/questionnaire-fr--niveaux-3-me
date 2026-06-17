@@ -1,0 +1,59 @@
+{
+  "subject": "Français",
+  "title": "Pantoum Patate",
+
+  "description": "Tu frémis dans la graisse d'oie,<br>Je te salue pomme de terre<br>Tu mollis dans le feu de bois,<br>Ma nourriture débonnaire</p><p>Je te salue pomme de terre.<br>Patate universelle !<br>Ma nourriture débonnaire,<br>En fines frites ou en rondelles.</p><p>Patate universelle,<br>Je te farcis et je t'écrase,<br>En petits cubes et en rondelles<br>Que tu sois d'Amiens ou de Boise</p><p>Je te farcis et je t'écrase,<br>Je t'offre noix de beurre et lait,<br>Que tu sois d'Amiens ou de Boise<br>Joie du bébé, joie du gourmet.</p><p>Je t'offre noix de beurre et lait,<br>Tu te saisis du jus de viande.<br>Joie du bébé, joie du gourmet,<br>Le monde entier en redemande.</p><p>Tu te saisis du jus de viande,<br>Occidentale citadelle,<br>Le monde entier en redemande,<br>Il t'aime vieille ou bien nouvelle.</p><hr><h3>Notes :</h3><ul><li><strong>Débonnaire</strong> : d'une bonté extrême, qui cherche à satisfaire les autres.</li><li><strong>Amiens</strong> : ville française (Hauts-de-France) ; <strong>Boise</strong> : ville américaine (Idaho).</li><li><strong>Occidentale citadelle</strong> : forteresse de l'Occident (ici, métaphore de la pomme de terre).</li></ul><div style='margin: 1.5rem 0; text-align:center;'><img src=\"brevet/Amérique du Nord/FRANÇAIS Grammaire et compétences linguistiques.svg\" alt=\"Illustration de pomme de terre\" style=\"max-width: 400px; width: 100%;\"></div><p style='text-align:center; font-size:0.75rem; color:#94a3b8; margin-top:0.25rem;'>Pierre Bouchet, <em>Nature morte (Pommes de terre)</em>, photographie, vers 1945, Centre Pompidou, Paris</p><p style='text-align:right; font-size:0.75rem; color:#94a3b8; margin-top:1rem;'>Paul Fournel, <em>Le Bel Appétit</em>, 2015</p>",
+
+  "exercises": [
+    {
+      "id": "exo1",
+      "title": "Compréhension et compétences d’interprétation",
+      "points": 10,
+      "questions": [
+        {
+          "id": "exo1_q1",
+          "text": "À quel genre littéraire appartient ce texte ? Trois éléments de justification sont attendus.",
+          "points": 4,
+          "guideline": "Le genre est la poésie. Justifications possibles : la disposition en vers, la présence de rimes ou d'assonances, le rythme, la structure strophique, le langage imagé, le titre 'Pantoum'."
+        },
+        {
+          "id": "exo1_q2",
+          "text": "À qui s'adresse le « je » dans ce texte et de quelle manière ? Justifiez votre réponse à l’aide de deux citations.",
+          "points": 3,
+          "guideline": "Le 'je' s'adresse à la pomme de terre (la patate). Manière : il la personnifie ou l'apostrophe (tutoiement). Citations : 'Je te salue pomme de terre', 'Tu frémis dans la graisse d'oie', 'Patate universelle', etc."
+        },
+        {
+          "id": "exo1_q3",
+          "text": "Pourquoi ce texte peut-il amuser à la lecture ? Vous développerez votre réponse en prenant appui sur deux arguments, justifiés par des citations du texte.",
+          "points": 3,
+          "guideline": "Arguments possibles : le décalage entre le ton solennel/l'éloge lyrique et l'objet trivial (la pomme de terre), l'utilisation du tutoiement pour un légume, les références géographiques disproportionnées ('d'Amiens ou de Boise'), le terme 'gourmet' associé à la purée, la personnification de la patate ('Occidentale citadelle')."
+        }
+      ]
+    },
+    {
+      "id": "exo2",
+      "title": "Grammaire et compétences linguistiques",
+      "points": 10,
+      "questions": [
+        {
+          "id": "exo2_q1",
+          "text": "Vers 13 « Je te farcis et je t’écrase ». Quelle est la classe grammaticale (nature) des mots « farcis » et « écrase » ? Nommez et expliquez la manipulation qui vous a permis d’identifier cette classe grammaticale.",
+          "points": 2,
+          "guideline": "Nature : ce sont des verbes (conjugués). Manipulation : on peut changer le temps (ex: je te farcirai, j'écrasais) ou la personne (nous te farcissons), ou les remplacer par un autre verbe."
+        },
+        {
+          "id": "exo2_q2",
+          "text": "Vers 11 « En petits cubes et en rondelles ». Identifiez l’expansion du nom « cubes » et indiquez sa classe grammaticale (nature). Réécrivez ce vers en ajoutant au nom « rondelles » une expansion appartenant à une autre classe grammaticale, que vous préciserez.",
+          "points": 3,
+          "guideline": "Expansion de 'cubes' : 'petits' (adjectif qualificatif épithète). Réécriture : ajouter un complément du nom (ex: en rondelles de pommes de terre), un adjectif épithète (ex: en rondelles dorées), ou une proposition subordonnée relative (ex: en rondelles qui cuisent)."
+        },
+        {
+          "id": "exo2_q3",
+          "text": "Réécrivez les vers suivants en remplaçant la deuxième personne du singulier « tu » par la deuxième personne du pluriel « vous », pour que le pantoum s’adresse à plusieurs destinataires. Vous ferez toutes les modifications nécessaires.\n« Tu frémis dans la graisse d’oie,\nJe te salue pomme de terre\nTu mollis dans le feu de bois,\nPatate universelle !\nQue tu sois d’Amiens ou de Boise »",
+          "points": 5,
+          "guideline": "« Vous frémissez dans la graisse d’oie, / Je vous salue pommes de terre / Vous mollissez dans le feu de bois, / Patates universelles ! / Que vous soyez d’Amiens ou de Boise ». (Attention aux accords : frémissez, pommes de terre, mollissez, Patates universelles, soyez)."
+        }
+      ]
+    }
+  ]
+}

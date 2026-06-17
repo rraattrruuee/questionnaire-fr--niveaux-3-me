@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>FRANÇAIS Grammaire et compétences linguistiques</title>
+        <script src="https://unpkg.com/lucide@latest"></script>
+        <link rel="stylesheet" href="brevet/code/brevet.css" />
+    </head>
+    <body>
+        <script>
+            window.ACTIVE_SUBJECT_JSON =
+                "brevet/Amérique du Nord/json/FRANÇAIS Grammaire et compétences linguistiques.json";
+            (async () => {
+                try {
+                    const response = await fetch("brevet/code/brevet.html");
+                    const html = await response.text();
+                    const doc = new DOMParser().parseFromString(
+                        html,
+                        "text/html",
+                    );
+                    document.body.className = doc.body.className;
+                    document.body.insertAdjacentHTML(
+                        "afterbegin",
+                        doc.body.innerHTML,
+                    );
+                    if (window.lucide) window.lucide.createIcons();
+                    const script = document.createElement("script");
+                    script.src = "brevet/code/brevet.js";
+                    document.body.appendChild(script);
+                } catch (err) {
+                    console.error("Erreur de chargement :", err);
+                }
+            })();
+        </script>
+    </body>
+</html>

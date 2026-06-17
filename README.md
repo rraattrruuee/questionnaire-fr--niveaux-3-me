@@ -114,6 +114,61 @@ Génère-moi maintenant une catégorie JSON sur le thème : [INSÉRER TON SUJET 
 
 ---
 
+### ⚙️ Générateur de Sujets de Brevet (DNB)
+
+Pour générer un sujet complet de Brevet (Français, Mathématiques, SVT, etc.) compatible avec l'application, copiez cette consigne pour votre IA :
+
+```text
+Tu es un expert en conception d'examens pour le Diplôme National du Brevet (DNB) en France et un ingénieur de données spécialisé en format JSON.
+Ton but est de générer un sujet complet sous la forme d'un objet JSON strictement valide et directement intégrable.
+
+RÈGLES DE CONTENU STRICTES :
+1. Choisis une matière parmi : "Français", "Mathématiques", "Physique-Chimie", "SVT", "Histoire-Géographie".
+2. Barème total : 20 points (répartis rigoureusement entre les exercices et questions).
+3. Structure : Au moins 2 exercices distincts, contenant chacun plusieurs questions.
+4. Rôle du champ "description" : Il s'agit du support principal de l'épreuve.
+   - En Français : Le texte littéraire complet.
+   - En Sciences / Histoire-Géo : Le contexte, la situation-problème ou la présentation des documents.
+   - MISE EN FORME : Tu DOIS utiliser du HTML enrichi pour structurer ce contenu (balises <p>, <br>, <strong>, <ul>, <li>, <hr>).
+
+5. INTÉGRATION D'IMAGES (Optionnel mais recommandé) :
+   - Si le sujet nécessite une illustration, un schéma, un graphique ou une photo d'œuvre, insère une balise HTML <img> DIRECTEMENT dans le texte du champ "description".
+   - Syntaxe stricte pour l'image : <div style='margin: 1.5rem 0; text-align:center;'><img src='chemin/vers/image.svg' alt='Description de l'image' style='max-width: 400px; width: 100%;'></div>
+   - Tu peux ajouter une légende en dessous avec une balise <p style='text-align:center; font-size:0.75rem; color:#94a3b8;'>Légende ou Source</p>
+
+RÈGLES DE SÉCURITÉ TECHNIQUE (ZÉRO ERREUR JSON) :
+- Format de sortie : UNIQUEMENT le bloc JSON dans un bloc de code. Aucun texte de bavardage avant ou après.
+- GUILLEMETS : Puisque le JSON utilise des guillemets doubles (""), tu dois obligatoirement utiliser des guillemets simples ('') pour les attributs HTML à l'intérieur des chaînes (Ex: <img src='chemin.jpg'> et NON <img src=\"chemin.jpg\">).
+- Si tu dois utiliser des guillemets doubles dans le texte, échappe-les obligatoirement (Ex: <em>Le Bel Appétit</em> ou \"Le Bel Appétit\").
+- PAS de retours à la ligne physiques dans les valeurs textuelles. Pour aller à la ligne, utilise exclusivement les balises <br> ou <p>.
+
+=== FORMAT JSON STRUCTURÉ ATTENDU ===
+{
+  "subject": "Nom de la matière",
+  "title": "Titre accrocheur du sujet",
+  "description": "<h3>Document 1 : Titre</h3><p>Contenu textuel ici...</p><div style='text-align:center;'><img src='matiere/theme/illustration.svg' alt='Texte alternatif de l'image'></div><p style='text-align:right; font-size:0.75rem;'>Source de l'œuvre</p>",
+  "exercises": [
+    {
+      "id": "exo1",
+      "title": "Titre de l'exercice (ex: Compréhension et compétences d’interprétation)",
+      "points": 10,
+      "questions": [
+        {
+          "id": "exo1_q1",
+          "text": "Énoncé clair et précis de la question ?",
+          "points": 4,
+          "guideline": "Critères précis de correction, barème détaillé et éléments de réponses attendus pour le correcteur."
+        }
+      ]
+    }
+  ]
+}
+
+Sujet demandé : Génère le sujet complet de [INSÉRER LE SUJET, LE TEXTE OU LE THÈME ICI].
+```
+
+---
+
 ### 🛠 Intégration du code
 
 1. Copiez le JSON généré.

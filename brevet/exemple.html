@@ -1,0 +1,2970 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Copie Officielle - Brevet IA-Grader</title>
+        <!-- Lucide Icons -->
+        <script src="https://unpkg.com/lucide@latest"></script>
+        <style>
+            /* ----------------------------------------------------
+           ANIMATIONS (KEYFRAMES) - PROVIDED BY USER
+           ---------------------------------------------------- */
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes slideOut {
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+
+            @keyframes headerDrop {
+                from {
+                    opacity: 0;
+                    transform: translateY(-50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                    box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+                }
+                50% {
+                    transform: scale(1.02);
+                    box-shadow: 0 8px 20px rgba(76, 81, 191, 0.5);
+                }
+                100% {
+                    transform: scale(1);
+                    box-shadow: 0 5px 15px rgba(76, 81, 191, 0.3);
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes resultsEntry {
+                from {
+                    opacity: 0;
+                    transform: translateY(50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes bounce {
+                0%,
+                20%,
+                50%,
+                80%,
+                100% {
+                    transform: translateY(0);
+                }
+                40% {
+                    transform: translateY(-5px);
+                }
+                60% {
+                    transform: translateY(-3px);
+                }
+            }
+
+            @keyframes shake {
+                0%,
+                100% {
+                    transform: translateX(0);
+                }
+                20%,
+                60% {
+                    transform: translateX(-5px);
+                }
+                40%,
+                80% {
+                    transform: translateX(5px);
+                }
+            }
+
+            @keyframes glowCorrect {
+                0% {
+                    box-shadow: 0 0 5px #68d391;
+                }
+                50% {
+                    box-shadow: 0 0 20px #48bb78;
+                }
+                100% {
+                    box-shadow: 0 0 5px #68d391;
+                }
+            }
+
+            @keyframes zoomFeedback {
+                0% {
+                    transform: scale(0.9);
+                    opacity: 0;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes couleur-qui-change {
+                0%,
+                10% {
+                    color: white;
+                }
+                30% {
+                    color: #00ff00;
+                }
+                38% {
+                    color: #ffff00;
+                }
+                46% {
+                    color: #ff00ff;
+                }
+                54% {
+                    color: #00ffff;
+                }
+                60% {
+                    color: #ffa500;
+                }
+                68% {
+                    color: #7cfc00;
+                }
+                76% {
+                    color: #ff69b4;
+                }
+                84% {
+                    color: #8a2be2;
+                }
+                92% {
+                    color: #ff4500;
+                }
+                100% {
+                    color: deeppink;
+                }
+            }
+
+            @keyframes rotate {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            @keyframes flicker {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                5%,
+                25%,
+                45%,
+                65%,
+                85% {
+                    opacity: 0.85;
+                }
+                10%,
+                30%,
+                50%,
+                70%,
+                90% {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes wipe-in {
+                from {
+                    clip-path: inset(0 100% 0 0);
+                }
+                to {
+                    clip-path: inset(0 0 0 0);
+                }
+            }
+
+            @keyframes border-fade {
+                0% {
+                    border-color: #3182ce;
+                }
+                33% {
+                    border-color: #48bb78;
+                }
+                66% {
+                    border-color: #f6ad55;
+                }
+                100% {
+                    border-color: #3182ce;
+                }
+            }
+
+            @keyframes clignotement-leger {
+                0%,
+                100% {
+                    color: red;
+                    opacity: 1;
+                }
+                50% {
+                    color: orange;
+                    opacity: 0.7;
+                }
+            }
+
+            /* ----------------------------------------------------
+           PREMIUM EFFECTS & STYLES
+           ---------------------------------------------------- */
+            .trois-couleur {
+                --gradient: linear-gradient(
+                    to right,
+                    #6b46c1,
+                    #3182ce,
+                    #319795
+                );
+                --dur: 3s;
+                --blur-size: 12px;
+                --spread: 0.05em;
+                --scale-in: 0.96;
+
+                font-size: inherit;
+                font-weight: 900;
+                text-transform: uppercase;
+                letter-spacing: var(--spread);
+                position: relative;
+                display: inline-block;
+                line-height: 1.2;
+
+                background: var(--gradient);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                animation: singleCycle-trois-couleur var(--dur)
+                    cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                will-change: transform, opacity, filter;
+                opacity: 0;
+            }
+
+            .trois-couleur::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(
+                    110deg,
+                    transparent 30%,
+                    rgba(255, 255, 255, 0.6) 50%,
+                    transparent 70%
+                );
+                background-size: 200% 100%;
+                -webkit-background-clip: text;
+                background-clip: text;
+                animation: shine-trois-couleur 2.5s linear infinite;
+                pointer-events: none;
+            }
+
+            @keyframes singleCycle-trois-couleur {
+                0% {
+                    opacity: 0;
+                    transform: scale(var(--scale-in)) translateY(15px);
+                    filter: blur(var(--blur-size));
+                    letter-spacing: calc(var(--spread) * 3);
+                }
+                100% {
+                    opacity: 1;
+                    transform: scale(1) translateY(0);
+                    filter: blur(0px);
+                    letter-spacing: var(--spread);
+                }
+            }
+
+            @keyframes shine-trois-couleur {
+                0% {
+                    background-position: 200% 0;
+                }
+                100% {
+                    background-position: -200% 0;
+                }
+            }
+
+            .couleur-qui-change {
+                animation: couleur-qui-change 10s infinite alternate;
+                font-weight: bold;
+            }
+
+            .anim-rotate {
+                animation: rotate 8s linear infinite;
+            }
+
+            .anim-flicker {
+                animation: flicker 0.2s linear infinite alternate;
+            }
+
+            .anim-border-fade {
+                border: 3px solid transparent;
+                animation: border-fade 4s ease-in-out infinite;
+            }
+
+            .clignotant {
+                animation: clignotement-leger 2s infinite ease-in-out;
+            }
+
+            /* Ruled Paper texture for official answers */
+            .ruled-paper {
+                background-color: #1e293b;
+                background-image: linear-gradient(#334155 1px, transparent 1px);
+                background-size: 100% 2rem;
+                line-height: 2rem !important;
+            }
+
+            /* Highlighted Interactive error style on ruled paper copy */
+            .correction-error {
+                text-decoration: underline wavy #ef4444 2px;
+                text-underline-offset: 4px;
+                background-color: rgba(239, 68, 68, 0.15);
+                border-radius: 2px;
+                cursor: help;
+                position: relative;
+                display: inline-block;
+                line-height: normal;
+                padding: 0 2px;
+            }
+
+            .correction-error:hover .correction-tooltip {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            /* Premium tooltip custom engine */
+            .correction-tooltip {
+                position: absolute;
+                bottom: 125%;
+                left: 50%;
+                transform: translateX(-50%) translateY(4px);
+                background-color: #0f172a;
+                border: 1px solid #f43f5e;
+                color: #fda4af;
+                padding: 6px 10px;
+                border-radius: 8px;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+                font-size: 11px;
+                font-weight: bold;
+                white-space: nowrap;
+                box-shadow:
+                    0 10px 15px -3px rgba(0, 0, 0, 0.5),
+                    0 4px 6px -4px rgba(0, 0, 0, 0.5);
+                z-index: 50;
+                opacity: 0;
+                visibility: hidden;
+                transition:
+                    opacity 0.2s ease,
+                    transform 0.2s ease,
+                    visibility 0.2s;
+                pointer-events: none;
+            }
+
+            .correction-tooltip::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                border-width: 5px;
+                border-style: solid;
+                border-color: #0f172a transparent transparent transparent;
+            }
+
+            .exam-card {
+                border-top: 8px solid #4f46e5;
+            }
+
+            .exam-card-french {
+                border-top-color: #ef4444;
+            }
+            .exam-card-math {
+                border-top-color: #3b82f6;
+            }
+            .exam-card-physics {
+                border-top-color: #a855f7;
+            }
+            .exam-card-svt {
+                border-top-color: #10b981;
+            }
+
+            /* --- Global box-sizing fix --- */
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+
+            /* --- Dark scrollbar styles --- */
+            ::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+            }
+            ::-webkit-scrollbar-track {
+                background: #0f172a;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: #334155;
+                border-radius: 4px;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                background: #475569;
+            }
+            ::-webkit-scrollbar-corner {
+                background: #0f172a;
+            }
+            * {
+                scrollbar-width: thin;
+                scrollbar-color: #334155 #0f172a;
+            }
+
+            /* ===== Tailwind CSS Utility Classes (complete) ===== */
+
+            /* --- Background Colors --- */
+            .bg-transparent {
+                background: transparent;
+            }
+            .bg-slate-950 {
+                background-color: #020617;
+            }
+            .bg-slate-950\/25 {
+                background-color: rgba(2, 6, 23, 0.25);
+            }
+            .bg-slate-950\/40 {
+                background-color: rgba(2, 6, 23, 0.4);
+            }
+            .bg-slate-950\/90 {
+                background-color: rgba(2, 6, 23, 0.9);
+            }
+            .bg-slate-950\/95 {
+                background-color: rgba(2, 6, 23, 0.95);
+            }
+            .bg-slate-950\/\[0\.02\] {
+                background-color: rgba(2, 6, 23, 0.02);
+            }
+            .bg-slate-900 {
+                background-color: #0f172a;
+            }
+            .bg-slate-900\/50 {
+                background-color: rgba(15, 23, 42, 0.5);
+            }
+            .bg-slate-800 {
+                background-color: #1e293b;
+            }
+            .bg-slate-700 {
+                background-color: #334155;
+            }
+            .bg-indigo-500 {
+                background-color: #6366f1;
+            }
+            .bg-indigo-600 {
+                background-color: #4f46e5;
+            }
+            .bg-indigo-600\/20 {
+                background-color: rgba(79, 70, 229, 0.2);
+            }
+            .bg-indigo-950 {
+                background-color: #1e1b4b;
+            }
+            .bg-indigo-950\/20 {
+                background-color: rgba(30, 27, 75, 0.2);
+            }
+            .bg-indigo-950\/30 {
+                background-color: rgba(30, 27, 75, 0.3);
+            }
+            .bg-indigo-950\/40 {
+                background-color: rgba(30, 27, 75, 0.4);
+            }
+            .bg-indigo-950\/50 {
+                background-color: rgba(30, 27, 75, 0.5);
+            }
+            .bg-indigo-950\/60 {
+                background-color: rgba(30, 27, 75, 0.6);
+            }
+            .bg-indigo-500\/10 {
+                background-color: rgba(99, 102, 241, 0.1);
+            }
+            .bg-emerald-500 {
+                background-color: #10b981;
+            }
+            .bg-emerald-600 {
+                background-color: #059669;
+            }
+            .bg-emerald-700 {
+                background-color: #047857;
+            }
+            .bg-emerald-950\/15 {
+                background-color: rgba(2, 25, 9, 0.15);
+            }
+            .bg-emerald-950\/30 {
+                background-color: rgba(2, 25, 9, 0.3);
+            }
+            .bg-emerald-950\/40 {
+                background-color: rgba(2, 25, 9, 0.4);
+            }
+            .bg-emerald-950\/90 {
+                background-color: rgba(2, 25, 9, 0.9);
+            }
+            .bg-amber-950\/20 {
+                background-color: rgba(66, 32, 6, 0.2);
+            }
+            .bg-amber-950\/30 {
+                background-color: rgba(66, 32, 6, 0.3);
+            }
+            .bg-amber-950\/40 {
+                background-color: rgba(66, 32, 6, 0.4);
+            }
+            .bg-red-950\/40 {
+                background-color: rgba(69, 10, 10, 0.4);
+            }
+            .bg-red-950\/90 {
+                background-color: rgba(69, 10, 10, 0.9);
+            }
+
+            /* --- Text Colors --- */
+            .text-slate-100 {
+                color: #f1f5f9;
+            }
+            .text-slate-200 {
+                color: #e2e8f0;
+            }
+            .text-slate-300 {
+                color: #cbd5e1;
+            }
+            .text-slate-400 {
+                color: #94a3b8;
+            }
+            .text-slate-500 {
+                color: #64748b;
+            }
+            .text-slate-600 {
+                color: #475569;
+            }
+            .text-slate-700 {
+                color: #334155;
+            }
+            .text-white {
+                color: #ffffff;
+            }
+            .text-indigo-400 {
+                color: #818cf8;
+            }
+            .text-indigo-300 {
+                color: #a5b4fc;
+            }
+            .text-indigo-200 {
+                color: #c7d2fe;
+            }
+            .text-indigo-100 {
+                color: #e0e7ff;
+            }
+            .text-indigo-500 {
+                color: #6366f1;
+            }
+            .text-emerald-400 {
+                color: #34d399;
+            }
+            .text-emerald-300 {
+                color: #6ee7b7;
+            }
+            .text-emerald-100 {
+                color: #d1fae5;
+            }
+            .text-amber-400 {
+                color: #fbbf24;
+            }
+            .text-amber-300 {
+                color: #fcd34d;
+            }
+            .text-amber-200 {
+                color: #fde68a;
+            }
+            .text-red-400 {
+                color: #f87171;
+            }
+            .text-red-300 {
+                color: #fca5a5;
+            }
+            .text-pink-400 {
+                color: #f472b6;
+            }
+
+            ::selection {
+                background-color: #6366f1;
+                color: #ffffff;
+            }
+
+            /* --- Border Colors --- */
+            .border-slate-800 {
+                border-color: #1e293b;
+            }
+            .border-slate-800\/60 {
+                border-color: rgba(30, 41, 59, 0.6);
+            }
+            .border-slate-800\/80 {
+                border-color: rgba(30, 41, 59, 0.8);
+            }
+            .border-slate-700 {
+                border-color: #334155;
+            }
+            .border-indigo-500\/30 {
+                border-color: rgba(99, 102, 241, 0.3);
+            }
+            .border-indigo-500\/20 {
+                border-color: rgba(99, 102, 241, 0.2);
+            }
+            .border-indigo-500\/15 {
+                border-color: rgba(99, 102, 241, 0.15);
+            }
+            .border-indigo-800 {
+                border-color: #3730a3;
+            }
+            .border-indigo-800\/30 {
+                border-color: rgba(55, 48, 163, 0.3);
+            }
+            .border-indigo-900\/30 {
+                border-color: rgba(49, 46, 129, 0.3);
+            }
+            .border-emerald-500\/20 {
+                border-color: rgba(16, 185, 129, 0.2);
+            }
+            .border-emerald-700\/30 {
+                border-color: rgba(4, 120, 87, 0.3);
+            }
+            .border-amber-500\/20 {
+                border-color: rgba(245, 158, 11, 0.2);
+            }
+            .border-red-500 {
+                border-color: #ef4444;
+            }
+            .border-red-500\/30 {
+                border-color: rgba(239, 68, 68, 0.3);
+            }
+            .border-red-900\/30 {
+                border-color: rgba(127, 29, 29, 0.3);
+            }
+
+            /* --- Padding --- */
+            .p-0 {
+                padding: 0;
+            }
+            .p-1 {
+                padding: 0.25rem;
+            }
+            .p-1\.5 {
+                padding: 0.375rem;
+            }
+            .p-2 {
+                padding: 0.5rem;
+            }
+            .p-2\.5 {
+                padding: 0.625rem;
+            }
+            .p-3 {
+                padding: 0.75rem;
+            }
+            .p-4 {
+                padding: 1rem;
+            }
+            .p-5 {
+                padding: 1.25rem;
+            }
+            .p-6 {
+                padding: 1.5rem;
+            }
+            .p-8 {
+                padding: 2rem;
+            }
+            .px-1\.5 {
+                padding-left: 0.375rem;
+                padding-right: 0.375rem;
+            }
+            .px-2 {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+            .px-3 {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+            .px-4 {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            .px-6 {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+            .py-0\.5 {
+                padding-top: 0.125rem;
+                padding-bottom: 0.125rem;
+            }
+            .py-1 {
+                padding-top: 0.25rem;
+                padding-bottom: 0.25rem;
+            }
+            .py-1\.5 {
+                padding-top: 0.375rem;
+                padding-bottom: 0.375rem;
+            }
+            .py-2\.5 {
+                padding-top: 0.625rem;
+                padding-bottom: 0.625rem;
+            }
+            .py-3\.5 {
+                padding-top: 0.875rem;
+                padding-bottom: 0.875rem;
+            }
+            .py-5 {
+                padding-top: 1.25rem;
+                padding-bottom: 1.25rem;
+            }
+            .py-8 {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+            .pb-4 {
+                padding-bottom: 1rem;
+            }
+            .pb-6 {
+                padding-bottom: 1.5rem;
+            }
+            .pb-16 {
+                padding-bottom: 4rem;
+            }
+            .pl-3 {
+                padding-left: 0.75rem;
+            }
+            .pl-4 {
+                padding-left: 1rem;
+            }
+            .pt-3 {
+                padding-top: 0.75rem;
+            }
+            .pt-4 {
+                padding-top: 1rem;
+            }
+
+            /* --- Margin --- */
+            .m-0 {
+                margin: 0;
+            }
+            .mx-auto {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .mt-0 {
+                margin-top: 0;
+            }
+            .mt-0\.5 {
+                margin-top: 0.125rem;
+            }
+            .mt-1 {
+                margin-top: 0.25rem;
+            }
+            .mt-1\.5 {
+                margin-top: 0.375rem;
+            }
+            .mt-2 {
+                margin-top: 0.5rem;
+            }
+            .mt-3 {
+                margin-top: 0.75rem;
+            }
+            .mt-4 {
+                margin-top: 1rem;
+            }
+            .mt-8 {
+                margin-top: 2rem;
+            }
+            .my-2 {
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+            .my-4 {
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+            }
+            .mb-2 {
+                margin-bottom: 0.5rem;
+            }
+            .mb-3 {
+                margin-bottom: 0.75rem;
+            }
+            .mb-4 {
+                margin-bottom: 1rem;
+            }
+            .mb-6 {
+                margin-bottom: 1.5rem;
+            }
+            .mb-8 {
+                margin-bottom: 2rem;
+            }
+            .mr-1 {
+                margin-right: 0.25rem;
+            }
+
+            /* --- Gap --- */
+            .gap-0 {
+                gap: 0;
+            }
+            .gap-0\.5 {
+                gap: 0.125rem;
+            }
+            .gap-1 {
+                gap: 0.25rem;
+            }
+            .gap-1\.5 {
+                gap: 0.375rem;
+            }
+            .gap-2 {
+                gap: 0.5rem;
+            }
+            .gap-3 {
+                gap: 0.75rem;
+            }
+            .gap-4 {
+                gap: 1rem;
+            }
+            .gap-5 {
+                gap: 1.25rem;
+            }
+            .gap-6 {
+                gap: 1.5rem;
+            }
+            .gap-8 {
+                gap: 2rem;
+            }
+
+            /* --- Display & Flex --- */
+            .flex {
+                display: flex;
+            }
+            .inline-flex {
+                display: inline-flex;
+            }
+            .flex-col {
+                flex-direction: column;
+            }
+            .flex-row {
+                flex-direction: row;
+            }
+            .flex-wrap {
+                flex-wrap: wrap;
+            }
+            .flex-1 {
+                flex: 1 1 0%;
+            }
+            .flex-initial {
+                flex: 0 1 auto;
+            }
+            .flex-shrink-0 {
+                flex-shrink: 0;
+            }
+            .items-center {
+                align-items: center;
+            }
+            .items-start {
+                align-items: flex-start;
+            }
+            .items-end {
+                align-items: flex-end;
+            }
+            .justify-between {
+                justify-content: space-between;
+            }
+            .justify-center {
+                justify-content: center;
+            }
+            .justify-end {
+                justify-content: flex-end;
+            }
+            .self-start {
+                align-self: flex-start;
+            }
+            .self-end {
+                align-self: flex-end;
+            }
+            .block {
+                display: block;
+            }
+            .inline-block {
+                display: inline-block;
+            }
+            .hidden {
+                display: none;
+            }
+            .grid {
+                display: grid;
+            }
+            .grid-cols-1 {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+            }
+            .grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .grid-cols-12 {
+                grid-template-columns: repeat(12, minmax(0, 1fr));
+            }
+            .col-span-4 {
+                grid-column: span 4 / span 4;
+            }
+            .col-span-8 {
+                grid-column: span 8 / span 8;
+            }
+
+            /* --- Position --- */
+            .relative {
+                position: relative;
+            }
+            .absolute {
+                position: absolute;
+            }
+            .fixed {
+                position: fixed;
+            }
+            .sticky {
+                position: sticky;
+            }
+            .inset-0 {
+                inset: 0;
+            }
+            .top-0 {
+                top: 0;
+            }
+            .top-1\/3 {
+                top: 33.333333%;
+            }
+            .top-24 {
+                top: 6rem;
+            }
+            .right-5 {
+                right: 1.25rem;
+            }
+            .right-10 {
+                right: 2.5rem;
+            }
+            .bottom-5 {
+                bottom: 1.25rem;
+            }
+            .left-0 {
+                left: 0;
+            }
+            .z-10 {
+                z-index: 10;
+            }
+            .z-20 {
+                z-index: 20;
+            }
+            .z-40 {
+                z-index: 40;
+            }
+            .z-50 {
+                z-index: 50;
+            }
+
+            /* --- Sizing --- */
+            .w-full {
+                width: 100%;
+            }
+            .w-auto {
+                width: auto;
+            }
+            .w-1\.5 {
+                width: 0.375rem;
+            }
+            .w-3 {
+                width: 0.75rem;
+            }
+            .w-3\.5 {
+                width: 0.875rem;
+            }
+            .w-4 {
+                width: 1rem;
+            }
+            .w-4\.5 {
+                width: 1.125rem;
+            }
+            .w-5 {
+                width: 1.25rem;
+            }
+            .w-6 {
+                width: 1.5rem;
+            }
+            .w-96 {
+                width: 24rem;
+            }
+            .h-full {
+                height: 100%;
+            }
+            .h-auto {
+                height: auto;
+            }
+            .h-1\.5 {
+                height: 0.375rem;
+            }
+            .h-3 {
+                height: 0.75rem;
+            }
+            .h-3\.5 {
+                height: 0.875rem;
+            }
+            .h-4 {
+                height: 1rem;
+            }
+            .h-4\.5 {
+                height: 1.125rem;
+            }
+            .h-5 {
+                height: 1.25rem;
+            }
+            .h-6 {
+                height: 1.5rem;
+            }
+            .h-32 {
+                height: 8rem;
+            }
+            .h-48 {
+                height: 12rem;
+            }
+            .h-96 {
+                height: 24rem;
+            }
+            .min-h-screen {
+                min-height: 100vh;
+            }
+            .min-h-\[120px\] {
+                min-height: 120px;
+            }
+            .max-w-4xl {
+                max-width: 56rem;
+            }
+            .max-w-7xl {
+                max-width: 80rem;
+            }
+            .max-w-none {
+                max-width: none;
+            }
+            .max-h-\[90vh\] {
+                max-height: 90vh;
+            }
+            .max-h-60 {
+                max-height: 15rem;
+            }
+
+            /* --- Typography --- */
+            .text-xs {
+                font-size: 0.75rem;
+            }
+            .text-sm {
+                font-size: 0.875rem;
+            }
+            .text-md {
+                font-size: 1rem;
+            }
+            .text-lg {
+                font-size: 1.125rem;
+            }
+            .text-xl {
+                font-size: 1.25rem;
+            }
+            .text-2xl {
+                font-size: 1.5rem;
+            }
+            .text-5xl {
+                font-size: 3rem;
+            }
+            .text-\[9px\] {
+                font-size: 9px;
+            }
+            .text-\[10px\] {
+                font-size: 10px;
+            }
+            .font-sans {
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+            }
+            .font-serif {
+                font-family: ui-serif, Georgia, serif;
+            }
+            .font-mono {
+                font-family: ui-monospace, SFMono-Regular, monospace;
+            }
+            .font-normal {
+                font-weight: 400;
+            }
+            .font-medium {
+                font-weight: 500;
+            }
+            .font-semibold {
+                font-weight: 600;
+            }
+            .font-bold {
+                font-weight: 700;
+            }
+            .font-extrabold {
+                font-weight: 800;
+            }
+            .font-black {
+                font-weight: 900;
+            }
+            .leading-none {
+                line-height: 1;
+            }
+            .leading-tight {
+                line-height: 1.25;
+            }
+            .leading-snug {
+                line-height: 1.375;
+            }
+            .leading-relaxed {
+                line-height: 1.625;
+            }
+            .tracking-tight {
+                letter-spacing: -0.025em;
+            }
+            .tracking-tighter {
+                letter-spacing: -0.05em;
+            }
+            .tracking-wide {
+                letter-spacing: 0.025em;
+            }
+            .tracking-wider {
+                letter-spacing: 0.05em;
+            }
+            .tracking-widest {
+                letter-spacing: 0.1em;
+            }
+            .uppercase {
+                text-transform: uppercase;
+            }
+            .lowercase {
+                text-transform: lowercase;
+            }
+            .capitalize {
+                text-transform: capitalize;
+            }
+            .italic {
+                font-style: italic;
+            }
+            .not-italic {
+                font-style: normal;
+            }
+            .text-center {
+                text-align: center;
+            }
+            .text-right {
+                text-align: right;
+            }
+            .whitespace-nowrap {
+                white-space: nowrap;
+            }
+
+            /* --- Border & Border Radius --- */
+            .border {
+                border-width: 1px;
+                border-style: solid;
+                border-color: transparent;
+            }
+            .border-0 {
+                border-width: 0;
+            }
+            .border-2 {
+                border-width: 2px;
+                border-style: solid;
+                border-color: transparent;
+            }
+            .border-4 {
+                border-width: 4px;
+                border-style: solid;
+                border-color: transparent;
+            }
+            .border-t {
+                border-top-width: 1px;
+                border-top-style: solid;
+            }
+            .border-b {
+                border-bottom-width: 1px;
+                border-bottom-style: solid;
+            }
+            .border-b-4 {
+                border-bottom-width: 4px;
+                border-bottom-style: solid;
+            }
+            .border-l-2 {
+                border-left-width: 2px;
+                border-left-style: solid;
+            }
+            .border-l-4 {
+                border-left-width: 4px;
+                border-left-style: solid;
+            }
+            .rounded {
+                border-radius: 0.25rem;
+            }
+            .rounded-sm {
+                border-radius: 0.125rem;
+            }
+            .rounded-md {
+                border-radius: 0.375rem;
+            }
+            .rounded-lg {
+                border-radius: 0.5rem;
+            }
+            .rounded-xl {
+                border-radius: 0.75rem;
+            }
+            .rounded-2xl {
+                border-radius: 1rem;
+            }
+            .rounded-3xl {
+                border-radius: 1.5rem;
+            }
+            .rounded-full {
+                border-radius: 9999px;
+            }
+
+            /* --- Effects (Shadows, Filters, Opacity) --- */
+            .shadow-sm {
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            }
+            .shadow-md {
+                box-shadow:
+                    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            }
+            .shadow-lg {
+                box-shadow:
+                    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+            .shadow-xl {
+                box-shadow:
+                    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+            .shadow-2xl {
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            }
+            .shadow-inner {
+                box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+            }
+            .shadow-indigo-600\/30 {
+                box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+            }
+            .shadow-emerald-600\/20 {
+                box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.2);
+            }
+
+            /* --- Textarea fixes --- */
+            textarea {
+                max-width: 100%;
+                box-sizing: border-box;
+                resize: vertical;
+            }
+            textarea::placeholder {
+                color: #334155;
+            }
+            .backdrop-blur-md {
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+            }
+            .opacity-0 {
+                opacity: 0;
+            }
+            .opacity-\[0\.02\] {
+                opacity: 0.02;
+            }
+            .transition-all {
+                transition: all 0.15s ease;
+            }
+            .transition-colors {
+                transition:
+                    color 0.15s ease,
+                    background-color 0.15s ease,
+                    border-color 0.15s ease;
+            }
+            .transition-opacity {
+                transition: opacity 0.2s ease;
+            }
+            .transition-transform {
+                transition: transform 0.15s ease;
+            }
+            .duration-300 {
+                transition-duration: 300ms;
+            }
+
+            /* --- Overflow & Pointer Events --- */
+            .overflow-hidden {
+                overflow: hidden;
+            }
+            .overflow-y-auto {
+                overflow-y: auto;
+            }
+            .overflow-visible {
+                overflow: visible;
+            }
+            .pointer-events-none {
+                pointer-events: none;
+            }
+            .pointer-events-auto {
+                pointer-events: auto;
+            }
+
+            /* --- Cursor --- */
+            .cursor-pointer {
+                cursor: pointer;
+            }
+            .cursor-help {
+                cursor: help;
+            }
+
+            /* --- Object Fit --- */
+            .object-cover {
+                object-fit: cover;
+            }
+
+            /* --- Transform --- */
+            .transform {
+                transform: translateY(0);
+            }
+            .rotate-12 {
+                transform: rotate(12deg);
+            }
+            .rotate-180 {
+                transform: rotate(180deg);
+            }
+            .translate-y-2 {
+                transform: translateY(0.5rem);
+            }
+            .-translate-y-2 {
+                transform: translateY(-0.5rem);
+            }
+
+            /* --- Outline --- */
+            .outline-none {
+                outline: none;
+            }
+            .ring-1 {
+                box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.5);
+            }
+            .ring-indigo-500 {
+                --tw-ring-color: #6366f1;
+            }
+
+            /* --- Space Between --- */
+            .space-y-4 > * + * {
+                margin-top: 1rem;
+            }
+
+            /* --- Hover States --- */
+            .hover\:bg-indigo-500:hover {
+                background-color: #6366f1;
+            }
+            .hover\:bg-emerald-600:hover {
+                background-color: #059669;
+            }
+            .hover\:bg-emerald-500:hover {
+                background-color: #10b981;
+            }
+            .hover\:bg-slate-800:hover {
+                background-color: #1e293b;
+            }
+            .hover\:bg-slate-700:hover {
+                background-color: #334155;
+            }
+            .hover\:text-white:hover {
+                color: #ffffff;
+            }
+            .hover\:text-slate-300:hover {
+                color: #cbd5e1;
+            }
+            .hover\:border-indigo-500:hover {
+                border-color: #6366f1;
+            }
+
+            /* --- Focus States --- */
+            .focus\:outline-none:focus {
+                outline: none;
+            }
+            .focus\:border-indigo-500:focus {
+                border-color: #6366f1;
+            }
+            .focus\:border-emerald-500:focus {
+                border-color: #10b981;
+            }
+            .focus\:ring-1:focus {
+                box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.5);
+            }
+
+            /* --- Animations (Tailwind's) --- */
+            .animate-pulse {
+                animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+            .animate-bounce {
+                animation: bounce 1s infinite;
+            }
+
+            /* --- Responsive: md (≥768px) --- */
+            @media (min-width: 768px) {
+                .md\:flex-row {
+                    flex-direction: row;
+                }
+                .md\:items-center {
+                    align-items: center;
+                }
+                .md\:p-8 {
+                    padding: 2rem;
+                }
+                .md\:min-w-\[120px\] {
+                    min-width: 120px;
+                }
+                .md\:col-span-4 {
+                    grid-column: span 4 / span 4;
+                }
+                .md\:col-span-8 {
+                    grid-column: span 8 / span 8;
+                }
+                .md\:grid-cols-12 {
+                    grid-template-columns: repeat(12, minmax(0, 1fr));
+                }
+            }
+
+            /* --- Responsive: sm (≥640px) --- */
+            @media (min-width: 640px) {
+                .sm\:flex-row {
+                    flex-direction: row;
+                }
+                .sm\:flex-initial {
+                    flex: 0 1 auto;
+                }
+                .sm\:w-auto {
+                    width: auto;
+                }
+            }
+
+            /* --- Responsive: lg (≥1024px) --- */
+            @media (min-width: 1024px) {
+                .lg\:col-span-8 {
+                    grid-column: span 8 / span 8;
+                }
+                .lg\:col-span-4 {
+                    grid-column: span 4 / span 4;
+                }
+                .lg\:sticky {
+                    position: sticky;
+                }
+                .lg\:grid-cols-12 {
+                    grid-template-columns: repeat(12, minmax(0, 1fr));
+                }
+            }
+        </style>
+    </head>
+    <body
+        class="bg-slate-950 text-slate-100 min-h-screen pb-16 font-sans selection:bg-indigo-500 selection:text-white"
+    >
+        <!-- TOP BAR: Minister Header -->
+        <header
+            class="bg-slate-900 border-b border-slate-800 py-5 px-6 top-0 z-40 shadow-md lg:sticky"
+        >
+            <div
+                class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4"
+            >
+                <!-- Left Banner -->
+                <div class="flex items-center gap-3">
+                    <div
+                        class="p-2.5 bg-indigo-600/20 text-indigo-400 rounded-xl border border-indigo-500/30"
+                    >
+                        <i data-lucide="award" class="w-6 h-6 anim-rotate"></i>
+                    </div>
+                    <div>
+                        <h1
+                            class="text-lg font-black tracking-widest text-slate-100 flex items-center gap-1.5"
+                        >
+                            DIPLÔME NATIONAL DU BREVET
+                            <span
+                                class="text-xs font-bold text-indigo-400 px-2 py-0.5 rounded bg-indigo-950 border border-indigo-800"
+                                >COPIE INTERACTIVE</span
+                            >
+                        </h1>
+                        <p
+                            class="text-[10px] text-slate-400 font-mono uppercase tracking-wider"
+                        >
+                            Académie de la République Française • Évaluation IA
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    class="text-xs text-slate-400 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 font-mono"
+                >
+                    Session Officielle 2026
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN EXAM CONSOLE -->
+        <main
+            class="max-w-7xl mx-auto px-4 mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8"
+        >
+            <!-- LEFT CONTAINER: Véritable Copie de l'élève (All questions of the selected subject) -->
+            <section class="lg:col-span-8 flex flex-col gap-6">
+                <!-- COPIE OFFICIELLE CARD -->
+                <div
+                    id="exam-card-container"
+                    class="exam-card bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden"
+                >
+                    <!-- Background watermark -->
+                    <div
+                        class="absolute top-1/3 right-10 opacity-[0.02] pointer-events-none transform rotate-12"
+                    >
+                        <i data-lucide="graduation-cap" class="w-96 h-96"></i>
+                    </div>
+
+                    <!-- Official Copy Header -->
+                    <div class="border-b-4 border-slate-800 pb-6 mb-8">
+                        <div
+                            class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+                        >
+                            <div>
+                                <span
+                                    id="copy-subject"
+                                    class="text-xs font-bold uppercase tracking-wider text-indigo-400 px-3 py-1 bg-indigo-950/50 border border-indigo-800/30 rounded-full"
+                                >
+                                    Épreuve
+                                </span>
+                                <h2
+                                    id="copy-title"
+                                    class="text-2xl font-black mt-2 text-white"
+                                >
+                                    Sujet de Brevet
+                                </h2>
+                            </div>
+                            <div
+                                class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-center md:min-w-[120px]"
+                            >
+                                <span
+                                    class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider block"
+                                    >Note Max</span
+                                >
+                                <p
+                                    id="copy-total-points"
+                                    class="text-2xl font-black text-emerald-400 tracking-tight"
+                                >
+                                    20 / 20 Pts
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            id="copy-description"
+                            class="text-xs text-slate-400 mt-4 leading-relaxed"
+                        >
+                            Consignes : Saisissez vos réponses ci-dessous. Dès
+                            l'analyse importée de l'IA, vos fautes d'orthographe
+                            ou de calculs seront directement surlignées en rouge
+                            ondulé sur votre copie pour pouvoir visualiser et
+                            corriger vos lacunes !
+                        </div>
+                    </div>
+
+                    <!-- ALL EXERCISES & QUESTIONS -->
+                    <div id="copy-questions-sheet" class="flex flex-col gap-8">
+                        <!-- Questions dynamically rendered here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT CONTAINER: Interactive evaluation dashboard -->
+            <section class="lg:col-span-4 flex flex-col gap-6">
+                <!-- PROMPT & ACTION HUB -->
+                <div
+                    class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl sticky top-24 flex flex-col gap-5 anim-border-fade"
+                >
+                    <div>
+                        <h3
+                            class="font-bold text-white text-md flex items-center gap-2"
+                        >
+                            <i
+                                data-lucide="zap"
+                                class="w-5 h-5 text-indigo-400"
+                            ></i>
+                            Correction & Évaluation
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-1">
+                            Copiez votre copie dans l'IA pour obtenir une
+                            relecture dynamique directement dans vos encadrés de
+                            rédaction.
+                        </p>
+                    </div>
+
+                    <!-- Quick statistics of current sheet -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div
+                            class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-center shadow-inner"
+                        >
+                            <span
+                                class="text-[9px] text-slate-500 font-bold block uppercase"
+                                >Questions</span
+                            >
+                            <p
+                                id="stats-questions"
+                                class="text-lg font-black text-white"
+                            >
+                                0
+                            </p>
+                        </div>
+                        <div
+                            class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-center shadow-inner"
+                        >
+                            <span
+                                class="text-[9px] text-slate-500 font-bold block uppercase"
+                                >Avancement</span
+                            >
+                            <p
+                                id="stats-progress"
+                                class="text-lg font-black text-amber-400"
+                            >
+                                0%
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons and Inputs -->
+                    <div class="flex flex-col gap-4">
+                        <!-- STEP 1: Main interactive trigger to generate and show the prompt -->
+                        <div class="flex flex-col gap-1.5">
+                            <span
+                                class="text-[10px] uppercase font-bold text-indigo-400 tracking-wider flex items-center gap-1"
+                            >
+                                <span
+                                    class="w-4 h-4 rounded-full bg-indigo-950 text-indigo-400 flex items-center justify-center font-mono"
+                                    >1</span
+                                >
+                                Étape 1 : Obtenir le Prompt de l'IA
+                            </span>
+                            <button
+                                onclick="openPromptModal()"
+                                class="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs rounded-xl transition-all shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2"
+                            >
+                                <i
+                                    data-lucide="message-square"
+                                    class="w-4 h-4 text-indigo-100"
+                                ></i>
+                                <span>Générer et copier mon Prompt</span>
+                            </button>
+                        </div>
+
+                        <!-- STEP 2: Paste the Response Zone -->
+                        <div
+                            class="flex flex-col gap-1.5 border-t border-slate-800 pt-3"
+                        >
+                            <span
+                                class="text-[10px] uppercase font-bold text-emerald-400 tracking-wider flex items-center gap-1"
+                            >
+                                <span
+                                    class="w-4 h-4 rounded-full bg-emerald-950 text-emerald-400 flex items-center justify-center font-mono"
+                                    >2</span
+                                >
+                                Étape 2 : Coller le Retour de l'IA
+                            </span>
+                            <p class="text-[10px] text-slate-400 leading-snug">
+                                Collez le retour textuel de votre IA externe
+                                dans la zone d'analyse ci-dessous :
+                            </p>
+
+                            <textarea
+                                id="ai-response-paste"
+                                class="w-full h-32 bg-slate-950 font-serif text-xs p-3 rounded-xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-slate-300 placeholder:text-slate-700 transition-colors leading-relaxed"
+                                placeholder="Collez l'intégralité de la correction de l'IA contenant les balises <error> ici..."
+                            ></textarea>
+
+                            <button
+                                onclick="parseAndDisplayPastedCorrection()"
+                                class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs rounded-xl transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2"
+                            >
+                                <i
+                                    data-lucide="check-circle"
+                                    class="w-4 h-4 text-emerald-100"
+                                ></i>
+                                <span>Valider et Analyser ma Copie</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Secret Drawer for Questionnaire Customizer (JSON) -->
+                    <div class="border-t border-slate-800/80 pt-4">
+                        <button
+                            onclick="toggleAdvancedSettings()"
+                            class="w-full flex items-center justify-between text-xs text-slate-400 hover:text-slate-100 bg-slate-950 hover:bg-slate-800 transition-colors px-3 py-2 rounded-lg border border-slate-800"
+                        >
+                            <span class="flex items-center gap-1.5 font-bold">
+                                <i
+                                    data-lucide="settings"
+                                    class="w-3.5 h-3.5"
+                                ></i>
+                                Paramètres du Questionnaire (JSON)
+                            </span>
+                            <i
+                                id="settings-arrow"
+                                data-lucide="chevron-down"
+                                class="w-4 h-4 transition-transform"
+                            ></i>
+                        </button>
+
+                        <!-- Hidden JSON Customization Zone -->
+                        <div
+                            id="advanced-settings-drawer"
+                            class="hidden flex flex-col gap-3 mt-4"
+                        >
+                            <p class="text-[10px] text-slate-400">
+                                Vous pouvez modifier directement la structure
+                                JSON du sujet d'examen actif ci-dessous pour que
+                                la copie se mette à jour instantanément.
+                            </p>
+                            <textarea
+                                id="json-editor"
+                                class="w-full h-48 bg-slate-950 font-mono text-[10px] p-3 rounded-lg border border-slate-800 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-emerald-400 leading-relaxed"
+                                placeholder="{ JSON Subject Data }"
+                            ></textarea>
+                            <div class="flex gap-2">
+                                <button
+                                    onclick="applyEditedJSON()"
+                                    class="flex-1 py-1.5 px-3 bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-[10px] rounded-lg transition-colors flex items-center justify-center gap-1"
+                                >
+                                    <i
+                                        data-lucide="save"
+                                        class="w-3.5 h-3.5"
+                                    ></i>
+                                    Enregistrer
+                                </button>
+                                <button
+                                    onclick="triggerJSONFileDownload()"
+                                    class="py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-[10px] rounded-lg transition-colors"
+                                    title="Exporter le sujet"
+                                >
+                                    <i
+                                        data-lucide="download"
+                                        class="w-3.5 h-3.5"
+                                    ></i>
+                                </button>
+                                <label
+                                    class="py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-[10px] rounded-lg cursor-pointer transition-colors flex items-center gap-1"
+                                >
+                                    <input
+                                        type="file"
+                                        id="json-file-input"
+                                        class="hidden"
+                                        accept=".json"
+                                        onchange="handleFileSelected(event)"
+                                    />
+                                    <i
+                                        data-lucide="upload"
+                                        class="w-3.5 h-3.5"
+                                    ></i>
+                                    Charger
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- IN-APP GEMINI CORRECTION DISPLAY -->
+        <section
+            id="correction-display-panel"
+            class="max-w-7xl mx-auto px-4 mt-8 hidden"
+        >
+            <div
+                class="bg-slate-900 border-2 border-indigo-500/30 rounded-3xl p-6 shadow-2xl relative overflow-hidden anim-border-fade"
+            >
+                <!-- Header -->
+                <div
+                    class="flex items-center justify-between mb-6 border-b border-slate-800 pb-4"
+                >
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="p-2.5 bg-indigo-600/20 text-indigo-400 rounded-xl"
+                        >
+                            <i
+                                data-lucide="file-check"
+                                class="w-6 h-6 animate-pulse"
+                            ></i>
+                        </div>
+                        <div>
+                            <h3
+                                class="font-bold text-lg text-white flex items-center gap-2"
+                            >
+                                Copie Corrigée & Rapport de l'Examinateur IA
+                            </h3>
+                            <p class="text-xs text-slate-400">
+                                Analyse détaillée du jury
+                            </p>
+                        </div>
+                    </div>
+                    <button
+                        onclick="closeCorrectionPanel()"
+                        class="text-slate-400 hover:text-white flex items-center gap-1.5 text-xs bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700"
+                    >
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                        Réinitialiser la correction
+                    </button>
+                </div>
+
+                <!-- Results panel -->
+                <div id="correction-results" class="flex flex-col gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                        <!-- Final Grade card -->
+                        <div
+                            class="md:col-span-4 bg-slate-950 border border-slate-800 rounded-2xl p-6 text-center flex flex-col justify-center items-center shadow-inner relative overflow-hidden"
+                        >
+                            <span
+                                class="text-xs text-slate-500 uppercase tracking-widest font-black block"
+                                >Note de l'Épreuve</span
+                            >
+                            <div
+                                id="grade-badge"
+                                class="trois-couleur text-5xl font-extrabold mt-3 my-2 tracking-tighter"
+                            >
+                                14 / 20
+                            </div>
+                            <div
+                                id="grade-appreciation"
+                                class="text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-500/20 px-3 py-1.5 rounded-full mt-2 font-bold animate-pulse"
+                            >
+                                Excellent Travail !
+                            </div>
+                        </div>
+
+                        <!-- Diagnostics Summary -->
+                        <div
+                            class="md:col-span-8 bg-slate-950 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between"
+                        >
+                            <div>
+                                <h4
+                                    class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2"
+                                >
+                                    Synthèse globale du jury
+                                </h4>
+                                <p
+                                    id="correction-summary-text"
+                                    class="text-sm text-slate-300 leading-relaxed font-serif"
+                                >
+                                    Analyse globale en cours...
+                                </p>
+                            </div>
+                            <div
+                                class="flex flex-wrap gap-4 border-t border-slate-800 pt-3 mt-4"
+                            >
+                                <div
+                                    class="flex items-center gap-1.5 text-xs text-slate-400"
+                                >
+                                    <i
+                                        data-lucide="check"
+                                        class="w-4 h-4 text-emerald-400"
+                                    ></i>
+                                    <span>Barème officiel validé</span>
+                                </div>
+                                <div
+                                    class="flex items-center gap-1.5 text-xs text-slate-400"
+                                >
+                                    <i
+                                        data-lucide="shield-alert"
+                                        class="w-4 h-4 text-amber-400"
+                                    ></i>
+                                    <span
+                                        >Erreurs surlignées en rouge sur la
+                                        copie</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question-by-question response comparison -->
+                    <div
+                        class="bg-slate-950 border border-slate-800 rounded-2xl p-6"
+                    >
+                        <h4
+                            class="font-bold text-slate-200 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider"
+                        >
+                            <i
+                                data-lucide="list-checks"
+                                class="w-5 h-5 text-indigo-400"
+                            ></i>
+                            Rapport de correction détaillé
+                        </h4>
+                        <div
+                            id="markdown-correction-output"
+                            class="max-w-none text-slate-300 text-sm leading-relaxed space-y-4"
+                        >
+                            <!-- Dynamically structured review content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROMPT DIALOG MODAL -->
+        <div
+            id="prompt-modal"
+            class="fixed inset-0 bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden"
+        >
+            <div
+                class="bg-slate-900 border border-slate-800 w-full max-w-4xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh]"
+            >
+                <!-- Modal Head -->
+                <div
+                    class="p-6 border-b border-slate-800 flex justify-between items-center"
+                >
+                    <div class="flex items-center gap-3">
+                        <span
+                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-indigo-400"
+                        >
+                            <i data-lucide="terminal" class="w-5 h-5"></i>
+                        </span>
+                        <div>
+                            <h4 class="font-bold text-lg text-white">
+                                Super-Prompt de Correction de Copie
+                            </h4>
+                            <p class="text-xs text-slate-400">
+                                Copiez ce prompt contenant les consignes
+                                interactives d'orthographe et vos réponses
+                                rédigées.
+                            </p>
+                        </div>
+                    </div>
+                    <button
+                        onclick="closePromptModal()"
+                        class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800"
+                    >
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="p-6 overflow-y-auto flex-1 flex flex-col gap-4">
+                    <div
+                        class="bg-indigo-950/20 border border-indigo-800/30 rounded-xl p-4 flex items-start gap-3"
+                    >
+                        <i
+                            data-lucide="info"
+                            class="w-5 h-5 text-indigo-400 flex-shrink-0 mt-0.5"
+                        ></i>
+                        <div class="text-xs text-indigo-200 leading-relaxed">
+                            <strong>Consigne essentielle incluse :</strong> Le
+                            prompt ordonne spécifiquement à l'IA d'encadrer les
+                            fautes d'accord, de grammaire ou de calcul trouvées
+                            dans votre texte avec une balise spéciale de type
+                            <code class="text-pink-400 font-mono"
+                                >&lt;error correct="votre correction"&gt;mot
+                                erroné&lt;/error&gt;</code
+                            >. Cela permettra d'activer le soulignement rouge
+                            interactif sur votre copie.
+                        </div>
+                    </div>
+
+                    <textarea
+                        id="prompt-textarea"
+                        class="w-full h-96 bg-slate-950 font-mono text-xs p-4 rounded-xl border border-slate-800 text-emerald-400 leading-relaxed focus:outline-none"
+                        readonly
+                    ></textarea>
+                </div>
+
+                <!-- Modal Foot -->
+                <div
+                    class="p-6 border-t border-slate-800 bg-slate-900/50 flex flex-col sm:flex-row gap-3 justify-end items-center"
+                >
+                    <div
+                        id="modal-toast"
+                        class="text-xs font-semibold text-emerald-400 flex items-center gap-1.5 opacity-0 transition-opacity"
+                    >
+                        <i data-lucide="check-circle" class="w-4 h-4"></i> Copié
+                        avec succès !
+                    </div>
+                    <div class="flex gap-3 w-full sm:w-auto">
+                        <button
+                            onclick="copyGeneratedPrompt()"
+                            class="flex-1 sm:flex-initial py-2.5 px-6 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2"
+                        >
+                            <i data-lucide="copy" class="w-4.5 h-4.5"></i>
+                            Copier le Prompt
+                        </button>
+                        <button
+                            onclick="closePromptModal()"
+                            class="flex-1 sm:flex-initial py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm rounded-xl transition-colors border border-slate-700"
+                        >
+                            Fermer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            /* ----------------------------------------------------
+                       PARAMÈTRES DE CONFIGURATION (MODIFIABLES DIRECTEMENT)
+                       ---------------------------------------------------- */
+
+            // Theme global de style (ex: "french", "math", "physics", "svt")
+            const CONFIG_THEME = "french";
+
+            // Unique Sujet de Brevet principal présent dans l'Immersive
+            const ACTIVE_SUBJECT_JSON = {
+                subject: "Français",
+                title: "Pantoum Patate",
+
+                description:
+                    "Tu frémis dans la graisse d'oie,<br>Je te salue pomme de terre<br>Tu mollis dans le feu de bois,<br>Ma nourriture débonnaire</p><p>Je te salue pomme de terre.<br>Patate universelle !<br>Ma nourriture débonnaire,<br>En fines frites ou en rondelles.</p><p>Patate universelle,<br>Je te farcis et je t'écrase,<br>En petits cubes et en rondelles<br>Que tu sois d'Amiens ou de Boise</p><p>Je te farcis et je t'écrase,<br>Je t'offre noix de beurre et lait,<br>Que tu sois d'Amiens ou de Boise<br>Joie du bébé, joie du gourmet.</p><p>Je t'offre noix de beurre et lait,<br>Tu te saisis du jus de viande.<br>Joie du bébé, joie du gourmet,<br>Le monde entier en redemande.</p><p>Tu te saisis du jus de viande,<br>Occidentale citadelle,<br>Le monde entier en redemande,<br>Il t'aime vieille ou bien nouvelle.</p><hr><h3>Notes :</h3><ul><li><strong>Débonnaire</strong> : d'une bonté extrême, qui cherche à satisfaire les autres.</li><li><strong>Amiens</strong> : ville française (Hauts-de-France) ; <strong>Boise</strong> : ville américaine (Idaho).</li><li><strong>Occidentale citadelle</strong> : forteresse de l'Occident (ici, métaphore de la pomme de terre).</li></ul><div style='margin: 1.5rem 0; text-align:center;'><img src=\"brevet/Amérique du Nord/FRANÇAIS Grammaire et compétences linguistiques.svg\" alt=\"Illustration de pomme de terre\" style=\"max-width: 400px; width: 100%;\"></div><p style='text-align:center; font-size:0.75rem; color:#94a3b8; margin-top:0.25rem;'>Pierre Bouchet, <em>Nature morte (Pommes de terre)</em>, photographie, vers 1945, Centre Pompidou, Paris</p><p style='text-align:right; font-size:0.75rem; color:#94a3b8; margin-top:1rem;'>Paul Fournel, <em>Le Bel Appétit</em>, 2015</p>",
+
+                exercises: [
+                    {
+                        id: "exo1",
+                        title: "Compréhension et compétences d’interprétation",
+                        points: 10,
+                        questions: [
+                            {
+                                id: "exo1_q1",
+                                text: "À quel genre littéraire appartient ce texte ? Trois éléments de justification sont attendus.",
+                                points: 4,
+                                guideline:
+                                    "Le genre est la poésie. Justifications possibles : la disposition en vers, la présence de rimes ou d'assonances, le rythme, la structure strophique, le langage imagé, le titre 'Pantoum'.",
+                            },
+                            {
+                                id: "exo1_q2",
+                                text: "À qui s'adresse le « je » dans ce texte et de quelle manière ? Justifiez votre réponse à l’aide de deux citations.",
+                                points: 3,
+                                guideline:
+                                    "Le 'je' s'adresse à la pomme de terre (la patate). Manière : il la personnifie ou l'apostrophe (tutoiement). Citations : 'Je te salue pomme de terre', 'Tu frémis dans la graisse d'oie', 'Patate universelle', etc.",
+                            },
+                            {
+                                id: "exo1_q3",
+                                text: "Pourquoi ce texte peut-il amuser à la lecture ? Vous développerez votre réponse en prenant appui sur deux arguments, justifiés par des citations du texte.",
+                                points: 3,
+                                guideline:
+                                    "Arguments possibles : le décalage entre le ton solennel/l'éloge lyrique et l'objet trivial (la pomme de terre), l'utilisation du tutoiement pour un légume, les références géographiques disproportionnées ('d'Amiens ou de Boise'), le terme 'gourmet' associé à la purée, la personnification de la patate ('Occidentale citadelle').",
+                            },
+                        ],
+                    },
+                    {
+                        id: "exo2",
+                        title: "Grammaire et compétences linguistiques",
+                        points: 10,
+                        questions: [
+                            {
+                                id: "exo2_q1",
+                                text: "Vers 13 « Je te farcis et je t’écrase ». Quelle est la classe grammaticale (nature) des mots « farcis » et « écrase » ? Nommez et expliquez la manipulation qui vous a permis d’identifier cette classe grammaticale.",
+                                points: 2,
+                                guideline:
+                                    "Nature : ce sont des verbes (conjugués). Manipulation : on peut changer le temps (ex: je te farcirai, j'écrasais) ou la personne (nous te farcissons), ou les remplacer par un autre verbe.",
+                            },
+                            {
+                                id: "exo2_q2",
+                                text: "Vers 11 « En petits cubes et en rondelles ». Identifiez l’expansion du nom « cubes » et indiquez sa classe grammaticale (nature). Réécrivez ce vers en ajoutant au nom « rondelles » une expansion appartenant à une autre classe grammaticale, que vous préciserez.",
+                                points: 3,
+                                guideline:
+                                    "Expansion de 'cubes' : 'petits' (adjectif qualificatif épithète). Réécriture : ajouter un complément du nom (ex: en rondelles de pommes de terre), un adjectif épithète (ex: en rondelles dorées), ou une proposition subordonnée relative (ex: en rondelles qui cuisent).",
+                            },
+                            {
+                                id: "exo2_q3",
+                                text: "Réécrivez les vers suivants en remplaçant la deuxième personne du singulier « tu » par la deuxième personne du pluriel « vous », pour que le pantoum s’adresse à plusieurs destinataires. Vous ferez toutes les modifications nécessaires.\n« Tu frémis dans la graisse d’oie,\nJe te salue pomme de terre\nTu mollis dans le feu de bois,\nPatate universelle !\nQue tu sois d’Amiens ou de Boise »",
+                                points: 5,
+                                guideline:
+                                    "« Vous frémissez dans la graisse d’oie, / Je vous salue pommes de terre / Vous mollissez dans le feu de bois, / Patates universelles ! / Que vous soyez d’Amiens ou de Boise ». (Attention aux accords : frémissez, pommes de terre, mollissez, Patates universelles, soyez).",
+                            },
+                        ],
+                    },
+                ],
+            };
+
+            // App state
+            let currentSubject = {};
+            let subjectsAnswers = {};
+
+            // Lifecycle init
+            document.addEventListener("DOMContentLoaded", () => {
+                lucide.createIcons();
+                initSubject();
+            });
+
+            // Initialize active subject structure
+            function initSubject() {
+                currentSubject = JSON.parse(
+                    JSON.stringify(ACTIVE_SUBJECT_JSON),
+                );
+
+                // Update Exam Card Color borders based on config theme
+                const cardContainer = document.getElementById(
+                    "exam-card-container",
+                );
+                cardContainer.className = `exam-card bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden exam-card-${CONFIG_THEME}`;
+
+                // Update titles
+                document.getElementById("copy-subject").innerText =
+                    `Épreuve officielle de ${currentSubject.subject}`;
+                document.getElementById("copy-title").innerText =
+                    currentSubject.title;
+                document.getElementById("copy-description").innerHTML =
+                    currentSubject.description;
+
+                // Render copy layout
+                renderQuestionsSheet(currentSubject);
+                fillJSONEditor(currentSubject);
+                updateProgressStats();
+            }
+
+            // Render All questions like an exam sheet
+            function renderQuestionsSheet(subject) {
+                const container = document.getElementById(
+                    "copy-questions-sheet",
+                );
+                container.innerHTML = "";
+
+                let totalPoints = 0;
+                let questionCount = 0;
+
+                if (!subject.exercises || subject.exercises.length === 0) {
+                    container.innerHTML = `<div class="text-center py-8 text-slate-500">Aucun exercice de brevet disponible dans ce modèle.</div>`;
+                    return;
+                }
+
+                subject.exercises.forEach((exo) => {
+                    // Exercise Section Group
+                    const exoBlock = document.createElement("div");
+                    exoBlock.className =
+                        "flex flex-col gap-4 border-l-4 border-slate-700 pl-4 py-1";
+
+                    exoBlock.innerHTML = `
+                        <div class="flex justify-between items-center bg-slate-950/40 p-3 rounded-lg border border-slate-800/60">
+                          <h3 class="font-extrabold text-sm uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+                            ${exo.title}
+                          </h3>
+                          <span class="text-xs bg-indigo-950/60 text-indigo-400 px-2 py-0.5 rounded font-bold border border-indigo-900/30">
+                            ${exo.points} Points
+                          </span>
+                        </div>
+                      `;
+
+                    // Question sub-group
+                    if (exo.questions) {
+                        exo.questions.forEach((q, index) => {
+                            questionCount++;
+                            totalPoints += q.points;
+
+                            // Retrieve existing answers from localStorage ou mémoire
+                            const savedFromStorage =
+                                JSON.parse(
+                                    localStorage.getItem("brevet_answers") ||
+                                        "{}",
+                                )[q.id] || "";
+                            const savedVal =
+                                subjectsAnswers[q.id] || savedFromStorage || "";
+
+                            let qImg = "";
+                            if (q.image) {
+                                qImg = `
+                              <div class="my-4 rounded-xl overflow-hidden max-h-60 border border-slate-800">
+                                <img src="${q.image}" onerror="this.src='https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=600'; this.onerror=null;" alt="Brevet document" class="w-full h-full object-cover">
+                              </div>
+                            `;
+                            }
+
+                            const qItem = document.createElement("div");
+                            qItem.className =
+                                "mt-4 bg-slate-950/25 p-4 rounded-xl border border-slate-800 flex flex-col gap-3";
+                            qItem.innerHTML = `
+                            <div class="flex justify-between items-start gap-4">
+                              <h4 class="font-bold text-slate-100 text-sm leading-relaxed">
+                                <span class="text-indigo-400 font-mono mr-1">Q${index + 1}.</span> ${q.text}
+                              </h4>
+                              <span class="text-xs font-mono bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded">
+                                /${q.points} Pts
+                              </span>
+                            </div>
+                            ${qImg}
+
+                            <!-- Ruled input block -->
+                            <div class="mt-2 flex flex-col gap-2">
+                              <div class="flex justify-between items-center">
+                                <label class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Copie du candidat :</label>
+                                <span id="char-count-${q.id}" class="text-[9px] text-slate-600 font-mono">0 car.</span>
+                              </div>
+
+                              <!-- Saisie interactive -->
+                              <div class="flex flex-col w-full">
+                                <textarea id="answer_${q.id}" oninput="handleTextareaInput('${q.id}')" class="ruled-paper w-full min-h-[120px] bg-slate-900 rounded-xl p-4 text-sm text-slate-100 placeholder:text-slate-600 border border-slate-800 focus:outline-none focus:border-indigo-500 transition-colors font-serif resize-y" placeholder="Formulez vos démonstrations, définitions ou calculs étape par étape ici...">${savedVal}</textarea>
+
+                                <!-- Surlignement interactif une fois l'analyse effectuée -->
+                                <div id="correction-overlay-${q.id}" class="ruled-paper w-full min-h-[120px] bg-slate-900 rounded-xl p-4 text-sm text-slate-300 font-serif border border-slate-800 overflow-y-auto hidden"></div>
+                              </div>
+                            </div>
+
+
+                          `;
+                            exoBlock.appendChild(qItem);
+                        });
+                    }
+
+                    container.appendChild(exoBlock);
+                });
+
+                // Update Copy Stats
+                document.getElementById("copy-total-points").innerText =
+                    `${totalPoints} Pts`;
+                document.getElementById("stats-questions").innerText =
+                    questionCount;
+
+                // Init newly created items characters counters
+                if (subject.exercises) {
+                    subject.exercises.forEach((exo) => {
+                        if (exo.questions) {
+                            exo.questions.forEach((q) =>
+                                handleTextareaInput(q.id),
+                            );
+                        }
+                    });
+                }
+
+                lucide.createIcons();
+            }
+
+            // Track typing to show stats + sauvegarde localStorage
+            function handleTextareaInput(qId) {
+                const textVal =
+                    document.getElementById(`answer_${qId}`)?.value || "";
+                const charCountEl = document.getElementById(
+                    `char-count-${qId}`,
+                );
+                if (charCountEl) {
+                    charCountEl.innerText = `${textVal.length} car.`;
+                }
+                // Sauvegarde en temps réel
+                const saved = JSON.parse(
+                    localStorage.getItem("brevet_answers") || "{}",
+                );
+                saved[qId] = textVal;
+                localStorage.setItem("brevet_answers", JSON.stringify(saved));
+                updateProgressStats();
+            }
+
+            // Calculate progress percentage of current questionnaire
+            function updateProgressStats() {
+                if (!currentSubject || !currentSubject.exercises) return;
+
+                let totalQuestions = 0;
+                let filledQuestions = 0;
+
+                currentSubject.exercises.forEach((exo) => {
+                    if (exo.questions) {
+                        exo.questions.forEach((q) => {
+                            totalQuestions++;
+                            const elVal =
+                                document.getElementById(`answer_${q.id}`)
+                                    ?.value || "";
+                            if (elVal.trim().length > 10) {
+                                filledQuestions++;
+                            }
+                        });
+                    }
+                });
+
+                const ratio =
+                    totalQuestions > 0
+                        ? Math.round((filledQuestions / totalQuestions) * 100)
+                        : 0;
+                const progressEl = document.getElementById("stats-progress");
+                progressEl.innerText = `${ratio}%`;
+
+                // Colors shifts
+                if (ratio === 100) {
+                    progressEl.className =
+                        "text-lg font-black text-emerald-400 animate-bounce";
+                } else if (ratio > 40) {
+                    progressEl.className = "text-lg font-black text-amber-400";
+                } else {
+                    progressEl.className = "text-lg font-black text-slate-500";
+                }
+            }
+
+            // Save Answers state in memory
+            function saveActiveAnswers() {
+                if (!currentSubject || !currentSubject.exercises) return;
+
+                currentSubject.exercises.forEach((exo) => {
+                    if (exo.questions) {
+                        exo.questions.forEach((q) => {
+                            const textVal =
+                                document.getElementById(`answer_${q.id}`)
+                                    ?.value || "";
+                            subjectsAnswers[q.id] = textVal;
+                        });
+                    }
+                });
+            }
+
+            // Gather ALL candidate details for Prompt
+            function buildGradingPrompt() {
+                // Force state save
+                saveActiveAnswers();
+
+                let prompt = `Tu es un examinateur officiel de l'Éducation Nationale française pour l'épreuve du Diplôme National du Brevet (DNB) en ${currentSubject.subject}.
+            Tu dois corriger la copie de l'élève.
+
+            CONSIGNE INTERACTIVE ESSENTIELLE DE RETOUR :
+            Pour chaque question, tu dois examiner scrupuleusement la réponse de l'élève.
+            Si tu trouves des fautes d'orthographe (accords, usage, grammaire) ou des erreurs de calcul/raisonnement, tu dois réécrire l'intégralité de la réponse de l'élève en entourant UNIQUEMENT les mots erronés avec la balise spéciale :
+            <error correct="La correction suggérée">mot erroné</error>
+
+            Par exemple, si l'élève écrit : "Le loup affamés s'avancer lentement."
+            Tu dois retourner sa réponse réécrite sous la forme suivante dans la section "TEXTE CORRIGÉ INTÉGRAL" de chaque question :
+            "Le loup <error correct="affamé">affamés</error> <error correct="s'avança">s'avancer</error> lentement."
+
+            Autre exemple en mathématiques si l'élève écrit : "AC2 = 74 + 100 = 200"
+            Tu dois retourner : "AC2 = 74 + 100 = <error correct="174">200</error>"
+
+            === SUJET DE L'ÉPREUVE : ${currentSubject.title} ===
+            Description générale : ${currentSubject.description.replace(/<[^>]*>/g, "")}
+
+            Voici les questions, les barèmes officiels et les réponses saisies par l'élève :
+
+            `;
+
+                if (currentSubject.exercises) {
+                    currentSubject.exercises.forEach((exo) => {
+                        if (exo.questions) {
+                            exo.questions.forEach((q, index) => {
+                                const answer = subjectsAnswers[q.id] || "";
+                                prompt += `---
+            [EXERCICE] : ${exo.title} (Question ${index + 1})
+            ID Question : ${q.id}
+            Question : ${q.text}
+            Barème maximal : ${q.points} points.
+            Critère d'évaluation officiel : ${q.guideline}
+            Réponse saisie par l'élève : "${answer.trim() || "[Aucune réponse rédigée par l'élève]"}"
+
+            `;
+                            });
+                        }
+                    });
+                }
+
+                prompt += `=== FORMAT DE RETOUR ATTENDU (JSON UNIQUEMENT) ===
+            Tu dois répondre UNIQUEMENT avec un objet JSON valide, sans texte avant ni après.
+            Structure JSON attendue :
+{
+  "score": "X/Y",
+  "appreciation": "Appréciation globale",
+  "summary": "Résumé court",
+  "questions": {
+    "ID_QUESTION": {
+      "score": "X/Y",
+      "feedback": "Explication détaillée de la correction",
+      "tips": "Conseil pour progresser",
+      "corrected_text": "Réponse réécrite avec les balises <error correct='correction'>erreur</error>"
+    }
+  }
+}
+
+            Exemple pour une question exo1_q1 avec note 3/4 :
+            "exo1_q1": {
+              "score": "3/4",
+              "feedback": "Bonne identification du genre poétique...",
+              "tips": "Pensez à citer systématiquement le texte.",
+              "corrected_text": "Ce texte appartient au genre <error correct='poétique'>poésie</error>..."
+            }
+
+            IMPORTANT : Les IDs des questions sont exactement ceux indiqués dans la liste ci-dessus (ex: exo1_q1, exo2_q2...). Utilise ces IDs comme clés dans le JSON de réponse.
+            ATTENTION : Si les réponses des élèves contiennent des guillemets droits (") ou des sauts de ligne, tu dois les échapper correctement dans le JSON : \" pour les guillemets, \n pour les sauts de ligne. Le JSON doit être strictement valide.
+            Reste constructif et professionnel. Réponds UNIQUEMENT le JSON.`;
+
+                return prompt;
+            }
+
+            // Methods A Prompt View Handler
+            function openPromptModal() {
+                const promptText = buildGradingPrompt();
+                document.getElementById("prompt-textarea").value = promptText;
+                document
+                    .getElementById("prompt-modal")
+                    .classList.remove("hidden");
+
+                // Auto-copy to make it extremely easy
+                navigator.clipboard
+                    .writeText(promptText)
+                    .then(() => {
+                        alertNotification(
+                            "success",
+                            "Prompt copié ! Collez-le dans votre IA externe.",
+                        );
+                    })
+                    .catch(() => {
+                        // Fallback if browser blocks automatic clipboard write
+                    });
+            }
+
+            function closePromptModal() {
+                document.getElementById("prompt-modal").classList.add("hidden");
+            }
+
+            function copyGeneratedPrompt() {
+                const textArea = document.getElementById("prompt-textarea");
+                textArea.select();
+                try {
+                    document.execCommand("copy");
+                    const toast = document.getElementById("modal-toast");
+                    toast.classList.remove("opacity-0");
+                    setTimeout(() => {
+                        toast.classList.add("opacity-0");
+                    }, 2000);
+                } catch (err) {
+                    alertNotification(
+                        "error",
+                        "La copie automatique a échoué. Copiez manuellement.",
+                    );
+                }
+            }
+
+            // Action when the student paste AI evaluation back to the app
+            function parseAndDisplayPastedCorrection() {
+                const textToParse =
+                    document.getElementById("ai-response-paste").value;
+                if (!textToParse.trim()) {
+                    alertNotification(
+                        "error",
+                        "Veuillez d'abord coller le texte de réponse de l'IA.",
+                    );
+                    return;
+                }
+
+                // Sauvegarde les dernières réponses avant analyse
+                saveActiveAnswers();
+
+                const panel = document.getElementById(
+                    "correction-display-panel",
+                );
+                panel.classList.remove("hidden");
+                panel.scrollIntoView({ behavior: "smooth" });
+
+                parseAndDisplayCorrection(textToParse);
+                alertNotification(
+                    "success",
+                    "Analyse terminée ! Vos erreurs sont surlignées sur la copie.",
+                );
+            }
+
+            // Extrait la valeur JSON d'un champ: cherche le " de fin avant la prochaine clé connue
+            function extractVal(text, field, nexts) {
+                const p = '"' + field + '": "';
+                const s = text.indexOf(p);
+                if (s < 0) return null;
+                const vs = s + p.length;
+                let best = text.length;
+                for (const nk of nexts) {
+                    for (const sep of ['",\n', '",', '",\r\n']) {
+                        const idx = text.indexOf(sep + nk, vs);
+                        if (idx >= 0 && idx < best) best = idx + 1;
+                    }
+                }
+                for (const ep of ['"\n}', '"\n  }', '"\n    }', '"\r\n}']) {
+                    const idx = text.indexOf(ep, vs);
+                    if (idx >= 0 && idx < best) best = idx + 1;
+                }
+                return best < text.length ? text.slice(vs, best - 1) : null;
+            }
+
+            // Point d'entrée unique : parse le JSON IA et met à jour l'interface
+            function parseAndDisplayCorrection(rawText) {
+                try {
+                    const t = rawText.trim();
+                    const braceStart = t.indexOf("{"),
+                        braceEnd = t.lastIndexOf("}");
+                    let json =
+                        braceStart >= 0 && braceEnd >= 0
+                            ? t.slice(braceStart, braceEnd + 1)
+                            : t;
+
+                    // 1) Tentative JSON.parse direct
+                    let data;
+                    try {
+                        data = JSON.parse(json);
+                    } catch (e) {}
+                    // 2) Si échec, extraction manuelle (tolère guillemets non échappés)
+                    if (!data || !data.score) {
+                        data = {
+                            score: extractVal(json, "score", [
+                                '"appreciation"',
+                            ]),
+                            appreciation: extractVal(json, "appreciation", [
+                                '"summary"',
+                            ]),
+                            summary: extractVal(json, "summary", [
+                                '"questions"',
+                            ]),
+                            questions: {},
+                        };
+                        if (data.score) {
+                            const qIds =
+                                currentSubject && currentSubject.exercises
+                                    ? currentSubject.exercises.flatMap((e) =>
+                                          e.questions
+                                              ? e.questions.map((q) => q.id)
+                                              : [],
+                                      )
+                                    : [];
+                            for (const qId of qIds) {
+                                const esc = qId.replace(
+                                    /[.*+?^${}()|[\]\\\/]/g,
+                                    "\\$&",
+                                );
+                                const m = json.match(
+                                    new RegExp('"' + esc + '"\\s*:\\s*\\{'),
+                                );
+                                if (!m) continue;
+                                let depth = 1,
+                                    i = m.index + m[0].length;
+                                while (i < json.length && depth > 0) {
+                                    if (json[i] === "{") depth++;
+                                    if (json[i] === "}") depth--;
+                                    i++;
+                                }
+                                const block = json.slice(m.index, i);
+                                data.questions[qId] = {
+                                    score: extractVal(block, "score", [
+                                        '"feedback"',
+                                    ]),
+                                    feedback: extractVal(block, "feedback", [
+                                        '"tips"',
+                                    ]),
+                                    tips: extractVal(block, "tips", [
+                                        '"corrected_text"',
+                                        "}",
+                                    ]),
+                                    corrected_text:
+                                        extractVal(block, "corrected_text", [
+                                            "}",
+                                        ]) || "",
+                                };
+                            }
+                        }
+                    }
+
+                    // Vérification et affichage
+                    if (data && data.score && data.questions) {
+                        // Grade + appréciation
+                        document.getElementById("grade-badge").innerText =
+                            data.score;
+                        const pts = data.score.split("/");
+                        const ratio =
+                            pts.length === 2
+                                ? parseFloat(pts[0]) / parseFloat(pts[1])
+                                : 0;
+                        const apprEl =
+                            document.getElementById("grade-appreciation");
+                        apprEl.innerText =
+                            data.appreciation || "Excellent Travail !";
+                        apprEl.className =
+                            ratio >= 0.8
+                                ? "text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-500/20 px-3 py-1.5 rounded-full mt-2 font-bold"
+                                : ratio >= 0.6
+                                  ? "text-xs text-indigo-400 bg-indigo-950/40 border border-indigo-500/20 px-3 py-1.5 rounded-full mt-2 font-bold"
+                                  : ratio >= 0.4
+                                    ? "text-xs text-amber-400 bg-amber-950/40 border border-amber-500/20 px-3 py-1.5 rounded-full mt-2 font-bold"
+                                    : "text-xs text-red-400 bg-red-950/40 border border-red-500/20 px-3 py-1.5 rounded-full mt-2 font-bold";
+
+                        document.getElementById(
+                            "correction-summary-text",
+                        ).innerText =
+                            data.summary ||
+                            "Rapport de correction détaillé ci-dessous.";
+
+                        // Surlignage d'erreurs
+                        if (currentSubject && currentSubject.exercises) {
+                            currentSubject.exercises.forEach((exo) => {
+                                if (exo.questions)
+                                    exo.questions.forEach((q) => {
+                                        const qd = data.questions[q.id];
+                                        const ov = document.getElementById(
+                                            "correction-overlay-" + q.id,
+                                        );
+                                        const ta = document.getElementById(
+                                            "answer_" + q.id,
+                                        );
+                                        if (
+                                            qd &&
+                                            qd.corrected_text &&
+                                            ov &&
+                                            ta
+                                        ) {
+                                            ta.style.display = "none";
+                                            ov.style.display = "block";
+                                            ov.innerHTML = renderErrorTags(
+                                                qd.corrected_text,
+                                            );
+                                        } else if (ov && ta) {
+                                            ta.style.display = "";
+                                            ov.style.display = "none";
+                                        }
+                                    });
+                            });
+                        }
+
+                        // Rapport détaillé
+                        document.getElementById(
+                            "markdown-correction-output",
+                        ).innerHTML = renderCorrectionReport(data);
+                        lucide.createIcons();
+                    } else {
+                        // Fallback
+                        const nm = t.match(
+                            /"score"\s*:\s*"(\d+(?:\.\d+)?)\/(\d+)"/,
+                        );
+                        document.getElementById("grade-badge").innerText = nm
+                            ? nm[1] + " / " + nm[2]
+                            : "?/?";
+                        if (nm) {
+                            const r = parseFloat(nm[1]) / parseFloat(nm[2]);
+                            const el =
+                                document.getElementById("grade-appreciation");
+                            el.innerText =
+                                r >= 0.8
+                                    ? "Excellent travail !"
+                                    : r >= 0.6
+                                      ? "Bon travail !"
+                                      : "Résultats corrects";
+                        }
+                        const sm = t.match(/"summary"\s*:\s*"([^"]+)"/);
+                        document.getElementById(
+                            "correction-summary-text",
+                        ).innerText = sm
+                            ? sm[1]
+                            : "Le format de retour na pas pu être interprété.";
+                        document.getElementById(
+                            "markdown-correction-output",
+                        ).innerHTML =
+                            '<div class="bg-amber-950/20 border border-amber-500/20 rounded-xl p-4 text-xs text-amber-200">' +
+                            '<strong>Format non reconnu</strong><p class="mt-1">Le retour de lIA na pas pu être analysé.</p></div>';
+                    }
+                } catch (e) {
+                    alertNotification("error", "Erreur: " + e.message);
+                }
+            }
+
+            // Helper: rend le HTML de feedback pour une question
+            function escapeHTML(str) {
+                const d = document.createElement("div");
+                d.textContent = str;
+                return d.innerHTML;
+            }
+
+            function renderErrorTags(text) {
+                return text.replace(
+                    /<error\s+correct=["']([^"']*)["']>(.*?)(?:<\/error>|$)/gi,
+                    (m, c, o) =>
+                        '<span class="correction-error">' +
+                        o +
+                        '<span class="correction-tooltip">Suggestion : ' +
+                        c +
+                        "</span></span>",
+                );
+            }
+
+            function renderQuestionFeedbackHTML(q, qData, studentAnswer) {
+                let html = `<div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-bold text-indigo-300 uppercase tracking-wider">Correction</span>
+                    <span class="text-xs font-mono font-bold text-emerald-400">${qData.score || ""}</span>
+                </div>`;
+                if (studentAnswer && studentAnswer.trim()) {
+                    html += `<div class="bg-slate-900 border border-red-900/30 rounded-xl p-3 mb-3">
+                        <span class="text-[10px] uppercase font-bold text-red-400 tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="file-edit" class="w-3 h-3"></i> Ta réponse
+                        </span>
+                        <p class="text-sm text-slate-300 mt-1.5 leading-relaxed border-l-2 border-red-500/30 pl-3">${escapeHTML(studentAnswer)}</p>
+                    </div>`;
+                }
+                if (qData.feedback) {
+                    html += `<div class="bg-indigo-950/20 border border-indigo-500/15 rounded-xl p-3 mb-3">
+                        <span class="text-[10px] uppercase font-bold text-indigo-400 tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="message-square" class="w-3 h-3"></i> Analyse
+                        </span>
+                        <p class="text-xs text-slate-300 mt-1.5 leading-relaxed">${qData.feedback}</p>
+                    </div>`;
+                }
+                if (qData.tips) {
+                    html += `<div class="flex items-start gap-2 text-xs text-amber-300 bg-amber-950/30 border border-amber-500/20 p-3 rounded-xl mb-3">
+                        <i data-lucide="lightbulb" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                        <span>${qData.tips}</span>
+                    </div>`;
+                }
+                if (qData.corrected_text && qData.corrected_text.trim()) {
+                    const hasErrors = /<error\s+correct=/i.test(
+                        qData.corrected_text,
+                    );
+                    html += `<div class="bg-emerald-950/15 border border-emerald-700/30 rounded-xl p-3 overflow-visible">
+                        <span class="text-[10px] uppercase font-bold text-emerald-400 tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="check-circle" class="w-3 h-3"></i> Version corrigée
+                            ${hasErrors ? '<span class="text-[9px] text-amber-400 bg-amber-950/40 px-1.5 py-0.5 rounded-full">Survoler les mots soulignés</span>' : ""}
+                        </span>
+                        <div class="text-sm text-slate-200 mt-1.5 leading-relaxed overflow-visible">${renderErrorTags(qData.corrected_text)}</div>
+                    </div>`;
+                }
+                return html;
+            }
+
+            // Helper: génère le rapport complet dans le panneau de correction
+            function renderCorrectionReport(data) {
+                if (!currentSubject.exercises) return "";
+                let html = '<div class="flex flex-col gap-6 overflow-visible">';
+                currentSubject.exercises.forEach((exo, ei) => {
+                    if (!exo.questions) return;
+                    html += `<div class="flex flex-col gap-4">
+                        <h5 class="text-sm font-bold text-slate-200 flex items-center gap-2 uppercase tracking-wider">
+                            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+                            ${exo.title}
+                        </h5>`;
+                    exo.questions.forEach((q, qi) => {
+                        const qData = data.questions[q.id];
+                        const answer =
+                            subjectsAnswers[q.id] ||
+                            document.getElementById(`answer_${q.id}`)?.value ||
+                            "";
+                        html += `<div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 ${qi > 0 ? "mt-3" : ""}">
+                            <div class="flex items-start justify-between gap-4 mb-3">
+                                <div>
+                                    <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Question ${qi + 1}</span>
+                                    <p class="text-sm text-slate-100 mt-1 font-medium leading-relaxed">${q.text}</p>
+                                </div>
+                                <span class="text-sm font-mono font-bold whitespace-nowrap px-3 py-1 rounded-lg ${qData ? "text-emerald-400 bg-emerald-950/30 border border-emerald-500/20" : "text-slate-500 bg-slate-900 border border-slate-800"}">${qData ? qData.score : "?/?"}</span>
+                            </div>`;
+                        if (qData) {
+                            html += renderQuestionFeedbackHTML(
+                                q,
+                                qData,
+                                answer,
+                            );
+                        } else {
+                            html += `<p class="text-xs text-slate-500 italic">Aucune correction fournie pour cette question.</p>`;
+                        }
+                        html += `</div>`;
+                    });
+                    html += `</div>`;
+                });
+                html += "</div>";
+                return html;
+            }
+
+            // Error overlays from JSON data
+            function parseInteractiveErrorOverlaysFromJSON(questionsData) {
+                if (!currentSubject.exercises) return;
+                currentSubject.exercises.forEach((exo) => {
+                    if (exo.questions) {
+                        exo.questions.forEach((q) => {
+                            const qId = q.id;
+                            const qData = questionsData[qId];
+                            const overlayDiv = document.getElementById(
+                                `correction-overlay-${qId}`,
+                            );
+                            const textarea = document.getElementById(
+                                `answer_${qId}`,
+                            );
+
+                            if (
+                                qData &&
+                                qData.corrected_text &&
+                                overlayDiv &&
+                                textarea
+                            ) {
+                                textarea.style.display = "none";
+                                overlayDiv.style.display = "block";
+                                overlayDiv.innerHTML = renderErrorTags(
+                                    qData.corrected_text,
+                                );
+                            } else if (overlayDiv && textarea) {
+                                textarea.style.display = "";
+                                overlayDiv.style.display = "none";
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Error overlays from text format (fallback)
+            function closeCorrectionPanel() {
+                document
+                    .getElementById("correction-display-panel")
+                    .classList.add("hidden");
+                document.getElementById("ai-response-paste").value = "";
+
+                // Reset interactive overlays and feedback per question
+                if (currentSubject.exercises) {
+                    currentSubject.exercises.forEach((exo) => {
+                        if (exo.questions) {
+                            exo.questions.forEach((q) => {
+                                const textarea = document.getElementById(
+                                    `answer_${q.id}`,
+                                );
+                                const overlayDiv = document.getElementById(
+                                    `correction-overlay-${q.id}`,
+                                );
+                                if (textarea && overlayDiv) {
+                                    textarea.style.display = "";
+                                    overlayDiv.style.display = "none";
+                                    overlayDiv.innerHTML = "";
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+
+            // Advanced JSON Drawer management
+            function toggleAdvancedSettings() {
+                const drawer = document.getElementById(
+                    "advanced-settings-drawer",
+                );
+                const arrow = document.getElementById("settings-arrow");
+
+                if (drawer.classList.contains("hidden")) {
+                    drawer.classList.remove("hidden");
+                    arrow.className =
+                        "w-4 h-4 transition-transform transform rotate-180";
+                } else {
+                    drawer.classList.add("hidden");
+                    arrow.className = "w-4 h-4 transition-transform";
+                }
+            }
+
+            // Editor values alignment
+            function fillJSONEditor(subjectObj) {
+                document.getElementById("json-editor").value = JSON.stringify(
+                    subjectObj,
+                    null,
+                    2,
+                );
+            }
+
+            function applyEditedJSON() {
+                const value = document.getElementById("json-editor").value;
+                try {
+                    const parsed = JSON.parse(value);
+                    currentSubject = parsed;
+                    renderQuestionsSheet(parsed);
+                    alertNotification(
+                        "success",
+                        "Sujet de Brevet mis à jour depuis votre JSON !",
+                    );
+                } catch (error) {
+                    alertNotification(
+                        "error",
+                        "Erreur dans le JSON : " + error.message,
+                    );
+                }
+            }
+
+            function triggerJSONFileDownload() {
+                const content = document.getElementById("json-editor").value;
+                const blob = new Blob([content], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `brevet_matiere_unique.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+
+            function handleFileSelected(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    try {
+                        const parsed = JSON.parse(e.target.result);
+                        currentSubject = parsed;
+                        renderQuestionsSheet(parsed);
+                        fillJSONEditor(parsed);
+                        alertNotification(
+                            "success",
+                            "Sujet Brevet JSON chargé avec succès !",
+                        );
+                    } catch (err) {
+                        alertNotification(
+                            "error",
+                            "Erreur lors de la lecture du fichier JSON : " +
+                                err.message,
+                        );
+                    }
+                };
+                reader.readAsText(file);
+            }
+
+            // Custom notification pop
+            function alertNotification(type, message) {
+                const notificationDiv = document.createElement("div");
+                notificationDiv.className = `fixed bottom-5 right-5 z-50 p-4 rounded-xl flex items-center gap-2 border shadow-2xl transition-all translate-y-2 opacity-0 duration-300`;
+
+                if (type === "success") {
+                    notificationDiv.className +=
+                        " bg-emerald-950/90 border-emerald-500 text-emerald-300";
+                    notificationDiv.innerHTML = `<i data-lucide="check" class="w-5 h-5 text-emerald-400"></i> <span class="text-xs font-semibold">${message}</span>`;
+                } else {
+                    notificationDiv.className +=
+                        " bg-red-950/90 border-red-500 text-red-300";
+                    notificationDiv.innerHTML = `<i data-lucide="alert-triangle" class="w-5 h-5 text-red-400"></i> <span class="text-xs font-semibold">${message}</span>`;
+                }
+
+                document.body.appendChild(notificationDiv);
+                lucide.createIcons();
+
+                // Animate in
+                setTimeout(() => {
+                    notificationDiv.classList.remove(
+                        "translate-y-2",
+                        "opacity-0",
+                    );
+                }, 100);
+
+                // Remove out
+                setTimeout(() => {
+                    notificationDiv.classList.add("translate-y-2", "opacity-0");
+                    setTimeout(() => {
+                        notificationDiv.remove();
+                    }, 300);
+                }, 3500);
+            }
+        </script>
+    </body>
+</html>

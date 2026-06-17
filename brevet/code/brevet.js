@@ -20,14 +20,15 @@ let currentSubject = {};
 let subjectsAnswers = {};
 
 // Lifecycle init
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => {
-    lucide.createIcons();
-    initSubject();
-  });
-} else {
-  lucide.createIcons();
+function bootApp() {
+  if (typeof lucide !== "undefined") lucide.createIcons();
   initSubject();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", bootApp);
+} else {
+  bootApp();
 }
 
 // Initialize active subject structure

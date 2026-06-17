@@ -7,10 +7,14 @@ const CONFIG_THEME = "french";
 
 // Unique Sujet de Brevet principal présent dans l'Immersive
 const ACTIVE_SUBJECT_JSON = window.ACTIVE_SUBJECT_JSON;
-if (!window.ACTIVE_SUBJECT_JSON) {
-  console.warn("erreur: window.ACTIVE_SUBJECT_JSON erreur ");
+if (!ACTIVE_SUBJECT_JSON) {
+  console.warn(
+    "⚠️ Attention : window.ACTIVE_SUBJECT_JSON est manquant ou invalide ! Valeur actuelle :",
+    ACTIVE_SUBJECT_JSON,
+  );
+} else {
+  console.log("✅ Fichier JSON chargé avec succès :", ACTIVE_SUBJECT_JSON);
 }
-
 // App state
 let currentSubject = {};
 let subjectsAnswers = {};

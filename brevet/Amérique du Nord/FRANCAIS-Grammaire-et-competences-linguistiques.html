@@ -13,7 +13,9 @@
                 "json/FRANCAIS-Grammaire-et-competences-linguistiques.json";
             (async () => {
                 try {
-                    const response = await fetch("brevet/code/brevet.html");
+                    const response = await fetch(
+                        "../../brevet/code/brevet.html",
+                    );
                     const html = await response.text();
                     const doc = new DOMParser().parseFromString(
                         html,

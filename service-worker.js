@@ -6,7 +6,7 @@ const STATIC_ASSETS = [
   "./angalais/Maître_de_l'Anglais_-_Verbes_Irréguliers.html",
   "./angalais/Revision_HarrietTubman_CivilWar_Grammaire_Connecteurs.html",
   "./angalais/Vocabulary_Quiz_–_Unit_16:_The_World_of_Work_&_Teen Jobs.html",
-  "./brevet/Amérique du Nord/FRANÇAIS Grammaire et compétences linguistiques.html",
+  "./brevet/Amérique du Nord/FRANCAIS-Grammaire-et-competences-linguistiques.html",
   "./brevet/code/brevet.css",
   "./brevet/code/brevet.html",
   "./brevet/code/brevet.js",
@@ -54,7 +54,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-079b0da"; // version automatique
+const CACHE_NAME = "quiz-cache-df4d835"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {

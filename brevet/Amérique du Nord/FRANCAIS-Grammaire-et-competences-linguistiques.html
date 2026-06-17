@@ -9,10 +9,12 @@
     </head>
     <body>
         <script>
-            window.ACTIVE_SUBJECT_JSON =
-                "json/FRANCAIS-Grammaire-et-competences-linguistiques.json";
             (async () => {
                 try {
+                    const jsonResponse = await fetch(
+                        "json/FRANCAIS-Grammaire-et-competences-linguistiques.json",
+                    );
+                    window.ACTIVE_SUBJECT_JSON = await jsonResponse.json();
                     const response = await fetch(
                         "../../brevet/code/brevet.html",
                     );

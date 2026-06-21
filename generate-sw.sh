@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 1. Lister les fichiers proprement (gestion des espaces et caractères spéciaux)
-FILES=$(find . -maxdepth 3 -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.svg" -o -name "*.png" -o -name "*.json" \) \
+FILES=$(find . -maxdepth 4 -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.svg" -o -name "*.png" -o -name "*.json" \) \
     ! -path "./.*" \
     ! -name "generate-sw.sh" \
     | sed 's|^\.||' | sort | sed 's/^/  ".\//' | sed 's/\/\//\//' | sed 's/$/",/')

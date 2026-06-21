@@ -13,11 +13,11 @@
             (async () => {
                 async function loadJSON(path) {
                     const res = await fetch(path);
-                    if (!res.ok) {
+                    if (!res.ok || res.headers.get("content-length") === "0") {
                         throw new Error(
-                            "JSON introuvable : " + path +
-                            " (statut " + res.status + ")" +
-                            "\n👉 Vérifie que le fichier existe au bon chemin."
+                            "JSON introuvable ou vide au chemin : " + path +
+                            " (status " + res.status + ")" +
+                            "\n👉 Vérifie que le fichier existe et n'est pas corrompu."
                         );
                     }
                     const text = await res.text();
@@ -29,15 +29,15 @@
                     } catch (e) {
                         throw new Error(
                             "Erreur de syntaxe dans le JSON : " + e.message +
-                            "\n👉 Si ce fichier a été généré par IA, le JSON est mal formé. " +
-                            "Valide-le sur https://jsonlint.com"
+                            "\n👉 Si ce fichier a été généré par une IA, le JSON est mal formé. " +
+                            "Vérifie la validité du JSON sur https://jsonlint.com"
                         );
                     }
                 }
 
                 try {
                     window.ACTIVE_SUBJECT_JSON = await loadJSON(
-                        "json/FRANCAIS-Grammaire-et-competences-linguistiques.json?t=" + Date.now(),
+                        "json/francais-redaction.json?t=" + Date.now(),
                     );
                     const response = await fetch(
                         "../../brevet/code/brevet.html",

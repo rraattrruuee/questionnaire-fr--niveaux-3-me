@@ -146,6 +146,7 @@ RÈGLES DE SÉCURITÉ TECHNIQUE (ZÉRO ERREUR JSON) :
 {
   "subject": "Nom de la matière",
   "title": "Titre accrocheur du sujet",
+  "session": "Session Officielle 2026 ou autre mention",
   "description": "<h3>Document 1 : Titre</h3><p>Contenu textuel ici...</p><div style='text-align:center;'><img src='matiere/theme/illustration.svg' alt='Texte alternatif de l'image'></div><p style='text-align:right; font-size:0.75rem;'>Source de l'œuvre</p>",
   "exercises": [
     {

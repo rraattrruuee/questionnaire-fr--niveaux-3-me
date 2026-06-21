@@ -1,0 +1,58 @@
+{
+  "subject": "Français",
+  "title": "DNB Session 2026 - Épreuve de Rédaction",
+  "session": "Session Officielle 2026",
+  "description": "<h3>26GENFRRAN1 - DIPLOME NATIONAL DU BREVET</h3><p><strong>SESSION 2026 | FRANÇAIS | RÉDACTION</strong><br>Série générale<br>Durée : 1 h 30 (Coefficient 2)</p><hr><p><em>Dès que le sujet vous est remis, assurez-vous qu’il est complet. Ce sujet comporte 2 pages numérotées de la page 1/2 à la page 2/2.</em></p><p>Vous composez pour cette partie sur une copie distincte et utilisez en support le sujet de la partie <strong>grammaire et compétences linguistiques – compréhension et compétences d’interprétation</strong>.</p><div style='margin: 1.5rem 0; text-align:center;'><hr><h3>Sujets proposés au choix</h3><ul><li><strong>Sujet de réflexion :</strong> Selon vous, la poésie, la littérature et l’art ont-ils pour mission d’embellir le réel ? Vous présenterez votre réflexion dans un développement argumenté et organisé. Vous illustrerez votre propos à l’aide d’exemples issus de vos lectures et de votre culture artistique personnelle (cinéma, peinture, bande dessinée...). Vous traiterez le sujet en une trentaine de lignes au moins.</li><li><strong>Sujet d’imagination :</strong> À votre tour, vous choisissez un aliment auquel vous vous adressez pour révéler ses qualités. Vous rédigerez ce texte dans une langue poétique, attentive aux images, aux effets de rythme et de sonorité. Vous traiterez le sujet en 35 lignes au moins.</li></ul><hr><p><em>Afin de respecter l’anonymat de votre copie, vous ne devez pas signer votre composition, citer un nom, celui d’un camarade ou celui de votre établissement.</em></p>",
+  "exercises": [
+    {
+      "id": "exo1",
+      "title": "Préparation et structuration du sujet de réflexion",
+      "points": 10,
+      "questions": [
+        {
+          "id": "exo1_q1",
+          "text": "Identifiez la problématique centrale du sujet et formulez une thèse claire (affirmative ou négative) qui guidera votre développement argumenté.",
+          "points": 3,
+          "guideline": "1 point pour l'identification précise de la tension entre embellir le réel et le dévoiler. 2 points pour une thèse pertinente, nuancée et directement exploitable dans un plan structuré."
+        },
+        {
+          "id": "exo1_q2",
+          "text": "Proposez deux exemples précis issus de votre culture littéraire ou artistique pour étayer votre thèse. Expliquez brièvement en quoi chaque exemple illustre votre argument.",
+          "points": 4,
+          "guideline": "1 point par exemple pertinent et clairement identifié (œuvre, auteur, mouvement). 1 point par explication faisant le lien explicite avec l'argument. Les exemples doivent couvrir des domaines différents si possible."
+        },
+        {
+          "id": "exo1_q3",
+          "text": "Esquissez un plan détaillé en deux ou trois parties. Pour chaque partie, indiquez l'argument principal, l'exemple retenu et l'analyse qui les relie.",
+          "points": 3,
+          "guideline": "1 point pour la cohérence globale du plan et la progression logique. 2 points pour la précision des arguments et la présence d'une transition ou d'une conclusion partielle dans chaque partie."
+        }
+      ]
+    },
+    {
+      "id": "exo2",
+      "title": "Atelier d'écriture et analyse poétique (Sujet d'imagination)",
+      "points": 10,
+      "questions": [
+        {
+          "id": "exo2_q1",
+          "text": "Choisissez un aliment et déterminez le registre poétique que vous souhaitez adopter (lyrique, épique, humoristique, etc.). Justifiez votre choix en trois lignes.",
+          "points": 3,
+          "guideline": "1 point pour le choix cohérent de l'aliment. 2 points pour la justification du registre, montrant comment il sert la révélation des qualités de l'aliment et crée un effet esthétique."
+        },
+        {
+          "id": "exo2_q2",
+          "text": "Rédigez un paragraphe de 10 lignes environ en employant obligatoirement : une apostrophe directe à l'aliment, deux figures de style (métaphore, personnification ou hyperbole) et un jeu sur les sonorités (allitérations ou assonances).",
+          "points": 4,
+          "guideline": "1 point pour la présence de l'apostrophe. 1 point par figure de style correctement identifiée et intégrée au sens. 1 point pour l'identification claire des sonorités recherchées. 1 point pour la maîtrise syntaxique et le respect de la longueur demandée."
+        },
+        {
+          "id": "exo2_q3",
+          "text": "Relisez votre production et proposez une modification ciblée pour renforcer le rythme de votre texte (ponctuation expressive, rejets, enjambements ou variations de longueur de phrases).",
+          "points": 3,
+          "guideline": "1 point pour l'identification d'une faiblesse rythmique initiale. 1 point pour la proposition de modification pertinente. 1 point pour l'explication de l'effet produit sur la lecture et la musicalité du texte."
+        }
+      ]
+    }
+  ]
+}

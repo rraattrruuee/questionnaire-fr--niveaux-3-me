@@ -1,10 +1,3 @@
-/* ----------------------------------------------------
-                       PARAMÈTRES DE CONFIGURATION (MODIFIABLES DIRECTEMENT)
-                       ---------------------------------------------------- */
-
-// Theme global de style (ex: "french", "math", "physics", "svt")
-const CONFIG_THEME = "french";
-
 // Unique Sujet de Brevet principal présent dans l'Immersive
 const ACTIVE_SUBJECT_JSON = window.ACTIVE_SUBJECT_JSON;
 if (!ACTIVE_SUBJECT_JSON) {
@@ -37,7 +30,13 @@ function initSubject() {
 
   // Update Exam Card Color borders based on config theme
   const cardContainer = document.getElementById("exam-card-container");
-  cardContainer.className = `exam-card bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden exam-card-${CONFIG_THEME}`;
+  cardContainer.className = `exam-card bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden`;
+
+  // Update session
+  const sessionEl = document.getElementById("copy-session");
+  if (sessionEl && currentSubject.session) {
+    sessionEl.innerText = currentSubject.session;
+  }
 
   // Update titles
   document.getElementById("copy-subject").innerText =

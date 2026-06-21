@@ -1,5 +1,8 @@
 // BEGIN_ASSETS
 const STATIC_ASSETS = [
+  "./Physique/maîtrise_de_la_Tension_Electrique.html",
+  "./Physique/quiz-physique-enérgie.html",
+  "./QuizMaster_Dynamique_:_Générateur_&_Importateur_de_Questionnaires.html",
   "./angalais/Maître_de_l'Anglais_-_Verbes_Irréguliers.html",
   "./angalais/Revision_HarrietTubman_CivilWar_Grammaire_Connecteurs.html",
   "./angalais/Vocabulary_Quiz_–_Unit_16:_The_World_of_Work_&_Teen Jobs.html",
@@ -29,8 +32,8 @@ const STATIC_ASSETS = [
   "./capture/AppImages/ios/128.png",
   "./capture/AppImages/ios/144.png",
   "./capture/AppImages/ios/152.png",
-  "./capture/AppImages/ios/167.png",
   "./capture/AppImages/ios/16.png",
+  "./capture/AppImages/ios/167.png",
   "./capture/AppImages/ios/180.png",
   "./capture/AppImages/ios/192.png",
   "./capture/AppImages/ios/20.png",
@@ -134,32 +137,29 @@ const STATIC_ASSETS = [
   "./histoire-geo/Histoire (Guerres mondiales, Guerre froide), Géographie (Espaces productifs, Faibles densités, Aménagement) et EMC (Laïcité, Valeurs).html",
   "./histoire-geo/La_Seconde_Guerre_mondiale,_une_guerre _d_anéantissement_(1939-1945).html",
   "./histoire-geo/Le monde depuis 1945 - La Guerre froide (1947-1991).html",
-  "./histoire-geo/Les_espaces_productifs_français_et_leurs_évolutions.html",
   "./histoire-geo/Les Territoires Ultramarins Français – Enjeux, Atouts et Aménagements.html",
+  "./histoire-geo/Les_espaces_productifs_français_et_leurs_évolutions.html",
   "./index.html",
   "./inject-back-btn.js",
   "./italien/Grammaire_(L'adjectif 'Bello')_et _ompréhension_de_Texte.html",
-  "./italien/les verbes réguliers au futur en Italien.html",
   "./italien/Quiz sur les Maîtres de la Haute Couture Italienne : Ferré, Armani, Cucinelli, Prada et Valentino.html",
+  "./italien/les verbes réguliers au futur en Italien.html",
   "./latin/Maître_du_Latin_-_Les_verbes.html",
   "./manifest.json",
   "./math/Mathématiques : fonctions affines et linéaires.html",
   "./math/Mathématiques_:_Probabilités_–_Vocabulaire_et_Calculs.html",
   "./math/Quiz-Mathématique-calcul-littéral-en-3ème.html",
-  "./math/quiz-pythagore-thales-calcul.html",
   "./math/Révisions Mathématiques 3ème : Calculs, Algèbre et Géométrie.html",
+  "./math/quiz-pythagore-thales-calcul.html",
   "./offline.html",
-  "./Physique/maîtrise_de_la_Tension_Electrique.html",
-  "./Physique/quiz-physique-enérgie.html",
   "./questionaire-d-anglais-Vocabulaire-lié-a-l-esclavage-et-la-traite-transatlantique.html",
-  "./questionaire-de-latin-Jules-César-et-l-apogée-de-la-République-Romaine.html",
   "./questionaire-d-emc.html",
-  "./questionaire-de-PHYSIQUE.html",
-  "./questionaire-de-svt.html",
   "./questionaire-d-italien-Le-vocabulaire-et-habitudes-alimentaires.html",
+  "./questionaire-de-PHYSIQUE.html",
+  "./questionaire-de-latin-Jules-César-et-l-apogée-de-la-République-Romaine.html",
+  "./questionaire-de-svt.html",
   "./quiz_icon.png",
   "./quiz_icon.svg",
-  "./QuizMaster_Dynamique_:_Générateur_&_Importateur_de_Questionnaires.html",
   "./science/Sciences 3ème : Génétique, Évolution, Microbiote et Systèmes Automatisés.html",
   "./script.js",
   "./service-worker.js",
@@ -170,7 +170,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-5487ab8"; // version automatique
+const CACHE_NAME = "quiz-cache-a690801"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {

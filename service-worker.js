@@ -1,5 +1,8 @@
 // BEGIN_ASSETS
 const STATIC_ASSETS = [
+  "./Physique/ma%C3%AEtrise_de_la_Tension_Electrique.html",
+  "./Physique/quiz-physique-en%C3%A9rgie.html",
+  "./QuizMaster_Dynamique_%3A_G%C3%A9n%C3%A9rateur_%26_Importateur_de_Questionnaires.html",
   "./angalais/Ma%C3%AEtre_de_l%27Anglais_-_Verbes_Irr%C3%A9guliers.html",
   "./angalais/Revision_HarrietTubman_CivilWar_Grammaire_Connecteurs.html",
   "./angalais/Vocabulary_Quiz_%E2%80%93_Unit_16%3A_The_World_of_Work_%26_Teen%20Jobs.html",
@@ -29,8 +32,8 @@ const STATIC_ASSETS = [
   "./capture/AppImages/ios/128.png",
   "./capture/AppImages/ios/144.png",
   "./capture/AppImages/ios/152.png",
-  "./capture/AppImages/ios/167.png",
   "./capture/AppImages/ios/16.png",
+  "./capture/AppImages/ios/167.png",
   "./capture/AppImages/ios/180.png",
   "./capture/AppImages/ios/192.png",
   "./capture/AppImages/ios/20.png",
@@ -134,32 +137,29 @@ const STATIC_ASSETS = [
   "./histoire-geo/Histoire%20%28Guerres%20mondiales%2C%20Guerre%20froide%29%2C%20G%C3%A9ographie%20%28Espaces%20productifs%2C%20Faibles%20densit%C3%A9s%2C%20Am%C3%A9nagement%29%20et%20EMC%20%28La%C3%AFcit%C3%A9%2C%20Valeurs%29.html",
   "./histoire-geo/La_Seconde_Guerre_mondiale%2C_une_guerre%20_d_an%C3%A9antissement_%281939-1945%29.html",
   "./histoire-geo/Le%20monde%20depuis%201945%20-%20La%20Guerre%20froide%20%281947-1991%29.html",
-  "./histoire-geo/Les_espaces_productifs_fran%C3%A7ais_et_leurs_%C3%A9volutions.html",
   "./histoire-geo/Les%20Territoires%20Ultramarins%20Fran%C3%A7ais%20%E2%80%93%20Enjeux%2C%20Atouts%20et%20Am%C3%A9nagements.html",
+  "./histoire-geo/Les_espaces_productifs_fran%C3%A7ais_et_leurs_%C3%A9volutions.html",
   "./index.html",
   "./inject-back-btn.js",
   "./italien/Grammaire_%28L%27adjectif%20%27Bello%27%29_et%20_ompr%C3%A9hension_de_Texte.html",
-  "./italien/les%20verbes%20r%C3%A9guliers%20au%20futur%20en%20Italien.html",
   "./italien/Quiz%20sur%20les%20Ma%C3%AEtres%20de%20la%20Haute%20Couture%20Italienne%20%3A%20Ferr%C3%A9%2C%20Armani%2C%20Cucinelli%2C%20Prada%20et%20Valentino.html",
+  "./italien/les%20verbes%20r%C3%A9guliers%20au%20futur%20en%20Italien.html",
   "./latin/Ma%C3%AEtre_du_Latin_-_Les_verbes.html",
   "./manifest.json",
   "./math/Math%C3%A9matiques%20%3A%20fonctions%20affines%20et%20lin%C3%A9aires.html",
   "./math/Math%C3%A9matiques_%3A_Probabilit%C3%A9s_%E2%80%93_Vocabulaire_et_Calculs.html",
   "./math/Quiz-Math%C3%A9matique-calcul-litt%C3%A9ral-en-3%C3%A8me.html",
-  "./math/quiz-pythagore-thales-calcul.html",
   "./math/R%C3%A9visions%20Math%C3%A9matiques%203%C3%A8me%20%3A%20Calculs%2C%20Alg%C3%A8bre%20et%20G%C3%A9om%C3%A9trie.html",
+  "./math/quiz-pythagore-thales-calcul.html",
   "./offline.html",
-  "./Physique/ma%C3%AEtrise_de_la_Tension_Electrique.html",
-  "./Physique/quiz-physique-en%C3%A9rgie.html",
   "./questionaire-d-anglais-Vocabulaire-li%C3%A9-a-l-esclavage-et-la-traite-transatlantique.html",
-  "./questionaire-de-latin-Jules-C%C3%A9sar-et-l-apog%C3%A9e-de-la-R%C3%A9publique-Romaine.html",
   "./questionaire-d-emc.html",
-  "./questionaire-de-PHYSIQUE.html",
-  "./questionaire-de-svt.html",
   "./questionaire-d-italien-Le-vocabulaire-et-habitudes-alimentaires.html",
+  "./questionaire-de-PHYSIQUE.html",
+  "./questionaire-de-latin-Jules-C%C3%A9sar-et-l-apog%C3%A9e-de-la-R%C3%A9publique-Romaine.html",
+  "./questionaire-de-svt.html",
   "./quiz_icon.png",
   "./quiz_icon.svg",
-  "./QuizMaster_Dynamique_%3A_G%C3%A9n%C3%A9rateur_%26_Importateur_de_Questionnaires.html",
   "./science/Sciences%203%C3%A8me%20%3A%20G%C3%A9n%C3%A9tique%2C%20%C3%89volution%2C%20Microbiote%20et%20Syst%C3%A8mes%20Automatis%C3%A9s.html",
   "./script.js",
   "./service-worker.js",
@@ -170,7 +170,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-660d0bb"; // version automatique
+const CACHE_NAME = "quiz-cache-aef10bf"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {

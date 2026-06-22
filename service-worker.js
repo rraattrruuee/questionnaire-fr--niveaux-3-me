@@ -240,10 +240,16 @@ self.addEventListener("message", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  // Navigation requests: try network first, then cache fallback
+  // Navigation requests: try network first, cache response, then cache fallback
   if (event.request.mode === "navigate") {
     event.respondWith(
-      fetch(event.request).catch(() => {
+      fetch(event.request).then((response) => {
+        if (response.ok) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        }
+        return response;
+      }).catch(() => {
         return caches.match(event.request).then((cachedResponse) => {
           return (
             cachedResponse ||
@@ -256,10 +262,17 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Other requests: serve from cache first, then network
+  // Other requests: cache first, then network + cache response
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request);
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached;
+      return fetch(event.request).then((response) => {
+        if (response.ok) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        }
+        return response;
+      }).catch(() => caches.match("./offline.html"));
     }),
   );
 });

@@ -4,7 +4,18 @@
 FILES=$(find . -maxdepth 4 -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.svg" -o -name "*.png" -o -name "*.json" \) \
     ! -path "./.*" \
     ! -name "generate-sw.sh" \
-    | sed 's|^\.||' | sort | sed 's/^/  ".\//' | sed 's/\/\//\//' | sed 's/$/",/')
+    ! -name "generate-links.sh" \
+    | sed 's|^\.||' | sort \
+    | python3 -c "
+import sys, urllib.parse
+for line in sys.stdin:
+    line = line.strip()
+    if not line: continue
+    # Encode only special chars in filename, keep / and .
+    parts = line.split('/')
+    encoded = '/'.join(urllib.parse.quote(p, safe='.') for p in parts)
+    print('  \".' + encoded + '\",')
+")
 
 # 2. Créer le nouveau contenu du service worker
 # On lit le fichier jusqu'à BEGIN, on ajoute les fichiers, puis on lit après END

@@ -37,7 +37,7 @@
 
                 try {
                     window.ACTIVE_SUBJECT_JSON = await loadJSON(
-                        "json/francais-redaction.json?t=" + Date.now(),
+                        "json/francais-redaction.json",
                     );
                     const response = await fetch(
                         "../../brevet/code/brevet.html",

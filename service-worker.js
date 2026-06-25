@@ -133,6 +133,7 @@ const STATIC_ASSETS = [
   "./capture/AppImages/windows11/Wide310x150Logo.scale-400.png",
   "./fix-back-btn.js",
   "./fran%C3%A7ais/Syllabus_%3A_Le_Ma%C3%AEtre_des_Subordonn%C3%A9es.html",
+  "./fran%C3%A7ais/francais%20brevet.html",
   "./histoire-geo/D%C3%A9colonisation%2C%20Guerre%20froide%20et%20construction%20de%20nouveaux%20%C3%89tats%20%281945-1991%29.html",
   "./histoire-geo/Histoire%20%28Guerres%20mondiales%2C%20Guerre%20froide%29%2C%20G%C3%A9ographie%20%28Espaces%20productifs%2C%20Faibles%20densit%C3%A9s%2C%20Am%C3%A9nagement%29%20et%20EMC%20%28La%C3%AFcit%C3%A9%2C%20Valeurs%29.html",
   "./histoire-geo/La_Seconde_Guerre_mondiale%2C_une_guerre%20_d_an%C3%A9antissement_%281939-1945%29.html",
@@ -170,7 +171,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-d40bc5b"; // version automatique
+const CACHE_NAME = "quiz-cache-6a95789"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {

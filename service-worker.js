@@ -141,6 +141,7 @@ const STATIC_ASSETS = [
   "./histoire-geo/Le%20monde%20depuis%201945%20-%20La%20Guerre%20froide%20%281947-1991%29.html",
   "./histoire-geo/Les%20Territoires%20Ultramarins%20Fran%C3%A7ais%20%E2%80%93%20Enjeux%2C%20Atouts%20et%20Am%C3%A9nagements.html",
   "./histoire-geo/Les_espaces_productifs_fran%C3%A7ais_et_leurs_%C3%A9volutions.html",
+  "./histoire-geo/date.html",
   "./histoire-geo/histoire%20brevet.html",
   "./index.html",
   "./inject-back-btn.js",
@@ -173,7 +174,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-f31d151"; // version automatique
+const CACHE_NAME = "quiz-cache-a285f2a"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {

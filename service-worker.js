@@ -1,6 +1,7 @@
 // BEGIN_ASSETS
 const STATIC_ASSETS = [
   "./Physique/ma%C3%AEtrise_de_la_Tension_Electrique.html",
+  "./Physique/physique%20brevet.html",
   "./Physique/quiz-physique-en%C3%A9rgie.html",
   "./QuizMaster_Dynamique_%3A_G%C3%A9n%C3%A9rateur_%26_Importateur_de_Questionnaires.html",
   "./angalais/Ma%C3%AEtre_de_l%27Anglais_-_Verbes_Irr%C3%A9guliers.html",
@@ -140,6 +141,7 @@ const STATIC_ASSETS = [
   "./histoire-geo/Le%20monde%20depuis%201945%20-%20La%20Guerre%20froide%20%281947-1991%29.html",
   "./histoire-geo/Les%20Territoires%20Ultramarins%20Fran%C3%A7ais%20%E2%80%93%20Enjeux%2C%20Atouts%20et%20Am%C3%A9nagements.html",
   "./histoire-geo/Les_espaces_productifs_fran%C3%A7ais_et_leurs_%C3%A9volutions.html",
+  "./histoire-geo/histoire%20brevet.html",
   "./index.html",
   "./inject-back-btn.js",
   "./italien/Grammaire_%28L%27adjectif%20%27Bello%27%29_et%20_ompr%C3%A9hension_de_Texte.html",
@@ -171,7 +173,7 @@ const STATIC_ASSETS = [
 ];
 // END_ASSETS
 
-const CACHE_NAME = "quiz-cache-6a95789"; // version automatique
+const CACHE_NAME = "quiz-cache-f31d151"; // version automatique
 
 // helper shared by install and message handler
 function cacheAllAssets() {

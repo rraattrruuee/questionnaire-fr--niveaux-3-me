@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Révisions Histoire 3ᵉ – Dates clés</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
+
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --primary-light: #eef2ff;
+            --secondary: #64748b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #0ea5e9;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --radius: 16px;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --cat-guerre: #f43f5e;
+            --cat-paix: #10b981;
+            --cat-politique: #3b82f6;
+            --cat-total: #334155;
+            --cat-france: #6366f1;
+            --cat-resistance: #f59e0b;
+            --cat-monde: #06b6d4;
+            --cat-europe: #eab308;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Plus Jakarta Sans", sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+            padding: clamp(1.2rem, 4vw, 2rem) 1rem 0.8rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-title h1 {
+            font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        .header-title p {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-family: inherit;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: white;
+            color: var(--primary);
+        }
+
+        .btn-outline {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .btn-outline:hover { background-color: rgba(255, 255, 255, 0.2); }
+
+        .theme-filter {
+            max-width: 1100px;
+            margin: 1rem auto 0;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            padding-bottom: 0.5rem;
+        }
+
+        .theme-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.25s ease;
+        }
+
+        .theme-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        .theme-btn.active {
+            background: white;
+            color: var(--primary);
+            border-color: white;
+        }
+
+        .theme-btn .count {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 100px;
+            padding: 0.05rem 0.45rem;
+            font-size: 0.7rem;
+            margin-left: 0.35rem;
+        }
+
+        .theme-btn.active .count {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1rem 4rem;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .timeline-container::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 100%;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+
+        .event-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 3rem;
+            display: flex;
+            justify-content: center;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .event-wrapper.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .event-wrapper.fade-out {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .event-dot {
+            position: absolute;
+            left: 50%;
+            top: 24px;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 14px;
+            background: white;
+            border: 3px solid var(--primary);
+            border-radius: 50%;
+            z-index: 3;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .event-wrapper.visible .event-dot {
+            transform: translateX(-50%) scale(1);
+        }
+
+        .event-card {
+            width: 44%;
+            background: var(--card-bg);
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--primary);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .left-card { margin-right: auto; text-align: right; }
+        .right-card { margin-left: auto; text-align: left; }
+
+        .cat-tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .event-date {
+            display: block;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .event-title {
+            font-weight: 500;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .event-count {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.5rem 0 1.5rem;
+        }
+
+        #section-quiz {
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .quiz-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .quiz-header {
+            background: var(--primary);
+            color: white;
+            padding: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .quiz-header .quiz-mode-tag {
+            font-size: 0.7rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .quiz-body {
+            padding: clamp(1.25rem, 5vw, 2.5rem);
+        }
+
+        .question-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .event-display {
+            background: var(--primary-light);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            text-align: center;
+            font-weight: 700;
+            color: var(--primary-dark);
+            border: 2px dashed var(--primary);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #f1f5f9;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            text-align: left;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .option-correct {
+            background: #ecfdf5 !important;
+            border-color: var(--success) !important;
+            color: var(--success) !important;
+        }
+
+        .option-wrong {
+            background: #fef2f2 !important;
+            border-color: var(--danger) !important;
+            color: var(--danger) !important;
+        }
+
+        .result-screen {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .result-icon { font-size: 4rem; margin-bottom: 1rem; }
+
+        .hidden { display: none !important; }
+
+        @media (min-width: 640px) {
+            .options-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .timeline-container::before { left: 20px; transform: none; }
+            .event-dot { left: 20px; transform: translateX(-50%); }
+            .event-wrapper.visible .event-dot { transform: translateX(-50%) scale(1); }
+            .event-card {
+                width: calc(100% - 50px);
+                margin-left: 50px !important;
+                margin-right: 0 !important;
+                text-align: left !important;
+            }
+            .header-content {
+                justify-content: center;
+                text-align: center;
+            }
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            .theme-filter {
+                justify-content: center;
+            }
+        }
+
+        svg {
+            width: 1.2em;
+            height: 1.2em;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-title">
+                <h1>Dates clés – Histoire 3ᵉ</h1>
+                <p>Programme complet • 3 thèmes • Quiz interactif</p>
+            </div>
+            <div class="nav-buttons">
+                <button id="btn-learn" class="btn-primary">
+                    <svg viewBox="0 0 24 24"><path d="M12 3L1 9L12 15L21 10.09V17H23V9M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z"/></svg>
+                    Chronologie
+                </button>
+                <button id="btn-quiz" class="btn-outline">
+                    <svg viewBox="0 0 24 24"><path d="M7,6H17V7H7V6M7,10H17V11H7V10M7,14H17V15H7V14M5,2H19A2,2 0 0,1 21,4V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2M5,4V20H19V4H5Z"/></svg>
+                    Quiz
+                </button>
+            </div>
+        </div>
+        <div class="theme-filter" id="theme-filter"></div>
+    </header>
+
+    <main>
+        <section id="section-learn">
+            <div class="event-count" id="event-count"></div>
+            <div class="timeline-container" id="timeline-root"></div>
+        </section>
+
+        <section id="section-quiz" class="hidden">
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <span><span id="quiz-progress">Question 1/10</span> <span class="quiz-mode-tag" id="quiz-mode-tag">Date → Événement</span></span>
+                    <span id="quiz-score-badge">Score: 0</span>
+                </div>
+                <div class="quiz-body">
+                    <div id="quiz-question-view">
+                        <span class="question-label" id="quiz-question-label">Trouvez la date de l'événement :</span>
+                        <div id="quiz-event-display" class="event-display">Événement</div>
+                        <div class="options-grid" id="quiz-options-root"></div>
+                    </div>
+                    <div id="quiz-result-view" class="hidden result-screen">
+                        <div class="result-icon" id="res-icon">🏆</div>
+                        <h2 id="res-title" style="margin-bottom:0.5rem">Bravo !</h2>
+                        <p id="res-score-text" style="color:var(--text-muted);margin-bottom:1.5rem"></p>
+                        <button id="btn-restart" class="btn-primary" style="margin:0 auto;background:var(--primary);color:white">
+                            <svg viewBox="0 0 24 24"><path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"/></svg>
+                            Réessayer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const events = [
+            // ── Thème 1 : 1914-1945 ──
+            { date: "1914-1918",       title: "La Première Guerre mondiale",                         cat: "Guerre",        color: "var(--cat-guerre)",     theme: 1 },
+            { date: "1915",            title: "Début du génocide arménien",                           cat: "Guerre",        color: "var(--cat-guerre)",     theme: 1 },
+            { date: "1916",            title: "Bataille de Verdun",                                   cat: "Guerre",        color: "var(--cat-guerre)",     theme: 1 },
+            { date: "1917",            title: "La Révolution russe",                                  cat: "Politique",     color: "var(--cat-politique)",  theme: 1 },
+            { date: "11 Nov. 1918",    title: "Armistice de la Grande Guerre",                        cat: "Guerre",        color: "var(--cat-guerre)",     theme: 1 },
+            { date: "28 juin 1919",    title: "Traité de Versailles",                                 cat: "Paix",          color: "var(--cat-paix)",       theme: 1 },
+            { date: "1924-1953",       title: "Staline au pouvoir",                                   cat: "Totalitarisme", color: "var(--cat-total)",      theme: 1 },
+            { date: "1933-1945",       title: "Hitler au pouvoir",                                    cat: "Totalitarisme", color: "var(--cat-total)",      theme: 1 },
+            { date: "1936",            title: "Victoire du Front Populaire & lois sociales",           cat: "France",        color: "var(--cat-france)",     theme: 1 },
+            { date: "1939-1945",       title: "La Seconde Guerre mondiale",                           cat: "Guerre",        color: "var(--cat-guerre)",     theme: 1 },
+            { date: "18 juin 1940",    title: "Appel du général de Gaulle à la Résistance",            cat: "Résistance",    color: "var(--cat-resistance)", theme: 1 },
+            { date: "1940-1944",       title: "Le Régime de Vichy",                                   cat: "France",        color: "var(--cat-france)",     theme: 1 },
+            { date: "Juillet 1942",    title: "Rafle du Vél d'Hiv'",                                  cat: "Guerre",        color: "var(--cat-guerre)",     theme: 1 },
+            { date: "1944",            title: "Droit de vote des femmes",                             cat: "France",        color: "var(--cat-france)",     theme: 1 },
+            { date: "1944-1945",       title: "Libération de la France & rétablissement de la République", cat: "France", color: "var(--cat-france)",  theme: 1 },
+            { date: "1945",            title: "Création de la Sécurité sociale",                      cat: "France",        color: "var(--cat-france)",     theme: 1 },
+            { date: "8 mai 1945",      title: "Fin de la Seconde Guerre mondiale en Europe",           cat: "Paix",          color: "var(--cat-paix)",       theme: 1 },
+            { date: "Août 1945",       title: "Bombes atomiques sur Hiroshima et Nagasaki",            cat: "Guerre",        color: "var(--cat-guerre)",     theme: 1 },
+
+            // ── Thème 2 : 1947-1968 ──
+            { date: "1947",            title: "Indépendance de l'Inde",                               cat: "Monde",         color: "var(--cat-monde)",      theme: 2 },
+            { date: "1947-1962",       title: "Principale phase de décolonisation",                   cat: "Monde",         color: "var(--cat-monde)",      theme: 2 },
+            { date: "1947-1991",       title: "La Guerre froide",                                     cat: "Monde",         color: "var(--cat-monde)",      theme: 2 },
+            { date: "1957",            title: "Traités de Rome : création de la CEE",                  cat: "Europe",        color: "var(--cat-europe)",     theme: 2 },
+            { date: "1958",            title: "Fondation de la Ve République",                        cat: "France",        color: "var(--cat-france)",     theme: 2 },
+            { date: "1958-1969",       title: "Les années De Gaulle",                                 cat: "France",        color: "var(--cat-france)",     theme: 2 },
+            { date: "1961-1989",       title: "Le mur de Berlin (construction – chute)",              cat: "Monde",         color: "var(--cat-monde)",      theme: 2 },
+            { date: "1962",            title: "Crise de Cuba",                                        cat: "Monde",         color: "var(--cat-monde)",      theme: 2 },
+            { date: "1962",            title: "Indépendance de l'Algérie",                            cat: "Monde",         color: "var(--cat-monde)",      theme: 2 },
+            { date: "1962",            title: "Référendum : élection du président au suffrage direct", cat: "France",       color: "var(--cat-france)",     theme: 2 },
+            { date: "Mai 1968",        title: "Révolte étudiante et populaire",                        cat: "France",        color: "var(--cat-france)",     theme: 2 },
+            { date: "1991",            title: "Chute de l'URSS",                                      cat: "Monde",         color: "var(--cat-monde)",      theme: 2 },
+
+            // ── Thème 3 : 1975-2002 ──
+            { date: "1975",            title: "Loi Veil sur l'IVG",                                   cat: "France",        color: "var(--cat-france)",     theme: 3 },
+            { date: "1981-1995",       title: "Les années Mitterrand – première alternance",           cat: "Politique",     color: "var(--cat-politique)",  theme: 3 },
+            { date: "1992",            title: "Traité de Maastricht : naissance de l'UE",              cat: "Europe",        color: "var(--cat-europe)",     theme: 3 },
+            { date: "1995-2007",       title: "Les années Chirac",                                    cat: "France",        color: "var(--cat-france)",     theme: 3 },
+            { date: "11 sept. 2001",   title: "Attentats aux États-Unis",                             cat: "Monde",         color: "var(--cat-monde)",      theme: 3 },
+            { date: "2001",            title: "Guerre en Afghanistan",                                cat: "Guerre",        color: "var(--cat-guerre)",     theme: 3 },
+            { date: "2002",            title: "L'euro, monnaie européenne",                            cat: "Europe",        color: "var(--cat-europe)",     theme: 3 },
+            { date: "2003",            title: "Guerre en Irak",                                       cat: "Guerre",        color: "var(--cat-guerre)",     theme: 3 },
+        ];
+
+        // ─── State ───
+        let currentTheme = "all";
+        let currentIdx = 0, score = 0, quizPool = [];
+        let quizMode = "date"; // "date" = find date from event, "event" = find event from date
+
+        // ─── DOM refs ───
+        const timelineRoot = document.getElementById("timeline-root");
+        const sLearn = document.getElementById("section-learn");
+        const sQuiz = document.getElementById("section-quiz");
+        const bLearn = document.getElementById("btn-learn");
+        const bQuiz = document.getElementById("btn-quiz");
+        const themeFilter = document.getElementById("theme-filter");
+        const eventCount = document.getElementById("event-count");
+
+        // ─── Helpers ───
+        function getFilteredEvents() {
+            if (currentTheme === "all") return events;
+            return events.filter(e => e.theme === parseInt(currentTheme));
+        }
+
+        function getEventCounts() {
+            const all = events.length;
+            const t1 = events.filter(e => e.theme === 1).length;
+            const t2 = events.filter(e => e.theme === 2).length;
+            const t3 = events.filter(e => e.theme === 3).length;
+            return { all, 1: t1, 2: t2, 3: t3 };
+        }
+
+        // ─── Theme filter ───
+        function buildThemeFilter() {
+            const counts = getEventCounts();
+            const themes = [
+                { key: "all", label: "Tous", count: counts.all },
+                { key: "1",   label: "Thème 1", count: counts[1], subtitle: "1914‑1945" },
+                { key: "2",   label: "Thème 2", count: counts[2], subtitle: "1947‑1968" },
+                { key: "3",   label: "Thème 3", count: counts[3], subtitle: "1975‑2002" },
+            ];
+            themeFilter.innerHTML = "";
+            themes.forEach(t => {
+                const btn = document.createElement("button");
+                btn.className = "theme-btn" + (t.key === currentTheme ? " active" : "");
+                btn.dataset.theme = t.key;
+                btn.innerHTML = `${t.label} <span class="count">${t.count}</span>`;
+                btn.title = t.subtitle || "";
+                btn.onclick = () => filterByTheme(t.key);
+                themeFilter.appendChild(btn);
+            });
+        }
+
+        function filterByTheme(theme) {
+            currentTheme = theme;
+            document.querySelectorAll(".theme-btn").forEach(b => {
+                b.classList.toggle("active", b.dataset.theme === theme);
+            });
+            initTimeline();
+        }
+
+        // ─── Timeline ───
+        function initTimeline() {
+            const filtered = getFilteredEvents();
+            timelineRoot.innerHTML = "";
+            eventCount.textContent = `${filtered.length} événement${filtered.length > 1 ? "s" : ""} affiché${filtered.length > 1 ? "s" : ""}`;
+
+            filtered.forEach((ev, i) => {
+                const wrapper = document.createElement("div");
+                wrapper.className = "event-wrapper";
+                const side = i % 2 === 0 ? "left-card" : "right-card";
+                wrapper.innerHTML = `
+                    <div class="event-dot" style="border-color:${ev.color}"></div>
+                    <div class="event-card ${side}" style="border-top-color:${ev.color}">
+                        <span class="cat-tag" style="background:${ev.color}">${ev.cat}</span>
+                        <span class="event-date">${ev.date}</span>
+                        <p class="event-title">${ev.title}</p>
+                    </div>`;
+                timelineRoot.appendChild(wrapper);
+            });
+
+            observeTimeline();
+        }
+
+        // ─── Scroll animation (IntersectionObserver) ───
+        let observer = null;
+        function observeTimeline() {
+            if (observer) observer.disconnect();
+            observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
+
+            document.querySelectorAll(".event-wrapper").forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // ─── Navigation ───
+        bLearn.onclick = () => {
+            sLearn.classList.remove("hidden");
+            sQuiz.classList.add("hidden");
+            bLearn.className = "btn-primary";
+            bQuiz.className = "btn-outline";
+            setTimeout(observeTimeline, 50);
+        };
+        bQuiz.onclick = () => {
+            sLearn.classList.add("hidden");
+            sQuiz.classList.remove("hidden");
+            bQuiz.className = "btn-primary";
+            bLearn.className = "btn-outline";
+            startQuiz();
+        };
+
+        // ─── Quiz ───
+        function startQuiz() {
+            score = 0;
+            currentIdx = 0;
+            const pool = getFilteredEvents();
+            quizPool = [...pool].sort(() => Math.random() - 0.5).slice(0, Math.min(10, pool.length));
+
+            document.getElementById("quiz-question-view").classList.remove("hidden");
+            document.getElementById("quiz-result-view").classList.add("hidden");
+            updateQuizUI();
+        }
+
+        function updateQuizUI() {
+            const current = quizPool[currentIdx];
+            const total = quizPool.length;
+
+            // Randomly pick mode each question
+            quizMode = Math.random() < 0.5 ? "date" : "event";
+
+            document.getElementById("quiz-progress").innerText = `Question ${currentIdx + 1}/${total}`;
+            document.getElementById("quiz-score-badge").innerText = `Score: ${score}`;
+
+            const modeTag = document.getElementById("quiz-mode-tag");
+            const label = document.getElementById("quiz-question-label");
+            const display = document.getElementById("quiz-event-display");
+
+            let correctAnswer, opts;
+
+            if (quizMode === "date") {
+                modeTag.textContent = "Événement → Date";
+                label.textContent = "Trouvez la date de l'événement :";
+                display.textContent = current.title;
+                correctAnswer = current.date;
+                opts = [current.date];
+            } else {
+                modeTag.textContent = "Date → Événement";
+                label.textContent = "Trouvez l'événement correspondant à cette date :";
+                display.textContent = current.date;
+                correctAnswer = current.title;
+                opts = [current.title];
+            }
+
+            // Generate wrong options from the same theme (or all if not enough)
+            const pool = currentTheme === "all" ? events : getFilteredEvents();
+            while (opts.length < 4) {
+                const r = pool[Math.floor(Math.random() * pool.length)];
+                const val = quizMode === "date" ? r.date : r.title;
+                if (!opts.includes(val)) opts.push(val);
+            }
+            opts.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById("quiz-options-root");
+            grid.innerHTML = "";
+            opts.forEach(o => {
+                const b = document.createElement("button");
+                b.className = "option-btn";
+                b.innerText = o;
+                b.onclick = () => checkAnswer(o, correctAnswer, b);
+                grid.appendChild(b);
+            });
+        }
+
+        function checkAnswer(selected, correct, btn) {
+            const all = document.querySelectorAll(".option-btn");
+            all.forEach(b => b.style.pointerEvents = "none");
+
+            if (selected === correct) {
+                btn.classList.add("option-correct");
+                score++;
+            } else {
+                btn.classList.add("option-wrong");
+                all.forEach(b => {
+                    if (b.innerText === correct) b.classList.add("option-correct");
+                });
+            }
+
+            setTimeout(() => {
+                currentIdx++;
+                if (currentIdx < quizPool.length) updateQuizUI();
+                else endQuiz();
+            }, 1200);
+        }
+
+        function endQuiz() {
+            document.getElementById("quiz-question-view").classList.add("hidden");
+            document.getElementById("quiz-result-view").classList.remove("hidden");
+            const total = quizPool.length;
+            document.getElementById("res-score-text").innerText = `Score : ${score} / ${total}`;
+            const icon = document.getElementById("res-icon");
+            const title = document.getElementById("res-title");
+            const pct = score / total;
+            if (pct >= 0.8) {
+                icon.innerText = "🏆";
+                title.innerText = "Excellent !";
+            } else if (pct >= 0.5) {
+                icon.innerText = "🥈";
+                title.innerText = "Bien joué !";
+            } else {
+                icon.innerText = "📚";
+                title.innerText = "Continue tes révisions !";
+            }
+        }
+
+        document.getElementById("btn-restart").onclick = startQuiz;
+
+        // ─── Init ───
+        buildThemeFilter();
+        initTimeline();
+    </script>
+</body>
+</html>

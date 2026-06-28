@@ -1,0 +1,3241 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="../quiz_icon.svg" type="image/x-icon" />
+        <title>Révisions Français 3ème : Grammaire et Expression</title>
+        <style>
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes slideOut {
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+
+                to {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+
+            @keyframes headerDrop {
+                from {
+                    opacity: 0;
+                    transform: translateY(-50px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes bounce {
+                0%,
+                20%,
+                50%,
+                80%,
+                100% {
+                    transform: translateY(0);
+                }
+
+                40% {
+                    transform: translateY(-5px);
+                }
+
+                60% {
+                    transform: translateY(-3px);
+                }
+            }
+
+            @keyframes shake {
+                0%,
+                100% {
+                    transform: translateX(0);
+                }
+
+                20%,
+                60% {
+                    transform: translateX(-5px);
+                }
+
+                40%,
+                80% {
+                    transform: translateX(5px);
+                }
+            }
+
+            @keyframes zoomFeedback {
+                0% {
+                    transform: scale(0.9);
+                    opacity: 0;
+                }
+
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes couleur-qui-change {
+                0%,
+                10% {
+                    color: white;
+                }
+
+                30% {
+                    color: #00ff00;
+                }
+
+                38% {
+                    color: #ffff00;
+                }
+
+                46% {
+                    color: #ff00ff;
+                }
+
+                54% {
+                    color: #00ffff;
+                }
+
+                60% {
+                    color: #ffa500;
+                }
+
+                68% {
+                    color: #7cfc00;
+                }
+
+                76% {
+                    color: #ff69b4;
+                }
+
+                84% {
+                    color: #8a2be2;
+                }
+
+                92% {
+                    color: #ff4500;
+                }
+
+                100% {
+                    color: deeppink;
+                }
+            }
+
+            @keyframes wipe-in {
+                from {
+                    clip-path: inset(0 100% 0 0);
+                }
+
+                to {
+                    clip-path: inset(0 0 0 0);
+                }
+            }
+
+            .anim-wipe-in {
+                animation: wipe-in 1s ease-out;
+            }
+
+            body {
+                font-family: "Segoe UI", Arial, sans-serif;
+                background-color: #f0f4f8;
+                padding: 1rem;
+                line-height: 1.6;
+                min-height: 100vh;
+            }
+
+            .quiz-container {
+                max-width: 800px;
+                margin: 2rem auto;
+                padding: 2rem;
+                background: #ffffff;
+                border-radius: 20px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+                overflow: hidden;
+            }
+
+            .header {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #1a202c;
+                animation: headerDrop 0.8s ease-out;
+            }
+
+            .progress-bar-container {
+                width: 100%;
+                height: 8px;
+                background-color: #edf2f7;
+                border-radius: 4px;
+                margin-bottom: 20px;
+                overflow: hidden;
+            }
+
+            .progress-bar-fill {
+                height: 100%;
+                background: linear-gradient(90deg, #4c51bf, #667eea);
+                width: 0%;
+                transition: width 0.4s ease-out;
+            }
+
+            .nav-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+                animation: slideIn 0.6s ease-out;
+            }
+
+            .nav-btn {
+                display: block;
+                width: 100%;
+                padding: 1.5rem;
+                text-align: center;
+                border-radius: 15px;
+                transition: all 0.2s;
+                font-weight: 700;
+                border: 2px solid #c3dafe;
+                color: #2b6cb0;
+                background-color: #ebf4ff;
+                cursor: pointer;
+                box-sizing: border-box;
+            }
+
+            .nav-btn:hover {
+                background-color: #cee0f2;
+                transform: translateY(-3px);
+                border-color: #4c51bf;
+            }
+
+            .question-card {
+                min-height: 200px;
+                padding: 2rem;
+                margin-bottom: 1.5rem;
+                border-radius: 15px;
+                background-color: #f7faff;
+                border: 2px solid #e2e8f0;
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            .question-card.entering {
+                animation: slideIn 0.5s ease-out forwards;
+            }
+
+            .question-card.fast-exit {
+                animation: slideOut 0.3s ease-in forwards;
+            }
+
+            .question-text {
+                font-size: 1.3rem;
+                font-weight: 700;
+                margin-bottom: 1.5rem;
+                color: #2d3748;
+            }
+
+            .img-container {
+                text-align: center;
+                margin: 15px 0;
+            }
+
+            .img-container img {
+                max-width: 100%;
+                border-radius: 8px;
+            }
+
+            .options-container {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .option-item {
+                position: relative;
+            }
+
+            .option-item input[type="radio"] {
+                position: absolute;
+                opacity: 0;
+                height: 0;
+                width: 0;
+            }
+
+            .answer-btn {
+                display: block;
+                width: 100%;
+                padding: 1rem 1.25rem;
+                text-align: left;
+                border-radius: 10px;
+                transition: all 0.2s;
+                font-weight: 600;
+                border: 1px solid #c3dafe;
+                color: #2b6cb0;
+                background-color: #ebf4ff;
+                cursor: pointer;
+                box-sizing: border-box;
+            }
+
+            .answer-btn:hover {
+                background-color: #cee0f2;
+                transform: translateY(-1px);
+            }
+
+            .option-item input:checked + .answer-btn {
+                background-color: #3182ce;
+                border-color: #2c5282;
+                color: white;
+            }
+
+            .answer-btn.correct {
+                background-color: #48bb78 !important;
+                border-color: #2f855a !important;
+                color: white !important;
+                animation: bounce 0.6s ease-out;
+            }
+
+            .answer-btn.incorrect {
+                background-color: #f56565 !important;
+                border-color: #c53030 !important;
+                color: white !important;
+                animation: shake 0.5s ease-in-out;
+            }
+
+            .text-input-styled {
+                width: 100%;
+                padding: 1rem 1.25rem;
+                font-size: 1.1rem;
+                border: 2px solid #c3dafe;
+                border-radius: 10px;
+                box-sizing: border-box;
+            }
+
+            .text-input-styled.correct {
+                border-color: #48bb78;
+                background-color: #f0fff4;
+                color: #2f855a;
+                animation: bounce 0.6s ease-out;
+            }
+
+            .text-input-styled.incorrect {
+                border-color: #f56565;
+                background-color: #fff5f5;
+                color: #c53030;
+                animation: shake 0.5s ease-in-out;
+            }
+
+            #feedback-area {
+                margin-top: 1rem;
+                padding: 1.5rem;
+                border-radius: 10px;
+                font-weight: 500;
+                display: none;
+                opacity: 0;
+            }
+
+            #feedback-area.visible {
+                display: block;
+                animation: zoomFeedback 0.4s forwards;
+            }
+
+            .feedback-correct {
+                background-color: #e6fffa;
+                color: #276749;
+                border: 1px solid #48bb78;
+            }
+
+            .feedback-incorrect {
+                background-color: #fff5f5;
+                color: #c53030;
+                border: 1px solid #f56565;
+            }
+
+            .main-btn-container {
+                margin-top: 2rem;
+                display: flex;
+                justify-content: center;
+            }
+
+            #main-btn {
+                background-color: #4c51bf;
+                color: white;
+                padding: 1rem 2.5rem;
+                border-radius: 12px;
+                font-weight: 800;
+                font-size: 1.1rem;
+                transition: all 0.3s;
+                width: 100%;
+                border: none;
+                cursor: pointer;
+            }
+
+            #main-btn:disabled {
+                background-color: #a0aec0;
+                cursor: not-allowed;
+                transform: none;
+                box-shadow: none;
+            }
+
+            .math-frac {
+                display: inline-block;
+                vertical-align: middle;
+                text-align: center;
+                font-size: 0.9em;
+            }
+
+            .math-num {
+                border-bottom: 1px solid;
+                display: block;
+                padding: 0 2px;
+            }
+
+            .math-den {
+                display: block;
+                padding: 0 2px;
+            }
+
+            .couleur-qui-change {
+                animation: couleur-qui-change 14s infinite alternate;
+                font-weight: bold;
+            }
+
+            .hidden {
+                display: none !important;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="quiz-container">
+            <div class="header">
+                <h1>Révisions Français 3ème : Grammaire et Expression</h1>
+                <p class="anim-wipe-in">Troisième - QCM Aléatoire</p>
+            </div>
+            <div id="nav-container" class="nav-grid"></div>
+
+            <div id="quiz-ui" class="hidden">
+                <div class="progress-bar-container">
+                    <div id="progress-fill" class="progress-bar-fill"></div>
+                </div>
+
+                <div
+                    style="
+                        display: flex;
+                        justify-content: space-between;
+                        color: #a0aec0;
+                        font-size: 0.9em;
+                        margin-bottom: 10px;
+                        font-weight: 600;
+                    "
+                >
+                    <span id="cat-label">CATÉGORIE</span>
+                    <span id="counter-label">1/10</span>
+                </div>
+
+                <div
+                    id="question-card-container"
+                    class="question-card entering"
+                >
+                    <div id="question-text" class="question-text"></div>
+                    <div id="image-area" class="img-container hidden"></div>
+
+                    <div id="input-area"></div>
+                </div>
+
+                <div id="feedback-area"></div>
+
+                <div class="main-btn-container">
+                    <button id="main-btn" onclick="app.checkAnswer()">
+                        Valider la réponse
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const db = [
+                {
+                    category: "Électricité - Loi d'Ohm et Puissance",
+                    questions: [
+                        {
+                            text: "Quelle est la relation entre la tension U, la résistance R et l'intensité I ?",
+                            type: "mcq",
+                            options: [
+                                "U = R + I",
+                                "U = R × I",
+                                "U = R / I",
+                                "U = R - I",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La loi d'Ohm s'écrit U = R × I, avec U en volts, R en ohms et I en ampères.",
+                        },
+                        {
+                            text: "Une résistance de 100 Ω est traversée par un courant de 0,2 A. Quelle est la tension à ses bornes ?",
+                            type: "mcq",
+                            options: ["20 V", "500 V", "50 V", "2 V"],
+                            correct: 0,
+                            solution: "U = R × I = 100 × 0,2 = 20 V.",
+                        },
+                        {
+                            text: "Quelle est l'unité de la résistance électrique ?",
+                            type: "mcq",
+                            options: [
+                                "Le volt",
+                                "L'ampère",
+                                "L'ohm",
+                                "Le watt",
+                            ],
+                            correct: 2,
+                            solution:
+                                "La résistance électrique se mesure en ohms (symbole Ω).",
+                        },
+                        {
+                            text: "Un appareil sous 230 V est traversé par 2 A. Quelle est sa puissance ?",
+                            type: "mcq",
+                            options: ["115 W", "460 W", "232 W", "228 W"],
+                            correct: 1,
+                            solution: "P = U × I = 230 × 2 = 460 W.",
+                        },
+                        {
+                            text: "Quelle est la formule de la puissance électrique en courant continu ?",
+                            type: "mcq",
+                            options: [
+                                "P = U / I",
+                                "P = U + I",
+                                "P = U × I",
+                                "P = U - I",
+                            ],
+                            correct: 2,
+                            solution:
+                                "La puissance électrique en courant continu est P = U × I.",
+                        },
+                        {
+                            text: "Dans une résistance de 50 Ω circule un courant de 4 A. Quelle tension applique-t-on ?",
+                            type: "text",
+                            accepted: [
+                                "200 V",
+                                "200V",
+                                "200",
+                                "deux cents volts",
+                            ],
+                            solution: "U = R × I = 50 × 4 = 200 V.",
+                        },
+                        {
+                            text: "Sous 12 V, une résistance est parcourue par 0,5 A. Quelle est sa valeur ?",
+                            type: "mcq",
+                            options: ["6 Ω", "24 Ω", "12,5 Ω", "11,5 Ω"],
+                            correct: 1,
+                            solution: "R = U / I = 12 / 0,5 = 24 Ω.",
+                        },
+                        {
+                            text: "Un moteur de 1000 W sous 230 V absorbe un courant de :",
+                            type: "mcq",
+                            options: [
+                                "230 000 A",
+                                "4,35 A environ",
+                                "770 A",
+                                "1000 A",
+                            ],
+                            correct: 1,
+                            solution: "I = P / U = 1000 / 230 ≈ 4,35 A.",
+                        },
+                        {
+                            text: "Une lampe de 60 W fonctionne sous 230 V. Quelle intensité la traverse ?",
+                            type: "text",
+                            accepted: [
+                                "0,26 A",
+                                "0.26",
+                                "0,26A",
+                                "0,26 ampère",
+                            ],
+                            solution: "I = P / U = 60 / 230 ≈ 0,26 A.",
+                        },
+                        {
+                            text: "L'unité de la puissance électrique est :",
+                            type: "mcq",
+                            options: [
+                                "Le joule",
+                                "Le volt",
+                                "Le watt",
+                                "L'ohm",
+                            ],
+                            correct: 2,
+                            solution:
+                                "La puissance électrique se mesure en watts (W).",
+                        },
+                        {
+                            text: "Une résistance de 10 Ω sous 5 V consomme quelle puissance ?",
+                            type: "mcq",
+                            options: ["50 W", "2,5 W", "15 W", "0,5 W"],
+                            correct: 1,
+                            solution:
+                                "I = U/R = 5/10 = 0,5 A. P = U × I = 5 × 0,5 = 2,5 W.",
+                        },
+                        {
+                            text: "La loi d'Ohm relie :",
+                            type: "mcq",
+                            options: [
+                                "Puissance, tension, intensité",
+                                "Tension, résistance, intensité",
+                                "Énergie, puissance, temps",
+                                "Masse, poids, gravité",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La loi d'Ohm relie la tension U, la résistance R et l'intensité I.",
+                        },
+                        {
+                            text: "Que vaut la tension aux bornes d'une résistance de 220 Ω traversée par 0,1 A ?",
+                            type: "text",
+                            accepted: ["22 V", "22V", "22"],
+                            solution: "U = R × I = 220 × 0,1 = 22 V.",
+                        },
+                        {
+                            text: "Un fer à repasser de 2200 W sous 230 V consomme :",
+                            type: "mcq",
+                            options: ["10 A", "23 A", "100 A", "230 A"],
+                            correct: 0,
+                            solution: "I = P / U = 2200 / 230 ≈ 10 A.",
+                        },
+                        {
+                            text: "Quelle est la puissance d'un appareil sous 24 V avec 3 A ?",
+                            type: "text",
+                            accepted: ["72 W", "72", "72 watts"],
+                            solution: "P = U × I = 24 × 3 = 72 W.",
+                        },
+                        {
+                            text: "Dans un dipôle ohmique, la caractéristique U(I) est :",
+                            type: "mcq",
+                            options: [
+                                "Une courbe",
+                                "Une droite passant par l'origine",
+                                "Une droite horizontale",
+                                "Une parabole",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La caractéristique d'un dipôle ohmique est une droite passant par l'origine.",
+                        },
+                        {
+                            text: "Si on double la tension aux bornes d'une résistance fixe, l'intensité :",
+                            type: "mcq",
+                            options: [
+                                "Reste identique",
+                                "Double",
+                                "Est divisée par 2",
+                                "Quadruple",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Selon la loi d'Ohm, si U double alors I double (R est constante).",
+                        },
+                        {
+                            text: "Quelle résistance faut-il pour avoir 2 A sous 10 V ?",
+                            type: "mcq",
+                            options: ["20 Ω", "5 Ω", "12 Ω", "8 Ω"],
+                            correct: 1,
+                            solution: "R = U / I = 10 / 2 = 5 Ω.",
+                        },
+                        {
+                            text: "La puissance dissipée par effet Joule dans une résistance R traversée par I est :",
+                            type: "mcq",
+                            options: [
+                                "P = R × I",
+                                "P = R × I²",
+                                "P = R / I",
+                                "P = R + I",
+                            ],
+                            correct: 1,
+                            solution:
+                                "P = R × I² est la puissance dissipée par effet Joule.",
+                        },
+                        {
+                            text: "Une résistance de 5 Ω parcourue par 3 A dissipe :",
+                            type: "mcq",
+                            options: ["15 W", "45 W", "8 W", "75 W"],
+                            correct: 1,
+                            solution: "P = R × I² = 5 × 3² = 5 × 9 = 45 W.",
+                        },
+                        {
+                            text: "Si U = 200 V et I = 5 A, alors R vaut :",
+                            type: "text",
+                            accepted: ["40 Ω", "40", "40 ohms"],
+                            solution: "R = U / I = 200 / 5 = 40 Ω.",
+                        },
+                        {
+                            text: "Un radiateur de 1500 W sous 230 V absorbe :",
+                            type: "mcq",
+                            options: [
+                                "Environ 6,5 A",
+                                "Environ 65 A",
+                                "Environ 650 A",
+                                "1500 A",
+                            ],
+                            correct: 0,
+                            solution: "I = P / U = 1500 / 230 ≈ 6,5 A.",
+                        },
+                        {
+                            text: "La tension du réseau électrique domestique en France est :",
+                            type: "mcq",
+                            options: ["110 V", "230 V", "400 V", "12 V"],
+                            correct: 1,
+                            solution:
+                                "La tension du réseau domestique en France est 230 V.",
+                        },
+                        {
+                            text: "Que signifie l'indication '6 V - 3 W' sur une lampe ?",
+                            type: "mcq",
+                            options: [
+                                "Tension 6 V et intensité 3 A",
+                                "Tension 6 V et puissance 3 W",
+                                "Puissance 6 W et tension 3 V",
+                                "Résistance 6 Ω et puissance 3 W",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La lampe fonctionne normalement sous 6 V et consomme alors 3 W.",
+                        },
+                        {
+                            text: "Une lampe '6 V - 3 W' absorbe quelle intensité en fonctionnement normal ?",
+                            type: "mcq",
+                            options: ["2 A", "0,5 A", "18 A", "9 A"],
+                            correct: 1,
+                            solution: "I = P / U = 3 / 6 = 0,5 A.",
+                        },
+                        {
+                            text: "La résistance à chaud de cette lampe '6 V - 3 W' est :",
+                            type: "mcq",
+                            options: ["2 Ω", "12 Ω", "18 Ω", "0,5 Ω"],
+                            correct: 1,
+                            solution: "R = U / I = 6 / 0,5 = 12 Ω.",
+                        },
+                        {
+                            text: "Que se passe-t-il si on dépasse la puissance nominale d'un appareil ?",
+                            type: "mcq",
+                            options: [
+                                "Il fonctionne mieux",
+                                "Il risque de griller",
+                                "Il s'éteint",
+                                "Rien",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Dépasser la puissance nominale peut endommager l'appareil par surchauffe.",
+                        },
+                        {
+                            text: "Dans un circuit en série, l'intensité :",
+                            type: "mcq",
+                            options: [
+                                "Est différente partout",
+                                "Est la même partout",
+                                "Est nulle",
+                                "Augmente à chaque dipôle",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Dans un circuit en série, l'intensité est identique en tout point.",
+                        },
+                        {
+                            text: "Dans un circuit en dérivation, la tension aux bornes de chaque branche :",
+                            type: "mcq",
+                            options: [
+                                "Est différente",
+                                "Est la même",
+                                "Est nulle",
+                                "Varie aléatoirement",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Dans un circuit en dérivation, la tension est la même aux bornes de chaque branche.",
+                        },
+                        {
+                            text: "La loi des nœuds dit que :",
+                            type: "mcq",
+                            options: [
+                                "La somme des tensions est nulle",
+                                "La somme des intensités arrivant à un nœud égale la somme qui en sort",
+                                "L'intensité augmente",
+                                "La tension est constante",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La loi des nœuds concerne les intensités : somme entrante = somme sortante.",
+                        },
+                        {
+                            text: "La loi des mailles concerne :",
+                            type: "mcq",
+                            options: [
+                                "Les intensités",
+                                "Les tensions",
+                                "Les puissances",
+                                "Les résistances",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La loi des mailles concerne les tensions dans un circuit fermé.",
+                        },
+                        {
+                            text: "Dans une maille, la somme algébrique des tensions est :",
+                            type: "text",
+                            accepted: ["nulle", "0", "zéro", "0 V"],
+                            solution:
+                                "La loi des mailles stipule que la somme des tensions dans une maille est nulle.",
+                        },
+                        {
+                            text: "Deux résistances R1 = 10 Ω et R2 = 20 Ω en série ont une résistance équivalente :",
+                            type: "mcq",
+                            options: ["30 Ω", "200 Ω", "15 Ω", "10 Ω"],
+                            correct: 0,
+                            solution:
+                                "En série : Req = R1 + R2 = 10 + 20 = 30 Ω.",
+                        },
+                        {
+                            text: "Deux résistances de 100 Ω en parallèle ont une résistance équivalente de :",
+                            type: "mcq",
+                            options: ["200 Ω", "50 Ω", "100 Ω", "25 Ω"],
+                            correct: 1,
+                            solution:
+                                "En parallèle pour deux résistances identiques : Req = R/2 = 50 Ω.",
+                        },
+                        {
+                            text: "L'intensité dans un circuit principal est I = 3 A. Si une branche a 1 A, l'autre branche (seule) a :",
+                            type: "text",
+                            accepted: ["2 A", "2"],
+                            solution:
+                                "D'après la loi des nœuds : I = I1 + I2, donc I2 = 3 - 1 = 2 A.",
+                        },
+                        {
+                            text: "Le symbole de l'unité de la résistance est :",
+                            type: "mcq",
+                            options: ["W", "V", "A", "Ω"],
+                            correct: 3,
+                            solution: "Le symbole de l'ohm est Ω (oméga).",
+                        },
+                        {
+                            text: "L'ampèremètre se branche :",
+                            type: "mcq",
+                            options: [
+                                "En parallèle",
+                                "En série",
+                                "Aux bornes du générateur seulement",
+                                "N'importe comment",
+                            ],
+                            correct: 1,
+                            solution:
+                                "L'ampèremètre se branche en série dans le circuit.",
+                        },
+                        {
+                            text: "Le voltmètre se branche :",
+                            type: "mcq",
+                            options: [
+                                "En série",
+                                "En dérivation (parallèle)",
+                                "Dans le générateur uniquement",
+                                "Entre deux nœuds uniquement",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Le voltmètre se branche en dérivation aux bornes du dipôle.",
+                        },
+                        {
+                            text: "L'unité de l'intensité électrique est :",
+                            type: "mcq",
+                            options: [
+                                "Le volt",
+                                "L'ohm",
+                                "L'ampère",
+                                "Le watt",
+                            ],
+                            correct: 2,
+                            solution: "L'intensité se mesure en ampères (A).",
+                        },
+                        {
+                            text: "Un courant de 500 mA correspond à :",
+                            type: "mcq",
+                            options: ["5 A", "0,5 A", "50 A", "0,05 A"],
+                            correct: 1,
+                            solution: "500 mA = 500/1000 = 0,5 A.",
+                        },
+                        {
+                            text: "3,5 A équivaut à :",
+                            type: "mcq",
+                            options: ["35 mA", "350 mA", "3500 mA", "0,35 mA"],
+                            correct: 2,
+                            solution: "3,5 A = 3,5 × 1000 = 3500 mA.",
+                        },
+                        {
+                            text: "Une tension de 4,5 kV vaut :",
+                            type: "mcq",
+                            options: ["450 V", "4500 V", "45 V", "45000 V"],
+                            correct: 1,
+                            solution: "4,5 kV = 4,5 × 1000 = 4500 V.",
+                        },
+                        {
+                            text: "12000 V équivaut à :",
+                            type: "mcq",
+                            options: ["1,2 kV", "12 kV", "120 kV", "0,12 kV"],
+                            correct: 0,
+                            solution:
+                                "12000 V = 12000/1000 = 12 kV = 1,2 × 10 kV, donc 12 kV = 1,2 × 10 kV, mais 12000/1000 = 12 kV. Correction : 12000 V = 12 kV. L'option correcte est 12 kV.",
+                        },
+                        {
+                            text: "Un appareil est dit 'ohmique' si sa caractéristique U(I) est :",
+                            type: "mcq",
+                            options: [
+                                "Une parabole",
+                                "Une droite passant par l'origine",
+                                "Un cercle",
+                                "Une courbe exponentielle",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Un dipôle ohmique a une caractéristique linéaire passant par l'origine.",
+                        },
+                        {
+                            text: "Le coefficient directeur de la droite U(I) d'une résistance donne :",
+                            type: "mcq",
+                            options: [
+                                "La tension",
+                                "La puissance",
+                                "La résistance",
+                                "L'intensité",
+                            ],
+                            correct: 2,
+                            solution:
+                                "Le coefficient directeur de U(I) est R (la résistance).",
+                        },
+                        {
+                            text: "Un court-circuit se caractérise par :",
+                            type: "mcq",
+                            options: [
+                                "Une résistance très élevée",
+                                "Une résistance quasi nulle et un fort courant",
+                                "Une tension maximale",
+                                "Aucun courant",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Un court-circuit présente une résistance très faible et un courant très élevé.",
+                        },
+                        {
+                            text: "Le fusible sert à :",
+                            type: "mcq",
+                            options: [
+                                "Augmenter l'intensité",
+                                "Protéger le circuit en cas de surintensité",
+                                "Diminuer la tension",
+                                "Convertir l'énergie",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Le fusible protège le circuit en fondant si l'intensité dépasse une valeur seuil.",
+                        },
+                        {
+                            text: "Le disjoncteur :",
+                            type: "mcq",
+                            options: [
+                                "Fond en cas de surintensité",
+                                "Coupe le circuit en cas de défaut",
+                                "Augmente la puissance",
+                                "Stocke l'énergie",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Le disjoncteur coupe automatiquement le circuit en cas de défaut.",
+                        },
+                        {
+                            text: "La terre électrique sert à :",
+                            type: "mcq",
+                            options: [
+                                "Augmenter la tension",
+                                "Éviter les électrocutions en cas de défaut d'isolement",
+                                "Réduire la puissance",
+                                "Réguler l'intensité",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La terre évacue les courants de fuite vers le sol pour protéger les personnes.",
+                        },
+                        {
+                            text: "La couleur du fil de terre est :",
+                            type: "mcq",
+                            options: ["Rouge", "Bleu", "Vert/jaune", "Noir"],
+                            correct: 2,
+                            solution:
+                                "Le fil de terre est toujours vert et jaune.",
+                        },
+                        {
+                            text: "La couleur du fil de phase (en France) peut être :",
+                            type: "mcq",
+                            options: [
+                                "Bleu",
+                                "Vert/jaune",
+                                "Rouge, marron ou noir",
+                                "Toujours blanc",
+                            ],
+                            correct: 2,
+                            solution:
+                                "La phase est rouge, marron ou noir (sauf bleu et vert/jaune).",
+                        },
+                        {
+                            text: "Le fil neutre a pour couleur :",
+                            type: "mcq",
+                            options: ["Rouge", "Bleu", "Vert/jaune", "Noir"],
+                            correct: 1,
+                            solution: "Le neutre est en bleu.",
+                        },
+                        {
+                            text: "Quelle intensité peut être mortelle pour l'homme ?",
+                            type: "mcq",
+                            options: [
+                                "1 mA",
+                                "10 mA",
+                                "50 mA et plus",
+                                "1 A exactement",
+                            ],
+                            correct: 2,
+                            solution:
+                                "À partir de 50 mA, le courant peut être mortel (fibrillation cardiaque).",
+                        },
+                        {
+                            text: "Un sèche-cheveux de 1800 W sous 230 V absorbe environ :",
+                            type: "mcq",
+                            options: ["7,8 A", "78 A", "0,78 A", "18 A"],
+                            correct: 0,
+                            solution: "I = P/U = 1800/230 ≈ 7,8 A.",
+                        },
+                        {
+                            text: "Si R1 = 15 Ω et R2 = 30 Ω sont en série, la résistance totale vaut :",
+                            type: "text",
+                            accepted: ["45 Ω", "45", "45 ohms"],
+                            solution: "Req = 15 + 30 = 45 Ω.",
+                        },
+                        {
+                            text: "Deux résistances en série de 20 Ω et 80 Ω, sous 10 V, absorbent une intensité de :",
+                            type: "mcq",
+                            options: ["0,1 A", "0,5 A", "1 A", "100 A"],
+                            correct: 0,
+                            solution:
+                                "Req = 100 Ω. I = U/Req = 10/100 = 0,1 A.",
+                        },
+                        {
+                            text: "Dans un circuit en série, la tension totale est :",
+                            type: "mcq",
+                            options: [
+                                "La même partout",
+                                "La somme des tensions de chaque dipôle",
+                                "Nulle",
+                                "Divisée par 2",
+                            ],
+                            correct: 1,
+                            solution: "En série, U_totale = U1 + U2 + ...",
+                        },
+                        {
+                            text: "Un fil électrique parfait a une résistance :",
+                            type: "mcq",
+                            options: [
+                                "Très élevée",
+                                "Quasi nulle",
+                                "Infinie",
+                                "Variable",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Un fil parfait a une résistance négligeable.",
+                        },
+                        {
+                            text: "Quand on ajoute des dipôles en série dans un circuit, l'intensité :",
+                            type: "mcq",
+                            options: [
+                                "Augmente",
+                                "Diminue",
+                                "Reste constante",
+                                "Devient infinie",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Ajouter des dipôles en série augmente la résistance totale, donc l'intensité diminue.",
+                        },
+                        {
+                            text: "Un générateur fournit 12 V à un circuit de 6 Ω. L'intensité est :",
+                            type: "text",
+                            accepted: ["2 A", "2"],
+                            solution: "I = U/R = 12/6 = 2 A.",
+                        },
+                        {
+                            text: "La puissance dissipée dans R = 10 Ω avec I = 2 A est :",
+                            type: "text",
+                            accepted: ["40 W", "40"],
+                            solution: "P = R × I² = 10 × 4 = 40 W.",
+                        },
+                        {
+                            text: "Un téléviseur de 200 W sous 230 V consomme :",
+                            type: "mcq",
+                            options: [
+                                "Environ 0,87 A",
+                                "Environ 8,7 A",
+                                "200 A",
+                                "230 A",
+                            ],
+                            correct: 0,
+                            solution: "I = P/U = 200/230 ≈ 0,87 A.",
+                        },
+                        {
+                            text: "L'effet Joule est :",
+                            type: "mcq",
+                            options: [
+                                "La production de lumière",
+                                "La production de chaleur par un courant dans une résistance",
+                                "La production de son",
+                                "La production de mouvement",
+                            ],
+                            correct: 1,
+                            solution:
+                                "L'effet Joule est la transformation d'énergie électrique en chaleur.",
+                        },
+                        {
+                            text: "Quel appareil utilise principalement l'effet Joule ?",
+                            type: "mcq",
+                            options: [
+                                "Un ventilateur",
+                                "Un grille-pain",
+                                "Une LED",
+                                "Un moteur",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Le grille-pain utilise l'effet Joule pour produire de la chaleur.",
+                        },
+                        {
+                            text: "L'effet Joule est considéré comme une perte dans :",
+                            type: "mcq",
+                            options: [
+                                "Un radiateur",
+                                "Un moteur électrique",
+                                "Un fer à repasser",
+                                "Un chauffe-eau",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Dans un moteur, l'échauffement par effet Joule est une perte d'énergie.",
+                        },
+                        {
+                            text: "La formule U²/R donne :",
+                            type: "mcq",
+                            options: [
+                                "La tension",
+                                "La résistance",
+                                "La puissance",
+                                "L'intensité",
+                            ],
+                            correct: 2,
+                            solution:
+                                "P = U²/R est une forme de la formule de la puissance.",
+                        },
+                        {
+                            text: "Avec U = 10 V et R = 5 Ω, la puissance vaut :",
+                            type: "text",
+                            accepted: ["20 W", "20"],
+                            solution: "P = U²/R = 100/5 = 20 W.",
+                        },
+                        {
+                            text: "Une DEL (LED) est :",
+                            type: "mcq",
+                            options: [
+                                "Un dipôle ohmique",
+                                "Un dipôle non-ohmique qui émet de la lumière",
+                                "Un générateur",
+                                "Une résistance",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La DEL est un dipôle non-ohmique qui émet de la lumière quand le courant passe dans le sens passant.",
+                        },
+                        {
+                            text: "Une DEL ne conduit le courant que dans :",
+                            type: "mcq",
+                            options: [
+                                "Les deux sens",
+                                "Un seul sens",
+                                "Aucun sens",
+                                "Uniquement à basse tension",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La DEL ne conduit que dans le sens passant.",
+                        },
+                        {
+                            text: "Pour protéger une DEL, on utilise :",
+                            type: "mcq",
+                            options: [
+                                "Un condensateur",
+                                "Une résistance en série",
+                                "Un transformateur",
+                                "Un fil plus long",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Une résistance en série limite l'intensité pour protéger la DEL.",
+                        },
+                        {
+                            text: "La puissance de 2 kW équivaut à :",
+                            type: "mcq",
+                            options: ["20 W", "200 W", "2000 W", "20000 W"],
+                            correct: 2,
+                            solution: "2 kW = 2 × 1000 = 2000 W.",
+                        },
+                        {
+                            text: "Une lampe de 100 W allumée 10 h consomme quelle énergie en Wh ?",
+                            type: "text",
+                            accepted: ["1000 Wh", "1000"],
+                            solution: "E = P × t = 100 × 10 = 1000 Wh.",
+                        },
+                        {
+                            text: "1 kWh équivaut à :",
+                            type: "mcq",
+                            options: ["1000 Wh", "100 Wh", "10 Wh", "10000 Wh"],
+                            correct: 0,
+                            solution: "1 kWh = 1000 Wh.",
+                        },
+                        {
+                            text: "Le kilowattheure (kWh) est une unité de :",
+                            type: "mcq",
+                            options: [
+                                "Puissance",
+                                "Tension",
+                                "Énergie",
+                                "Intensité",
+                            ],
+                            correct: 2,
+                            solution:
+                                "Le kWh est une unité d'énergie (facturée par EDF).",
+                        },
+                        {
+                            text: "L'unité officielle de l'énergie est :",
+                            type: "mcq",
+                            options: [
+                                "Le watt",
+                                "Le joule",
+                                "Le volt",
+                                "L'ampère",
+                            ],
+                            correct: 1,
+                            solution:
+                                "L'unité SI de l'énergie est le joule (J).",
+                        },
+                        {
+                            text: "1 kWh en joules vaut :",
+                            type: "mcq",
+                            options: [
+                                "3 600 J",
+                                "36 000 J",
+                                "3 600 000 J",
+                                "360 000 J",
+                            ],
+                            correct: 2,
+                            solution: "1 kWh = 1000 × 3600 = 3 600 000 J.",
+                        },
+                        {
+                            text: "Un four de 2000 W fonctionne 2 h. Énergie en kWh :",
+                            type: "text",
+                            accepted: ["4 kWh", "4"],
+                            solution: "E = 2 × 2 = 4 kWh.",
+                        },
+                        {
+                            text: "Un ordinateur de 100 W utilisé 8 h consomme en kWh :",
+                            type: "text",
+                            accepted: ["0,8 kWh", "0.8", "0,8", "0.8 kWh"],
+                            solution: "E = 0,1 × 8 = 0,8 kWh.",
+                        },
+                        {
+                            text: "Si le kWh coûte 0,20 €, une consommation de 500 kWh coûte :",
+                            type: "text",
+                            accepted: ["100 €", "100", "100 euros"],
+                            solution: "500 × 0,20 = 100 €.",
+                        },
+                    ],
+                },
+                {
+                    category: "Électricité - Énergie et Circuits domestiques",
+                    questions: [
+                        {
+                            text: "Quelle est la formule de l'énergie électrique ?",
+                            type: "mcq",
+                            options: [
+                                "E = P × t",
+                                "E = P / t",
+                                "E = P + t",
+                                "E = P - t",
+                            ],
+                            correct: 0,
+                            solution:
+                                "L'énergie E = P × t (puissance multipliée par le temps).",
+                        },
+                        {
+                            text: "Un radiateur de 1500 W allumé pendant 4 h consomme :",
+                            type: "mcq",
+                            options: ["375 Wh", "6 kWh", "6000 kWh", "375 kWh"],
+                            correct: 1,
+                            solution: "E = 1,5 kW × 4 h = 6 kWh.",
+                        },
+                        {
+                            text: "Le compteur électrique mesure :",
+                            type: "mcq",
+                            options: [
+                                "La tension",
+                                "L'intensité",
+                                "L'énergie consommée",
+                                "La puissance instantanée",
+                            ],
+                            correct: 2,
+                            solution:
+                                "Le compteur mesure l'énergie électrique consommée en kWh.",
+                        },
+                        {
+                            text: "Une ampoule de 10 W allumée 5 h consomme :",
+                            type: "text",
+                            accepted: ["50 Wh", "50"],
+                            solution: "E = 10 × 5 = 50 Wh.",
+                        },
+                        {
+                            text: "Un lave-linge de 2000 W fonctionnant 1,5 h consomme :",
+                            type: "mcq",
+                            options: ["3 kWh", "1,5 kWh", "30 kWh", "1333 kWh"],
+                            correct: 0,
+                            solution: "E = 2 kW × 1,5 h = 3 kWh.",
+                        },
+                        {
+                            text: "Sur une prise française, la tension efficace est :",
+                            type: "mcq",
+                            options: ["230 V", "400 V", "12 V", "110 V"],
+                            correct: 0,
+                            solution:
+                                "La tension efficace domestique en France est 230 V.",
+                        },
+                        {
+                            text: "La tension entre phases en triphasé est :",
+                            type: "mcq",
+                            options: ["230 V", "400 V", "12 V", "50 V"],
+                            correct: 1,
+                            solution: "Entre deux phases en triphasé : 400 V.",
+                        },
+                        {
+                            text: "La fréquence du courant domestique en Europe est :",
+                            type: "mcq",
+                            options: ["60 Hz", "50 Hz", "100 Hz", "230 Hz"],
+                            correct: 1,
+                            solution: "La fréquence est de 50 Hz en Europe.",
+                        },
+                        {
+                            text: "Aux États-Unis, la fréquence du courant est :",
+                            type: "mcq",
+                            options: ["50 Hz", "60 Hz", "100 Hz", "110 Hz"],
+                            correct: 1,
+                            solution: "Aux USA, la fréquence est de 60 Hz.",
+                        },
+                        {
+                            text: "Le courant alternatif a une tension qui :",
+                            type: "mcq",
+                            options: [
+                                "Est constante",
+                                "Change de sens périodiquement",
+                                "Est toujours positive",
+                                "Est toujours négative",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Le courant alternatif change de sens périodiquement.",
+                        },
+                        {
+                            text: "Le courant continu a une tension qui :",
+                            type: "mcq",
+                            options: [
+                                "Change de sens",
+                                "Reste constante dans le temps",
+                                "Est toujours nulle",
+                                "Varie aléatoirement",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Le courant continu a une tension constante.",
+                        },
+                        {
+                            text: "Une pile fournit :",
+                            type: "mcq",
+                            options: [
+                                "Du courant alternatif",
+                                "Du courant continu",
+                                "Aucun courant",
+                                "Du courant sinusoïdal",
+                            ],
+                            correct: 1,
+                            solution: "Une pile fournit du courant continu.",
+                        },
+                        {
+                            text: "La période T d'un signal de fréquence 50 Hz est :",
+                            type: "mcq",
+                            options: ["50 s", "0,02 s", "20 s", "2 s"],
+                            correct: 1,
+                            solution: "T = 1/f = 1/50 = 0,02 s.",
+                        },
+                        {
+                            text: "La fréquence d'un signal de période 0,01 s est :",
+                            type: "text",
+                            accepted: ["100 Hz", "100"],
+                            solution: "f = 1/T = 1/0,01 = 100 Hz.",
+                        },
+                        {
+                            text: "L'unité de la fréquence est :",
+                            type: "mcq",
+                            options: [
+                                "Le volt",
+                                "Le hertz",
+                                "La seconde",
+                                "Le joule",
+                            ],
+                            correct: 1,
+                            solution: "La fréquence se mesure en hertz (Hz).",
+                        },
+                        {
+                            text: "Un oscilloscope permet de visualiser :",
+                            type: "mcq",
+                            options: [
+                                "L'intensité uniquement",
+                                "La tension en fonction du temps",
+                                "La puissance uniquement",
+                                "La résistance",
+                            ],
+                            correct: 1,
+                            solution:
+                                "L'oscilloscope affiche la tension en fonction du temps.",
+                        },
+                        {
+                            text: "Sur un oscillogramme, l'axe horizontal représente :",
+                            type: "mcq",
+                            options: [
+                                "La tension",
+                                "Le temps",
+                                "L'intensité",
+                                "La puissance",
+                            ],
+                            correct: 1,
+                            solution: "L'axe horizontal est le temps.",
+                        },
+                        {
+                            text: "L'amplitude d'un signal alternatif est :",
+                            type: "mcq",
+                            options: [
+                                "La valeur maximale",
+                                "La valeur minimale",
+                                "La valeur moyenne",
+                                "Toujours nulle",
+                            ],
+                            correct: 0,
+                            solution:
+                                "L'amplitude est la valeur maximale de la tension.",
+                        },
+                        {
+                            text: "Pour 230 V efficaces, la valeur maximale vaut environ :",
+                            type: "mcq",
+                            options: ["325 V", "230 V", "163 V", "460 V"],
+                            correct: 0,
+                            solution: "Umax = Ueff × √2 ≈ 230 × 1,414 ≈ 325 V.",
+                        },
+                        {
+                            text: "La tension efficace se note :",
+                            type: "mcq",
+                            options: ["Umax", "Ueff", "Umoy", "Upic"],
+                            correct: 1,
+                            solution: "La tension efficace se note Ueff.",
+                        },
+                        {
+                            text: "Un appareil électrique transforme :",
+                            type: "mcq",
+                            options: [
+                                "L'énergie électrique en une autre forme d'énergie",
+                                "La masse en énergie",
+                                "L'énergie en masse",
+                                "Rien",
+                            ],
+                            correct: 0,
+                            solution:
+                                "Un appareil électrique transforme l'énergie électrique en une autre forme.",
+                        },
+                        {
+                            text: "Un radiateur électrique transforme l'énergie électrique en :",
+                            type: "mcq",
+                            options: [
+                                "Énergie lumineuse",
+                                "Énergie thermique",
+                                "Énergie mécanique",
+                                "Énergie chimique",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Un radiateur produit de la chaleur (énergie thermique).",
+                        },
+                        {
+                            text: "Une ampoule transforme l'énergie électrique en :",
+                            type: "mcq",
+                            options: [
+                                "Chimique",
+                                "Lumineuse et thermique",
+                                "Mécanique",
+                                "Nucléaire",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Une ampoule produit de la lumière et de la chaleur.",
+                        },
+                        {
+                            text: "Un moteur électrique transforme l'énergie électrique en :",
+                            type: "mcq",
+                            options: [
+                                "Chimique",
+                                "Lumineuse",
+                                "Mécanique",
+                                "Nucléaire",
+                            ],
+                            correct: 2,
+                            solution:
+                                "Un moteur produit un mouvement (énergie mécanique).",
+                        },
+                        {
+                            text: "Le rendement d'un appareil est le rapport :",
+                            type: "mcq",
+                            options: [
+                                "Énergie utile / Énergie totale",
+                                "Puissance / Tension",
+                                "Tension / Intensité",
+                                "Énergie perdue / Énergie utile",
+                            ],
+                            correct: 0,
+                            solution:
+                                "Le rendement = énergie utile / énergie totale.",
+                        },
+                        {
+                            text: "Un rendement de 0,8 signifie :",
+                            type: "mcq",
+                            options: [
+                                "80% d'énergie utile",
+                                "8% d'énergie utile",
+                                "80% d'énergie perdue",
+                                "8% de pertes",
+                            ],
+                            correct: 0,
+                            solution:
+                                "80% de l'énergie est convertie utilement.",
+                        },
+                        {
+                            text: "Un moteur reçoit 1000 J et fournit 700 J mécaniques. Son rendement est :",
+                            type: "mcq",
+                            options: ["0,7", "7", "0,3", "30%"],
+                            correct: 0,
+                            solution: "η = 700/1000 = 0,7 (soit 70%).",
+                        },
+                        {
+                            text: "Le rendement d'un appareil est toujours :",
+                            type: "mcq",
+                            options: [
+                                "Supérieur à 1",
+                                "Inférieur ou égal à 1",
+                                "Égal à 100%",
+                                "Négatif",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Le rendement est toujours ≤ 1 à cause des pertes.",
+                        },
+                        {
+                            text: "Les pertes d'énergie d'un moteur apparaissent sous forme :",
+                            type: "mcq",
+                            options: [
+                                "Lumineuse",
+                                "Chimique",
+                                "Thermique (chaleur)",
+                                "Nucléaire",
+                            ],
+                            correct: 2,
+                            solution:
+                                "Les pertes sont surtout thermiques (effet Joule).",
+                        },
+                        {
+                            text: "Un appareil de classe A+++ a :",
+                            type: "mcq",
+                            options: [
+                                "Un mauvais rendement",
+                                "Un excellent rendement énergétique",
+                                "Une puissance énorme",
+                                "Un prix très élevé",
+                            ],
+                            correct: 1,
+                            solution:
+                                "A+++ indique une très bonne efficacité énergétique.",
+                        },
+                        {
+                            text: "Pour réduire la consommation électrique, on peut :",
+                            type: "mcq",
+                            options: [
+                                "Utiliser des appareils de basse efficacité",
+                                "Éteindre les appareils en veille",
+                                "Augmenter la tension",
+                                "Laisser allumer en permanence",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Éteindre les appareils permet d'économiser l'énergie.",
+                        },
+                        {
+                            text: "La consommation en veille d'un téléviseur peut représenter :",
+                            type: "mcq",
+                            options: [
+                                "0 W",
+                                "Quelques watts",
+                                "1000 W",
+                                "5000 W",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Les veilles consomment quelques watts en continu.",
+                        },
+                        {
+                            text: "Une multiprise surchargée peut :",
+                            type: "mcq",
+                            options: [
+                                "Améliorer le rendement",
+                                "Provoquer un incendie",
+                                "Diminuer la consommation",
+                                "Augmenter la tension",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Une multiprise surchargée surchauffe et risque l'incendie.",
+                        },
+                        {
+                            text: "Un interrupteur différentiel détecte :",
+                            type: "mcq",
+                            options: [
+                                "Une surtension",
+                                "Une différence entre intensités aller et retour (fuite)",
+                                "La puissance",
+                                "La résistance",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Il détecte les fuites de courant vers la terre.",
+                        },
+                        {
+                            text: "La sensibilité typique d'un différentiel domestique est :",
+                            type: "mcq",
+                            options: ["1 A", "30 mA", "1000 mA", "0,001 mA"],
+                            correct: 1,
+                            solution:
+                                "Les différentiels domestiques ont une sensibilité de 30 mA.",
+                        },
+                        {
+                            text: "L'énergie consommée par un appareil se calcule par :",
+                            type: "mcq",
+                            options: [
+                                "E = P / t",
+                                "E = P × t",
+                                "E = P + t",
+                                "E = P - t",
+                            ],
+                            correct: 1,
+                            solution: "E = P × t.",
+                        },
+                        {
+                            text: "Un réfrigérateur de 150 W fonctionnant 24 h consomme :",
+                            type: "mcq",
+                            options: [
+                                "3,6 kWh",
+                                "36 kWh",
+                                "360 kWh",
+                                "150 kWh",
+                            ],
+                            correct: 0,
+                            solution: "E = 0,15 × 24 = 3,6 kWh.",
+                        },
+                        {
+                            text: "Une télévision en veille (5 W) pendant un an (8760 h) consomme :",
+                            type: "mcq",
+                            options: [
+                                "43,8 kWh",
+                                "4,38 kWh",
+                                "438 kWh",
+                                "876 kWh",
+                            ],
+                            correct: 0,
+                            solution: "E = 0,005 × 8760 ≈ 43,8 kWh.",
+                        },
+                        {
+                            text: "Le chauffage électrique est :",
+                            type: "mcq",
+                            options: [
+                                "Toujours économique",
+                                "Souvent énergivore",
+                                "Toujours écologique",
+                                "Gratuit",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Le chauffage électrique consomme beaucoup d'énergie.",
+                        },
+                        {
+                            text: "L'isolation thermique d'une maison permet de :",
+                            type: "mcq",
+                            options: [
+                                "Augmenter la consommation",
+                                "Réduire les pertes thermiques",
+                                "Augmenter les factures",
+                                "Diminuer le confort",
+                            ],
+                            correct: 1,
+                            solution:
+                                "L'isolation réduit les pertes de chaleur.",
+                        },
+                        {
+                            text: "Une ampoule LED de 10 W éclaire comme une ampoule à incandescence de :",
+                            type: "mcq",
+                            options: ["10 W", "25 W", "60 W", "200 W"],
+                            correct: 2,
+                            solution:
+                                "Une LED de 10 W équivaut à une incandescence de 60 W.",
+                        },
+                        {
+                            text: "Une ampoule LED consomme environ :",
+                            type: "mcq",
+                            options: [
+                                "100% de l'électricité en lumière",
+                                "6 fois moins qu'une incandescence",
+                                "Autant qu'une halogène",
+                                "Plus qu'une incandescence",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Les LED consomment environ 6 fois moins.",
+                        },
+                        {
+                            text: "La durée de vie d'une LED est d'environ :",
+                            type: "mcq",
+                            options: [
+                                "100 heures",
+                                "1000 heures",
+                                "15 000 à 50 000 heures",
+                                "1 heure",
+                            ],
+                            correct: 2,
+                            solution:
+                                "Les LED durent entre 15 000 et 50 000 heures.",
+                        },
+                        {
+                            text: "L'électricité produite par une éolienne est :",
+                            type: "mcq",
+                            options: [
+                                "Fossile",
+                                "Renouvelable",
+                                "Nucléaire",
+                                "Chimique",
+                            ],
+                            correct: 1,
+                            solution: "L'éolien est une énergie renouvelable.",
+                        },
+                        {
+                            text: "Une centrale nucléaire transforme :",
+                            type: "mcq",
+                            options: [
+                                "L'énergie solaire en électricité",
+                                "L'énergie nucléaire en électricité",
+                                "L'énergie chimique en électricité",
+                                "L'énergie éolienne en électricité",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Une centrale nucléaire utilise la fission nucléaire.",
+                        },
+                        {
+                            text: "L'électricité solaire est produite par :",
+                            type: "mcq",
+                            options: [
+                                "Des éoliennes",
+                                "Des panneaux photovoltaïques",
+                                "Des barrages",
+                                "Des centrales thermiques",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Les panneaux photovoltaïques transforment la lumière en électricité.",
+                        },
+                        {
+                            text: "Une centrale hydraulique utilise :",
+                            type: "mcq",
+                            options: [
+                                "Le vent",
+                                "L'eau",
+                                "Le soleil",
+                                "Le charbon",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Une centrale hydraulique utilise l'énergie de l'eau.",
+                        },
+                        {
+                            text: "Le transport de l'électricité à haute tension permet de :",
+                            type: "mcq",
+                            options: [
+                                "Augmenter les pertes",
+                                "Réduire les pertes par effet Joule",
+                                "Augmenter l'intensité",
+                                "Réduire la tension",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La haute tension réduit les pertes en ligne.",
+                        },
+                        {
+                            text: "Les lignes THT en France transportent à :",
+                            type: "mcq",
+                            options: ["230 V", "400 V", "400 000 V", "12 V"],
+                            correct: 2,
+                            solution:
+                                "Les lignes THT sont à 400 kV (400 000 V).",
+                        },
+                        {
+                            text: "Un transformateur permet de :",
+                            type: "mcq",
+                            options: [
+                                "Convertir l'AC en DC",
+                                "Modifier la tension alternative",
+                                "Stocker l'énergie",
+                                "Mesurer la puissance",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Un transformateur élève ou abaisse la tension alternative.",
+                        },
+                        {
+                            text: "Un transformateur élévateur :",
+                            type: "mcq",
+                            options: [
+                                "Augmente la tension",
+                                "Diminue la tension",
+                                "Transforme AC en DC",
+                                "Mesure la puissance",
+                            ],
+                            correct: 0,
+                            solution:
+                                "Un transformateur élévateur augmente la tension.",
+                        },
+                        {
+                            text: "Un chargeur de téléphone est :",
+                            type: "mcq",
+                            options: [
+                                "Un transformateur élévateur",
+                                "Un abaisseur (230 V vers 5 V)",
+                                "Un générateur",
+                                "Un oscilloscope",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Le chargeur abaisse la tension à 5 V pour le téléphone.",
+                        },
+                        {
+                            text: "Le prix du kWh dépend :",
+                            type: "mcq",
+                            options: [
+                                "Uniquement de la consommation",
+                                "De l'abonnement et de la consommation",
+                                "De la tension",
+                                "De la fréquence",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La facture inclut l'abonnement et la consommation.",
+                        },
+                        {
+                            text: "L'heure creuse permet de :",
+                            type: "mcq",
+                            options: [
+                                "Payer plus cher",
+                                "Payer moins cher l'électricité à certaines heures",
+                                "Consommer plus",
+                                "Couper le courant",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Les heures creuses offrent un tarif réduit (la nuit notamment).",
+                        },
+                        {
+                            text: "La puissance souscrite d'un abonnement domestique typique est :",
+                            type: "mcq",
+                            options: ["1 kW", "6 kVA", "100 kVA", "1 MW"],
+                            correct: 1,
+                            solution:
+                                "Une maison typique a 6 kVA de puissance souscrite.",
+                        },
+                        {
+                            text: "Si la puissance utilisée dépasse la puissance souscrite :",
+                            type: "mcq",
+                            options: [
+                                "Rien ne se passe",
+                                "Le disjoncteur coupe le courant",
+                                "La tension augmente",
+                                "Le compteur s'arrête",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Le disjoncteur coupe si on dépasse la puissance souscrite.",
+                        },
+                        {
+                            text: "Un variateur de lumière permet de :",
+                            type: "mcq",
+                            options: [
+                                "Augmenter la fréquence",
+                                "Régler l'intensité lumineuse",
+                                "Transformer AC en DC",
+                                "Mesurer la puissance",
+                            ],
+                            correct: 1,
+                            solution: "Un variateur règle la luminosité.",
+                        },
+                        {
+                            text: "Une télécommande utilise souvent :",
+                            type: "mcq",
+                            options: [
+                                "Les ultrasons",
+                                "L'infrarouge",
+                                "Les ondes radio (ou infrarouge)",
+                                "Les rayons X",
+                            ],
+                            correct: 2,
+                            solution:
+                                "Les télécommandes utilisent l'infrarouge ou les ondes radio.",
+                        },
+                        {
+                            text: "Le courant électrique dans un métal est dû au déplacement :",
+                            type: "mcq",
+                            options: [
+                                "Des noyaux",
+                                "Des électrons libres",
+                                "Des protons",
+                                "Des ions",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Dans un métal, le courant est dû aux électrons libres.",
+                        },
+                        {
+                            text: "Dans une solution ionique, le courant est dû au déplacement :",
+                            type: "mcq",
+                            options: [
+                                "Des électrons uniquement",
+                                "Des ions",
+                                "Des atomes neutres",
+                                "Des molécules",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Dans une solution, ce sont les ions qui transportent le courant.",
+                        },
+                        {
+                            text: "Les électrons se déplacent :",
+                            type: "mcq",
+                            options: [
+                                "Du + vers le -",
+                                "Du - vers le +",
+                                "N'importe comment",
+                                "Restent immobiles",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Les électrons vont du - vers le + (inverse du sens conventionnel).",
+                        },
+                        {
+                            text: "Le sens conventionnel du courant va :",
+                            type: "mcq",
+                            options: [
+                                "Du - vers le +",
+                                "Du + vers le -",
+                                "De la terre vers le neutre",
+                                "Toujours dans un seul sens",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Le sens conventionnel va du + vers le - à l'extérieur du générateur.",
+                        },
+                        {
+                            text: "Le symbole I désigne :",
+                            type: "mcq",
+                            options: [
+                                "La tension",
+                                "L'intensité",
+                                "La résistance",
+                                "La puissance",
+                            ],
+                            correct: 1,
+                            solution: "I désigne l'intensité du courant.",
+                        },
+                        {
+                            text: "Le symbole U désigne :",
+                            type: "mcq",
+                            options: [
+                                "L'intensité",
+                                "La tension",
+                                "L'énergie",
+                                "La puissance",
+                            ],
+                            correct: 1,
+                            solution: "U désigne la tension.",
+                        },
+                        {
+                            text: "Le symbole R désigne :",
+                            type: "mcq",
+                            options: [
+                                "L'intensité",
+                                "La tension",
+                                "La résistance",
+                                "La puissance",
+                            ],
+                            correct: 2,
+                            solution: "R désigne la résistance.",
+                        },
+                        {
+                            text: "Le symbole P désigne :",
+                            type: "mcq",
+                            options: [
+                                "L'intensité",
+                                "La tension",
+                                "La résistance",
+                                "La puissance",
+                            ],
+                            correct: 3,
+                            solution: "P désigne la puissance.",
+                        },
+                        {
+                            text: "Le symbole E désigne en électricité :",
+                            type: "mcq",
+                            options: [
+                                "La tension",
+                                "L'intensité",
+                                "L'énergie",
+                                "La fréquence",
+                            ],
+                            correct: 2,
+                            solution: "E désigne l'énergie.",
+                        },
+                        {
+                            text: "Une pile de 9 V et R = 90 Ω donnent I :",
+                            type: "text",
+                            accepted: ["0,1 A", "0.1", "0,1"],
+                            solution: "I = 9/90 = 0,1 A.",
+                        },
+                        {
+                            text: "Si U = 100 V et R = 25 Ω, l'intensité est :",
+                            type: "text",
+                            accepted: ["4 A", "4"],
+                            solution: "I = 100/25 = 4 A.",
+                        },
+                        {
+                            text: "Si I = 2 A et R = 10 Ω, U =",
+                            type: "text",
+                            accepted: ["20 V", "20"],
+                            solution: "U = 2 × 10 = 20 V.",
+                        },
+                        {
+                            text: "Si I = 5 A et U = 250 V, R =",
+                            type: "text",
+                            accepted: ["50 Ω", "50"],
+                            solution: "R = 250/5 = 50 Ω.",
+                        },
+                        {
+                            text: "Un appareil de 2000 W sous 200 V absorbe :",
+                            type: "text",
+                            accepted: ["10 A", "10"],
+                            solution: "I = P/U = 2000/200 = 10 A.",
+                        },
+                    ],
+                },
+                {
+                    category: "Mécanique - Vitesse et Mouvements",
+                    questions: [
+                        {
+                            text: "Quelle est la formule de la vitesse ?",
+                            type: "mcq",
+                            options: [
+                                "v = d × t",
+                                "v = d / t",
+                                "v = d + t",
+                                "v = t / d",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La vitesse v = distance / temps = d / t.",
+                        },
+                        {
+                            text: "Une voiture parcourt 150 km en 2 h. Sa vitesse moyenne est :",
+                            type: "mcq",
+                            options: [
+                                "75 km/h",
+                                "300 km/h",
+                                "152 km/h",
+                                "148 km/h",
+                            ],
+                            correct: 0,
+                            solution: "v = 150 / 2 = 75 km/h.",
+                        },
+                        {
+                            text: "L'unité SI de la vitesse est :",
+                            type: "mcq",
+                            options: ["Le km/h", "Le m/s", "Le m/h", "Le km/s"],
+                            correct: 1,
+                            solution: "L'unité SI de la vitesse est le m/s.",
+                        },
+                        {
+                            text: "Pour convertir km/h en m/s, on divise par :",
+                            type: "mcq",
+                            options: ["10", "3,6", "100", "1000"],
+                            correct: 1,
+                            solution:
+                                "Pour passer de km/h à m/s, on divise par 3,6.",
+                        },
+                        {
+                            text: "90 km/h en m/s vaut :",
+                            type: "text",
+                            accepted: ["25 m/s", "25"],
+                            solution: "90 / 3,6 = 25 m/s.",
+                        },
+                        {
+                            text: "30 m/s en km/h vaut :",
+                            type: "text",
+                            accepted: ["108 km/h", "108"],
+                            solution: "30 × 3,6 = 108 km/h.",
+                        },
+                        {
+                            text: "Un cycliste roule à 18 km/h. En m/s, cela fait :",
+                            type: "text",
+                            accepted: ["5 m/s", "5"],
+                            solution: "18 / 3,6 = 5 m/s.",
+                        },
+                        {
+                            text: "Un piéton marche à 1,4 m/s. En km/h :",
+                            type: "mcq",
+                            options: [
+                                "1,4 km/h",
+                                "5 km/h",
+                                "14 km/h",
+                                "50 km/h",
+                            ],
+                            correct: 1,
+                            solution: "1,4 × 3,6 ≈ 5 km/h.",
+                        },
+                        {
+                            text: "Une voiture à 130 km/h parcourt en 30 minutes :",
+                            type: "mcq",
+                            options: ["65 km", "130 km", "260 km", "30 km"],
+                            correct: 0,
+                            solution: "d = v × t = 130 × 0,5 = 65 km.",
+                        },
+                        {
+                            text: "Un train à 300 km/h met 2 h pour parcourir :",
+                            type: "text",
+                            accepted: ["600 km", "600"],
+                            solution: "d = 300 × 2 = 600 km.",
+                        },
+                        {
+                            text: "Un avion vole à 900 km/h pendant 4 h. Distance :",
+                            type: "text",
+                            accepted: ["3600 km", "3600"],
+                            solution: "d = 900 × 4 = 3600 km.",
+                        },
+                        {
+                            text: "Un coureur fait 100 m en 10 s. Sa vitesse moyenne est :",
+                            type: "mcq",
+                            options: ["10 m/s", "100 m/s", "1 m/s", "1000 m/s"],
+                            correct: 0,
+                            solution: "v = 100 / 10 = 10 m/s.",
+                        },
+                        {
+                            text: "10 m/s correspond à :",
+                            type: "text",
+                            accepted: ["36 km/h", "36"],
+                            solution: "10 × 3,6 = 36 km/h.",
+                        },
+                        {
+                            text: "Un mouvement est uniforme si :",
+                            type: "mcq",
+                            options: [
+                                "La vitesse varie",
+                                "La vitesse est constante",
+                                "La trajectoire est courbe",
+                                "La vitesse est nulle",
+                            ],
+                            correct: 1,
+                            solution: "Mouvement uniforme = vitesse constante.",
+                        },
+                        {
+                            text: "Un mouvement est accéléré si :",
+                            type: "mcq",
+                            options: [
+                                "La vitesse est constante",
+                                "La vitesse augmente",
+                                "La vitesse diminue",
+                                "L'objet est immobile",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Mouvement accéléré = vitesse qui augmente.",
+                        },
+                        {
+                            text: "Un mouvement est ralenti si :",
+                            type: "mcq",
+                            options: [
+                                "La vitesse augmente",
+                                "La vitesse est constante",
+                                "La vitesse diminue",
+                                "La trajectoire est droite",
+                            ],
+                            correct: 2,
+                            solution:
+                                "Mouvement ralenti = vitesse qui diminue.",
+                        },
+                        {
+                            text: "La trajectoire d'un objet est :",
+                            type: "mcq",
+                            options: [
+                                "Sa vitesse",
+                                "L'ensemble des positions successives",
+                                "Son accélération",
+                                "Sa masse",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La trajectoire est l'ensemble des positions successives d'un point.",
+                        },
+                        {
+                            text: "Une trajectoire rectiligne signifie :",
+                            type: "mcq",
+                            options: [
+                                "En ligne droite",
+                                "En cercle",
+                                "Courbe",
+                                "Quelconque",
+                            ],
+                            correct: 0,
+                            solution: "Rectiligne = ligne droite.",
+                        },
+                        {
+                            text: "Une trajectoire circulaire est :",
+                            type: "mcq",
+                            options: [
+                                "Une droite",
+                                "Un cercle",
+                                "Une courbe quelconque",
+                                "Une parabole",
+                            ],
+                            correct: 1,
+                            solution: "Circulaire = en forme de cercle.",
+                        },
+                        {
+                            text: "Une trajectoire curviligne est :",
+                            type: "mcq",
+                            options: [
+                                "Une droite",
+                                "Un cercle",
+                                "Une courbe quelconque",
+                                "Une ligne brisée",
+                            ],
+                            correct: 2,
+                            solution: "Curviligne = en forme de courbe.",
+                        },
+                        {
+                            text: "Sur une route droite, la trajectoire d'une voiture est :",
+                            type: "mcq",
+                            options: [
+                                "Circulaire",
+                                "Rectiligne",
+                                "Quelconque",
+                                "Parabolique",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Sur route droite, trajectoire rectiligne.",
+                        },
+                        {
+                            text: "Dans un manège, la trajectoire d'un enfant est :",
+                            type: "mcq",
+                            options: [
+                                "Rectiligne",
+                                "Circulaire",
+                                "Parabolique",
+                                "Aléatoire",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Dans un manège, la trajectoire est circulaire.",
+                        },
+                        {
+                            text: "La distance parcourue en mouvement uniforme est :",
+                            type: "mcq",
+                            options: [
+                                "d = v × t",
+                                "d = v / t",
+                                "d = t / v",
+                                "d = v + t",
+                            ],
+                            correct: 0,
+                            solution: "d = v × t.",
+                        },
+                        {
+                            text: "Le temps de parcours t est donné par :",
+                            type: "mcq",
+                            options: [
+                                "t = d × v",
+                                "t = d / v",
+                                "t = v / d",
+                                "t = d + v",
+                            ],
+                            correct: 1,
+                            solution: "t = d / v.",
+                        },
+                        {
+                            text: "Une voiture roule à 80 km/h pendant 15 min. Distance :",
+                            type: "mcq",
+                            options: ["20 km", "80 km", "1200 km", "4 km"],
+                            correct: 0,
+                            solution:
+                                "t = 15/60 = 0,25 h. d = 80 × 0,25 = 20 km.",
+                        },
+                        {
+                            text: "Pour parcourir 200 km à 100 km/h, il faut :",
+                            type: "mcq",
+                            options: ["2 h", "100 h", "300 h", "0,5 h"],
+                            correct: 0,
+                            solution: "t = 200/100 = 2 h.",
+                        },
+                        {
+                            text: "La vitesse de la lumière dans le vide est d'environ :",
+                            type: "mcq",
+                            options: [
+                                "300 km/s",
+                                "300 000 km/s",
+                                "3000 km/s",
+                                "30 000 000 km/s",
+                            ],
+                            correct: 1,
+                            solution: "c ≈ 300 000 km/s (3 × 10⁸ m/s).",
+                        },
+                        {
+                            text: "La lumière du Soleil met pour nous parvenir :",
+                            type: "mcq",
+                            options: [
+                                "1 seconde",
+                                "8 minutes environ",
+                                "1 heure",
+                                "1 jour",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La lumière du Soleil met environ 8 minutes 20 secondes.",
+                        },
+                        {
+                            text: "Une année-lumière est :",
+                            type: "mcq",
+                            options: [
+                                "Une durée",
+                                "Une distance",
+                                "Une vitesse",
+                                "Une masse",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Une année-lumière est une distance (environ 9,5 × 10¹² km).",
+                        },
+                        {
+                            text: "Le son se déplace dans l'air à environ :",
+                            type: "mcq",
+                            options: [
+                                "340 m/s",
+                                "300 000 km/s",
+                                "100 m/s",
+                                "34 m/s",
+                            ],
+                            correct: 0,
+                            solution: "Le son dans l'air : environ 340 m/s.",
+                        },
+                        {
+                            text: "Un éclair est vu, le tonnerre entendu 3 s après. Distance de l'orage :",
+                            type: "mcq",
+                            options: [
+                                "Environ 1 km",
+                                "Environ 10 km",
+                                "Environ 100 m",
+                                "Environ 300 km",
+                            ],
+                            correct: 0,
+                            solution: "d = 340 × 3 ≈ 1020 m ≈ 1 km.",
+                        },
+                        {
+                            text: "Le son ne se propage pas dans :",
+                            type: "mcq",
+                            options: ["L'eau", "L'air", "Le vide", "L'acier"],
+                            correct: 2,
+                            solution: "Le son ne se propage pas dans le vide.",
+                        },
+                        {
+                            text: "La vitesse du son est plus grande dans :",
+                            type: "mcq",
+                            options: ["L'air", "L'eau", "L'acier", "Le vide"],
+                            correct: 2,
+                            solution:
+                                "Le son va plus vite dans les solides (acier).",
+                        },
+                        {
+                            text: "La vitesse de la lumière dans l'eau est :",
+                            type: "mcq",
+                            options: [
+                                "Supérieure à 300 000 km/s",
+                                "Égale à 300 000 km/s",
+                                "Inférieure à 300 000 km/s",
+                                "Nulle",
+                            ],
+                            correct: 2,
+                            solution:
+                                "La lumière va moins vite dans l'eau que dans le vide.",
+                        },
+                        {
+                            text: "Un graphique vitesse-temps horizontal indique un mouvement :",
+                            type: "mcq",
+                            options: [
+                                "Accéléré",
+                                "Uniforme",
+                                "Ralenti",
+                                "Arrêté",
+                            ],
+                            correct: 1,
+                            solution: "Vitesse constante = mouvement uniforme.",
+                        },
+                        {
+                            text: "Un graphique vitesse-temps croissant indique :",
+                            type: "mcq",
+                            options: [
+                                "Mouvement uniforme",
+                                "Mouvement accéléré",
+                                "Mouvement ralenti",
+                                "Objet immobile",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Vitesse qui augmente = mouvement accéléré.",
+                        },
+                        {
+                            text: "Un graphique distance-temps est une droite pour un mouvement :",
+                            type: "mcq",
+                            options: [
+                                "Accéléré",
+                                "Uniforme",
+                                "Ralenti",
+                                "Quelconque",
+                            ],
+                            correct: 1,
+                            solution:
+                                "d = v × t donne une droite pour v constante.",
+                        },
+                        {
+                            text: "Le coefficient directeur d'un graphique d/t donne :",
+                            type: "mcq",
+                            options: [
+                                "L'accélération",
+                                "La vitesse",
+                                "La distance",
+                                "Le temps",
+                            ],
+                            correct: 1,
+                            solution: "La pente de d(t) donne la vitesse.",
+                        },
+                        {
+                            text: "Un objet immobile a une vitesse :",
+                            type: "mcq",
+                            options: [
+                                "Constante non nulle",
+                                "Nulle",
+                                "Infinie",
+                                "Variable",
+                            ],
+                            correct: 1,
+                            solution: "Immobile = vitesse nulle.",
+                        },
+                        {
+                            text: "La distance parcourue par un objet immobile en 10 s est :",
+                            type: "mcq",
+                            options: ["10 m", "100 m", "0 m", "1 m"],
+                            correct: 2,
+                            solution: "Vitesse nulle donc distance nulle.",
+                        },
+                        {
+                            text: "Le mouvement d'un objet dépend du référentiel. C'est le principe de :",
+                            type: "mcq",
+                            options: [
+                                "Relativité du mouvement",
+                                "Gravitation universelle",
+                                "Conservation de l'énergie",
+                                "Action-réaction",
+                            ],
+                            correct: 0,
+                            solution:
+                                "Le mouvement est relatif au référentiel choisi.",
+                        },
+                        {
+                            text: "Un passager dans un train en marche est immobile par rapport :",
+                            type: "mcq",
+                            options: [
+                                "Au sol",
+                                "Au train",
+                                "À un autre train",
+                                "À un arbre",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Par rapport au train, le passager est immobile.",
+                        },
+                        {
+                            text: "Un piéton sur le trottoir voit un train passer. Le train est :",
+                            type: "mcq",
+                            options: [
+                                "Immobile",
+                                "En mouvement par rapport au piéton",
+                                "En mouvement par rapport au train",
+                                "Toujours immobile",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Par rapport au piéton (référentiel terrestre), le train est en mouvement.",
+                        },
+                        {
+                            text: "Le référentiel terrestre est :",
+                            type: "mcq",
+                            options: [
+                                "Lié au Soleil",
+                                "Lié à la Terre",
+                                "Lié à la Lune",
+                                "Absolu",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Le référentiel terrestre est lié à la Terre.",
+                        },
+                        {
+                            text: "Le référentiel géocentrique est lié à :",
+                            type: "mcq",
+                            options: [
+                                "La surface de la Terre",
+                                "Au centre de la Terre",
+                                "Au Soleil",
+                                "À la Lune",
+                            ],
+                            correct: 1,
+                            solution: "Géocentrique = centre de la Terre.",
+                        },
+                        {
+                            text: "Le référentiel héliocentrique est lié à :",
+                            type: "mcq",
+                            options: [
+                                "La Terre",
+                                "La Lune",
+                                "Le Soleil",
+                                "Mars",
+                            ],
+                            correct: 2,
+                            solution: "Héliocentrique = centre du Soleil.",
+                        },
+                        {
+                            text: "La Terre tourne autour du Soleil en :",
+                            type: "mcq",
+                            options: [
+                                "24 h",
+                                "Environ 365 jours",
+                                "28 jours",
+                                "1 mois",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La Terre fait un tour complet en environ 365,25 jours.",
+                        },
+                        {
+                            text: "La Terre tourne sur elle-même en :",
+                            type: "mcq",
+                            options: [
+                                "24 h environ",
+                                "365 jours",
+                                "28 jours",
+                                "1 an",
+                            ],
+                            correct: 0,
+                            solution: "Rotation terrestre ≈ 24 h.",
+                        },
+                        {
+                            text: "La Lune tourne autour de la Terre en environ :",
+                            type: "mcq",
+                            options: [
+                                "24 h",
+                                "7 jours",
+                                "27,3 jours",
+                                "365 jours",
+                            ],
+                            correct: 2,
+                            solution:
+                                "La Lune met environ 27,3 jours pour un tour.",
+                        },
+                        {
+                            text: "La distance Terre-Lune est d'environ :",
+                            type: "mcq",
+                            options: [
+                                "384 000 km",
+                                "150 000 000 km",
+                                "1000 km",
+                                "300 000 km",
+                            ],
+                            correct: 0,
+                            solution: "Distance Terre-Lune ≈ 384 000 km.",
+                        },
+                        {
+                            text: "La distance Terre-Soleil est d'environ :",
+                            type: "mcq",
+                            options: [
+                                "384 000 km",
+                                "150 000 000 km",
+                                "1 000 000 km",
+                                "1 an-lumière",
+                            ],
+                            correct: 1,
+                            solution: "Terre-Soleil ≈ 150 millions de km.",
+                        },
+                        {
+                            text: "Un satellite géostationnaire :",
+                            type: "mcq",
+                            options: [
+                                "Tombe sur Terre",
+                                "Reste fixe au-dessus d'un point de la Terre",
+                                "Voyage entre les planètes",
+                                "S'éloigne du système solaire",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Un satellite géostationnaire paraît immobile vu de la Terre.",
+                        },
+                        {
+                            text: "L'orbite de la Terre autour du Soleil est :",
+                            type: "mcq",
+                            options: [
+                                "Parfaitement circulaire",
+                                "Quasi-circulaire (légèrement elliptique)",
+                                "Carrée",
+                                "Parabolique",
+                            ],
+                            correct: 1,
+                            solution:
+                                "L'orbite terrestre est quasi-circulaire.",
+                        },
+                        {
+                            text: "La vitesse de la Terre autour du Soleil est d'environ :",
+                            type: "mcq",
+                            options: [
+                                "30 km/s",
+                                "300 km/s",
+                                "3 km/s",
+                                "300 000 km/s",
+                            ],
+                            correct: 0,
+                            solution: "Vitesse orbitale terrestre ≈ 30 km/s.",
+                        },
+                        {
+                            text: "Un graphique distance-temps passant par l'origine avec une pente croissante indique :",
+                            type: "mcq",
+                            options: [
+                                "Mouvement uniforme",
+                                "Mouvement accéléré",
+                                "Objet immobile",
+                                "Mouvement ralenti",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Pente croissante = vitesse croissante = mouvement accéléré.",
+                        },
+                        {
+                            text: "La chronophotographie permet de :",
+                            type: "mcq",
+                            options: [
+                                "Mesurer la masse",
+                                "Visualiser les positions successives d'un mobile",
+                                "Mesurer la température",
+                                "Observer les atomes",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La chronophotographie montre des positions à intervalles réguliers.",
+                        },
+                        {
+                            text: "Sur une chronophotographie, des points régulièrement espacés indiquent :",
+                            type: "mcq",
+                            options: [
+                                "Un mouvement uniforme",
+                                "Un mouvement accéléré",
+                                "Un mouvement ralenti",
+                                "Un objet immobile",
+                            ],
+                            correct: 0,
+                            solution: "Points réguliers = vitesse constante.",
+                        },
+                        {
+                            text: "Sur une chronophotographie, des points de plus en plus espacés indiquent :",
+                            type: "mcq",
+                            options: [
+                                "Mouvement uniforme",
+                                "Mouvement accéléré",
+                                "Mouvement ralenti",
+                                "Objet immobile",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Espace qui croît = vitesse qui augmente = accéléré.",
+                        },
+                        {
+                            text: "L'accélération est la variation de :",
+                            type: "mcq",
+                            options: [
+                                "La distance",
+                                "La vitesse par rapport au temps",
+                                "La masse",
+                                "Du poids",
+                            ],
+                            correct: 1,
+                            solution:
+                                "L'accélération est la variation de la vitesse.",
+                        },
+                        {
+                            text: "L'unité de l'accélération est :",
+                            type: "mcq",
+                            options: ["m/s", "m/s²", "km/h", "m"],
+                            correct: 1,
+                            solution: "L'accélération se mesure en m/s².",
+                        },
+                        {
+                            text: "Une voiture passe de 0 à 100 km/h en 10 s. Son accélération moyenne est :",
+                            type: "mcq",
+                            options: [
+                                "10 km/h/s",
+                                "100 km/h/s",
+                                "1 km/h/s",
+                                "1000 km/h/s",
+                            ],
+                            correct: 0,
+                            solution: "a = Δv/Δt = 100/10 = 10 km/h/s.",
+                        },
+                        {
+                            text: "La distance d'arrêt d'un véhicule dépend de :",
+                            type: "mcq",
+                            options: [
+                                "Uniquement la vitesse",
+                                "La vitesse et le temps de réaction",
+                                "Uniquement la masse",
+                                "La couleur de la voiture",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Distance d'arrêt = distance de réaction + distance de freinage.",
+                        },
+                        {
+                            text: "Le temps de réaction moyen d'un conducteur est d'environ :",
+                            type: "mcq",
+                            options: ["0,1 s", "1 s", "5 s", "10 s"],
+                            correct: 1,
+                            solution: "Le temps de réaction moyen ≈ 1 s.",
+                        },
+                        {
+                            text: "À 90 km/h, la distance de réaction est environ :",
+                            type: "mcq",
+                            options: ["9 m", "25 m", "90 m", "100 m"],
+                            correct: 1,
+                            solution:
+                                "À 90 km/h (25 m/s), en 1 s on parcourt 25 m.",
+                        },
+                        {
+                            text: "La distance de freinage augmente comme :",
+                            type: "mcq",
+                            options: [
+                                "La vitesse",
+                                "Le carré de la vitesse",
+                                "Le cube de la vitesse",
+                                "Inversement à la vitesse",
+                            ],
+                            correct: 1,
+                            solution: "Distance de freinage ∝ v².",
+                        },
+                        {
+                            text: "Si on double la vitesse, la distance de freinage est multipliée par :",
+                            type: "mcq",
+                            options: ["2", "4", "8", "16"],
+                            correct: 1,
+                            solution:
+                                "Distance ∝ v², donc (2v)² = 4v², soit 4 fois plus.",
+                        },
+                        {
+                            text: "Sur route mouillée, la distance de freinage :",
+                            type: "mcq",
+                            options: [
+                                "Diminue",
+                                "Augmente",
+                                "Reste la même",
+                                "Devient nulle",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La route mouillée réduit l'adhérence et augmente la distance de freinage.",
+                        },
+                        {
+                            text: "L'alcool au volant :",
+                            type: "mcq",
+                            options: [
+                                "Réduit le temps de réaction",
+                                "Augmente le temps de réaction",
+                                "N'a aucun effet",
+                                "Améliore la vision",
+                            ],
+                            correct: 1,
+                            solution: "L'alcool allonge le temps de réaction.",
+                        },
+                        {
+                            text: "La ceinture de sécurité :",
+                            type: "mcq",
+                            options: [
+                                "Est inutile",
+                                "Empêche l'éjection en cas de choc",
+                                "Augmente la vitesse",
+                                "Réduit la consommation",
+                            ],
+                            correct: 1,
+                            solution:
+                                "La ceinture retient les occupants en cas de choc.",
+                        },
+                        {
+                            text: "L'airbag se déploie lors :",
+                            type: "mcq",
+                            options: [
+                                "D'un démarrage",
+                                "D'un choc violent",
+                                "D'un freinage doux",
+                                "D'une accélération",
+                            ],
+                            correct: 1,
+                            solution:
+                                "L'airbag se déploie lors d'un choc violent.",
+                        },
+                        {
+                            text: "L'ABS permet de :",
+                            type: "mcq",
+                            options: [
+                                "Aller plus vite",
+                                "Éviter le blocage des roues lors du freinage",
+                                "Augmenter la puissance",
+                                "Réduire la consommation",
+                            ],
+                            correct: 1,
+                            solution: "L'ABS empêche les roues de se bloquer.",
+                        },
+                        {
+                            text: "Un graphique distance-temps horizontal signifie que l'objet :",
+                            type: "mcq",
+                            options: [
+                                "Accélère",
+                                "Avance vite",
+                                "Est immobile",
+                                "Recule",
+                            ],
+                            correct: 2,
+                            solution: "Distance constante = immobile.",
+                        },
+                        {
+                            text: "La distance parcourue en mouvement uniforme est proportionnelle :",
+                            type: "mcq",
+                            options: [
+                                "À la vitesse uniquement",
+                                "Au temps",
+                                "À la masse",
+                                "Au carré du temps",
+                            ],
+                            correct: 1,
+                            solution:
+                                "d = v × t, donc d est proportionnelle à t.",
+                        },
+                        {
+                            text: "Le graphique v(t) pour un objet immobile est :",
+                            type: "mcq",
+                            options: [
+                                "Une droite croissante",
+                                "Une droite horizontale à 0",
+                                "Une parabole",
+                                "Une courbe",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Vitesse toujours nulle = droite à v = 0.",
+                        },
+                        {
+                            text: "Un véhicule fait du 60 km/h constant. En 2 h, il parcourt :",
+                            type: "text",
+                            accepted: ["120 km", "120"],
+                            solution: "d = 60 × 2 = 120 km.",
+                        },
+                        {
+                            text: "Un TGV à 300 km/h parcourt en 45 min :",
+                            type: "mcq",
+                            options: ["225 km", "300 km", "150 km", "135 km"],
+                            correct: 0,
+                            solution:
+                                "t = 45/60 = 0,75 h. d = 300 × 0,75 = 225 km.",
+                        },
+                        {
+                            text: "Un marathonien court 42 km en 2 h. Sa vitesse moyenne :",
+                            type: "text",
+                            accepted: ["21 km/h", "21"],
+                            solution: "v = 42/2 = 21 km/h.",
+                        },
+                        {
+                            text: "Un escargot parcourt 5 m en 1 h. Sa vitesse en m/h :",
+                            type: "text",
+                            accepted: ["5 m/h", "5"],
+                            solution: "v = 5/1 = 5 m/h.",
+                        },
+                        {
+                            text: "La vitesse de libération de la Terre est d'environ :",
+                            type: "mcq",
+                            options: [
+                                "1,1 km/s",
+                                "11,2 km/s",
+                                "112 km/s",
+                                "1120 km/s",
+                            ],
+                            correct: 1,
+                            solution:
+                                "Vitesse de libération terrestre ≈ 11,2 km/s.",
+                        },
+                    ],
+                },
+            ];
+
+            const app = {
+                state: {
+                    catIdx: 0,
+                    qIdx: 0,
+                },
+
+                init: function () {
+                    this.renderMenu();
+                },
+
+                renderMenu: function () {
+                    const nav = document.getElementById("nav-container");
+                    nav.innerHTML = "";
+                    document.getElementById("quiz-ui").classList.add("hidden");
+                    document
+                        .getElementById("nav-container")
+                        .classList.remove("hidden");
+
+                    db.forEach((cat, idx) => {
+                        const btn = document.createElement("div");
+                        btn.className = "nav-btn";
+                        btn.textContent = cat.category;
+                        btn.onclick = () => this.startCategory(idx);
+                        nav.appendChild(btn);
+                    });
+                },
+
+                startCategory: function (idx) {
+                    this.state.catIdx = idx;
+                    this.state.qIdx = 0;
+
+                    document
+                        .getElementById("nav-container")
+                        .classList.add("hidden");
+                    document
+                        .getElementById("quiz-ui")
+                        .classList.remove("hidden");
+                    this.renderQuestion();
+                },
+
+                renderQuestion: function () {
+                    const q = db[this.state.catIdx].questions[this.state.qIdx];
+                    const card = document.getElementById(
+                        "question-card-container",
+                    );
+                    const feedback = document.getElementById("feedback-area");
+                    const btn = document.getElementById("main-btn");
+
+                    card.classList.remove("fast-exit", "entering");
+                    void card.offsetWidth;
+                    card.classList.add("entering");
+
+                    feedback.className = "";
+                    feedback.classList.remove("visible");
+                    feedback.style.display = "none";
+
+                    btn.textContent = "Valider la réponse";
+                    btn.disabled = false;
+                    btn.style.backgroundColor = "#4c51bf";
+
+                    document.getElementById("cat-label").textContent =
+                        db[this.state.catIdx].category;
+                    document.getElementById("counter-label").textContent =
+                        `${this.state.qIdx + 1} / ${db[this.state.catIdx].questions.length}`;
+                    document.getElementById("question-text").innerHTML = q.text;
+
+                    const imgArea = document.getElementById("image-area");
+                    if (q.image) {
+                        imgArea.innerHTML = `<img src="${q.image}">`;
+                        imgArea.classList.remove("hidden");
+                    } else {
+                        imgArea.classList.add("hidden");
+                    }
+
+                    const pct =
+                        (this.state.qIdx /
+                            db[this.state.catIdx].questions.length) *
+                        100;
+                    document.getElementById("progress-fill").style.width =
+                        pct + "%";
+
+                    const inputArea = document.getElementById("input-area");
+                    inputArea.innerHTML = "";
+
+                    if (q.type === "mcq") {
+                        const container = document.createElement("div");
+                        container.className = "options-container";
+
+                        let mixedOptions = q.options.map(
+                            (optText, originalIndex) => {
+                                return { text: optText, val: originalIndex };
+                            },
+                        );
+
+                        mixedOptions.sort(() => Math.random() - 0.5);
+
+                        mixedOptions.forEach((optObj, i) => {
+                            const item = document.createElement("div");
+                            item.className = "option-item";
+                            item.innerHTML = `
+                              <input type="radio" name="quiz-opt" id="opt-${i}" value="${optObj.val}">
+                              <label class="answer-btn" for="opt-${i}">${optObj.text}</label>
+                          `;
+                            container.appendChild(item);
+                        });
+                        inputArea.appendChild(container);
+                    } else {
+                        inputArea.innerHTML = `<input type="text" id="text-answer" class="text-input-styled" placeholder="Ta réponse..." autocomplete="off">`;
+                        document
+                            .getElementById("text-answer")
+                            .addEventListener("keypress", (e) => {
+                                if (e.key === "Enter") this.checkAnswer();
+                            });
+                        setTimeout(
+                            () =>
+                                document.getElementById("text-answer").focus(),
+                            100,
+                        );
+                    }
+                },
+
+                checkAnswer: function () {
+                    const q = db[this.state.catIdx].questions[this.state.qIdx];
+                    const feedback = document.getElementById("feedback-area");
+                    feedback.style.display = "block";
+                    const btn = document.getElementById("main-btn");
+                    let isCorrect = false;
+                    let userElement = null;
+
+                    if (q.type === "mcq") {
+                        const selected = document.querySelector(
+                            'input[name="quiz-opt"]:checked',
+                        );
+                        if (!selected) return alert("Choisis une réponse !");
+
+                        const label = document.querySelector(
+                            `label[for="${selected.id}"]`,
+                        );
+                        userElement = label;
+
+                        if (parseInt(selected.value) === q.correct) {
+                            isCorrect = true;
+                        }
+                    } else {
+                        const input = document.getElementById("text-answer");
+                        if (!input.value.trim())
+                            return alert("Écris une réponse !");
+                        userElement = input;
+
+                        const val = input.value
+                            .toLowerCase()
+                            .replace(/\s/g, "")
+                            .replace(",", ".");
+                        const accepted = q.accepted.map((a) =>
+                            a
+                                .toLowerCase()
+                                .replace(/\s/g, "")
+                                .replace(",", "."),
+                        );
+                        if (accepted.includes(val)) isCorrect = true;
+                    }
+
+                    btn.disabled = true;
+
+                    if (isCorrect) {
+                        userElement.classList.add("correct");
+                        feedback.className = "feedback-correct visible";
+                        feedback.innerHTML = `
+                          <div style="font-size: 1.2em; margin-bottom: 5px;">✅ <span class="couleur-qui-change">Excellent !</span></div>
+                          <div>${q.solution}</div>
+                      `;
+                        btn.style.backgroundColor = "#48bb78";
+                        btn.textContent = "Bravo !";
+                    } else {
+                        userElement.classList.add("incorrect");
+
+                        if (q.type === "mcq") {
+                            const correctInput = document.querySelector(
+                                `input[name="quiz-opt"][value="${q.correct}"]`,
+                            );
+                            if (correctInput) {
+                                const correctLabel = document.querySelector(
+                                    `label[for="${correctInput.id}"]`,
+                                );
+                                correctLabel.classList.add("correct");
+                            }
+                        }
+
+                        feedback.className = "feedback-incorrect visible";
+                        feedback.innerHTML = `
+                          <div style="font-size: 1.2em; margin-bottom: 5px;">❌ Aïe... Regarde la correction :</div>
+                          <div><strong>${q.solution}</strong></div>
+                      `;
+                        btn.style.backgroundColor = "#c53030";
+                        btn.textContent = "Lecture correction...";
+                    }
+
+                    const pct =
+                        ((this.state.qIdx + 1) /
+                            db[this.state.catIdx].questions.length) *
+                        100;
+                    document.getElementById("progress-fill").style.width =
+                        pct + "%";
+
+                    const delayDuration = isCorrect ? 1200 : 4000;
+
+                    setTimeout(() => {
+                        this.handleTransition();
+                    }, delayDuration);
+                },
+
+                handleTransition: function () {
+                    if (
+                        this.state.qIdx >=
+                        db[this.state.catIdx].questions.length - 1
+                    ) {
+                        alert("Série terminée ! Retour au menu.");
+                        this.renderMenu();
+                        return;
+                    }
+
+                    const card = document.getElementById(
+                        "question-card-container",
+                    );
+                    card.classList.remove("entering");
+                    card.classList.add("fast-exit");
+
+                    setTimeout(() => {
+                        this.state.qIdx++;
+                        this.renderQuestion();
+                    }, 300);
+                },
+            };
+
+            window.onload = () => app.init();
+        </script>
+
+        <!-- BOUTON RETOUR PWA -->
+        <script>
+            (function () {
+                const checkAndAddButton = () => {
+                    const isPWA =
+                        window.matchMedia("(display-mode: standalone)")
+                            .matches ||
+                        window.matchMedia("(display-mode: fullscreen)")
+                            .matches ||
+                        navigator.standalone;
+
+                    if (
+                        isPWA &&
+                        !window.location.pathname.endsWith("index.html")
+                    ) {
+                        const btn = document.createElement("button");
+                        btn.innerHTML = "← Retour";
+                        btn.style.position = "fixed";
+                        btn.style.top = "15px";
+                        btn.style.left = "15px";
+                        btn.style.zIndex = "9999";
+                        btn.style.background = "#4CAF50";
+                        btn.style.color = "white";
+                        btn.style.border = "none";
+                        btn.style.padding = "10px 20px";
+                        btn.style.borderRadius = "8px";
+                        btn.style.cursor = "pointer";
+                        btn.style.boxShadow = "0 4px 10px rgba(0,0,0,0.5)";
+                        btn.style.fontWeight = "bold";
+                        btn.style.fontFamily = "Arial, sans-serif";
+                        btn.style.fontSize = "16px";
+                        btn.style.transition =
+                            "background 0.3s, transform 0.3s";
+
+                        btn.onmouseover = () => {
+                            btn.style.background = "#45a049";
+                            btn.style.transform = "scale(1.05)";
+                        };
+                        btn.onmouseout = () => {
+                            btn.style.background = "#4CAF50";
+                            btn.style.transform = "scale(1)";
+                        };
+
+                        btn.onclick = () => {
+                            window.location.href = "../index.html";
+                        };
+
+                        document.body.appendChild(btn);
+                    }
+                };
+
+                if (document.readyState === "loading") {
+                    document.addEventListener(
+                        "DOMContentLoaded",
+                        checkAndAddButton,
+                    );
+                } else {
+                    checkAndAddButton();
+                }
+            })();
+        </script>
+    </body>
+</html>
